@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "551640274053",
+    "project_id": "shop-shpere",
+    "storage_bucket": "shop-shpere.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551640274053:android:75edf25b5379da5707c5ec",
+        "android_client_info": {
+          "package_name": "com.example.shop_sphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGP_EjF25NeicY6292wwfTGdPrfFfaoj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

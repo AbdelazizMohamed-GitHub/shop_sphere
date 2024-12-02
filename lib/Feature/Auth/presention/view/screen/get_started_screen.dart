@@ -3,6 +3,8 @@ import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_syles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 
+import 'login_screen.dart';
+
 class GetStartedScreen extends StatelessWidget {
   const GetStartedScreen({super.key});
 
@@ -32,7 +34,7 @@ class GetStartedScreen extends StatelessWidget {
             ),
             CustomButton(
                 onPressed: () {
-                 
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                 },
                 text: 'Get Started'),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/Feature/Auth/presention/view/screen/forget_password_screen.dart';
+import 'package:shop_sphere/Feature/Auth/presention/view/screen/register_screen.dart';
 import 'package:shop_sphere/core/constant/app_colors.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_syles.dart';
@@ -33,8 +34,8 @@ class LoginScreen extends StatelessWidget {
             Container(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                height: MediaQuery.of(context).size.height * 0.7,
-                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -45,20 +46,29 @@ class LoginScreen extends StatelessWidget {
                         offset: Offset(1, 2),
                       ),
                     ]),
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    child: Column(children: [
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       const Text('Login', style: AppStyles.text30Bold),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Don\'t have an account? ',
+                          const Text('Don\'t have an account?',
                               style: AppStyles.text18RegularBlack),
-                          Text('Sign Up',
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterScreen()));
+                            },
+                            child: Text(
+                              'Register',
                               style: AppStyles.text18RegularBlack.copyWith(
                                   color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.bold))
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
                         ],
                       ),
                       const SizedBox(
@@ -158,7 +168,7 @@ class LoginScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ])))
+                    ]))
           ]),
         ),
       ),

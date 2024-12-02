@@ -11,12 +11,24 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        leading: IconButton(
+          padding: EdgeInsets.only(left: 20),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
+      ),
       backgroundColor: AppColors.primaryColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 40),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -30,28 +42,27 @@ class RegisterScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      size: 28,
-                    )),
                 const Text(
                   'Register',
                   style: AppStyles.text30Bold,
                 ),
+             
                 Row(children: [
                   const Text(
-                    'Already have an account ? ',
+                    'Already have an account ?',
                     style: AppStyles.text18RegularBlack,
                   ),
-                  InkWell(
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: Text(
                       'Login',
-                      style: AppStyles.text18RegularBlack
-                          .copyWith(color: AppColors.primaryColor),
+                      style: AppStyles.text18RegularBlack.copyWith(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
+                  )
                 ]),
                 const SizedBox(
                   height: 20,
