@@ -3,6 +3,8 @@ class AppImages {
   static const String cartIcon = 'assets/images/cartIcon.png';
   static const String googleIcon = 'assets/images/google.png';
   static const String facebookIcon = 'assets/images/facebook.png';
+  static const String forgetPasswordImage = 'assets/images/forgetPassword.png';
+  static const String product = 'assets/images/product.png';
 
 
 

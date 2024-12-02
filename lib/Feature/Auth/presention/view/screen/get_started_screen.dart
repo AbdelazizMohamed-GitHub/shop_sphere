@@ -25,7 +25,7 @@ class GetStartedScreen extends StatelessWidget {
             Text(
               'Discover the joy of effortless shopping with ShopSphere',
               textAlign: TextAlign.center,
-              style: AppStyles.text22Regular.copyWith(color: Colors.black),
+              style: AppStyles.text22RegularWhite.copyWith(color: Colors.black),
             ),
             const SizedBox(
               height: 20,

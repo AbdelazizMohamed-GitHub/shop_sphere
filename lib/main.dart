@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/Feature/Auth/presention/view/screen/login_screen.dart';
 
 void main() {
-  const ShopSphere();
+  runApp(const ShopSphere());
 }
 
 class ShopSphere extends StatelessWidget {
@@ -11,7 +12,7 @@ class ShopSphere extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:const Scaffold(),
+      home: const LoginScreen(),
       theme: ThemeData(
         useMaterial3: true,
       ),
