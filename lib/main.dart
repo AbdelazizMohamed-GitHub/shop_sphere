@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/features/presention/view/screen/onboarding_screen.dart';
+import 'package:shop_sphere/features/onboarding/presention/view/screen/onboarding_screen.dart';
 
 void main() {
   runApp(const ShopSphere());

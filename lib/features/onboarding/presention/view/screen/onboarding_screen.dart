@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
-import 'package:shop_sphere/features/presention/view/widget/custom_inboarding_item.dart';
+import 'package:shop_sphere/features/onboarding/presention/view/widget/custom_inboarding_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -62,24 +62,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         activeDotColor: AppColors.primaryColor),
                   ),
                   const Spacer(),
-                  FloatingActionButton(
-                    backgroundColor: AppColors.primaryColor,
-                    onPressed: () {
-                      if (currentPage < 2) {
-                        pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn,
-                        );
-                      } else {
-                        //  Navigator.push(context, MaterialPageRoute(builder: (context) => const GetStartedScreen()));
-                      }
-                    },
-                    child: currentPage == 2
-                        ? const Text(' Start Shopping')
-                        : const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white,
-                          ),
+                  InkWell(   onTap: () {
+                        if (currentPage < 2) {
+                          pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeIn,
+                          );
+                        } else {
+                          //  Navigator.push(context, MaterialPageRoute(builder: (context) => const GetStartedScreen()));
+                        }
+                      },
+                    child: Container(padding:const EdgeInsets.all(10),
+                      color: AppColors.primaryColor,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                   
+                      child: currentPage == 2
+                          ? const Text(' Start Shopping')
+                          : const Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.white,
+                            ),
+                    ),
                   ),
                 ],
               ),
