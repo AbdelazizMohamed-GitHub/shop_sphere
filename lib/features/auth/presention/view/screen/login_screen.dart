@@ -4,6 +4,7 @@ import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -52,7 +53,11 @@ class LoginScreen extends StatelessWidget {
                           const Text('Don\'t have an account?',
                               style: AppStyles.text18RegularBlack),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const RegisterScreen(),
+                              ));
+                            },
                             child: Text(
                               'Register',
                               style: AppStyles.text18RegularBlack.copyWith(
@@ -139,7 +144,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                             const Text(
                               'Sign in with Google',
-                              style: AppStyles.text22SemiBoldBlack,
+                              style: AppStyles.text18RegularBlack,
                             )
                           ],
                         ),
