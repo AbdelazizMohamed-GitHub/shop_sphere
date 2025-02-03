@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/features/onboarding/presention/view/screen/onboarding_screen.dart';
 
 class GetStartedScreen extends StatelessWidget {
   const GetStartedScreen({super.key});
@@ -9,13 +10,35 @@ class GetStartedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-        Image.asset(AppImages.logo,height: 300,),
-        const SizedBox(height: 20,),
-        const Text("Disvcover the joy of effortless hopping with shopSphere",style:AppStyles.text22SemiBoldBlack),
-       const SizedBox(height: 10,),CustomButton(onPressed: (){}, text: "Get Started")
-      ],),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              AppImages.logo,
+              height: 300,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+                "Disvcover the joy of effortless hopping with shopSphere",
+                textAlign: TextAlign.center,
+                style: AppStyles.text22SemiBoldBlack),
+            const SizedBox(
+              height: 10,
+            ),
+            CustomButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const OnboardingScreen(),
+                  ));
+                },
+                text: "Get Started")
+          ],
+        ),
+      ),
     );
   }
 }

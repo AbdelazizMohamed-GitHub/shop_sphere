@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
+import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/onboarding_screen.dart';
 
 void main() {
@@ -11,6 +13,6 @@ class ShopSphere extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home:OnboardingScreen() ,);
+    return const MaterialApp(home:LoginScreen() ,);
   }
 }

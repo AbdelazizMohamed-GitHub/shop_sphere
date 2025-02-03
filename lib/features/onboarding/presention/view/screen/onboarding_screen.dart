@@ -49,9 +49,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   TextButton(
                       onPressed: () {
-                        pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+                        if (currentPage > 0) {
+                          pageController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeIn,
+                          );
+                        }
                       },
-                      child: const Text("Back",style:AppStyles.text22SemiBoldBlack,)),
+                      child: const Text(
+                        "Back",
+                        style: AppStyles.text22SemiBoldBlack,
+                      )),
                   const Spacer(),
                   SmoothPageIndicator(
                     controller: PageController(
@@ -62,22 +70,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         activeDotColor: AppColors.primaryColor),
                   ),
                   const Spacer(),
-                  InkWell(   onTap: () {
-                        if (currentPage < 2) {
-                          pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn,
-                          );
-                        } else {
-                          //  Navigator.push(context, MaterialPageRoute(builder: (context) => const GetStartedScreen()));
-                        }
-                      },
-                    child: Container(padding:const EdgeInsets.all(10),
-                      color: AppColors.primaryColor,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-                   
+                  InkWell(
+                    onTap: () {
+                      if (currentPage < 2) {
+                        pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn,
+                        );
+                      } else {
+                        //  Navigator.push(context, MaterialPageRoute(builder: (context) => const GetStartedScreen()));
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(12)),
                       child: currentPage == 2
-                          ? const Text(' Start Shopping')
+                          ? const Text(' Start Shopping',
+                              style: TextStyle(color: Colors.white))
                           : const Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.white,
