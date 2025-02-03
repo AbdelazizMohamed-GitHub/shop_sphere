@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
-import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
-import 'package:shop_sphere/features/onboarding/presention/view/screen/onboarding_screen.dart';
+import 'package:shop_sphere/firebase_options.dart';
 
-void main() {
+void main() async{
+await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const ShopSphere());
 }
 
@@ -12,6 +15,7 @@ class ShopSphere extends StatelessWidget {
 ({super.key});
 
   @override
+
   Widget build(BuildContext context) {
     return const MaterialApp(home:LoginScreen() ,);
   }

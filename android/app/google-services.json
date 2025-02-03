@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "909426718408",
+    "project_id": "shopsphere-b422e",
+    "storage_bucket": "shopsphere-b422e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909426718408:android:f3d7eedbb8ecc3c08657fd",
+        "android_client_info": {
+          "package_name": "com.example.shop_sphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAUBFD_FqC6r5qlGdl5JYRiaVTHtPms48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
