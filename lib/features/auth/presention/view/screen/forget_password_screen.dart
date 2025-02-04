@@ -4,9 +4,8 @@ import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 
-
 class ForgetPasswordScreen extends StatefulWidget {
-  const ForgetPasswordScreen({super.key,  required this.email});
+  const ForgetPasswordScreen({super.key, required this.email});
   final String email;
 
   @override
@@ -20,6 +19,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     emailController.text = widget.email;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +45,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             const SizedBox(
               height: 20,
             ),
-             CustomTextForm(
-textController: emailController,
+            CustomTextForm(
+              textController: emailController,
               pIcon: Icons.email,
               text: 'Email',
               kType: TextInputType.emailAddress,
@@ -54,10 +54,7 @@ textController: emailController,
             const SizedBox(
               height: 20,
             ),
-           CustomButton(onPressed: () {
-                
-                }, text: 'Reset Password')
-              
+            CustomButton(onPressed: () {}, text: 'Reset Password')
           ],
         ),
       ),
