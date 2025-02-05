@@ -76,9 +76,14 @@ try {
   
   @override
   Future<Either<Failure, void>> signOut()async {
-   await _firebaseAuth.signOut();
-    throw UnimplementedError();
-  }
+   try {
+     await _firebaseAuth.signOut();
+     await _googleSignIn.signOut();
+   } catch (e) {
+      return Left(Failure(e.toString()));
+     
+   }
+    return const Right(null);}
   @override
   Future<bool> isSignedIn() async{
    
