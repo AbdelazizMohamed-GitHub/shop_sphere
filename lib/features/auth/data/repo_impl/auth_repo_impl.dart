@@ -9,10 +9,28 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Future<Either<Failure, String>> registerWithEmailAndPassword(String email, String password)async {
    try{
      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return Right(userCredential.user?.uid??"1");
+      return Right(userCredential.user?.uid??"");
    }catch(e){
      return Left(Failure(e.toString()));
    }
+  }
+
+    @override
+  Future<Either<Failure, String>> logInWithEmailAndPassword(String email, String password)async {
+try {
+    UserCredential user=await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      return Right(user.user?.uid??"");
+} catch (e) {
+     return Left(Failure(e.toString()));
+}
+
+  }
+  @override
+  Future<bool> isSignedIn() async{
+   
+
+    User? user = _firebaseAuth.currentUser;
+    return user==null?false:true;
   }
   @override
   Future<Either<Failure, String>> getUser() {
@@ -20,17 +38,8 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     throw UnimplementedError();
   }
 
-  @override
-  Future<bool> isSignedIn() {
-    // TODO: implement isSignedIn
-    throw UnimplementedError();
-  }
 
-  @override
-  Future<Either<Failure, void>> logInWithEmailAndPassword(String email, String password) {
-    // TODO: implement logInWithEmailAndPassword
-    throw UnimplementedError();
-  }
+
 
 
 
