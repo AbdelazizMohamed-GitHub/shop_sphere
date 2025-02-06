@@ -5,36 +5,41 @@ import 'package:shop_sphere/core/errors/failure.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 
 class AuthRepoImpl extends AuthRepo {
-final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-    @override
-  Future<Either<Failure, String>> registerWithEmailAndPassword(String email, String password)async {
-   try{
-     UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return Right(userCredential.user?.uid??"");
-   }catch(e){
-     return Left(Failure(e.toString()));
-   }
+  @override
+  Future<Either<Failure, String>> registerWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      return Right(userCredential.user?.uid ?? "");
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
   }
 
-    @override
-  Future<Either<Failure, String>> logInWithEmailAndPassword(String email, String password)async {
-try {
-    UserCredential user=await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return Right(user.user?.uid??"");
-} catch (e) {
-     return Left(Failure(e.toString()));
-}
-
+  @override
+  Future<Either<Failure, String>> logInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return Right(user.user?.uid ?? "");
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
   }
-   @override
-  Future<Either<Failure, String>> logInWithGoogle() async{
-    
- try {
+
+  @override
+  Future<Either<Failure, String>> logInWithGoogle() async {
+    try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return Left(Failure("Google Sign-In Failed")); // If user cancels
+      if (googleUser == null) {
+        return Left(Failure("Google Sign-In Failed")); // If user cancels
+      }
 
       // Obtain auth details from request
       final GoogleSignInAuthentication googleAuth =
@@ -50,66 +55,52 @@ try {
       UserCredential userCredential =
           await _firebaseAuth.signInWithCredential(credential);
 
-      return Right(userCredential.user?.uid??"");
+      return Right(userCredential.user?.uid ?? "");
     } catch (e) {
       return Left(Failure(e.toString()));
-    }  }
-     @override
-  Future<Either<Failure, String>> verifiyEmaill(String email)async {
-    try {
-    await  _firebaseAuth.currentUser?.sendEmailVerification();
-    return const Right("Email Sent");
-    } catch (e) {
-     return Left(Failure(e.toString()));
     }
-    }
-  
+  }
+
   @override
-  Future<Either<Failure, void>> resetPassword(String email) async{
+  Future<Either<Failure, String>> verifiyEmaill(String email) async {
+    try {
+      await _firebaseAuth.currentUser?.sendEmailVerification();
+      return const Right("Email Sent");
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> resetPassword(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-      return const Right( null);
+      return const Right(null);
     } catch (e) {
       return Left(Failure(e.toString()));
     }
   }
-  
-  @override
-  Future<Either<Failure, void>> signOut()async {
-   try {
-     await _firebaseAuth.signOut();
-     await _googleSignIn.signOut();
-   } catch (e) {
-      return Left(Failure(e.toString()));
-     
-   }
-    return const Right(null);}
-  @override
-  Future<bool> isSignedIn() async{
-   
 
-    User? user = _firebaseAuth.currentUser;
-    return user==null?false:true;
+  @override
+  Future<Either<Failure, void>> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+      await _googleSignIn.signOut();
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+    return const Right(null);
   }
-   @override
-  
-  
+
+  @override
+  Future<bool> isSignedIn() async {
+    User? user = _firebaseAuth.currentUser;
+    return user == null ? false : true;
+  }
+
+  @override
   @override
   Future<Either<Failure, String>> getUser() {
-    // TODO: implement getUser
     throw UnimplementedError();
   }
-  
- 
- 
-
- }
- 
-
-
-
-
-
-
- 
-
+}
