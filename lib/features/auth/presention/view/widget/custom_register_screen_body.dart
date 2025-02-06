@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
 
@@ -91,37 +92,29 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
       BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Register Success')));
+         Warning.showWarning(context, message: 'Register Success');
           }
           if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errMessage),
-                backgroundColor: Colors.red,
-              ),
-            );
+           Warning.showWarning(context, message: state.errMessage);
           }
         },
         builder: (context, state) {
           return state is AuthLoading
-                  ? const CircularProgressIndicator()
-                  : CustomButton(
-                      onPressed: () {
-                       if (passwordTextC.text.isNotEmpty  && emailTextC.text.isNotEmpty) {
-                          context.read<AuthCubit>().registerWithEmailAndPassword(
-                              email: emailTextC.text.trim(),
-                              password: passwordTextC.text.trim(),
-                            );
-                       }else{
-                         ScaffoldMessenger.of(context).showSnackBar(
-                           const SnackBar(content: Text('Please fill all fields')));
-                       }
-                      },
-                      text: 'Register');
-            },
-          
-      
+              ? const CircularProgressIndicator()
+              : CustomButton(
+                  onPressed: () {
+                    if (passwordTextC.text.isNotEmpty &&
+                        emailTextC.text.isNotEmpty) {
+                      context.read<AuthCubit>().registerWithEmailAndPassword(
+                            email: emailTextC.text.trim(),
+                            password: passwordTextC.text.trim(),
+                          );
+                    } else {
+                      Warning.showWarning(context, message: 'Please Fill All Field');
+                    }
+                  },
+                  text: 'Register');
+        },
       )
     ]);
   }
