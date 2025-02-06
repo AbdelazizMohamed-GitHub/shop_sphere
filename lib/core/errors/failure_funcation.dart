@@ -6,7 +6,7 @@ class FailureFuncation {
 static void authError(Object e) {
     e is FirebaseAuthException
         ?  Left(AuthFailure.fromCode(e.code))
-        : const Left("An unknown error occurred");
+        :  Left(AuthFailure('An unknown error occurred'));
   }
   
 }

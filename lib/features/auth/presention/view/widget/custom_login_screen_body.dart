@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/forget_password_screen.dart';
 
 class CustomLoginScreenBody extends StatefulWidget {
@@ -61,7 +65,29 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
             ),
           ),
         ),
-        CustomButton(onPressed: () {}, text: 'Login'),
+        BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthError) {
+              Warning.showWarning(context, message: state.errMessage);
+            }
+          },
+          builder: (context, state) {
+            return state is AuthLoading
+                ? const CircularProgressIndicator()
+                : CustomButton(onPressed: () {
+                  if (emailTextC.text.isNotEmpty &&
+                      passwordTextC.text.isNotEmpty) {
+                    context.read<AuthCubit>().logInWithEmailAndPassword(
+                        email: emailTextC.text.trim(),
+                        password: passwordTextC.text.trim());
+                    
+                  }
+                  else {
+                    Warning.showWarning(context, message: 'Please fill all fields');
+                  }
+                }, text: 'Login');
+          },
+        ),
       ],
     );
   }

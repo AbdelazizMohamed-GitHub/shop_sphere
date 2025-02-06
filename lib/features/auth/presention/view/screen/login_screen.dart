@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
-
+import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/view/widget/custom_login_screen_body.dart';
 import 'package:shop_sphere/features/auth/presention/view/widget/custom_login_screen_header.dart';
 import 'package:shop_sphere/features/auth/presention/view/widget/custom_login_with_google_widget.dart';
@@ -47,11 +49,14 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Login', style: AppStyles.text26BoldBlack),
-               const CustomLoginScreenHeader(),
+                  const CustomLoginScreenHeader(),
                   const SizedBox(
                     height: 30,
                   ),
-                 const CustomLoginScreenBody(),
+                  BlocProvider(
+                    create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
+                    child: const CustomLoginScreenBody(),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -81,7 +86,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-             const CustomLogInWithGoogle()
+                  const CustomLogInWithGoogle()
                 ],
               ),
             )

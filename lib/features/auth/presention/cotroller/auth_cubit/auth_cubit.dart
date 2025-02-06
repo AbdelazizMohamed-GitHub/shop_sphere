@@ -13,4 +13,12 @@ final AuthRepo authRepo;
       (uid) => emit(AuthSuccess()),
     );
   }
+    void logInWithEmailAndPassword({required String password, required String email}) async {
+    emit(AuthLoading());
+    final result = await authRepo.logInWithEmailAndPassword(email, password);
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (uid) => emit(AuthSuccess()),
+    );
+  }
 }
