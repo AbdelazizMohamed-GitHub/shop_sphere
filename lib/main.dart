@@ -4,6 +4,7 @@ import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.da
 import 'package:shop_sphere/firebase_options.dart';
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );

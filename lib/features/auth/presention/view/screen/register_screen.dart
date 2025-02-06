@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
+import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/view/widget/custom_register_screen_body.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -41,15 +45,18 @@ class RegisterScreen extends StatelessWidget {
                 ]),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Register',
                   style: AppStyles.text26BoldBlack,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                CustomRegisterBody()
+                BlocProvider(
+                  create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
+                  child: const CustomRegisterBody(),
+                )
               ],
             ),
           ),

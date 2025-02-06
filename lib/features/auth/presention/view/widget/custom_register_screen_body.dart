@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
-
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
 
 class CustomRegisterBody extends StatefulWidget {
   const CustomRegisterBody({super.key});
@@ -21,33 +22,34 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
   TextEditingController confirmPasswordTextC = TextEditingController();
   @override
   void dispose() {
-    nameTextC.dispose();  
+    nameTextC.dispose();
     phoneTextC.dispose();
     emailTextC.dispose();
     passwordTextC.dispose();
     confirmPasswordTextC.dispose();
-    
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-       CustomTextForm(
+      CustomTextForm(
         text: 'Full Name',
         textController: nameTextC,
         pIcon: Icons.person,
         kType: TextInputType.text,
       ),
       const SizedBox(height: 15),
-       CustomTextForm(
+      CustomTextForm(
         textController: phoneTextC,
         pIcon: Icons.phone,
         text: 'Phone',
         kType: TextInputType.number,
       ),
       const SizedBox(height: 15),
-       CustomTextForm(textController: emailTextC,
+      CustomTextForm(
+        textController: emailTextC,
         text: 'Email',
         pIcon: Icons.email,
         kType: TextInputType.emailAddress,
@@ -86,8 +88,41 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
         ),
       ),
       const SizedBox(height: 20),
-      CustomButton(onPressed: () {},
-          text: 'Register')
+      BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Register Success')));
+          }
+          if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errMessage),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return state is AuthLoading
+                  ? const CircularProgressIndicator()
+                  : CustomButton(
+                      onPressed: () {
+                       if (passwordTextC.text.isNotEmpty  && emailTextC.text.isNotEmpty) {
+                          context.read<AuthCubit>().registerWithEmailAndPassword(
+                              email: emailTextC.text.trim(),
+                              password: passwordTextC.text.trim(),
+                            );
+                       }else{
+                         ScaffoldMessenger.of(context).showSnackBar(
+                           const SnackBar(content: Text('Please fill all fields')));
+                       }
+                      },
+                      text: 'Register');
+            },
+          
+      
+      )
     ]);
   }
 }
