@@ -1,3 +1,3 @@
 class Failure {
   final String message;
-  Failure(this.message);}
+  Failure({ required this.message});}

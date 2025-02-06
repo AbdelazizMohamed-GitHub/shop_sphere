@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shop_sphere/core/errors/auth_failure.dart';
 import 'package:shop_sphere/core/errors/failure.dart';
+import 'package:shop_sphere/core/errors/failure_funcation.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 
 class AuthRepoImpl extends AuthRepo {
@@ -16,7 +18,8 @@ class AuthRepoImpl extends AuthRepo {
           .createUserWithEmailAndPassword(email: email, password: password);
       return Right(userCredential.user?.uid ?? "");
     } catch (e) {
-      return Left(Failure(e.toString()));
+      FailureFuncation.authError(e);
+      rethrow;
     }
   }
 
@@ -28,7 +31,8 @@ class AuthRepoImpl extends AuthRepo {
           email: email, password: password);
       return Right(user.user?.uid ?? "");
     } catch (e) {
-      return Left(Failure(e.toString()));
+      FailureFuncation.authError(e);
+      rethrow;
     }
   }
 
@@ -38,7 +42,7 @@ class AuthRepoImpl extends AuthRepo {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        return Left(Failure("Google Sign-In Failed")); // If user cancels
+        return Left(AuthFailure("Google Sign-In Failed")); // If user cancels
       }
 
       // Obtain auth details from request
@@ -57,7 +61,8 @@ class AuthRepoImpl extends AuthRepo {
 
       return Right(userCredential.user?.uid ?? "");
     } catch (e) {
-      return Left(Failure(e.toString()));
+      FailureFuncation.authError(e);
+      rethrow;
     }
   }
 
@@ -67,7 +72,8 @@ class AuthRepoImpl extends AuthRepo {
       await _firebaseAuth.currentUser?.sendEmailVerification();
       return const Right("Email Sent");
     } catch (e) {
-      return Left(Failure(e.toString()));
+      FailureFuncation.authError(e);
+      rethrow;
     }
   }
 
@@ -77,7 +83,8 @@ class AuthRepoImpl extends AuthRepo {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
       return const Right(null);
     } catch (e) {
-      return Left(Failure(e.toString()));
+      FailureFuncation.authError(e);
+      rethrow;
     }
   }
 
@@ -86,10 +93,12 @@ class AuthRepoImpl extends AuthRepo {
     try {
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
+       return const Right(null);
     } catch (e) {
-      return Left(Failure(e.toString()));
+      FailureFuncation.authError(e);
+      rethrow;
     }
-    return const Right(null);
+   
   }
 
   @override
