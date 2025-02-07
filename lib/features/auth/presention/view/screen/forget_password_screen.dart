@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
+import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
+import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key, required this.email});
@@ -54,7 +59,22 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             const SizedBox(
               height: 20,
             ),
-            CustomButton(onPressed: () {}, text: 'Reset Password')
+            BlocProvider(
+              create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
+              child: BlocConsumer<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthError) {
+                    Warning.showWarning(context, message: state.errMessage);
+                  }
+                },
+                builder: (context, state) {
+                  return CustomButton(onPressed: () {
+                    BlocProvider.of<AuthCubit>(context)
+                        .resetPassword(email: emailController.text);
+                  }, text: 'Reset Password');
+                },
+              ),
+            )
           ],
         ),
       ),

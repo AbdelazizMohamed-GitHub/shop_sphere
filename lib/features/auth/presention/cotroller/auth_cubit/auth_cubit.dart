@@ -29,4 +29,20 @@ final AuthRepo authRepo;
       (uid) => emit(AuthSuccess()),
     );
   }
+  void resetPassword({required String email}) async {
+    emit(AuthLoading());
+    final result = await authRepo.resetPassword(email);
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (_) => emit(AuthSuccess()),
+    );
+  }
+  void verifiyEmaill({required String email}) async {
+    emit(AuthLoading());
+    final result = await authRepo.verifiyEmaill(email);
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (uid) => emit(AuthSuccess()),
+    );
+  }
 }
