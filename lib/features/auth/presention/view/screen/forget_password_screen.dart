@@ -68,7 +68,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   }
                 },
                 builder: (context, state) {
-                  return CustomButton(onPressed: () {
+                  return state is AuthLoading ? const CircularProgressIndicator() : CustomButton(onPressed: () {
                     BlocProvider.of<AuthCubit>(context)
                         .resetPassword(email: emailController.text);
                   }, text: 'Reset Password');
