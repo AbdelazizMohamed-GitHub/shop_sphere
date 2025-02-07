@@ -14,83 +14,85 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primaryColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            const SizedBox(
-              height: 30,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Image.asset(
-                AppImages.logo,
-                color: Colors.white,
-                height: 50,
-                width: 50,
-                fit: BoxFit.cover,
+    return BlocProvider(
+      create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
+      child: Scaffold(
+        backgroundColor: AppColors.primaryColor,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(children: [
+              const SizedBox(
+                height: 30,
               ),
-              const Text('Shop Sphere', style: AppStyles.text22SemBoldWhite),
-            ]),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-              decoration: BoxDecoration(
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Image.asset(
+                  AppImages.logo,
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 5,
-                      offset: Offset(1, 2),
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.cover,
+                ),
+                const Text('Shop Sphere', style: AppStyles.text22SemBoldWhite),
+              ]),
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5,
+                        offset: Offset(1, 2),
+                      ),
+                    ]),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Login', style: AppStyles.text26BoldBlack),
+                    const CustomLoginScreenHeader(),
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ]),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Login', style: AppStyles.text26BoldBlack),
-                  const CustomLoginScreenHeader(),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  BlocProvider(
-                    create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
-                    child: const CustomLoginScreenBody(),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          height: 40,
-                          color: Colors.grey,
+                    const CustomLoginScreenBody(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Divider(
+                            thickness: 1,
+                            height: 40,
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text('OR',
-                            style: AppStyles.text26BoldBlack
-                                .copyWith(fontWeight: FontWeight.w400)),
-                      ),
-                      const Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.grey,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text('OR',
+                              style: AppStyles.text26BoldBlack
+                                  .copyWith(fontWeight: FontWeight.w400)),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CustomLogInWithGoogle()
-                ],
-              ),
-            )
-          ]),
+                        const Expanded(
+                          child: Divider(
+                            thickness: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CustomLogInWithGoogle()
+                  ],
+                ),
+              )
+            ]),
+          ),
         ),
       ),
     );

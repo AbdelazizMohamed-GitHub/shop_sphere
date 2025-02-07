@@ -37,6 +37,7 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
+
   Future<Either<Failure, String>> logInWithGoogle() async {
     try {
       // Trigger the authentication flow

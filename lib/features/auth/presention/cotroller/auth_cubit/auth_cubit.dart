@@ -21,4 +21,12 @@ final AuthRepo authRepo;
       (uid) => emit(AuthSuccess()),
     );
   }
+  void loginWithGoogle() async {
+    emit(AuthLoading());
+    final result = await authRepo.logInWithGoogle();
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (uid) => emit(AuthSuccess()),
+    );
+  }
 }
