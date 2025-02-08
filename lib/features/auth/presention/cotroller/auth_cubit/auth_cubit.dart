@@ -10,7 +10,8 @@ final AuthRepo authRepo;
     final result = await authRepo.registerWithEmailAndPassword(email, password);
     result.fold(
       (failure) => emit(AuthError(failure.message)),
-      (uid) => emit(AuthSuccess()),
+      (uid) => emit(AuthLoading()),
+     
     );
   }
     void logInWithEmailAndPassword({required String password, required String email}) async {

@@ -92,11 +92,12 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
       BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-         Warning.showWarning(context, message: 'Register Success');
+         Warning.showWarning(context, message: 'we have sent you an email to verify your account');
           }
           if (state is AuthError) {
            Warning.showWarning(context, message: state.errMessage);
           }
+         
         },
         builder: (context, state) {
           return state is AuthLoading
@@ -108,7 +109,10 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
                       context.read<AuthCubit>().registerWithEmailAndPassword(
                             email: emailTextC.text.trim(),
                             password: passwordTextC.text.trim(),
+
+
                           );
+                          context.read<AuthCubit>().verifiyEmaill(email: emailTextC.text.trim());
                     } else {
                       Warning.showWarning(context, message: 'Please Fill All Field');
                     }

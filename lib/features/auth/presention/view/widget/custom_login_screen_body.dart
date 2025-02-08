@@ -67,6 +67,9 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         ),
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
+            if (state is AuthSuccess) {
+             
+            }
             if (state is AuthError) {
               Warning.showWarning(context, message: state.errMessage);
             }
