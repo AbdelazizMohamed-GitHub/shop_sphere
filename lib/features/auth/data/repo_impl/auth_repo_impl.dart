@@ -30,14 +30,14 @@ class AuthRepoImpl extends AuthRepo {
       UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return Right(user.user?.uid ?? "");
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
-      FailureFuncation.authError(e);
-      rethrow;
+      return Left(AuthFailure(e.toString()));
     }
   }
 
   @override
-
   Future<Either<Failure, String>> logInWithGoogle() async {
     try {
       // Trigger the authentication flow
@@ -94,12 +94,11 @@ class AuthRepoImpl extends AuthRepo {
     try {
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
-       return const Right(null);
+      return const Right(null);
     } catch (e) {
       FailureFuncation.authError(e);
       rethrow;
     }
-   
   }
 
   @override
