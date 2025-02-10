@@ -5,6 +5,7 @@ import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
 
 class CustomRegisterBody extends StatefulWidget {
   const CustomRegisterBody({super.key});
@@ -92,29 +93,30 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
       BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-         Warning.showWarning(context, message: 'we have sent you an email to verify your account');
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return  VerifyScreen(email: emailTextC.text.trim(),);
+            }));
           }
           if (state is AuthError) {
-           Warning.showWarning(context, message: state.errMessage);
+            Warning.showWarning(context, message: state.errMessage);
           }
-         
         },
         builder: (context, state) {
           return state is AuthLoading
               ? const CircularProgressIndicator()
               : CustomButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (passwordTextC.text.isNotEmpty &&
                         emailTextC.text.isNotEmpty) {
-                      context.read<AuthCubit>().registerWithEmailAndPassword(
+                      await context
+                          .read<AuthCubit>()
+                          .registerWithEmailAndPassword(
                             email: emailTextC.text.trim(),
                             password: passwordTextC.text.trim(),
-
-
                           );
-                          context.read<AuthCubit>().verifiyEmaill(email: emailTextC.text.trim());
                     } else {
-                      Warning.showWarning(context, message: 'Please Fill All Field');
+                      Warning.showWarning(context,
+                          message: 'Please Fill All Field');
                     }
                   },
                   text: 'Register');
