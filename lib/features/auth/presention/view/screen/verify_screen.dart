@@ -19,43 +19,46 @@ class VerifyScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
       child: Scaffold(
-          body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            AppImages.verifiy,
-            height: 200,
-            width: 200,
-          ),
-          const Text(
-            "Verify your email",
-            textAlign: TextAlign.center,
-          ),
-          const Text(
-            "A verification link has been sent to your email",
-            textAlign: TextAlign.center,
-          ),
-          const Text(
-            "Test@gmail.com",
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          BlocBuilder<AuthCubit, AuthState>(
-            builder: (context, state) {
-              return state is AuthLoading
-                  ? const CircularProgressIndicator()
-                  : CustomButton(
-                      onPressed: ()async {
-                       await context.read<AuthCubit>().verifiyEmaill();
-                      },
-                      text: "Resend",
-                    );
-            },
-          ),
-        ],
-      )),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+            Image.asset(
+              AppImages.verifiy,
+              height: 200,
+              width: 200,
+            ),
+            const Text(
+              "Verify your email",
+              textAlign: TextAlign.center,
+            ),
+           const  Text(
+              "A verification link has been sent to your",
+              textAlign: TextAlign.center,
+            ),
+             Text(
+              "$email",
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                return state is AuthLoading
+                    ? const CircularProgressIndicator()
+                    : CustomButton(
+                        onPressed: ()async {
+                         await context.read<AuthCubit>().verifiyEmaill();
+                        },
+                        text: "Resend",
+                      );
+              },
+            ),
+                    ],
+                  ),
+          )),
     );
   }
 }
