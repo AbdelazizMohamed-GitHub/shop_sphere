@@ -38,9 +38,9 @@ final AuthRepo authRepo;
       (_) => emit(AuthSuccess()),
     );
   }
-  void verifiyEmaill({required String email}) async {
+ Future< void> verifiyEmaill() async {
     emit(AuthLoading());
-    final result = await authRepo.verifiyEmaill(email);
+    final result = await authRepo.verifiyEmaill();
     result.fold(
       (failure) => emit(AuthError(failure.message)),
       (uid) => emit(AuthSuccess()),

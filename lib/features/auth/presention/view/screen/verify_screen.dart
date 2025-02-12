@@ -13,7 +13,7 @@ class VerifyScreen extends StatelessWidget {
     super.key,
     required this.email,
   });
-final String email;
+  final String email;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -47,7 +47,9 @@ final String email;
               return state is AuthLoading
                   ? const CircularProgressIndicator()
                   : CustomButton(
-                      onPressed: () {},
+                      onPressed: ()async {
+                       await context.read<AuthCubit>().verifiyEmaill();
+                      },
                       text: "Resend",
                     );
             },

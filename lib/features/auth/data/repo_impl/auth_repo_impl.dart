@@ -16,11 +16,12 @@ class AuthRepoImpl extends AuthRepo {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      await _firebaseAuth.currentUser?.sendEmailVerification();
+      await userCredential.user?.sendEmailVerification();
       return Right(userCredential.user?.uid ?? "");
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
-      FailureFuncation.authError(e);
-      rethrow;
+      return Left(AuthFailure(e.toString()));
     }
   }
 
@@ -30,6 +31,10 @@ class AuthRepoImpl extends AuthRepo {
     try {
       UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+if (!user.user!.emailVerified) {
+        return Left(AuthFailure("Email not verified"));
+  
+}
       return Right(user.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
       return Left(AuthFailure.fromCode(e.code));
@@ -62,16 +67,21 @@ class AuthRepoImpl extends AuthRepo {
           await _firebaseAuth.signInWithCredential(credential);
 
       return Right(userCredential.user?.uid ?? "");
+    }on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
-      FailureFuncation.authError(e);
-      rethrow;
+      return Left(AuthFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, String>> verifiyEmaill(String email) async {
+  Future<Either<Failure, String>> verifiyEmaill() async {
     try {
-      await _firebaseAuth.currentUser?.sendEmailVerification();
+      User? user = _firebaseAuth.currentUser;
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+      }
+     
       return const Right("Email Sent");
     } catch (e) {
       FailureFuncation.authError(e);
@@ -84,9 +94,10 @@ class AuthRepoImpl extends AuthRepo {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
       return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
-      FailureFuncation.authError(e);
-      rethrow;
+      return Left(AuthFailure(e.toString()));
     }
   }
 
@@ -96,9 +107,10 @@ class AuthRepoImpl extends AuthRepo {
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
       return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
-      FailureFuncation.authError(e);
-      rethrow;
+      return Left(AuthFailure(e.toString()));
     }
   }
 
