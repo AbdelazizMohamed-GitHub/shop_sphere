@@ -43,7 +43,7 @@ final AuthRepo authRepo;
     final result = await authRepo.verifiyEmaill();
     result.fold(
       (failure) => emit(AuthError(failure.message)),
-      (uid) => emit(AuthSuccess()),
+      (massge) => emit(AuthVerifiy(massge)),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
@@ -44,19 +45,30 @@ class VerifyScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            BlocBuilder<AuthCubit, AuthState>(
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthError) {
+                  Warning.showWarning(context, message: state.errMessage);
+                }
+                if (state is AuthVerifiy) {
+                Warning.showWarning(context, message: state.message);
+                }
+              },
               builder: (context, state) {
-                return state is AuthLoading
-                    ? const CircularProgressIndicator()
-                    : CustomButton(
-                        onPressed: ()async {
-                         await context.read<AuthCubit>().verifiyEmaill();
-                        },
-                        text: "Resend",
-                      );
+                if (state is AuthLoading) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return CustomButton(
+                    text: "Verify",
+                    onPressed: () {
+                      context.read<AuthCubit>().verifiyEmaill();
+                    },
+                  );
+
+                }
               },
             ),
-                    ],
+          ],
                   ),
           )),
     );

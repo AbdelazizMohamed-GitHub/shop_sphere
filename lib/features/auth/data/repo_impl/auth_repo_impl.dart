@@ -78,6 +78,9 @@ if (!user.user!.emailVerified) {
   Future<Either<Failure, String>> verifiyEmaill() async {
     try {
       User? user = _firebaseAuth.currentUser;
+      if (user != null && user.emailVerified) {
+        return const Right("Email Verified");
+      }
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
       }
