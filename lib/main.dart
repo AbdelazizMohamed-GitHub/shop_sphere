@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/explore_screen.dart';
 import 'package:shop_sphere/firebase_options.dart';
 
@@ -20,7 +21,7 @@ class ShopSphere extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ShopSphere',
-      home: ExploreScreen(),
+      home: DetailsScreen(),
     );
   }
 }
