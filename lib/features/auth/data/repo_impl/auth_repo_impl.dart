@@ -51,29 +51,22 @@ if (!user.user!.emailVerified) {
 
   @override
   Future<Either<Failure, String>> logInWithGoogle() async {
-    try {
-      // Trigger the authentication flow
+     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        return Left(AuthFailure("Google Sign-In Failed")); // If user cancels
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+        final User? user = userCredential.user;
+        if (user != null) {
+          print('Signed in: ${user.displayName}');
+        }
       }
-
-      // Obtain auth details from request
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      // Create a new credential
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      // Sign in to Firebase with Google credential
-      UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
-
-      return Right(userCredential.user?.uid ?? "");
-    }on FirebaseAuthException catch (e) {
+      return Right("logged in");
+    } on FirebaseAuthException catch (e) {
       return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
       return Left(AuthFailure(e.toString()));
@@ -91,9 +84,10 @@ if (!user.user!.emailVerified) {
       }
      
       return const Right("Email Sent");
+    } on FirebaseAuthException catch (e) {
+      return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
-      FailureFuncation.authError(e);
-      rethrow;
+      return Left(AuthFailure(e.toString()));
     }
   }
 

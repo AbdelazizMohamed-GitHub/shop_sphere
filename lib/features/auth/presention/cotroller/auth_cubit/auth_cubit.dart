@@ -23,7 +23,7 @@ final AuthRepo authRepo;
     );
   }
   void loginWithGoogle() async {
-    emit(AuthLoading());
+    emit(GoogleAuthLoading());
     final result = await authRepo.logInWithGoogle();
     result.fold(
       (failure) => emit(AuthError(failure.message)),
@@ -31,7 +31,7 @@ final AuthRepo authRepo;
     );
   }
   void resetPassword({required String email}) async {
-    emit(AuthLoading());
+    emit(ResetPassword());
     final result = await authRepo.resetPassword(email);
     result.fold(
       (failure) => emit(AuthError(failure.message)),
