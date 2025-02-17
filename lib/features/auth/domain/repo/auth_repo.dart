@@ -6,7 +6,7 @@ abstract class AuthRepo {
       String email, String password);
 
   Future<Either<Failure, String>> logInWithEmailAndPassword(
-      String email, String password);
+      String email, String password,context);
       Future<Either<Failure, String>> logInWithGoogle();
       Future<Either<Failure, String>> verifiyEmaill();
   Future<Either<Failure, void>> resetPassword(String email);

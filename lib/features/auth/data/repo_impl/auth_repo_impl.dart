@@ -1,10 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shop_sphere/core/errors/auth_failure.dart';
 import 'package:shop_sphere/core/errors/failure.dart';
 import 'package:shop_sphere/core/errors/failure_funcation.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
 
 class AuthRepoImpl extends AuthRepo {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -27,12 +30,15 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<Either<Failure, String>> logInWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password,context) async {
     try {
       UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 if (!user.user!.emailVerified) {
+  user.user?.sendEmailVerification();
+  Navigator.push(context, MaterialPageRoute(builder: (context) =>  VerifyScreen(email: user.user!.email!,),));
         return Left(AuthFailure("Email not verified"));
+    
   
 }
       return Right(user.user?.uid ?? "");
@@ -78,9 +84,8 @@ if (!user.user!.emailVerified) {
   Future<Either<Failure, String>> verifiyEmaill() async {
     try {
       User? user = _firebaseAuth.currentUser;
-      if (user != null && user.emailVerified) {
-        return const Right("Email Verified");
-      }
+      
+     
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
       }

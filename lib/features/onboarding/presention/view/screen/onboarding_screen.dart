@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/widget/custom_inboarding_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -54,13 +55,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeIn,
                           );
+                        } else {
+                          Navigator.pop(context);
                         }
                       },
                       child: const Text(
                         "Back",
                         style: AppStyles.text22SemiBoldBlack,
                       )),
-                  const Spacer(),
+                  const SizedBox(
+                    width: 50,
+                  ),
                   SmoothPageIndicator(
                     controller: PageController(
                         initialPage: currentPage), // PageController
@@ -78,7 +83,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           curve: Curves.easeIn,
                         );
                       } else {
-                        //  Navigator.push(context, MaterialPageRoute(builder: (context) => const GetStartedScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()));
                       }
                     },
                     child: Container(

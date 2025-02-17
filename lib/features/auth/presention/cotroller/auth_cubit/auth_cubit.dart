@@ -14,9 +14,9 @@ final AuthRepo authRepo;
      
     );
   }
-    void logInWithEmailAndPassword({required String password, required String email}) async {
+    void logInWithEmailAndPassword({required String password, required String email,required  context}) async {
     emit(AuthLoading());
-    final result = await authRepo.logInWithEmailAndPassword(email, password);
+    final result = await authRepo.logInWithEmailAndPassword(email, password,context);
     result.fold(
       (failure) => emit(AuthError(failure.message)),
       (uid) => emit(AuthSuccess()),

@@ -8,6 +8,7 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/forget_password_screen.dart';
+import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 
 class CustomLoginScreenBody extends StatefulWidget {
   const CustomLoginScreenBody({super.key});
@@ -68,7 +69,11 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-             Warning.showWarning(context, message: 'Login Successfully');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MainScreen(),
+                  ));
             }
             if (state is AuthError) {
               Warning.showWarning(context, message: state.errMessage);
@@ -77,18 +82,20 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
           builder: (context, state) {
             return state is AuthLoading
                 ? const CircularProgressIndicator()
-                : CustomButton(onPressed: () {
-                  if (emailTextC.text.isNotEmpty &&
-                      passwordTextC.text.isNotEmpty) {
-                    context.read<AuthCubit>().logInWithEmailAndPassword(
-                        email: emailTextC.text.trim(),
-                        password: passwordTextC.text.trim());
-                    
-                  }
-                  else {
-                    Warning.showWarning(context, message: 'Please fill all fields');
-                  }
-                }, text: 'Login');
+                : CustomButton(
+                    onPressed: () {
+                      if (emailTextC.text.isNotEmpty &&
+                          passwordTextC.text.isNotEmpty) {
+                        context.read<AuthCubit>().logInWithEmailAndPassword(
+                            context: context,
+                            email: emailTextC.text.trim(),
+                            password: passwordTextC.text.trim());
+                      } else {
+                        Warning.showWarning(context,
+                            message: 'Please fill all fields');
+                      }
+                    },
+                    text: 'Login');
           },
         ),
       ],
