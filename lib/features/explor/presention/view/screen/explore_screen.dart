@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
-import 'package:shop_sphere/core/widget/custom_product_item.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/Custom_advertise.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_app_bar_cart.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_category_list.dart';
@@ -15,7 +15,7 @@ class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
