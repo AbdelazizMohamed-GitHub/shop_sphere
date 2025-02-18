@@ -3,6 +3,7 @@ import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/test/test_list.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_category_list.dart';
 import 'package:shop_sphere/features/main/presention/view/widget/custom_cart_item_list.dart';
 import 'package:shop_sphere/features/main/presention/view/widget/custom_cart_price.dart';
@@ -13,10 +14,11 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(leadingWidth: 100,
         title: const Text('My Cart'),
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+      leading: CustomCircleButton(icon:const Icon(Icons.arrow_back_ios) , funcation:(){
+        Navigator.pop(context);
+      }),
       ),
       body: Column(
         children: [

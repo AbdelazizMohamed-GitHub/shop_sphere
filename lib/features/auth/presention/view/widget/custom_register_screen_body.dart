@@ -94,7 +94,9 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
         listener: (context, state) {
           if (state is AuthSuccess) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return  VerifyScreen(email: emailTextC.text.trim(),);
+              return VerifyScreen(
+                email: emailTextC.text.trim(),
+              );
             }));
           }
           if (state is AuthError) {
@@ -107,13 +109,20 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
               : CustomButton(
                   onPressed: () async {
                     if (passwordTextC.text.isNotEmpty &&
+                      
                         emailTextC.text.isNotEmpty) {
-                      await context
-                          .read<AuthCubit>()
-                          .registerWithEmailAndPassword(
-                            email: emailTextC.text.trim(),
-                            password: passwordTextC.text.trim(),
-                          );
+                      if (passwordTextC.text == confirmPasswordTextC.text) {
+                        FocusScope.of(context).unfocus();
+                        await context
+                            .read<AuthCubit>()
+                            .registerWithEmailAndPassword(
+                              email: emailTextC.text.trim(),
+                              password: passwordTextC.text.trim(),
+                            );
+                      } else {
+                        Warning.showWarning(context,
+                            message: 'Password Not Match');
+                      }
                     } else {
                       Warning.showWarning(context,
                           message: 'Please Fill All Field');

@@ -32,73 +32,86 @@ class _VerifyScreenState extends State<VerifyScreen> {
     _checkEmailVerification();
   }
 
-  Future<void> _checkEmailVerification() async {
-    await _auth.currentUser?.reload();
-    setState(() {
-      _isEmailVerified = _auth.currentUser?.emailVerified ?? false;
-    });
-  }
+  Future<void> _checkEmailVerification() async {}
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
-      child: Scaffold(appBar: AppBar(title: const Text("Verify"),),
+      child: Scaffold(
+          appBar: AppBar(
+            foregroundColor: Colors.white,
+            title: const Text("Verify"),
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-            Image.asset(
-              AppImages.verifiy,
-              height: 200,
-              width: 200,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  AppImages.verifiy,
+                  height: 200,
+                  width: 200,
+                ),
+                const Text(
+                  "Verify your email",
+                  textAlign: TextAlign.center,
+                ),
+                const Text(
+                  "A verification link has been sent to your",
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  widget.email,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthError) {
+                      Warning.showWarning(context, message: state.errMessage);
+                    }
+                    if (state is AuthVerifiy) {
+                      Warning.showWarning(context, message: state.message);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is AuthLoading) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return _isEmailVerified
+                          ? CustomButton(
+                              text: "login",
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ),
+                                    (route) => false);
+                              },
+                            )
+                          : CustomButton(
+                            text: "Resend",
+                            onPressed: ()async {
+                               await _auth.currentUser?.reload();
+                              setState(() {
+                                _isEmailVerified =
+                                    _auth.currentUser?.emailVerified ??
+                                        false;
+                              });
+                              // ignore: use_build_context_synchronously
+                              context.read<AuthCubit>().verifiyEmaill();
+                            },
+                          );
+                    }
+                  },
+                ),
+              ],
             ),
-            const Text(
-              "Verify your email",
-              textAlign: TextAlign.center,
-            ),
-           const  Text(
-              "A verification link has been sent to your",
-              textAlign: TextAlign.center,
-            ),
-             Text(
-              widget.email,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            BlocConsumer<AuthCubit, AuthState>(
-              listener: (context, state) {
-                if (state is AuthError) {
-                  Warning.showWarning(context, message: state.errMessage);
-                }
-                if (state is AuthVerifiy) {
-                Warning.showWarning(context, message: state.message);
-                }
-              },
-              builder: (context, state) {
-                if (state is AuthLoading) {
-                  return const CircularProgressIndicator();
-                } else {
-                  return _isEmailVerified ? CustomButton(
-                    text: "login",
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen(),));
-                    },
-                  ):CustomButton(
-                    text: "Verify",
-                    onPressed: () {
-                      context.read<AuthCubit>().verifiyEmaill();
-                    },
-                  );
-
-                }
-              },
-            ),
-          ],
-                  ),
           )),
     );
   }

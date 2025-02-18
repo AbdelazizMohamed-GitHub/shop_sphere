@@ -30,17 +30,21 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<Either<Failure, String>> logInWithEmailAndPassword(
-      String email, String password,context) async {
+      String email, String password, context) async {
     try {
       UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-if (!user.user!.emailVerified) {
-  user.user?.sendEmailVerification();
-  Navigator.push(context, MaterialPageRoute(builder: (context) =>  VerifyScreen(email: user.user!.email!,),));
+      if (!user.user!.emailVerified) {
+        user.user?.sendEmailVerification();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VerifyScreen(
+                email: user.user!.email!,
+              ),
+            ));
         return Left(AuthFailure("Email not verified"));
-    
-  
-}
+      }
       return Right(user.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
       return Left(AuthFailure.fromCode(e.code));
@@ -51,15 +55,17 @@ if (!user.user!.emailVerified) {
 
   @override
   Future<Either<Failure, String>> logInWithGoogle() async {
-     try {
+    try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-        final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+        final UserCredential userCredential =
+            await _firebaseAuth.signInWithCredential(credential);
         final User? user = userCredential.user;
         if (user != null) {
           print('Signed in: ${user.displayName}');
@@ -77,13 +83,18 @@ if (!user.user!.emailVerified) {
   Future<Either<Failure, String>> verifiyEmaill() async {
     try {
       User? user = _firebaseAuth.currentUser;
-      
-     
-      if (user != null && !user.emailVerified) {
-        await user.sendEmailVerification();
+
+      if (user != null) {
+        if (user.emailVerified) {
+          return const Right("Email is verified ✅");
+        } else {
+          await user.sendEmailVerification();
+          return Left(
+              AuthFailure("Verification email sent. Please check your inbox."));
+        }
+      } else {
+        return Left(AuthFailure("User not found"));
       }
-     
-      return const Right("Email Sent");
     } on FirebaseAuthException catch (e) {
       return Left(AuthFailure.fromCode(e.code));
     } catch (e) {

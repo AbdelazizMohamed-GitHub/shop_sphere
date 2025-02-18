@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
-
+import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -13,6 +15,13 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: AppColors.primaryColor,
         appBar: AppBar(
+          leadingWidth: 100,
+          leading: IconButton(
+              onPressed: () {  context.read<MainCubit>().changeScreenIndex(0);},
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 30,
+              )),
           title: const Text(
             'Profile',
             style: TextStyle(color: Colors.white),

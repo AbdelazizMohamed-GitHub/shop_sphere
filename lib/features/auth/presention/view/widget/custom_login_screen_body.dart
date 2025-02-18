@@ -20,7 +20,7 @@ class CustomLoginScreenBody extends StatefulWidget {
 class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
   TextEditingController emailTextC = TextEditingController();
   TextEditingController passwordTextC = TextEditingController();
-
+  bool isPassword = true;
   @override
   void dispose() {
     emailTextC.dispose();
@@ -43,10 +43,18 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
           height: 15,
         ),
         CustomTextForm(
+          sIcon: InkWell(
+            onTap: () {
+              setState(() {
+                isPassword = !isPassword;
+              });
+            },
+            child: Icon(isPassword ? Icons.visibility_off : Icons.visibility),
+          ),
           pIcon: Icons.lock,
           text: 'Password',
           textController: passwordTextC,
-          obscureText: true,
+          obscureText: isPassword,
           kType: TextInputType.visiblePassword,
         ),
         Align(
@@ -69,11 +77,12 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(),
-                  ));
+                  ),
+                  (route) => false);
             }
             if (state is AuthError) {
               Warning.showWarning(context, message: state.errMessage);
@@ -86,6 +95,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
                     onPressed: () {
                       if (emailTextC.text.isNotEmpty &&
                           passwordTextC.text.isNotEmpty) {
+                            FocusScope.of(context).unfocus();
                         context.read<AuthCubit>().logInWithEmailAndPassword(
                             context: context,
                             email: emailTextC.text.trim(),

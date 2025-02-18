@@ -83,10 +83,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           curve: Curves.easeIn,
                         );
                       } else {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
+                                builder: (context) => const LoginScreen()),
+                            (route) => false);
                       }
                     },
                     child: Container(
@@ -96,7 +97,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           borderRadius: BorderRadius.circular(12)),
                       child: currentPage == 2
                           ? const Text(' Start Shopping',
-                              style: TextStyle(color: Colors.white))
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16))
                           : const Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.white,

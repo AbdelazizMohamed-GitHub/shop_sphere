@@ -35,10 +35,66 @@ class TestList {
       'message': 'Exclusive deal for you: 30% off on selected items.',
       'time': '2 week ago',
     },
+    {
+      'title': 'Exclusive Deal',
+      'message': 'Exclusive deal for you: 30% off on selected items.',
+      'time': '2 week ago',
+    },
+    {
+      'title': 'Exclusive Deal',
+      'message': 'Exclusive deal for you: 30% off on selected items.',
+      'time': '2 week ago',
+    },
+    {
+      'title': 'Exclusive Deal',
+      'message': 'Exclusive deal for you: 30% off on selected items.',
+      'time': '2 week ago',
+    },
+    {
+      'title': 'Exclusive Deal',
+      'message': 'Exclusive deal for you: 30% off on selected items.',
+      'time': '2 week ago',
+    },
   ];
   ///// Cart
 
   static List<Map<String, dynamic>> cartItems = [
+    {
+      'name': 'Blue T-Shirt',
+      'price': 25.99,
+      'quantity': 2,
+      'image': 'https://via.placeholder.com/150',
+    },
+    {
+      'name': 'Blue T-Shirt',
+      'price': 25.99,
+      'quantity': 2,
+      'image': 'https://via.placeholder.com/150',
+    },
+    {
+      'name': 'Blue T-Shirt',
+      'price': 25.99,
+      'quantity': 2,
+      'image': 'https://via.placeholder.com/150',
+    },
+    {
+      'name': 'Blue T-Shirt',
+      'price': 25.99,
+      'quantity': 2,
+      'image': 'https://via.placeholder.com/150',
+    },
+    {
+      'name': 'Blue T-Shirt',
+      'price': 25.99,
+      'quantity': 2,
+      'image': 'https://via.placeholder.com/150',
+    },
+    {
+      'name': 'Blue T-Shirt',
+      'price': 25.99,
+      'quantity': 2,
+      'image': 'https://via.placeholder.com/150',
+    },
     {
       'name': 'Blue T-Shirt',
       'price': 25.99,

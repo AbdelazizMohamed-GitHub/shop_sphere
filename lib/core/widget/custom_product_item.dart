@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 
 class CustomProductItem extends StatelessWidget {
   const CustomProductItem({super.key});
@@ -69,15 +70,12 @@ class CustomProductItem extends StatelessWidget {
           Positioned(
             top: 10,
             left: 10,
-            child: CircleAvatar(
-                backgroundColor: Colors.grey.shade200,
-                radius: 20,
-                child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    ))),
+            child: CustomCircleButton(
+                icon: const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                ),
+                funcation: () {}),
           )
         ],
       ),

@@ -28,7 +28,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leadingWidth: 70,
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
+            )),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -68,10 +76,17 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   }
                 },
                 builder: (context, state) {
-                  return state is AuthLoading ? const CircularProgressIndicator() : CustomButton(onPressed: () {
-                    BlocProvider.of<AuthCubit>(context)
-                        .resetPassword(email: emailController.text);
-                  }, text: 'Reset Password');
+                  return state is AuthLoading
+                      ? const CircularProgressIndicator()
+                      : CustomButton(
+                          onPressed: () {
+                            if (emailController.text.isNotEmpty) {
+                              FocusScope.of(context).unfocus();
+                              BlocProvider.of<AuthCubit>(context)
+                                  .resetPassword(email: emailController.text);
+                            }
+                          },
+                          text: 'Reset Password');
                 },
               ),
             )

@@ -18,11 +18,11 @@ class CustomLogInWithGoogle extends StatelessWidget {
           Warning.showWarning(context, message: state.errMessage);
         }
         if (state is AuthSuccess) {
-Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen(),));
+Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const MainScreen(),), (route) => false);
         }
       },
       builder: (context, state) {
-        return state is GoogleAuthLoading ? Center(child: const CircularProgressIndicator()) : InkWell(
+        return state is GoogleAuthLoading ?const Center(child:  CircularProgressIndicator()) : InkWell(
           onTap: () {
             BlocProvider.of<AuthCubit>(context).loginWithGoogle();
           },

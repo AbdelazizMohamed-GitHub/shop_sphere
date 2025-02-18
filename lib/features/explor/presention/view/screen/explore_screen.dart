@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/Custom_advertise.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_app_bar_cart.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_category_list.dart';
@@ -31,11 +32,11 @@ class ExploreScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomExploreScreenSearch(),
-            Padding(
+            const CustomExploreScreenSearch(),
+            const Padding(
               padding: EdgeInsets.all(12),
               child: Row(
                 children: [
@@ -47,13 +48,31 @@ class ExploreScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 40, child: CustomCategoryList()),
-            SizedBox(height: 10),
-            CustomAdvertise(),
-            CustomProductTitleSection(title: 'New Arrivals'),
-            SizedBox(height: 200, child: CustomNewArrivelsList()),
-            CustomProductTitleSection(title: 'Popular Products'),
-            CustomPopularProductList()
+            const SizedBox(height: 40, child: CustomCategoryList()),
+            const SizedBox(height: 10),
+            const CustomAdvertise(),
+            const CustomProductTitleSection(title: 'New Arrivals'),
+            SizedBox(
+                height: 200,
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DetailsScreen(),
+                          ));
+                    },
+                    child: const CustomNewArrivelsList())),
+            const CustomProductTitleSection(title: 'Popular Products'),
+            InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DetailsScreen(),
+                      ));
+                },
+                child: const CustomPopularProductList())
           ],
         ),
       ),
