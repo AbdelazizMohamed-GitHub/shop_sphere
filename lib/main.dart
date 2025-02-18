@@ -2,9 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/profile_screen.dart';
+import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
+
 import 'package:shop_sphere/firebase_options.dart';
 
 void main() async {
@@ -31,7 +30,7 @@ class ShopSphere extends StatelessWidget {
               backgroundColor: AppColors.backgroundColor,
               centerTitle: true,
               titleTextStyle: AppStyles.text26BoldBlack)),
-      home:const  EditProfileScreen(),
+      home:const  MainScreen(),
     );
   }
 }

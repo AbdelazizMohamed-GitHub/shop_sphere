@@ -5,6 +5,9 @@ import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
+import 'package:shop_sphere/features/main/presention/view/screen/cart_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -40,13 +43,12 @@ class ProfileScreen extends StatelessWidget {
                 radius: 50,
                 backgroundImage: AssetImage(AppImages.profile),
               ),
-             
               const Text(
                 'User Name',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
               Text(
-                FirebaseAuth.instance.currentUser?.email??"Email",
+                FirebaseAuth.instance.currentUser?.email ?? "Email",
                 style: AppStyles.text18RegularWhite,
               ),
               const SizedBox(
@@ -54,32 +56,34 @@ class ProfileScreen extends StatelessWidget {
               ),
               CustomProfileListTile(
                 icon: Icons.person_outlined,
-                title: 'profile',
-                funcation: () {},
+                title: 'Edit Profile',
+                funcation: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const EditProfileScreen();
+                  }));
+                },
               ),
               CustomProfileListTile(
                 icon: Icons.shopping_cart_outlined,
                 title: ' My Cart',
-                funcation: () {},
+                funcation: () {
+                   Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const CartScreen();
+                  }));
+                },
               ),
-              CustomProfileListTile(
-                icon: Icons.favorite_border_outlined,
-                title: 'Favorite',
-                funcation: () {},
-              ),
+            
               CustomProfileListTile(
                 icon: Icons.data_thresholding,
                 title: 'Orders',
-                funcation: () {},
+                funcation: () { Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const OrderScreen();
+                  }));},
               ),
-              CustomProfileListTile(
-                icon: Icons.notifications_outlined,
-                title: 'Notifications',
-                funcation: () {},
-              ),
+             
               CustomProfileListTile(
                 icon: Icons.settings_outlined,
-                title: 'Favorite',
+                title: 'Setting',
                 funcation: () {},
               ),
               const Divider(
