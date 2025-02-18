@@ -1,11 +1,11 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
-import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -17,7 +17,9 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           leadingWidth: 100,
           leading: IconButton(
-              onPressed: () {  context.read<MainCubit>().changeScreenIndex(0);},
+              onPressed: () {
+                context.read<MainCubit>().changeScreenIndex(0);
+              },
               icon: const Icon(
                 Icons.arrow_back_ios_new,
                 size: 30,
@@ -34,53 +36,51 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage(AppImages.profile),
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.add_a_photo,
-                            color: Colors.black,
-                            size: 20,
-                          )))
-                ],
+              const CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage(AppImages.profile),
               ),
+             
               const Text(
                 'User Name',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
-              const Text(
-                'Email',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+              Text(
+                FirebaseAuth.instance.currentUser?.email??"Email",
+                style: AppStyles.text18RegularWhite,
               ),
               const SizedBox(
                 height: 20,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 6,
-                itemBuilder: (BuildContext context, int index) {
-                  return const ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    iconColor: Colors.white,
-                    textColor: Colors.white,
-                    leading: Icon(Icons.person_outlined),
-                    title: Text('Profile'),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                  );
-                },
+              CustomProfileListTile(
+                icon: Icons.person_outlined,
+                title: 'profile',
+                funcation: () {},
+              ),
+              CustomProfileListTile(
+                icon: Icons.shopping_cart_outlined,
+                title: ' My Cart',
+                funcation: () {},
+              ),
+              CustomProfileListTile(
+                icon: Icons.favorite_border_outlined,
+                title: 'Favorite',
+                funcation: () {},
+              ),
+              CustomProfileListTile(
+                icon: Icons.data_thresholding,
+                title: 'Orders',
+                funcation: () {},
+              ),
+              CustomProfileListTile(
+                icon: Icons.notifications_outlined,
+                title: 'Notifications',
+                funcation: () {},
+              ),
+              CustomProfileListTile(
+                icon: Icons.settings_outlined,
+                title: 'Favorite',
+                funcation: () {},
               ),
               const Divider(
                 color: Colors.white,

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_item.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_screen_body.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_stuts_list.dart';
 
@@ -39,7 +37,7 @@ class OrderScreen extends StatelessWidget {
               const SizedBox(height: 40, child: CustomOrderStutsList()),
               BlocBuilder<OrderCubit, OrderState>(
                 builder: (context, state) {
-                  return CustomOrderScreenBody();
+                  return const CustomOrderScreenBody();
                 },
               )
             ],
