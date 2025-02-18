@@ -159,4 +159,34 @@ class TestList {
     }
     return total;
   }
+   static Map<String, dynamic> order = {
+    'id': '12345',
+    'status': 'Delivered',
+    'date': '2023-10-15',
+    'items': [
+      {
+        'id': '1',
+        'name': 'Product 1',
+        'price': 29.99,
+        'quantity': 2,
+        'image': 'https://via.placeholder.com/150',
+      },
+      {
+        'id': '2',
+        'name': 'Product 2',
+        'price': 49.99,
+        'quantity': 1,
+        'image': 'https://via.placeholder.com/150',
+      },
+    ],
+    'total': 109.97,
+  };
+
+static  List orderStauts=[
+    'Pending',
+    'Delivered',
+    'Processing',
+    'Cancelled',
+  ];
+
 }
