@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/cart_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile_screen.dart';
@@ -89,13 +90,12 @@ class ProfileScreen extends StatelessWidget {
               const Divider(
                 color: Colors.white,
               ),
-              const ListTile(
-                contentPadding: EdgeInsets.zero,
-                iconColor: Colors.white,
-                textColor: Colors.white,
-                leading: Icon(Icons.logout_outlined),
-                title: Text('Log Out'),
-              ),
+             CustomProfileListTile(icon: Icons.logout, title: 'Log Out', funcation: (){
+               FirebaseAuth.instance.signOut();
+               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                    return const LoginScreen();
+                  }));
+             }),
             ],
           ),
         ));
