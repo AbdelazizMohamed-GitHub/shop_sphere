@@ -2,7 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/test/test_list.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
 
 import 'package:shop_sphere/firebase_options.dart';
 
@@ -30,7 +33,7 @@ class ShopSphere extends StatelessWidget {
               backgroundColor: AppColors.backgroundColor,
               centerTitle: true,
               titleTextStyle: AppStyles.text26BoldBlack)),
-      home:const  GetStartedScreen(),
+      home: const OrderScreen(),
     );
   }
 }

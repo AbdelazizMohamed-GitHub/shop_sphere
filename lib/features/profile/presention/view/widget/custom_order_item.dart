@@ -4,6 +4,7 @@ import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/test/test_list.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';
 
 class CustomOrderItem extends StatelessWidget {
   const CustomOrderItem({super.key});
@@ -66,7 +67,13 @@ class CustomOrderItem extends StatelessWidget {
                     shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetailsScreen(order: TestList.order),
+                          ));
+                    },
                     child: const Text(
                       'Details',
                       style: TextStyle(color: Colors.white, fontSize: 14),
@@ -76,7 +83,7 @@ class CustomOrderItem extends StatelessWidget {
                   Text(
                       TestList.orderStauts[
                           context.read<OrderCubit>().currentStatus],
-                      style:const TextStyle(color: Colors.green, fontSize: 14))
+                      style: const TextStyle(color: Colors.green, fontSize: 14))
                 ])
               ],
             ),

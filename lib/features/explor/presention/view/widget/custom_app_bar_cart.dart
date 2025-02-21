@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
-import 'package:shop_sphere/features/main/presention/view/screen/cart_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class CustomAppBarCart extends StatelessWidget {
   const CustomAppBarCart({super.key});
