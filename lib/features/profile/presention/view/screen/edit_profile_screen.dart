@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
-import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_photo.dart';
 
@@ -14,11 +14,7 @@ class EditProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Edit Profile"),
         leadingWidth: 100,
-        leading: CustomCircleButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            funcation: () {
-              Navigator.pop(context);
-            }),
+        leading:const CustomBackButton(),
         actions: [
           Text("Done",
               style: AppStyles.text18RegularBlack

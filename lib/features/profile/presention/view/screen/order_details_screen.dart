@@ -4,7 +4,7 @@ import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/funcation/order_funcation.dart';
 import 'package:shop_sphere/core/test/test_list.dart';
-import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> order;
@@ -14,7 +14,9 @@ class OrderDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leadingWidth: 100,leading: CustomCircleButton(icon:const Icon(Icons.arrow_back_ios) , funcation: () {Navigator.pop(context);  },),
+      appBar: AppBar(
+        leadingWidth: 100,
+        leading:const CustomBackButton(),
         title: const Text('Order Details'),
       ),
       body: Padding(
@@ -148,7 +150,10 @@ class OrderDetailsScreen extends StatelessWidget {
                   shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.black)),
-                  child: const Text('Reorder',style: AppStyles.text16BoldBlack,),
+                  child: const Text(
+                    'Reorder',
+                    style: AppStyles.text16BoldBlack,
+                  ),
                 ),
                 MaterialButton(
                   onPressed: () {},
@@ -156,7 +161,11 @@ class OrderDetailsScreen extends StatelessWidget {
                   shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.black)),
-                  child:  Text('cancel',style: AppStyles.text16BoldBlack.copyWith(color: Colors.white),),
+                  child: Text(
+                    'cancel',
+                    style:
+                        AppStyles.text16BoldBlack.copyWith(color: Colors.white),
+                  ),
                 ),
               ],
             )

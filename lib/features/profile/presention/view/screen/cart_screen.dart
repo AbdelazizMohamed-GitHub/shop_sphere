@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/test/test_list.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
-import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/main/presention/view/widget/custom_cart_item_list.dart';
 import 'package:shop_sphere/features/main/presention/view/widget/custom_cart_price.dart';
 
@@ -13,9 +13,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(leadingWidth: 100,
         title: const Text('My Cart'),
-      leading: CustomCircleButton(icon:const Icon(Icons.arrow_back_ios) , funcation:(){
-        Navigator.pop(context);
-      }),
+      leading:const CustomBackButton()
       ),
       body: Column(
         children: [

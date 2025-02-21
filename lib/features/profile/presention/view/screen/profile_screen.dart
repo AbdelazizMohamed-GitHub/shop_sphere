@@ -6,6 +6,7 @@ import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
@@ -68,20 +69,27 @@ class ProfileScreen extends StatelessWidget {
                 icon: Icons.shopping_cart_outlined,
                 title: ' My Cart',
                 funcation: () {
-                   Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return const CartScreen();
                   }));
                 },
               ),
-            
               CustomProfileListTile(
                 icon: Icons.data_thresholding,
                 title: 'Orders',
-                funcation: () { Navigator.push(context, MaterialPageRoute(builder: (context) {
+                funcation: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return const OrderScreen();
+                  }));
+                },
+              ),
+              CustomProfileListTile(
+                icon: Icons.location_on_outlined,
+                title: 'Address',
+                funcation: () { Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const AddressScreen();
                   }));},
               ),
-             
               CustomProfileListTile(
                 icon: Icons.settings_outlined,
                 title: 'Setting',
@@ -90,12 +98,16 @@ class ProfileScreen extends StatelessWidget {
               const Divider(
                 color: Colors.white,
               ),
-             CustomProfileListTile(icon: Icons.logout, title: 'Log Out', funcation: (){
-               FirebaseAuth.instance.signOut();
-               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                    return const LoginScreen();
-                  }));
-             }),
+              CustomProfileListTile(
+                  icon: Icons.logout,
+                  title: 'Log Out',
+                  funcation: () {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const LoginScreen();
+                    }));
+                  }),
             ],
           ),
         ));

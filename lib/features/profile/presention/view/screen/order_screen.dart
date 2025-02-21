@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_screen_body.dart';
@@ -22,12 +23,7 @@ class OrderScreen extends StatelessWidget {
               width: 20,
             ),
           ],
-          leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.black,
-              )),
+          leading:const CustomBackButton(),
           title: const Text('My Order'),
         ),
         body: Padding(
