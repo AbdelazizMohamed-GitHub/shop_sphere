@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/Custom_add_new_address_body.dart';
 
 class AddressScreen extends StatelessWidget {
   const AddressScreen({super.key});
@@ -9,6 +10,22 @@ class AddressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.primaryColor,
+          onPressed: () {
+            showModalBottomSheet(
+              
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return CustomAddNewAddressBody();
+                });
+          },
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 30,
+          )),
       appBar: AppBar(
         title: const Text('Address'),
         leadingWidth: 100,
