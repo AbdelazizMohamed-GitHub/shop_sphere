@@ -82,7 +82,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     if (state is AuthLoading) {
                       return const CircularProgressIndicator();
                     } else {
-                      return _isEmailVerified
+                      return !_isEmailVerified
                           ? CustomButton(
                               text: "login",
                               onPressed: () {

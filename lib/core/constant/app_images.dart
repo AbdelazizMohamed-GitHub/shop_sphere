@@ -9,6 +9,7 @@ class AppImages {
    static const String product = 'assets/images/product.png';
   static const String profile = 'assets/images/profile.png';
   static const String filter = 'assets/images/filter.png';
+  static const String map = "assets/images/map.jpg";
 
 
 }

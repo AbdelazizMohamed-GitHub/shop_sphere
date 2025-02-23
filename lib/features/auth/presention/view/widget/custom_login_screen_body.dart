@@ -76,7 +76,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         ),
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state is AuthSuccess) {
+            if (state is AuthLoading) {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

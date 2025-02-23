@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/test/test_list.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
-import 'package:shop_sphere/features/main/presention/view/widget/custom_cart_item_list.dart';
-import 'package:shop_sphere/features/main/presention/view/widget/custom_cart_price.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/checkout_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_item_list.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -11,10 +12,10 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leadingWidth: 100,
-        title: const Text('My Cart'),
-      leading:const CustomBackButton()
-      ),
+      appBar: AppBar(
+          leadingWidth: 100,
+          title: const Text('My Cart'),
+          leading: const CustomBackButton()),
       body: Column(
         children: [
           const Expanded(child: CustomCartItemList()),
@@ -33,8 +34,15 @@ class CartScreen extends StatelessWidget {
                   title: 'Total Cost:',
                   price: TestList.getTotalPrice() + 50,
                   isTotalcoast: true),
-              const SizedBox(height: 16.0),
-              CustomButton(onPressed: () {}, text: "Checkout")
+              const SizedBox(height: 20.0),
+              CustomButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return CheckoutScreen();
+                    }));
+                  },
+                  text: "Checkout")
             ]),
           ),
         ],

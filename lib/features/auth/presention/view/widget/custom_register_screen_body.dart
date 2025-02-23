@@ -92,7 +92,7 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
       const SizedBox(height: 20),
       BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccess) {
+          if (state is AuthLoading) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return VerifyScreen(
                 email: emailTextC.text.trim(),
