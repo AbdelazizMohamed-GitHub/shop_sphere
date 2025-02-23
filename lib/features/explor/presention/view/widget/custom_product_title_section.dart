@@ -5,25 +5,27 @@ import 'package:shop_sphere/core/constant/app_styles.dart';
 
 class CustomProductTitleSection extends StatelessWidget {
   const CustomProductTitleSection({
-    super.key,
+    Key? key,
     required this.title,
-  });
+   required this.funcation,
+  }) : super(key: key);
 
   final String title;
+  final void Function()? funcation;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       child: Row(
         children: [
-           Text(
+          Text(
             title,
             style: AppStyles.text22SemiBoldBlack,
             textAlign: TextAlign.start,
           ),
           const Spacer(),
           TextButton(
-              onPressed: () {},
+              onPressed: funcation,
               child: const Text(
                 'See All',
                 style: AppStyles.text18RegularBlack,

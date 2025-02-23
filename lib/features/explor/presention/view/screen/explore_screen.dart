@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/see_all_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/Custom_advertise.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_app_bar_cart.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_category_list.dart';
@@ -51,7 +52,14 @@ class ExploreScreen extends StatelessWidget {
             const SizedBox(height: 40, child: CustomCategoryList()),
             const SizedBox(height: 10),
             const CustomAdvertise(),
-            const CustomProductTitleSection(title: 'New Arrivals'),
+             CustomProductTitleSection(title: 'New Arrivals', funcation: () { 
+               Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SeeAllScreen(),
+                    ),
+                  );
+              },),
             SizedBox(
                 height: 200,
                 child: InkWell(
@@ -63,14 +71,20 @@ class ExploreScreen extends StatelessWidget {
                           ));
                     },
                     child: const CustomNewArrivelsList())),
-            const CustomProductTitleSection(title: 'Popular Products'),
+             CustomProductTitleSection(title: 'Popular Products', funcation: () {  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SeeAllScreen(),
+                    ),
+                  ); },),
             InkWell(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const DetailsScreen(),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DetailsScreen(),
+                    ),
+                  );
                 },
                 child: const CustomPopularProductList())
           ],
