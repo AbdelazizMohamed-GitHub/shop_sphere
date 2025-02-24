@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/test/test_list.dart';
+import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/checkout_screen.dart';

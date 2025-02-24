@@ -1,9 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:shop_sphere/core/widget/custom_product_item.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomPopularProductList extends StatelessWidget {
-  const CustomPopularProductList({super.key});
-
+  const CustomPopularProductList({
+    super.key,
+    required this.products,
+  });
+  final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
     return  GridView.builder(
@@ -18,7 +24,7 @@ class CustomPopularProductList extends StatelessWidget {
               ),
               itemCount: 10,
               itemBuilder: (context, index) {
-                return const CustomProductItem();
+                return  CustomProductItem(product:products[index] ,);
               },
             );
   }

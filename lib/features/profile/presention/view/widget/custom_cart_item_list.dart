@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/test/test_list.dart';
+import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_item.dart';
 
 class CustomCartItemList extends StatelessWidget {

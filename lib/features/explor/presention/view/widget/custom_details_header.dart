@@ -1,11 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_product_kind.dart';
 
 class CustomDetailsHeader extends StatelessWidget {
-  const CustomDetailsHeader({super.key});
-
+  const CustomDetailsHeader({
+    super.key,
+    required this.product,
+  });
+final ProductEntity product;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -51,7 +57,7 @@ class CustomDetailsHeader extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "Product Name",
+              product.name,
               style: AppStyles.text18RegularBlack
                   .copyWith(fontWeight: FontWeight.bold, fontSize: 22),
             ),
@@ -59,7 +65,7 @@ class CustomDetailsHeader extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "Price",
+               '\$${product.price.toStringAsFixed(2)}',
               style: AppStyles.text18RegularBlack
                   .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
             ),

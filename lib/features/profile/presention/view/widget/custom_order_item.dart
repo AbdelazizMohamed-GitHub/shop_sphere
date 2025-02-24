@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/test/test_list.dart';
+import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';

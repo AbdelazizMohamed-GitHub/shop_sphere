@@ -1,13 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
 class CustomProductItem extends StatelessWidget {
-  const CustomProductItem({super.key});
-
+  const CustomProductItem({
+    super.key,
+    required this.product,
+  });
+  final ProductEntity product;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +28,7 @@ class CustomProductItem extends StatelessWidget {
             children: [
               Expanded(
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   child: GestureDetector(
@@ -29,12 +36,13 @@ class CustomProductItem extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(),
+                            builder: (context) => DetailsScreen(
+                              product: product,
+                            ),
                           ));
                     },
                     child: Image.asset(
-                      AppImages.product,
-                      fit: BoxFit.cover,
+                      product.imageUrl,
                     ),
                   ),
                 ),
@@ -44,16 +52,19 @@ class CustomProductItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Product 1',
-                      style: AppStyles.text18RegularBlack,
+                    SizedBox(
+                      width: 150,
+                      child: Text(
+                        product.name,
+                        style: AppStyles.text14RegularBlack,
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          '\$100',
-                          style: AppStyles.text18RegularBlack,
+                        Text(
+                          '\$${product.price.toStringAsFixed(2)}',
+                          style: AppStyles.text16RegularBlack,
                         ),
                         Spacer(),
                         Container(

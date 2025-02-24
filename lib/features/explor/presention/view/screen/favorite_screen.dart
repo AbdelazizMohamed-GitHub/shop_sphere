@@ -18,7 +18,7 @@ class FavoriteScreen extends StatelessWidget {
                 context.read<MainCubit>().changeScreenIndex(0);
               }),
           title: const Text('Favorite')),
-      body: const SingleChildScrollView(child: CustomPopularProductList()),
+      body: const SingleChildScrollView(child: CustomPopularProductList(products: [],)),
     );
   }
 }
