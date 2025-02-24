@@ -11,7 +11,10 @@ class CustomOrderInformation extends StatelessWidget {
       children: [
         const Text(
           "Order Information",
-          style: AppStyles.text16BoldBlack,
+          style: AppStyles.text18RegularBlack,
+        ),
+       const Divider(
+          height: 20,
         ),
         const Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +79,7 @@ class CustomOrderInformation extends StatelessWidget {
               style: AppStyles.text16BoldBlack,
             ),
             const SizedBox(
-              width: 40,
+              width: 50,
             ),
             Text(
               "${order['total'].toStringAsFixed(2)} \$",

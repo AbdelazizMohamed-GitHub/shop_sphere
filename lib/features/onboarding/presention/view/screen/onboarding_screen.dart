@@ -68,7 +68,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   SmoothPageIndicator(
                     controller: PageController(
-                        initialPage: currentPage), // PageController
+                        initialPage: currentPage), 
                     count: 3,
                     axisDirection: Axis.horizontal,
                     effect: const ScrollingDotsEffect(
@@ -96,9 +96,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           color: AppColors.primaryColor,
                           borderRadius: BorderRadius.circular(12)),
                       child: currentPage == 2
-                          ? const Text(' Start Shopping',
+                          ?  Text(' Start Shopping',
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 16))
+                                  AppStyles.text16RegularBlack.copyWith(color: Colors.white))
                           : const Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.white,

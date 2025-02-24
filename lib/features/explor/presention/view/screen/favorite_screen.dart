@@ -13,8 +13,9 @@ class FavoriteScreen extends StatelessWidget {
       appBar: AppBar(
           leadingWidth: 100,
           leading: CustomCircleButton(
-              icon: const Icon(Icons.arrow_back_ios), funcation: () {
-                  context.read<MainCubit>().changeScreenIndex(0);
+              icon: const Icon(Icons.arrow_back_ios),
+              funcation: () {
+                context.read<MainCubit>().changeScreenIndex(0);
               }),
           title: const Text('Favorite')),
       body: const SingleChildScrollView(child: CustomPopularProductList()),

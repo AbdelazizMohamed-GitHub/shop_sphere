@@ -28,7 +28,7 @@ class OrderDetailsScreen extends StatelessWidget {
             CustomOrderDetailsHeader(order: order),
             const SizedBox(height: 20),
             Text(
-              '${TestList.order["items"].length} Items:',
+              '${TestList.order["items"].length} Items',
               style: AppStyles.text18RegularBlack,
             ),
             Expanded(
@@ -58,7 +58,9 @@ class OrderDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   color: AppColors.primaryColor,
                   shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),

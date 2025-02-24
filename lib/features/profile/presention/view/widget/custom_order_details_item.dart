@@ -12,19 +12,23 @@ class CustomOrderDetailsItem extends StatelessWidget {
   final dynamic item;
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-      leading: Image.asset(AppImages.product),
-      title: Text(
-        item['name'],
-        style: AppStyles.text16BoldBlack.copyWith(fontWeight: FontWeight.w400),
+    return Card(
+      color: Colors.white,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        leading: Image.asset(AppImages.product),
+        title: Text(
+          item['name'],
+          style:
+              AppStyles.text16BoldBlack.copyWith(fontWeight: FontWeight.w400),
+        ),
+        subtitle: Text(
+          'Quantity: ${item['quantity']}',
+          style: AppStyles.text14RegularBlack,
+        ),
+        trailing: Text('\$${item['price'].toStringAsFixed(2)}',
+            style: AppStyles.text16BoldBlack),
       ),
-      subtitle: Text(
-        'Quantity: ${item['quantity']}',
-        style: AppStyles.text14RegularBlack,
-      ),
-      trailing: Text('\$${item['price'].toStringAsFixed(2)}',
-          style: AppStyles.text16BoldBlack),
     );
   }
 }

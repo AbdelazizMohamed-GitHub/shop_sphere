@@ -39,7 +39,7 @@ class CartScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return CheckoutScreen();
+                      return const CheckoutScreen();
                     }));
                   },
                   text: "Checkout")

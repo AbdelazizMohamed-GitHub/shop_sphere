@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
@@ -19,7 +18,7 @@ class RegisterScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20),
           onPressed: () => Navigator.pop(context),
           icon: const Icon(
-            Icons.arrow_back,
+            Icons.arrow_back_ios,
             color: Colors.white,
           ),
         ),

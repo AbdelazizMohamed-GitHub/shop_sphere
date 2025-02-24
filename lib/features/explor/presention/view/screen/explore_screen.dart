@@ -60,33 +60,16 @@ class ExploreScreen extends StatelessWidget {
                     ),
                   );
               },),
-            SizedBox(
+           const SizedBox(
                 height: 200,
-                child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(),
-                          ));
-                    },
-                    child: const CustomNewArrivelsList())),
+                child: const CustomNewArrivelsList()),
              CustomProductTitleSection(title: 'Popular Products', funcation: () {  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const SeeAllScreen(),
                     ),
                   ); },),
-            InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DetailsScreen(),
-                    ),
-                  );
-                },
-                child: const CustomPopularProductList())
+            const CustomPopularProductList()
           ],
         ),
       ),

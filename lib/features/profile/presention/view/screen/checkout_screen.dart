@@ -8,6 +8,7 @@ import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_checkout_listile.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_checkout_payment.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
@@ -38,11 +39,14 @@ class CheckoutScreen extends StatelessWidget {
                     const CustomCheckoutListile(
                         title: "abdelaziz@gmail.com",
                         subtitle: "Email",
-                        icon: Icons.email_outlined),
+                        icon: Icons.email_outlined,
+                        isSelect: false),
                     const CustomCheckoutListile(
-                        title: "01153019984",
-                        subtitle: "Phone",
-                        icon: Icons.phone_outlined),
+                      title: "01153019984",
+                      subtitle: "Phone",
+                      icon: Icons.phone_outlined,
+                      isSelect: false,
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -101,31 +105,21 @@ class CheckoutScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Payment Method",
                           style: AppStyles.text18RegularBlack,
                         ),
-                        Icon(Icons.edit),
+                        CustomCircleButton(
+                            icon: Icon(Icons.add), funcation: () {})
                       ],
                     ),
-                    const CustomCheckoutListile(
-                        title: "Cash on delivery",
-                        subtitle: "Cash on delivery",
-                        icon: Icons.money_off_csred_outlined),
-                    const CustomCheckoutListile(
-                        title: "Paypal",
-                        subtitle: "Paypal",
-                        icon: Icons.paypal_outlined),
-                    const CustomCheckoutListile(
-                        title: "Credit Card",
-                        subtitle: "Credit Card",
-                        icon: Icons.credit_card_outlined),
-                    SizedBox(
+                    CustomCheckoutPayment(),
+                    const SizedBox(
                       height: 10,
                     ),
                     CustomCartPrice(
@@ -136,7 +130,7 @@ class CheckoutScreen extends StatelessWidget {
                         title: 'Total Cost:',
                         price: TestList.getTotalPrice() + 50,
                         isTotalcoast: true),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     CustomButton(onPressed: () {}, text: "Checkout")

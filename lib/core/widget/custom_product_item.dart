@@ -3,6 +3,7 @@ import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
 class CustomProductItem extends StatelessWidget {
   const CustomProductItem({super.key});
@@ -23,9 +24,18 @@ class CustomProductItem extends StatelessWidget {
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
-                  child: Image.asset(
-                    AppImages.product,
-                    fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DetailsScreen(),
+                          ));
+                    },
+                    child: Image.asset(
+                      AppImages.product,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),

@@ -27,7 +27,7 @@ class GetStartedScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: AppStyles.text22SemiBoldBlack),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
             CustomButton(
                 onPressed: () {

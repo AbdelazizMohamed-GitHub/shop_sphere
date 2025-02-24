@@ -10,5 +10,16 @@ const List<Widget> screens = [
   NotificationScreen(),
   ProfileScreen(),
 ];
+List <PaymentMethodModel>paymentMethod = [
+  PaymentMethodModel(title: "Cash on delivery", icon: Icons.money_off_csred_outlined),
+  PaymentMethodModel(title: "Paypal", icon: Icons.paypal_outlined),
+  PaymentMethodModel(title: "Credit Card", icon:Icons.credit_card_outlined )
+];
 
+class PaymentMethodModel {
+  final String title;
+  final IconData icon;
 
+  PaymentMethodModel({required this.title, required this.icon});
+}
+  

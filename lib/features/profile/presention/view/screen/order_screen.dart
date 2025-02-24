@@ -23,8 +23,9 @@ class OrderScreen extends StatelessWidget {
               width: 20,
             ),
           ],
-          leading:const CustomBackButton(),
+          leading: const CustomBackButton(),
           title: const Text('My Order'),
+          leadingWidth: 100,
         ),
         body: Padding(
           padding: const EdgeInsets.only(left: 10, top: 20),
