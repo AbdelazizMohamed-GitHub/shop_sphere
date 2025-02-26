@@ -1,20 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
 class CustomProductItem extends StatelessWidget {
   const CustomProductItem({
     super.key,
     required this.product,
+    required this.products,
   });
   final ProductEntity product;
+  final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +27,7 @@ class CustomProductItem extends StatelessWidget {
             children: [
               Expanded(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius:const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   child: GestureDetector(
@@ -38,6 +37,7 @@ class CustomProductItem extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => DetailsScreen(
                               product: product,
+                              products: products,
                             ),
                           ));
                     },
@@ -66,7 +66,7 @@ class CustomProductItem extends StatelessWidget {
                           '\$${product.price.toStringAsFixed(2)}',
                           style: AppStyles.text16RegularBlack,
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Container(
                           padding: const EdgeInsets.all(5),
                           decoration: const BoxDecoration(
@@ -93,8 +93,8 @@ class CustomProductItem extends StatelessWidget {
             left: 10,
             child: CustomCircleButton(
                 icon: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
+                  Icons.favorite_outline,
+                  color: Colors.black,
                 ),
                 funcation: () {}),
           )

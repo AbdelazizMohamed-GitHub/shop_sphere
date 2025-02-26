@@ -1,17 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/view/widget/custom_product_kind.dart';
 
 class CustomDetailsHeader extends StatelessWidget {
   const CustomDetailsHeader({
     super.key,
     required this.product,
   });
-final ProductEntity product;
+  final ProductEntity product;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -22,7 +19,7 @@ final ProductEntity product;
             left: 50,
             right: -30,
             bottom: 0,
-            child: Image.asset(AppImages.product)),
+            child: Image.asset(product.imageUrl, fit: BoxFit.cover)),
         Positioned(
           left: 20,
           right: 20,
@@ -65,18 +62,19 @@ final ProductEntity product;
               height: 10,
             ),
             Text(
-               '\$${product.price.toStringAsFixed(2)}',
+              '\$${product.price.toStringAsFixed(2)}',
               style: AppStyles.text18RegularBlack
                   .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ]),
         ),
-        const Positioned(
-          bottom: 10,
-          left: 0,
-          right: 0,
-          child: SizedBox(height: 100, child: CustomProductKind()),
-        )
+
+        // const Positioned(
+        //   bottom: 10,
+        //   left: 0,
+        //   right: 0,
+        //   child: SizedBox(height: 100, child: CustomProductKind()),
+        // )
       ]),
     );
   }

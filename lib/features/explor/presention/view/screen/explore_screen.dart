@@ -6,9 +6,8 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_state.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/see_all_screen.dart';
-import 'package:shop_sphere/features/explor/presention/view/widget/Custom_advertise.dart';
+import 'package:shop_sphere/features/explor/presention/view/widget/custom_advertise.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_app_bar_cart.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_category_list.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_explore_screen_loading.dart';
@@ -73,7 +72,7 @@ class ExploreScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: 40, child: CustomCategoryList()),
+                     const SizedBox(height: 40, child: CustomCategoryList()),
                       const SizedBox(height: 10),
                       const CustomAdvertise(),
                       CustomProductTitleSection(

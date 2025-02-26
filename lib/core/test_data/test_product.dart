@@ -84,7 +84,7 @@ List<ProductEntity> dummyProducts = [
     name: 'Logitech MX Master 3',
     description: 'Logitech MX Master 3 Wireless Mouse for Productivity.',
     price: 99.99,
-    imageUrl: ProductImages.logitech,
+    imageUrl: ProductImages.mouse,
     category: 'Accessories',
     stock: 40,
    

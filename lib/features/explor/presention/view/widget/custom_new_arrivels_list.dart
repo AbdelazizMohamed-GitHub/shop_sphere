@@ -12,11 +12,11 @@ class CustomNewArrivelsList extends StatelessWidget {
                 itemCount: products.length,
                 itemBuilder: (BuildContext context, int index) {
                   return  Padding(
-                    padding: EdgeInsets.only(
+                    padding:const EdgeInsets.only(
                       left: 12,
                     ),
                     child:
-                        SizedBox(width: 150, child: CustomProductItem(product: products[index],)),
+                        SizedBox(width: 150, child: CustomProductItem(product: products[index], products: products,)),
                   );
                 },
               );

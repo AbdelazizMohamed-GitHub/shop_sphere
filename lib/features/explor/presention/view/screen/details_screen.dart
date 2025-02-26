@@ -13,9 +13,10 @@ import 'package:shop_sphere/features/explor/presention/view/widget/custom_produc
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
     super.key,
-    required this.product,
+    required this.product, required this.products,
   });
 final ProductEntity product;
+  final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +56,7 @@ final ProductEntity product;
                 const SizedBox(
                   height: 10,
                 ),
-                const SizedBox(height: 200, child: CustomNewArrivelsList(products:[] ,))
+                 SizedBox(height: 200, child: CustomNewArrivelsList(products:products ,))
               ]),
             )),
         bottomNavigationBar: const CustomDetailsButtom());

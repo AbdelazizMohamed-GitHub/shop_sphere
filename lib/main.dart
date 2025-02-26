@@ -31,7 +31,7 @@ class ShopSphere extends StatelessWidget {
               backgroundColor: AppColors.backgroundColor,
               centerTitle: true,
               titleTextStyle: AppStyles.text26BoldBlack)),
-      home:  MainScreen(),
+      home:const GetStartedScreen(),
     );
   }
 }

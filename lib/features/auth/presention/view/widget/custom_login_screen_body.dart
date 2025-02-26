@@ -93,8 +93,8 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
                 ? const CircularProgressIndicator()
                 : CustomButton(
                     onPressed: () {
-                      if (emailTextC.text.isNotEmpty &&
-                          passwordTextC.text.isNotEmpty) {
+                      if (emailTextC.text.isEmpty 
+                          ) {
                             FocusScope.of(context).unfocus();
                         context.read<AuthCubit>().logInWithEmailAndPassword(
                             context: context,

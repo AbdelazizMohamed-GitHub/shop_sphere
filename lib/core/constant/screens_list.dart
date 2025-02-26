@@ -10,10 +10,11 @@ const List<Widget> screens = [
   NotificationScreen(),
   ProfileScreen(),
 ];
-List <PaymentMethodModel>paymentMethod = [
-  PaymentMethodModel(title: "Cash on delivery", icon: Icons.money_off_csred_outlined),
+List<PaymentMethodModel> paymentMethod = [
+  PaymentMethodModel(
+      title: "Cash on delivery", icon: Icons.money_off_csred_outlined),
   PaymentMethodModel(title: "Paypal", icon: Icons.paypal_outlined),
-  PaymentMethodModel(title: "Credit Card", icon:Icons.credit_card_outlined )
+  PaymentMethodModel(title: "Credit Card", icon: Icons.credit_card_outlined)
 ];
 
 class PaymentMethodModel {
@@ -22,4 +23,12 @@ class PaymentMethodModel {
 
   PaymentMethodModel({required this.title, required this.icon});
 }
-  
+
+List category = [
+  "All",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+];

@@ -5,10 +5,10 @@ import 'package:shop_sphere/core/constant/app_styles.dart';
 
 class CustomProductTitleSection extends StatelessWidget {
   const CustomProductTitleSection({
-    Key? key,
+    super.key,
     required this.title,
    required this.funcation,
-  }) : super(key: key);
+  });
 
   final String title;
   final void Function()? funcation;

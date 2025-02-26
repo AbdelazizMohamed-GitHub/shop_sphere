@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class CustomCircleButton extends StatelessWidget {
   const CustomCircleButton({
-    Key? key,
+    super.key,
     required this.icon,required this.funcation,
-  }) : super(key: key);
+  });
   final Icon icon;
  final void Function()? funcation;
   @override

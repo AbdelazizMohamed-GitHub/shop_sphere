@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/features/profile/presention/view/widget/Custom_add_new_address_body.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_new_address_body.dart';
 
 class Funcations {
  static  Color getStatusColor(String status) {
@@ -20,7 +20,7 @@ static void addNewAddress(BuildContext context) {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return CustomAddNewAddressBody();
+          return const CustomAddNewAddressBody();
         });
   }
 }

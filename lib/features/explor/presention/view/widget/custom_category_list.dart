@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
-import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomCategoryList extends StatefulWidget {
   const CustomCategoryList({super.key, });

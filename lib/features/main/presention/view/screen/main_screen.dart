@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/constant/screens_list.dart' as ScreensList;
+import 'package:shop_sphere/core/constant/screens_list.dart' ;
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
 
 class MainScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             body: IndexedStack(
               index: context.read<MainCubit>().intialIndex,
-              children: ScreensList.screens,
+              children: screens,
             ),
           );
         },

@@ -15,12 +15,12 @@ class AppImages {
 class ProductImages {
   static const String iPhone = "assets/product/iphone14pro.png";
   static const String samsung = "assets/product/samsung.png";
-  static const String mac = "assets/product/macbook.png";
+  static const String mac = "assets/product/mac.png";
   static const String sony = "assets/product/headphone.jpg";
   static const String nike = "assets/product/nike.png";
   static const String adidas = "assets/product/adidas.png";
   static const String apple = "assets/product/watch.png";
-  static const String logitech = "assets/product/logitech.png";
+  static const String mouse = "assets/product/mouse.png";
   static const String tv = "assets/product/tv.jpg";
     static const String jpl = "assets/product/jpl.png";
 

@@ -12,20 +12,23 @@ class CustomPopularProductList extends StatelessWidget {
   final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
-    return  GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 0.7,
-              ),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return  CustomProductItem(product:products[index] ,);
-              },
-            );
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        childAspectRatio: 0.7,
+      ),
+      itemCount: 0,
+      itemBuilder: (context, index) {
+        return CustomProductItem(
+          product: products[index],
+          products: products,
+        );
+      },
+    );
   }
 }

@@ -115,10 +115,10 @@ class CheckoutScreen extends StatelessWidget {
                           style: AppStyles.text18RegularBlack,
                         ),
                         CustomCircleButton(
-                            icon: Icon(Icons.add), funcation: () {})
+                            icon:const Icon(Icons.add), funcation: () {})
                       ],
                     ),
-                    CustomCheckoutPayment(),
+                   const CustomCheckoutPayment(),
                     const SizedBox(
                       height: 10,
                     ),
