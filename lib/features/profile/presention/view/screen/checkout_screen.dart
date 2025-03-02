@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_images.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
@@ -64,22 +66,10 @@ class CheckoutScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      "My Home",
-                      style: AppStyles.text16BoldBlack,
+                   
+                    const CustomGetLocationWidget(
+                     
                     ),
-                    const Text(
-                      "+20 1234567890",
-                      style: AppStyles.text16RegularBlack,
-                    ),
-                    const Text(
-                      "3 El Nozha Street, Cairo, Egypt",
-                      style: AppStyles.text16RegularBlack,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-      CustomGetLocationWidget(),
                     const SizedBox(
                       height: 20,
                     ),
@@ -91,10 +81,10 @@ class CheckoutScreen extends StatelessWidget {
                           style: AppStyles.text18RegularBlack,
                         ),
                         CustomCircleButton(
-                            icon:const Icon(Icons.add), funcation: () {})
+                            icon: const Icon(Icons.add), funcation: () {})
                       ],
                     ),
-                   const CustomCheckoutPayment(),
+                    const CustomCheckoutPayment(),
                     const SizedBox(
                       height: 10,
                     ),
