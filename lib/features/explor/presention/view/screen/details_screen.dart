@@ -56,7 +56,7 @@ final ProductEntity product;
                 const SizedBox(
                   height: 10,
                 ),
-                 SizedBox(height: 200, child: CustomNewArrivelsList(products:products ,))
+                 SizedBox(height: 200, child: CustomHorzintalProductList(products:products ,))
               ]),
             )),
         bottomNavigationBar: const CustomDetailsButtom());

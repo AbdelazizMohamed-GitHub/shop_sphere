@@ -17,7 +17,7 @@ class CustomDetailsHeader extends StatelessWidget {
         Positioned(
             top: 10,
             left: 50,
-            right: -30,
+            right: 10,
             bottom: 0,
             child: Image.asset(product.imageUrl, fit: BoxFit.cover)),
         Positioned(
@@ -53,19 +53,12 @@ class CustomDetailsHeader extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Text(
-              product.name,
-              style: AppStyles.text18RegularBlack
-                  .copyWith(fontWeight: FontWeight.bold, fontSize: 22),
-            ),
+            Text(product.name, style: AppStyles.text22SemiBoldBlack),
             const SizedBox(
               height: 10,
             ),
-            Text(
-              '\$${product.price.toStringAsFixed(2)}',
-              style: AppStyles.text18RegularBlack
-                  .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
+            Text('\$${product.price.toStringAsFixed(2)}',
+                style: AppStyles.text16BoldBlack),
           ]),
         ),
 

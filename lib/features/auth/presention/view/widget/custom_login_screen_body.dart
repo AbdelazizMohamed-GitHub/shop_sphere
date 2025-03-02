@@ -76,7 +76,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         ),
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state is AuthLoading) {
+            if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -93,7 +93,8 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
                 ? const CircularProgressIndicator()
                 : CustomButton(
                     onPressed: () {
-                      if (emailTextC.text.isEmpty 
+                      if (emailTextC.text.isNotEmpty &&
+                           passwordTextC.text.isNotEmpty 
                           ) {
                             FocusScope.of(context).unfocus();
                         context.read<AuthCubit>().logInWithEmailAndPassword(

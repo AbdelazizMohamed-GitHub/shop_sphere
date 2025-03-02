@@ -35,102 +35,107 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      CustomTextForm(
-        text: 'Full Name',
-        textController: nameTextC,
-        pIcon: Icons.person,
-        kType: TextInputType.text,
-      ),
-      const SizedBox(height: 15),
-      CustomTextForm(
-        textController: phoneTextC,
-        pIcon: Icons.phone,
-        text: 'Phone',
-        kType: TextInputType.number,
-      ),
-      const SizedBox(height: 15),
-      CustomTextForm(
-        textController: emailTextC,
-        text: 'Email',
-        pIcon: Icons.email,
-        kType: TextInputType.emailAddress,
-      ),
-      const SizedBox(height: 15),
-      CustomTextForm(
-        textController: passwordTextC,
-        obscureText: isPassword,
-        text: 'Password',
-        pIcon: Icons.lock,
-        kType: TextInputType.visiblePassword,
-        sIcon: InkWell(
-          onTap: () {
-            setState(() {
-              isPassword = !isPassword;
-            });
-          },
-          child: Icon(isPassword ? Icons.visibility_off : Icons.visibility),
+    return Column(
+      children: [
+        CustomTextForm(
+          text: 'Full Name',
+          textController: nameTextC,
+          pIcon: Icons.person,
+          kType: TextInputType.text,
         ),
-      ),
-      const SizedBox(height: 15),
-      CustomTextForm(
-        textController: confirmPasswordTextC,
-        text: 'Confirm Password',
-        pIcon: Icons.lock,
-        obscureText: isConfirmPassword,
-        kType: TextInputType.visiblePassword,
-        sIcon: InkWell(
-          onTap: () {
-            setState(() {
-              isConfirmPassword = !isConfirmPassword;
-            });
-          },
-          child:
-              Icon(isConfirmPassword ? Icons.visibility_off : Icons.visibility),
+        const SizedBox(height: 15),
+        CustomTextForm(
+          textController: phoneTextC,
+          pIcon: Icons.phone,
+          text: 'Phone',
+          kType: TextInputType.number,
         ),
-      ),
-      const SizedBox(height: 20),
-      BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is AuthLoading) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return VerifyScreen(
-                email: emailTextC.text.trim(),
+        const SizedBox(height: 15),
+        CustomTextForm(
+          textController: emailTextC,
+          text: 'Email',
+          pIcon: Icons.email,
+          kType: TextInputType.emailAddress,
+        ),
+        const SizedBox(height: 15),
+        CustomTextForm(
+          textController: passwordTextC,
+          obscureText: isPassword,
+          text: 'Password',
+          pIcon: Icons.lock,
+          kType: TextInputType.visiblePassword,
+          sIcon: InkWell(
+            onTap: () {
+              setState(
+                () {
+                  isPassword = !isPassword;
+                },
               );
-            }));
-          }
-          if (state is AuthError) {
-            Warning.showWarning(context, message: state.errMessage);
-          }
-        },
-        builder: (context, state) {
-          return state is AuthLoading
-              ? const CircularProgressIndicator()
-              : CustomButton(
-                  onPressed: () async {
-                    if (passwordTextC.text.isNotEmpty &&
-                      
-                        emailTextC.text.isNotEmpty) {
-                      if (passwordTextC.text == confirmPasswordTextC.text) {
-                        FocusScope.of(context).unfocus();
-                        await context
-                            .read<AuthCubit>()
-                            .registerWithEmailAndPassword(
-                              email: emailTextC.text.trim(),
-                              password: passwordTextC.text.trim(),
-                            );
+            },
+            child: Icon(isPassword ? Icons.visibility_off : Icons.visibility),
+          ),
+        ),
+        const SizedBox(height: 15),
+        CustomTextForm(
+          textController: confirmPasswordTextC,
+          text: 'Confirm Password',
+          pIcon: Icons.lock,
+          obscureText: isConfirmPassword,
+          kType: TextInputType.visiblePassword,
+          sIcon: InkWell(
+            onTap: () {
+              setState(
+                () {
+                  isConfirmPassword = !isConfirmPassword;
+                },
+              );
+            },
+            child: Icon(
+                isConfirmPassword ? Icons.visibility_off : Icons.visibility),
+          ),
+        ),
+        const SizedBox(height: 20),
+        BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSuccess) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return VerifyScreen(
+                  email: emailTextC.text.trim(),
+                );
+              }));
+            }
+            if (state is AuthError) {
+              Warning.showWarning(context, message: state.errMessage);
+            }
+          },
+          builder: (context, state) {
+            return state is AuthLoading
+                ? const CircularProgressIndicator()
+                : CustomButton(
+                    onPressed: () async {
+                      if (passwordTextC.text.isNotEmpty &&
+                          emailTextC.text.isNotEmpty) {
+                        if (passwordTextC.text == confirmPasswordTextC.text) {
+                          FocusScope.of(context).unfocus();
+                          await context
+                              .read<AuthCubit>()
+                              .registerWithEmailAndPassword(
+                                email: emailTextC.text.trim(),
+                                password: passwordTextC.text.trim(),
+                              );
+                        } else {
+                          Warning.showWarning(context,
+                              message: 'Password Not Match');
+                        }
                       } else {
                         Warning.showWarning(context,
-                            message: 'Password Not Match');
+                            message: 'Please Fill All Field');
                       }
-                    } else {
-                      Warning.showWarning(context,
-                          message: 'Please Fill All Field');
-                    }
-                  },
-                  text: 'Register');
-        },
-      )
-    ]);
+                    },
+                    text: 'Register');
+          },
+        )
+      ],
+    );
   }
 }

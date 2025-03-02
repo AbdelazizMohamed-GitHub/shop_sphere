@@ -9,6 +9,7 @@ import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_checkout_listile.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_checkout_payment.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_get_location_widget.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
@@ -78,32 +79,7 @@ class CheckoutScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          height: 180,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.asset(
-                                AppImages.map,
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                        Container(
-                          height: 180,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.black.withValues(alpha: 0.5)),
-                        ),
-                        CustomCircleButton(
-                            icon: const Icon(
-                              Icons.location_on,
-                              color: AppColors.primaryColor,
-                            ),
-                            funcation: () {})
-                      ],
-                    ),
+      CustomGetLocationWidget(),
                     const SizedBox(
                       height: 20,
                     ),

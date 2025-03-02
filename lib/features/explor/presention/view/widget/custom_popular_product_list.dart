@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/widget/custom_product_item.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class CustomPopularProductList extends StatelessWidget {
-  const CustomPopularProductList({
+class CustomVerticalProductList extends StatelessWidget {
+  const CustomVerticalProductList({
     super.key,
     required this.products,
   });
@@ -15,14 +15,13 @@ class CustomPopularProductList extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(12),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
         childAspectRatio: 0.7,
       ),
-      itemCount: 0,
+      itemCount: products.length,
       itemBuilder: (context, index) {
         return CustomProductItem(
           product: products[index],

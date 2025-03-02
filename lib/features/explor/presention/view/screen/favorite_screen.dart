@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
@@ -18,7 +19,8 @@ class FavoriteScreen extends StatelessWidget {
                 context.read<MainCubit>().changeScreenIndex(0);
               }),
           title: const Text('Favorite')),
-      body: const SingleChildScrollView(child: CustomPopularProductList(products: [],)),
+      body:const Center(child: Icon(Icons.favorite_rounded,color: AppColors.primaryColor,size: 100,))
+      // const SingleChildScrollView(child: CustomPopularProductList(products: [],)),
     );
   }
 }

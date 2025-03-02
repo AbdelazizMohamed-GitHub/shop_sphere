@@ -19,7 +19,13 @@ class SeeAllScreen extends StatelessWidget {
         leadingWidth: 100,
         title: const Text("See All"),
       ),
-      body: SingleChildScrollView(child: CustomPopularProductList(products:products ,)),
+      body: SingleChildScrollView(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: CustomVerticalProductList(
+          products: products,
+        ),
+      )),
     );
   }
 }

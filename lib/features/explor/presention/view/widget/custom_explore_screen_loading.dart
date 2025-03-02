@@ -50,7 +50,7 @@ class CustomExploreScreenLoading extends StatelessWidget {
             ),
             const SizedBox(
                 height: 200,
-                child:  CustomNewArrivelsList(
+                child:  CustomHorzintalProductList(
                   products: [],
                 )),
             CustomProductTitleSection(
@@ -66,7 +66,7 @@ class CustomExploreScreenLoading extends StatelessWidget {
                 );
               },
             ),
-            const CustomPopularProductList(
+            const CustomVerticalProductList(
               products: [],
             )
           ],

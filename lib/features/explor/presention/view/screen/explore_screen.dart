@@ -57,59 +57,65 @@ class ExploreScreen extends StatelessWidget {
                   context.read<ProductCubit>().getProducts();
                 },
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const CustomExploreScreenSearch(),
-                      const Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Categories',
-                              style: AppStyles.text18RegularBlack,
-                              textAlign: TextAlign.start,
-                            ),
-                          ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Column(
+                      children: [
+                        const CustomExploreScreenSearch(),
+                        const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Categories',
+                                style: AppStyles.text18RegularBlack,
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                     const SizedBox(height: 40, child: CustomCategoryList()),
-                      const SizedBox(height: 10),
-                      const CustomAdvertise(),
-                      CustomProductTitleSection(
-                        title: 'New Arrivals',
-                        funcation: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SeeAllScreen(
-                                products: state.products,
+                        const SizedBox(height: 40, child: CustomCategoryList()),
+                        const SizedBox(height: 10),
+                        const CustomAdvertise(),
+                        CustomProductTitleSection(
+                          title: 'New Arrivals',
+                          funcation: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SeeAllScreen(
+                                  products: state.products,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      SizedBox(
-                          height: 200,
-                          child: CustomNewArrivelsList(
+                            );
+                          },
+                        ),
+                        SizedBox(
+                            height: 200,
+                            child: CustomHorzintalProductList(
+                              products: state.products,
+                            )),
+                        CustomProductTitleSection(
+                          title: 'Popular Products',
+                          funcation: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SeeAllScreen(
+                                  products: state.products,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: CustomVerticalProductList(
                             products: state.products,
-                          )),
-                      CustomProductTitleSection(
-                        title: 'Popular Products',
-                        funcation: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SeeAllScreen(
-                                products: state.products,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      CustomPopularProductList(
-                        products: state.products,
-                      )
-                    ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );
