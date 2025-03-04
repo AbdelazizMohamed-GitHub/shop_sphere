@@ -16,6 +16,13 @@ List<PaymentMethodModel> paymentMethod = [
   PaymentMethodModel(title: "Paypal", icon: Icons.paypal_outlined),
   PaymentMethodModel(title: "Credit Card", icon: Icons.credit_card_outlined)
 ];
+  List orderStauts=[
+    'Pending',
+    'Delivered',
+    'Processing',
+    'Cancelled',
+  ];
+
 
 class PaymentMethodModel {
   final String title;

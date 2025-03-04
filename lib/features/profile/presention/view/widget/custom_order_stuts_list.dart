@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/constant/app_color.dart';
 import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/constant/screens_list.dart';
 import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
@@ -13,7 +14,7 @@ class CustomOrderStutsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
-      itemCount: TestList.orderStauts.length,
+      itemCount: orderStauts.length,
       separatorBuilder: (BuildContext context, int index) {
         return const SizedBox(
           width: 10,
@@ -40,7 +41,7 @@ class CustomOrderStutsList extends StatelessWidget {
                 ),
                 duration: const Duration(milliseconds: 500),
                 child: Center(
-                  child: Text(TestList.orderStauts[index],
+                  child: Text(orderStauts[index],
                       style: index == context.read<OrderCubit>().currentStatus
                           ? AppStyles.text18RegularWhite
                           : AppStyles.text18RegularBlack),

@@ -33,7 +33,7 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
           title,
           style: AppStyles.text16BoldBlack,
         ),
-        Text(
+      const  Text(
           "01153019984",
           style: AppStyles.text16RegularBlack,
         ),

@@ -98,11 +98,5 @@ class TestList {
     'total': 109.97,
   };
 
-static  List orderStauts=[
-    'Pending',
-    'Delivered',
-    'Processing',
-    'Cancelled',
-  ];
 
 }
