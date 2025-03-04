@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 
 class CustomCheckoutListile extends StatelessWidget {
   const CustomCheckoutListile(
@@ -10,7 +10,7 @@ class CustomCheckoutListile extends StatelessWidget {
       required this.icon,
       required this.isSelect});
   final String title, subtitle;
-  final IconData icon;
+  final Widget icon;
   final bool isSelect;
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,7 @@ class CustomCheckoutListile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               color: isSelect ? Colors.white : Colors.grey[200],
             ),
-            child: Icon(
-              icon,
-              color: Colors.black,
-            )),
+            child: icon),
         title: Text(
           title,
           style: AppStyles.text16BoldBlack

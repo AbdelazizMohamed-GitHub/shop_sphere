@@ -1,4 +1,4 @@
-import 'package:shop_sphere/core/constant/app_images.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 List<ProductEntity> dummyProducts = [

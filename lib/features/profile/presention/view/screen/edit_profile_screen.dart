@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_photo.dart';

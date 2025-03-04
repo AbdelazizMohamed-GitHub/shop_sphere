@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_images.dart';
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/onboarding_screen.dart';
 

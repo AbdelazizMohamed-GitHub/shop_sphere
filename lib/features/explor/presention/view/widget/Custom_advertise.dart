@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart' show CarouselOptions, CarouselSlider;
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/constant/app_images.dart';
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 
 class CustomAdvertise extends StatelessWidget {
   const CustomAdvertise({super.key});

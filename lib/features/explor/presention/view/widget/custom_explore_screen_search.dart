@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/constant/app_images.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 
 class CustomExploreScreenSearch extends StatelessWidget {

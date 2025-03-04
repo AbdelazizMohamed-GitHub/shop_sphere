@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 
 class CustomOrderDetailsHeader extends StatelessWidget {

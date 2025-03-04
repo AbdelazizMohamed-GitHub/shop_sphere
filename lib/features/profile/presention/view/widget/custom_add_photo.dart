@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_images.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 
 class CustomAddPhoto extends StatelessWidget {
   const CustomAddPhoto({super.key});

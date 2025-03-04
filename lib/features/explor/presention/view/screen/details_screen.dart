@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 
-import 'package:shop_sphere/core/constant/app_color.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/see_all_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_details_buttom.dart';

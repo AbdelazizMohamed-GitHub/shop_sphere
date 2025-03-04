@@ -10,6 +10,8 @@ class AppImages {
   static const String profile = 'assets/images/profile.png';
   static const String filter = 'assets/images/filter.png';
   static const String map = "assets/images/map.jpg";
+  static const String paypal = "assets/images/paypal.png";
+  static const String payCash = 'assets/images/payCash.png';
 }
 
 class ProductImages {
@@ -22,8 +24,5 @@ class ProductImages {
   static const String apple = "assets/product/watch.png";
   static const String mouse = "assets/product/mouse.png";
   static const String tv = "assets/product/tv.jpg";
-    static const String jpl = "assets/product/jpl.png";
-
-  
-
+  static const String jpl = "assets/product/jpl.png";
 }

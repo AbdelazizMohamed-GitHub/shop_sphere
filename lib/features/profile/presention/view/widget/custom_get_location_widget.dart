@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 
-import 'package:shop_sphere/core/constant/app_color.dart';
-import 'package:shop_sphere/core/constant/app_images.dart';
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 
@@ -33,7 +33,7 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
           title,
           style: AppStyles.text16BoldBlack,
         ),
-      const  Text(
+        const Text(
           "01153019984",
           style: AppStyles.text16RegularBlack,
         ),

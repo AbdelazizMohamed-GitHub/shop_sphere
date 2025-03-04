@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomDetailsHeader extends StatelessWidget {

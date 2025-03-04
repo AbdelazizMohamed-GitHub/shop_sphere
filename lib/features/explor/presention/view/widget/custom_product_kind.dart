@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/constant/app_images.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 
 class CustomProductKind extends StatelessWidget {
   const CustomProductKind({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/constant/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
-import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+
 import 'package:shop_sphere/features/profile/presention/controller/checkout/check_out_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/checkout/check_out_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';
@@ -44,25 +44,26 @@ class CheckoutScreen extends StatelessWidget {
                       const CustomCheckoutListile(
                           title: "abdelaziz@gmail.com",
                           subtitle: "Email",
-                          icon: Icons.email_outlined,
+                          icon: Icon(Icons.email_outlined),
                           isSelect: false),
                       const CustomCheckoutListile(
                         title: "01153019984",
                         subtitle: "Phone",
-                        icon: Icons.phone_outlined,
+                        icon: Icon(Icons.phone_outlined),
                         isSelect: false,
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Address",
                             style: AppStyles.text18RegularBlack,
                           ),
-                          Icon(Icons.add),
+                          CustomCircleButton(
+                              icon: const Icon(Icons.add), funcation: () {})
                         ],
                       ),
                       const SizedBox(
@@ -72,14 +73,12 @@ class CheckoutScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Payment Method",
-                            style: AppStyles.text18RegularBlack,
-                          ),
-                        ],
+                     const Text(
+                        "Payment Method",
+                        style: AppStyles.text18RegularBlack,
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       const CustomCheckoutPayment(),
                       const SizedBox(

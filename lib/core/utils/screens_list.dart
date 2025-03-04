@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/explore_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/favorite_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/notifications_screen.dart';
@@ -11,31 +12,30 @@ const List<Widget> screens = [
   ProfileScreen(),
 ];
 List<PaymentMethodModel> paymentMethod = [
-  PaymentMethodModel(
-      title: "Cash on delivery", icon: Icons.money_off_csred_outlined),
-  PaymentMethodModel(title: "Paypal", icon: Icons.paypal_outlined),
-  PaymentMethodModel(title: "Credit Card", icon: Icons.credit_card_outlined)
+  PaymentMethodModel(title: "Cash on delivery", imagePath: AppImages.payCash),
+  PaymentMethodModel(title: "Paypal", imagePath: AppImages.paypal),
 ];
-  List orderStauts=[
-    'Pending',
-    'Delivered',
-    'Processing',
-    'Cancelled',
-  ];
-
+List orderStauts = [
+  'Pending',
+  'Delivered',
+  'Processing',
+  'Cancelled',
+];
 
 class PaymentMethodModel {
   final String title;
-  final IconData icon;
+  final String imagePath;
 
-  PaymentMethodModel({required this.title, required this.icon});
+  PaymentMethodModel({required this.title, required this.imagePath});
 }
 
 List category = [
   "All",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
+  "Electronics ",
+  "Clothing",
+  "Home ",
+  "Sports ",
+  "Toys ",
+  "Automotive  ",
+  "Books ",
 ];
