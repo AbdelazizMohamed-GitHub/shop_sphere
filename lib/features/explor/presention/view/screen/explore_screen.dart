@@ -25,7 +25,6 @@ class ExploreScreen extends StatelessWidget {
       create: (context) =>
           ProductCubit(productRepo: ProductRepoImpl())..getProducts(),
       child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -58,7 +57,7 @@ class ExploreScreen extends StatelessWidget {
                 },
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 12),
+                    padding: const EdgeInsets.only(left: 16),
                     child: Column(
                       children: [
                         const CustomExploreScreenSearch(),
@@ -68,7 +67,7 @@ class ExploreScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Categories',
-                                style: AppStyles.text18RegularBlack,
+                                style: AppStyles.text22SemiBoldBlack,
                                 textAlign: TextAlign.start,
                               ),
                             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class CustomDetailsButtom extends StatefulWidget {
   const CustomDetailsButtom({super.key});
@@ -14,11 +15,11 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           Container(
-              height: 60,
+              height: 50,
               width: 150,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -59,28 +60,35 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
             width: 10,
           ),
           Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              height: 50,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Add to cart',
-                    style: AppStyles.text26BoldWhite,
-                  ),
-                ],
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CartScreen();
+                }));
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Go to cart',
+                      style: AppStyles.text26BoldWhite,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -13,9 +13,10 @@ import 'package:shop_sphere/features/explor/presention/view/widget/custom_produc
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
     super.key,
-    required this.product, required this.products,
+    required this.product,
+    required this.products,
   });
-final ProductEntity product;
+  final ProductEntity product;
   final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,13 @@ final ProductEntity product;
             padding: const EdgeInsets.only(left: 20),
             child: SingleChildScrollView(
               child: Column(children: [
-                 CustomDetailsHeader(product: product,),
-                 Padding(
+                CustomDetailsHeader(
+                  product: product,
+                ),
+                Padding(
                   padding: const EdgeInsets.only(right: 10, top: 20),
                   child: ReadMoreText(
-                    '${product.description}  Perfume is a blend of essential oils, aromatic compounds, and solvents, used to give the body, clothes, or environment a pleasant and attractive scent. Perfumes vary in their compositions and longevity, ranging from highly concentrated perfumes (like "Parfum") to lighter fragrances (like "Eau de Cologne"). Each perfume is distinguished by its unique ingredients, which may be floral, woody, citrusy, or oriental, reflecting a distinctive character and personality for each wearer. 🌿✨',
+                    '${product.description}  Perfumes vary in their compositions and longevity, ranging from highly concentrated perfumes (like "Parfum") to lighter fragrances (like "Eau de Cologne"). Each perfume is distinguished by its unique ingredients, which may be floral, woody, citrusy, or oriental, reflecting a distinctive character and personality for each wearer. 🌿✨',
                     style: const TextStyle(fontSize: 16),
                     trimMode: TrimMode.Length,
                     trimLines: 2,
@@ -48,7 +51,9 @@ final ProductEntity product;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SeeAllScreen(products: [],),
+                        builder: (context) => SeeAllScreen(
+                          products: products,
+                        ),
                       ),
                     );
                   },
@@ -56,7 +61,11 @@ final ProductEntity product;
                 const SizedBox(
                   height: 10,
                 ),
-                 SizedBox(height: 200, child: CustomHorzintalProductList(products:products ,))
+                SizedBox(
+                    height: 200,
+                    child: CustomHorzintalProductList(
+                      products: products,
+                    ))
               ]),
             )),
         bottomNavigationBar: const CustomDetailsButtom());

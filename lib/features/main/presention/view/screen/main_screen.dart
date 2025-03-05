@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/screens_list.dart' ;
+import 'package:shop_sphere/core/utils/screens_list.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
 
 class MainScreen extends StatefulWidget {
@@ -20,6 +20,7 @@ class _MainScreenState extends State<MainScreen> {
         builder: (context, state) {
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
+              backgroundColor: Colors.white,
               currentIndex: context.read<MainCubit>().intialIndex,
               onTap: (index) {
                 context.read<MainCubit>().changeScreenIndex(index);

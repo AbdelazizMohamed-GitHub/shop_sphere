@@ -45,9 +45,10 @@ class ProfileScreen extends StatelessWidget {
               radius: 50,
               backgroundImage: AssetImage(AppImages.profile),
             ),
+           const SizedBox(height: 10),
             const Text(
               'User Name',
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: AppStyles.text18RegularWhite,
             ),
             Text(
               FirebaseAuth.instance.currentUser?.email ?? "Email",

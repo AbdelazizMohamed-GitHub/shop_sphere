@@ -15,7 +15,7 @@ class CustomDetailsHeader extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.6,
       child: Stack(children: [
         Positioned(
-            top: 10,
+            top: 50,
             left: 50,
             right: 10,
             bottom: 0,

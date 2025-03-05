@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/screens_list.dart';
 
 class CustomCategoryList extends StatefulWidget {
-  const CustomCategoryList({super.key, });
+  const CustomCategoryList({
+    super.key,
+  });
 
   @override
   State<CustomCategoryList> createState() => _CustomCategoryListState();
@@ -14,7 +17,7 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.only(left: 12),
+      padding: const EdgeInsets.only(right: 12),
       scrollDirection: Axis.horizontal,
       itemCount: 5,
       separatorBuilder: (BuildContext context, int index) {
@@ -30,8 +33,8 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
             });
           },
           child: Container(
-            width: 120,
             height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               color:
                   currentIndex == index ? AppColors.primaryColor : Colors.white,
@@ -39,7 +42,7 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
             ),
             child: Center(
               child: Text(
-                'Category $index',
+                category[index],
                 style: AppStyles.text16BoldBlack.copyWith(
                     color: currentIndex == index ? Colors.white : Colors.black),
               ),
