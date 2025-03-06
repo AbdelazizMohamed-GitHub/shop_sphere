@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
@@ -11,6 +12,7 @@ import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.
 import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_theme_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -18,7 +20,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppTheme.isLightTheme(context)
+          ? AppColors.primaryColor
+          : AppColors.backgroundDarkColor,
       appBar: AppBar(
         leadingWidth: 100,
         leading: IconButton(
@@ -34,7 +38,9 @@ class ProfileScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppTheme.isLightTheme(context)
+            ? AppColors.primaryColor
+            : AppColors.secondaryDarkColor,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -45,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
               radius: 50,
               backgroundImage: AssetImage(AppImages.profile),
             ),
-           const SizedBox(height: 10),
+            const SizedBox(height: 10),
             const Text(
               'User Name',
               style: AppStyles.text18RegularWhite,
@@ -93,11 +99,7 @@ class ProfileScreen extends StatelessWidget {
                 }));
               },
             ),
-            CustomProfileListTile(
-              icon: Icons.settings_outlined,
-              title: 'Setting',
-              funcation: () {},
-            ),
+            const CustomThemeWidget(),
             const Divider(
               color: Colors.white,
             ),

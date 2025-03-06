@@ -31,15 +31,15 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
       children: [
         Text(
           title,
-          style: AppStyles.text16BoldBlack,
+          style: AppStyles.text16Bold,
         ),
         const Text(
           "01153019984",
-          style: AppStyles.text16RegularBlack,
+          style: AppStyles.text16Regular,
         ),
         Text(
           "$city, $street",
-          style: AppStyles.text16RegularBlack,
+          style: AppStyles.text16Regular,
         ),
         const SizedBox(
           height: 10,

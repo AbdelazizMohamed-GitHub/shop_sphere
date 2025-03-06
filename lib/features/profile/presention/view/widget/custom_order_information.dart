@@ -11,9 +11,9 @@ class CustomOrderInformation extends StatelessWidget {
       children: [
         const Text(
           "Order Information",
-          style: AppStyles.text18RegularBlack,
+          style: AppStyles.text18Regular,
         ),
-       const Divider(
+        const Divider(
           height: 20,
         ),
         const Row(
@@ -21,7 +21,7 @@ class CustomOrderInformation extends StatelessWidget {
           children: [
             Text(
               "Shipping Address",
-              style: AppStyles.text16RegularBlack,
+              style: AppStyles.text16Regular,
             ),
             SizedBox(
               width: 10,
@@ -40,7 +40,7 @@ class CustomOrderInformation extends StatelessWidget {
           children: [
             Text(
               "Payment Method",
-              style: AppStyles.text16RegularBlack,
+              style: AppStyles.text16Regular,
             ),
             SizedBox(
               width: 10,
@@ -59,7 +59,7 @@ class CustomOrderInformation extends StatelessWidget {
           children: [
             Text(
               "Delivery Cost",
-              style: AppStyles.text16RegularBlack,
+              style: AppStyles.text16Regular,
             ),
             SizedBox(
               width: 40,
@@ -67,7 +67,7 @@ class CustomOrderInformation extends StatelessWidget {
             Expanded(
               child: Text(
                 "30 \$",
-                style: AppStyles.text16RegularBlack,
+                style: AppStyles.text16Regular,
               ),
             )
           ],
@@ -76,14 +76,14 @@ class CustomOrderInformation extends StatelessWidget {
           children: [
             const Text(
               'Total Price ',
-              style: AppStyles.text16BoldBlack,
+              style: AppStyles.text16Bold,
             ),
             const SizedBox(
               width: 50,
             ),
             Text(
               "${order['total'].toStringAsFixed(2)} \$",
-              style: AppStyles.text16BoldBlack,
+              style: AppStyles.text16Bold,
             )
           ],
         ),

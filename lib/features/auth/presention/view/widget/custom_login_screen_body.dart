@@ -69,7 +69,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
             },
             child: Text(
               'Forgot Password?',
-              style: AppStyles.text18RegularBlack.copyWith(
+              style: AppStyles.text18Regular.copyWith(
                   color: AppColors.primaryColor, fontWeight: FontWeight.bold),
             ),
           ),
@@ -94,9 +94,8 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
                 : CustomButton(
                     onPressed: () {
                       if (emailTextC.text.isNotEmpty &&
-                           passwordTextC.text.isNotEmpty 
-                          ) {
-                            FocusScope.of(context).unfocus();
+                          passwordTextC.text.isNotEmpty) {
+                        FocusScope.of(context).unfocus();
                         context.read<AuthCubit>().logInWithEmailAndPassword(
                             context: context,
                             email: emailTextC.text.trim(),

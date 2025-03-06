@@ -2,12 +2,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 
 class CustomProductTitleSection extends StatelessWidget {
   const CustomProductTitleSection({
     super.key,
     required this.title,
-   required this.funcation,
+    required this.funcation,
   });
 
   final String title;
@@ -20,15 +21,18 @@ class CustomProductTitleSection extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppStyles.text22SemiBoldBlack,
+            style: AppStyles.text22SemiBoldBlack.copyWith(
+                color: AppTheme.isLightTheme(context)
+                    ? Colors.black
+                    : Colors.white),
             textAlign: TextAlign.start,
           ),
           const Spacer(),
           TextButton(
               onPressed: funcation,
-              child: const Text(
+              child:const Text(
                 'See All',
-                style: AppStyles.text18RegularBlack,
+                style: AppStyles.text18Regular,
               ))
         ],
       ),

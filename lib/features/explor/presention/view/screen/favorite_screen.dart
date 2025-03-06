@@ -10,16 +10,21 @@ class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leadingWidth: 100,
-          leading: CustomCircleButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              funcation: () {
-                context.read<MainCubit>().changeScreenIndex(0);
-              }),
-          title: const Text('Favorite')),
-      body:const Center(child: Icon(Icons.favorite_rounded,color: AppColors.primaryColor,size: 100,))
-      // const SingleChildScrollView(child: CustomPopularProductList(products: [],)),
-    );
+        appBar: AppBar(
+            leadingWidth: 100,
+            leading: CustomCircleButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                funcation: () {
+                  context.read<MainCubit>().changeScreenIndex(0);
+                }),
+            title: const Text('Favorite')),
+        body: const Center(
+            child: Icon(
+          Icons.favorite_rounded,
+          color: AppColors.primaryColor,
+          size: 100,
+        ))
+        // const SingleChildScrollView(child: CustomPopularProductList(products: [],)),
+        );
   }
 }

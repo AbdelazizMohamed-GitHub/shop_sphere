@@ -16,7 +16,11 @@ class CustomAppBarCart extends StatelessWidget {
               Icons.shopping_cart,
             ),
             funcation: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen(),));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CartScreen(),
+                  ));
             }),
         const Positioned(
           top: 0,

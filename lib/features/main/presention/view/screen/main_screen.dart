@@ -20,13 +20,12 @@ class _MainScreenState extends State<MainScreen> {
         builder: (context, state) {
           return Scaffold(
             bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: Colors.white,
+              type: BottomNavigationBarType.fixed,
               currentIndex: context.read<MainCubit>().intialIndex,
               onTap: (index) {
                 context.read<MainCubit>().changeScreenIndex(index);
               },
               selectedItemColor: AppColors.primaryColor,
-              type: BottomNavigationBarType.fixed,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),

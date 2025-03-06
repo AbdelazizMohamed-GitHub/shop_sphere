@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
@@ -27,11 +28,8 @@ class ExploreScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
           title: const Text(
             'Explore',
-            style: AppStyles.text26BoldBlack,
           ),
           actions: const [
             CustomAppBarCart(),
@@ -61,13 +59,17 @@ class ExploreScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         const CustomExploreScreenSearch(),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.all(12),
                           child: Row(
                             children: [
                               Text(
                                 'Categories',
-                                style: AppStyles.text22SemiBoldBlack,
+                                style: AppStyles.text22SemiBoldBlack.copyWith(
+                                  color: AppTheme.isLightTheme(context)
+                                      ? Colors.black
+                                      : Colors.white,
+                                ),
                                 textAlign: TextAlign.start,
                               ),
                             ],

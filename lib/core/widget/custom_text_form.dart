@@ -9,7 +9,7 @@ class CustomTextForm extends StatelessWidget {
       required this.text,
       this.textController,
       this.obscureText = false,
-  required this.kType});
+      required this.kType});
   final IconData pIcon;
   final Widget? sIcon;
   final String text;
@@ -29,8 +29,10 @@ class CustomTextForm extends StatelessWidget {
       },
       controller: textController,
       decoration: InputDecoration(
+          filled: true,
           errorBorder: border,
           focusedErrorBorder: border,
+          disabledBorder: border,
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: AppColors.primaryColor)),
@@ -43,5 +45,5 @@ class CustomTextForm extends StatelessWidget {
 }
 
 var border = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(10),
-);
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.grey));

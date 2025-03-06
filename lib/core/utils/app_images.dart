@@ -12,6 +12,7 @@ class AppImages {
   static const String map = "assets/images/map.jpg";
   static const String paypal = "assets/images/paypal.png";
   static const String payCash = 'assets/images/payCash.png';
+  static const String orderDone = 'assets/images/orderDone.svg';
 }
 
 class ProductImages {

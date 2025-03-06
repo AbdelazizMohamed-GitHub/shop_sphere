@@ -14,10 +14,10 @@ class EditProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Edit Profile"),
         leadingWidth: 100,
-        leading:const CustomBackButton(),
+        leading: const CustomBackButton(),
         actions: [
           Text("Done",
-              style: AppStyles.text18RegularBlack
+              style: AppStyles.text18Regular
                   .copyWith(color: AppColors.primaryColor)),
           const SizedBox(
             width: 20,

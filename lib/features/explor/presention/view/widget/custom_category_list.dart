@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/utils/screens_list.dart';
 
 class CustomCategoryList extends StatefulWidget {
@@ -36,15 +37,22 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
             height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
-              color:
-                  currentIndex == index ? AppColors.primaryColor : Colors.white,
+              color: currentIndex == index
+                  ? AppColors.primaryColor
+                  : AppTheme.isLightTheme(context)
+                      ? Colors.white
+                      : AppColors.secondaryDarkColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
               child: Text(
                 category[index],
-                style: AppStyles.text16BoldBlack.copyWith(
-                    color: currentIndex == index ? Colors.white : Colors.black),
+                style: AppStyles.text16Bold.copyWith(
+                    color: currentIndex == index
+                        ? Colors.white
+                        : AppTheme.isLightTheme(context)
+                            ? Colors.black
+                            : Colors.white),
               ),
             ),
           ),

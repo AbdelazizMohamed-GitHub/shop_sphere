@@ -8,24 +8,22 @@ class CustomLoginScreenHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   Row(
-                    children: [
-                      const Text('Don\'t have an account?',
-                          style: AppStyles.text18RegularBlack),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const RegisterScreen(),
-                          ));
-                        },
-                        child: Text(
-                          'Register',
-                          style: AppStyles.text18RegularBlack.copyWith(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  );
+    return Row(
+      children: [
+        const Text('Don\'t have an account?', style: AppStyles.text18Regular),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const RegisterScreen(),
+            ));
+          },
+          child: Text(
+            'Register',
+            style: AppStyles.text18Regular.copyWith(
+                color: AppColors.primaryColor, fontWeight: FontWeight.bold),
+          ),
+        )
+      ],
+    );
   }
 }

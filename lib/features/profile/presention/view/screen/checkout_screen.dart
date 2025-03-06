@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/test_data/test_list.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 
@@ -23,14 +25,23 @@ class CheckoutScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Checkout"),
-          leading: const CustomBackButton(),
+          leading: AppTheme.isLightTheme(context)
+              ? const CustomBackButton()
+              : IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 25,
+                  )),
           leadingWidth: 100,
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               Card(
-                color: Colors.white,
+                color: AppTheme.isLightTheme(context)
+                    ? Colors.white
+                    : AppColors.backgroundDarkColor,
                 margin: const EdgeInsets.all(16),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -39,17 +50,20 @@ class CheckoutScreen extends StatelessWidget {
                     children: [
                       const Text(
                         "Contact Information",
-                        style: AppStyles.text18RegularBlack,
+                        style: AppStyles.text18Regular,
                       ),
                       const CustomCheckoutListile(
                           title: "abdelaziz@gmail.com",
                           subtitle: "Email",
-                          icon: Icon(Icons.email_outlined),
+                          icon: Icon(Icons.email_outlined, color: Colors.black),
                           isSelect: false),
                       const CustomCheckoutListile(
                         title: "01153019984",
                         subtitle: "Phone",
-                        icon: Icon(Icons.phone_outlined),
+                        icon: Icon(
+                          Icons.phone_outlined,
+                          color: Colors.black,
+                        ),
                         isSelect: false,
                       ),
                       const SizedBox(
@@ -60,22 +74,22 @@ class CheckoutScreen extends StatelessWidget {
                         children: [
                           const Text(
                             "Address",
-                            style: AppStyles.text18RegularBlack,
+                            style: AppStyles.text18Regular,
                           ),
                           CustomCircleButton(
                               icon: const Icon(Icons.add), funcation: () {})
                         ],
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 5,
                       ),
                       const CustomGetLocationWidget(),
                       const SizedBox(
                         height: 20,
                       ),
-                     const Text(
+                      const Text(
                         "Payment Method",
-                        style: AppStyles.text18RegularBlack,
+                        style: AppStyles.text18Regular,
                       ),
                       const SizedBox(
                         height: 10,

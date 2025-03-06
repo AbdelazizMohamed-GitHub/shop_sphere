@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
 class AppStyles {
-  static const text14RegularBlack =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black);
-  static const text16RegularBlack =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black);
-  static const text16BoldBlack =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
-  static const text18RegularBlack =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black);
+  static const text14Regular = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+  );
+  static const text16Regular = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+  );
+  static const text16Bold = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+  static const text18Regular = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+  );
   static const text22SemiBoldBlack =
       TextStyle(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.black);
   static const text26BoldBlack =

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 
 class CustomCheckoutListile extends StatelessWidget {
   const CustomCheckoutListile(
@@ -15,12 +16,17 @@ class CustomCheckoutListile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
+      margin: EdgeInsets.only(bottom: 10),
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: isSelect ? AppColors.primaryColor : Colors.white),
+          color: isSelect
+              ? AppColors.primaryColor
+              : AppTheme.isLightTheme(context)
+                  ? Colors.white
+                  : AppColors.secondaryDarkColor),
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         leading: Container(
@@ -32,13 +38,21 @@ class CustomCheckoutListile extends StatelessWidget {
             child: icon),
         title: Text(
           title,
-          style: AppStyles.text16BoldBlack
-              .copyWith(color: isSelect ? Colors.white : Colors.black),
+          style: AppStyles.text16Bold.copyWith(
+              color: isSelect
+                  ? Colors.white
+                  : AppTheme.isLightTheme(context)
+                      ? Colors.black
+                      : Colors.white),
         ),
         subtitle: Text(
           subtitle,
-          style: AppStyles.text16RegularBlack
-              .copyWith(color: isSelect ? Colors.white : Colors.black),
+          style: AppStyles.text16Regular.copyWith(
+              color: isSelect
+                  ? Colors.white
+                  : AppTheme.isLightTheme(context)
+                      ? Colors.black
+                      : Colors.white),
         ),
       ),
     );

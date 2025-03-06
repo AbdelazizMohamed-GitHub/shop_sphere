@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/test_data/test_list.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_header.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_item.dart';
@@ -17,7 +18,14 @@ class OrderDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 100,
-        leading: const CustomBackButton(),
+        leading: AppTheme.isLightTheme(context)
+            ? const CustomBackButton()
+            : IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 25,
+                )),
         title: const Text('Order Details'),
       ),
       body: Padding(
@@ -29,7 +37,10 @@ class OrderDetailsScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               '${TestList.order["items"].length} Items',
-              style: AppStyles.text18RegularBlack,
+              style: AppStyles.text18Regular,
+            ),
+            SizedBox(
+              height: 5,
             ),
             Expanded(
               child: ListView.builder(
@@ -54,7 +65,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       borderSide: const BorderSide(color: Colors.black)),
                   child: const Text(
                     'Reorder',
-                    style: AppStyles.text16BoldBlack,
+                    style: AppStyles.text16Bold,
                   ),
                 ),
                 MaterialButton(
@@ -67,8 +78,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       borderSide: const BorderSide(color: Colors.black)),
                   child: Text(
                     'cancel',
-                    style:
-                        AppStyles.text16BoldBlack.copyWith(color: Colors.white),
+                    style: AppStyles.text16Bold.copyWith(color: Colors.white),
                   ),
                 ),
               ],

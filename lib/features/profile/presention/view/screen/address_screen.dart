@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 
 class AddressScreen extends StatelessWidget {
@@ -23,13 +24,22 @@ class AddressScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Address'),
         leadingWidth: 100,
-        leading: const CustomBackButton(),
+        leading: AppTheme.isLightTheme(context)
+            ? const CustomBackButton()
+            : IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon:const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 25,
+                )),
       ),
       body: Container(
         margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.isLightTheme(context)
+              ? Colors.white
+              : AppColors.secondaryDarkColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -39,25 +49,27 @@ class AddressScreen extends StatelessWidget {
             Row(children: [
               const Text(
                 "My Home",
-                style: AppStyles.text16BoldBlack,
+                style: AppStyles.text16Bold,
               ),
               const Spacer(),
               IconButton(
                   onPressed: () {
                     Funcations.addNewAddress(context);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.edit,
-                    color: AppColors.primaryColor,
+                    color: AppTheme.isLightTheme(context)
+                        ? Colors.black
+                        : Colors.white,
                   ))
             ]),
             const Text(
               "+20 1234567890",
-              style: AppStyles.text16RegularBlack,
+              style: AppStyles.text16Regular,
             ),
             const Text(
               "3 El Nozha Street, Cairo, Egypt",
-              style: AppStyles.text16RegularBlack,
+              style: AppStyles.text16Regular,
             ),
           ],
         ),

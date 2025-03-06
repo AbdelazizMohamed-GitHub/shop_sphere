@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/utils/screens_list.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
@@ -35,7 +36,9 @@ class CustomOrderStutsList extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: index == context.read<OrderCubit>().currentStatus
                       ? AppColors.primaryColor
-                      : Colors.white,
+                      : AppTheme.isLightTheme(context)
+                          ? Colors.white
+                          : AppColors.secondaryDarkColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 duration: const Duration(milliseconds: 500),
@@ -43,7 +46,11 @@ class CustomOrderStutsList extends StatelessWidget {
                   child: Text(orderStauts[index],
                       style: index == context.read<OrderCubit>().currentStatus
                           ? AppStyles.text18RegularWhite
-                          : AppStyles.text18RegularBlack),
+                          : AppStyles.text18Regular.copyWith(
+                              color: AppTheme.isLightTheme(context)
+                                  ? Colors.black
+                                  : Colors.white,
+                            )),
                 ),
               ),
             );

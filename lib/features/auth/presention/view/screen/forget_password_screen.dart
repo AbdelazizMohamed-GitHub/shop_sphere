@@ -52,7 +52,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             ),
             const Text(
               'Forgot your password? Lets get you back on track! 🌟',
-              style: AppStyles.text18RegularBlack,
+              style: AppStyles.text18Regular,
               textAlign: TextAlign.center,
             ),
             const SizedBox(

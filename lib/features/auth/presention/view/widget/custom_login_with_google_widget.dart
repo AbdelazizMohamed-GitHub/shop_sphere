@@ -18,35 +18,42 @@ class CustomLogInWithGoogle extends StatelessWidget {
           Warning.showWarning(context, message: state.errMessage);
         }
         if (state is AuthSuccess) {
-Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const MainScreen(),), (route) => false);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainScreen(),
+              ),
+              (route) => false);
         }
       },
       builder: (context, state) {
-        return state is GoogleAuthLoading ?const Center(child:  CircularProgressIndicator()) : InkWell(
-          onTap: () {
-            BlocProvider.of<AuthCubit>(context).loginWithGoogle();
-          },
-          child:  Container(
-            width: double.infinity,
-            height: 50,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.grey)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(AppImages.google),
-                const SizedBox(
-                  width: 10,
+        return state is GoogleAuthLoading
+            ? const Center(child: CircularProgressIndicator())
+            : InkWell(
+                onTap: () {
+                  BlocProvider.of<AuthCubit>(context).loginWithGoogle();
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(AppImages.google),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'Sign in with Google',
+                        style: AppStyles.text18Regular,
+                      )
+                    ],
+                  ),
                 ),
-                const Text(
-                  'Sign in with Google',
-                  style: AppStyles.text18RegularBlack,
-                )
-              ],
-            ),
-          ),
-        );
+              );
       },
     );
   }

@@ -7,11 +7,12 @@ class CustomProfileListTile extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.funcation,
+    required this.funcation,  this.trailing=const Icon(Icons.arrow_forward_ios),
   });
   final IconData icon;
   final String title;
  final void Function()funcation;
+ final Widget trailing;
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -21,7 +22,7 @@ class CustomProfileListTile extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),titleTextStyle: AppStyles.text18RegularWhite,
       trailing:
-          IconButton(onPressed: funcation, icon:const Icon(Icons.arrow_forward_ios)),
+          IconButton(onPressed: funcation, icon: trailing),
     );
     
   }

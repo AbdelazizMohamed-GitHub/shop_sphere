@@ -58,7 +58,7 @@ class CustomDetailsHeader extends StatelessWidget {
               height: 10,
             ),
             Text('\$${product.price.toStringAsFixed(2)}',
-                style: AppStyles.text16BoldBlack),
+                style: AppStyles.text16Bold),
           ]),
         ),
 

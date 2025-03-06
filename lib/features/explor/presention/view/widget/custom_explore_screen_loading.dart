@@ -26,7 +26,7 @@ class CustomExploreScreenLoading extends StatelessWidget {
                 children: [
                   Text(
                     'Categories',
-                    style: AppStyles.text18RegularBlack,
+                    style: AppStyles.text18Regular,
                     textAlign: TextAlign.start,
                   ),
                 ],

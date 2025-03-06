@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/test_data/test_list.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/checkout_screen.dart';
@@ -13,9 +14,16 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          leadingWidth: 100,
-          title: const Text('My Cart'),
-          leading: const CustomBackButton()),
+        leadingWidth: 100,
+        title: const Text('My Cart'),
+        leading: AppTheme.isLightTheme(context)
+            ? const CustomBackButton()
+            : IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios_new)),
+      ),
       body: Column(
         children: [
           const Expanded(child: CustomCartItemList()),

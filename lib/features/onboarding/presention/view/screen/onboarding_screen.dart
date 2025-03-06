@@ -98,7 +98,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: currentPage == 2
                           ?  Text(' Start Shopping',
                               style:
-                                  AppStyles.text16RegularBlack.copyWith(color: Colors.white))
+                                  AppStyles.text16Regular.copyWith(color: Colors.white))
                           : const Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.white,

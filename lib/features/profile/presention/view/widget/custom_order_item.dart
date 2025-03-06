@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/utils/screens_list.dart';
 import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
@@ -15,7 +17,9 @@ class CustomOrderItem extends StatelessWidget {
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
         return Card(
-          color: Colors.white,
+          color: AppTheme.isLightTheme(context)
+              ? Colors.white
+              : AppColors.secondaryDarkColor,
           margin: const EdgeInsets.all(10),
           child: Padding(
             padding: const EdgeInsets.all(12),
@@ -24,7 +28,7 @@ class CustomOrderItem extends StatelessWidget {
                 const Row(children: [
                   Text(
                     'Order # 19470',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: AppStyles.text16Bold,
                   ),
                   Spacer(),
                   Text(
@@ -72,7 +76,8 @@ class CustomOrderItem extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => OrderDetailsScreen(order: TestList.order),
+                            builder: (context) =>
+                                OrderDetailsScreen(order: TestList.order),
                           ));
                     },
                     child: const Text(
@@ -81,9 +86,7 @@ class CustomOrderItem extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(
-                      orderStauts[
-                          context.read<OrderCubit>().currentStatus],
+                  Text(orderStauts[context.read<OrderCubit>().currentStatus],
                       style: const TextStyle(color: Colors.green, fontSize: 14))
                 ])
               ],

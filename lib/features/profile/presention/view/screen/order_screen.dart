@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
@@ -14,16 +15,14 @@ class OrderScreen extends StatelessWidget {
       create: (context) => OrderCubit(),
       child: Scaffold(
         appBar: AppBar(
-          actions: const [
-            Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-            SizedBox(
-              width: 20,
-            ),
-          ],
-          leading: const CustomBackButton(),
+          leading: AppTheme.isLightTheme(context)
+              ? const CustomBackButton()
+              : IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 30,
+                  )),
           title: const Text('My Order'),
           leadingWidth: 100,
         ),
