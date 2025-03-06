@@ -35,7 +35,7 @@ class AddressScreen extends StatelessWidget {
       ),
       body: Container(
         margin: const EdgeInsets.all(16),
-        padding: EdgeInsets.all(20),
+        padding:const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppTheme.isLightTheme(context)
               ? Colors.white

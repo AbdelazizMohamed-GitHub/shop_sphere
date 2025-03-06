@@ -39,7 +39,7 @@ class OrderDetailsScreen extends StatelessWidget {
               '${TestList.order["items"].length} Items',
               style: AppStyles.text18Regular,
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Expanded(

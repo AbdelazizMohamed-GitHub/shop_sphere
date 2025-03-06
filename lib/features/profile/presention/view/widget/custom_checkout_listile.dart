@@ -16,7 +16,7 @@ class CustomCheckoutListile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
       padding: const EdgeInsets.symmetric(horizontal: 8),

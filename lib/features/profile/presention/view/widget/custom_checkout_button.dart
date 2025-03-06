@@ -66,7 +66,7 @@ class CustomCheckoutButton extends StatelessWidget {
                     ],
                     note: "Contact us for any questions on your order.",
                     onSuccess: (Map params) async {
-                      print("onSuccess: $params");
+                     
                       Navigator.push(
                         context,
                         MaterialPageRoute(

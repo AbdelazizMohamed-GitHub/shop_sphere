@@ -9,7 +9,7 @@ class CustomCartItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.only(top: 10),
+      padding:const EdgeInsets.only(top: 10),
       itemCount: TestList.cartItems.length,
       itemBuilder: (context, index) {
         final item = TestList.cartItems[index];

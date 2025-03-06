@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -60,7 +59,7 @@ class ExploreScreen extends StatelessWidget {
                       children: [
                         const CustomExploreScreenSearch(),
                         Padding(
-                          padding: EdgeInsets.all(12),
+                          padding:const EdgeInsets.all(12),
                           child: Row(
                             children: [
                               Text(

@@ -29,7 +29,7 @@ class CheckoutScreen extends StatelessWidget {
               ? const CustomBackButton()
               : IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: Icon(
+                  icon:const Icon(
                     Icons.arrow_back_ios_new,
                     size: 25,
                   )),

@@ -63,7 +63,7 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
             child: GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return CartScreen();
+                  return const CartScreen();
                 }));
               },
               child: Container(

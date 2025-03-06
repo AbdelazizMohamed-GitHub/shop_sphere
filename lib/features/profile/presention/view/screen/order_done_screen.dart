@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:shop_sphere/core/utils/app_images.dart';
+
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
@@ -28,13 +27,13 @@ class OrderDoneScreen extends StatelessWidget {
             const Text("Your order has been placed successfully",
                 textAlign: TextAlign.center,
                 style: AppStyles.text22SemiBoldBlack),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               "Thank you for choosing us! Feel free to continue shopping and explore our wide range of products. Happy Shopping!",
               textAlign: TextAlign.center,
               style: AppStyles.text14Regular,
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             CustomButton(

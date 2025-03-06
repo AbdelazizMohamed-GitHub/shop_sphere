@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
             },
             icon: const Icon(
               Icons.arrow_back_ios_new,
-              size: 30,
+              size: 30,color: Colors.white,
             )),
         title: const Text(
           'Profile',
