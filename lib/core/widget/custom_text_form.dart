@@ -30,11 +30,12 @@ class CustomTextForm extends StatelessWidget {
       controller: textController,
       decoration: InputDecoration(
           filled: true,
+          fillColor: Colors.white,
           errorBorder: border,
           focusedErrorBorder: border,
           disabledBorder: border,
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: AppColors.primaryColor)),
           enabledBorder: border,
           prefixIcon: Icon(pIcon),
@@ -46,4 +47,4 @@ class CustomTextForm extends StatelessWidget {
 
 var border = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
-    borderSide:const BorderSide(color: Colors.grey));
+    borderSide: const BorderSide(color: Colors.grey));

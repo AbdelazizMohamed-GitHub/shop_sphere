@@ -24,7 +24,7 @@ class CustomAdvertise extends StatelessWidget {
                       : AppColors.secondaryDarkColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Image.asset(AppImages.product, fit: BoxFit.fill),
+                child: Image.asset(ProductImages.adidas, fit: BoxFit.cover),
               ),
               Positioned(
                 width: 120,

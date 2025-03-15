@@ -18,6 +18,7 @@ class AuthRepoImpl extends AuthRepo {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       await userCredential.user?.sendEmailVerification();
+      
       return Right(userCredential.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
       return Left(AuthFailure.fromCode(e.code));

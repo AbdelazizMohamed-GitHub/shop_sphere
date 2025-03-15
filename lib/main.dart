@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:shop_sphere/core/app_cubit/app_state.dart';
 
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
+import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 
 import 'package:shop_sphere/firebase_options.dart';
 
@@ -35,7 +37,7 @@ class ShopSphere extends StatelessWidget {
                 : state is AppChangeThemeLight
                     ? AppTheme.lightTheme
                     : AppTheme.darkTheme,
-            home: const MainScreen(),
+            home: FirebaseAuth.instance.currentUser == null ? const GetStartedScreen() : const MainScreen(),
           );
         },
       ),

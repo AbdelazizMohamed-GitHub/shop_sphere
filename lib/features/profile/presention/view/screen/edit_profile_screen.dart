@@ -3,6 +3,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_photo.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -24,36 +25,40 @@ class EditProfileScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+      body:  Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            CustomAddPhoto(),
-            SizedBox(
+            const CustomAddPhoto(),
+            const SizedBox(
               height: 50,
             ),
-            CustomTextForm(
+            const CustomTextForm(
                 pIcon: Icons.person,
                 text: "User Name",
                 kType: TextInputType.text),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            CustomTextForm(
+            const CustomTextForm(
                 pIcon: Icons.phone,
                 text: "Phone Number",
                 kType: TextInputType.text),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            CustomTextForm(
+            const CustomTextForm(
                 pIcon: Icons.location_on,
                 text: "Address",
                 kType: TextInputType.text),
+            const SizedBox( height: 15,),
+            CustomAddBirthdate(onChanged: (DateTime date) {
+             
+            }),
           ],
         ),
       ),
