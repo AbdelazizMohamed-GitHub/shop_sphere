@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/failure.dart';
+import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 
 abstract class AuthRepo {
   Future<Either<Failure, String>> registerWithEmailAndPassword(
@@ -12,5 +13,5 @@ abstract class AuthRepo {
   Future<Either<Failure, void>> resetPassword(String email);
   Future<Either<Failure, void>> signOut();
   Future<bool> isSignedIn();
-  Future<Either<Failure, String>> getUser();
+  Future<Either<Failure, String>> saveUserData(UserModel userModel);
 }

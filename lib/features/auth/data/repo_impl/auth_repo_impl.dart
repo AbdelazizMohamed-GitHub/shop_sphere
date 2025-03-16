@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shop_sphere/core/errors/auth_failure.dart';
 import 'package:shop_sphere/core/errors/failure.dart';
+import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
 
@@ -18,7 +19,8 @@ class AuthRepoImpl extends AuthRepo {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       await userCredential.user?.sendEmailVerification();
-      
+
+
       return Right(userCredential.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
       return Left(AuthFailure.fromCode(e.code));
@@ -132,7 +134,10 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   @override
-  Future<Either<Failure, String>> getUser() {
+  Future<Either<Failure, String>> saveUserData(UserModel userModel
+  
+
+  ) {
     throw UnimplementedError();
   }
 }

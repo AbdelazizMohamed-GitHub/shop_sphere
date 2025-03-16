@@ -1,4 +1,5 @@
 import 'package:shop_sphere/features/auth/data/model/addres_model.dart';
+import 'package:shop_sphere/features/auth/data/model/orer_model.dart';
 
 class UserModel {
   final String uid;
@@ -8,11 +9,11 @@ class UserModel {
   final String profileImage;
   final int addressIndex;
   final List<AddressModel> address;
-  final List<String> orderHistory;
-  final List<String> wishlist;
+  final List<OrderHistoryModel> orderHistory;
+  
   final DateTime createdAt;
 
-  UserModel({
+  UserModel( {required this.addressIndex,
     required this.uid,
     required this.name,
     required this.email,
@@ -20,7 +21,6 @@ class UserModel {
     required this.profileImage,
     required this.address,
     required this.orderHistory,
-    required this.wishlist,
     required this.createdAt,
   });
 
@@ -32,9 +32,10 @@ class UserModel {
       'email': email,
       'phoneNumber': phoneNumber,
       'profileImage': profileImage,
-      'address': address,
-      'orderHistory': orderHistory,
-      'wishlist': wishlist,
+      'addressIndex': addressIndex,
+      'address': address.map((e) => e.toMap()).toList(),
+      'orderHistory': orderHistory.map((e) => e.toMap()).toList(),
+    
       'createdAt': createdAt.toIso8601String(),
     };
   }
@@ -47,9 +48,11 @@ class UserModel {
       email: map['email'],
       phoneNumber: map['phoneNumber'],
       profileImage: map['profileImage'],
-      address: map['address'],
-      orderHistory: List<String>.from(map['orderHistory'] ?? []),
-      wishlist: List<String>.from(map['wishlist'] ?? []),
+      address: List<AddressModel>.from(
+          map['address']?.map((x) => AddressModel.fromMap(x)) ?? []),
+      addressIndex: map['addressIndex'],
+      orderHistory: List<OrderHistoryModel>.from(
+          map['orderHistory']?.map((x) => OrderHistoryModel.fromMap(x)) ?? []),
       createdAt: DateTime.parse(map['createdAt']),
     );
   }
