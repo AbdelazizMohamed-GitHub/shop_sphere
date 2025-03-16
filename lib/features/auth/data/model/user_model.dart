@@ -21,7 +21,7 @@ class UserModel {
     required this.profileImage,
     required this.address,
     required this.orderHistory,
-    required this.createdAt,
+    required this.createdAt, required String phone,
   });
 
   // Convert to Map for Firebase or local storage
@@ -53,7 +53,7 @@ class UserModel {
       addressIndex: map['addressIndex'],
       orderHistory: List<OrderHistoryModel>.from(
           map['orderHistory']?.map((x) => OrderHistoryModel.fromMap(x)) ?? []),
-      createdAt: DateTime.parse(map['createdAt']),
+      createdAt: DateTime.parse(map['createdAt']), phone: map['phone'],
     );
   }
 }

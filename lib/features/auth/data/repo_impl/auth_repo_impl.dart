@@ -1,9 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:shop_sphere/core/errors/auth_failure.dart';
 import 'package:shop_sphere/core/errors/failure.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
@@ -11,18 +14,40 @@ import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.d
 class AuthRepoImpl extends AuthRepo {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  FirestoreService firestoreService;
+  AuthRepoImpl({
+    required this.firestoreService,
+  });
 
   @override
   Future<Either<Failure, String>> registerWithEmailAndPassword(
       String email, String password) async {
+    UserCredential? userCredential;
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
+      firestoreService.addData(
+          collection: "users",
+          did: userCredential.user!.uid,
+          data: UserModel(
+            email: email,
+            name: "",
+            phone: "",
+            address: [],
+            createdAt: DateTime.now(),
+            addressIndex: 0,
+            uid: '',
+            phoneNumber: '',
+            profileImage: '',
+            orderHistory: [],
+          ));
       await userCredential.user?.sendEmailVerification();
-
 
       return Right(userCredential.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
+     if ( userCredential!.user != null) {
+   await userCredential.user!.delete();
+}
       return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
       return Left(AuthFailure(e.toString()));
@@ -65,10 +90,8 @@ class AuthRepoImpl extends AuthRepo {
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-       
-            await _firebaseAuth.signInWithCredential(credential);
-        
-       
+
+        await _firebaseAuth.signInWithCredential(credential);
       }
       return const Right(" Logged in successfully");
     } on FirebaseAuthException catch (e) {
@@ -134,10 +157,7 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   @override
-  Future<Either<Failure, String>> saveUserData(UserModel userModel
-  
-
-  ) {
+  Future<Either<Failure, UserModel>> getUserData() {
     throw UnimplementedError();
   }
 }

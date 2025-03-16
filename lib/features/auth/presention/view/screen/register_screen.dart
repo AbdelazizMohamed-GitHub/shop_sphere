@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
@@ -51,7 +53,7 @@ class RegisterScreen extends StatelessWidget {
                   height: 20,
                 ),
                 BlocProvider(
-                  create: (context) => AuthCubit(authRepo: AuthRepoImpl()),
+                  create: (context) => AuthCubit(authRepo:  AuthRepoImpl(firestoreService: FirestoreService(firestore: FirebaseFirestore.instance))),
                   child: const CustomRegisterBody(),
                 )
               ],

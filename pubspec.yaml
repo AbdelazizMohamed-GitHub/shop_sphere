@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   carousel_slider: ^5.0.0
+  cloud_firestore: ^5.6.5
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   easy_stepper: ^0.8.5+1
