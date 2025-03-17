@@ -1,5 +1,3 @@
-
-
 class UserEntity {
   final String uid;
   final String name;
@@ -8,10 +6,11 @@ class UserEntity {
   final String phoneNumber;
   final String profileImage;
   final int addressIndex;
- 
+  final String gender;
+
   final DateTime createdAt;
 
-  const UserEntity({
+  const UserEntity( {required this.gender,
     required this.uid,
     required this.name,
     required this.email,
@@ -19,7 +18,6 @@ class UserEntity {
     required this.phoneNumber,
     required this.profileImage,
     required this.addressIndex,
-    
     required this.createdAt,
   });
 }

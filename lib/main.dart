@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
+import 'package:shop_sphere/core/service/bloc_observer.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -16,6 +17,7 @@ import 'package:shop_sphere/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
+  Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

@@ -1,3 +1,6 @@
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_new_address_body.dart';
@@ -25,5 +28,13 @@ class AppFuncations {
         });
   }
 
-
+static Future<Uint8List> getImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      return await image.readAsBytes();
+    } else {
+      return Uint8List(0);
+    }
+  }
 }

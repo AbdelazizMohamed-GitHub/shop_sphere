@@ -1,16 +1,27 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 
-class CustomAddPhoto extends StatelessWidget {
+class CustomAddPhoto extends StatefulWidget {
   const CustomAddPhoto({super.key});
 
+  @override
+  State<CustomAddPhoto> createState() => _CustomAddPhotoState();
+}
+
+class _CustomAddPhotoState extends State<CustomAddPhoto> {
+  Uint8List? image;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 80,
-          backgroundImage: AssetImage(AppImages.profile),
+          backgroundImage: image == null
+              ? const AssetImage(AppImages.profile)
+              : MemoryImage(image!),
         ),
         Positioned(
           bottom: 0,
@@ -23,8 +34,9 @@ class CustomAddPhoto extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                onPressed: () {
-                  
+                onPressed: () async {
+                  image = await AppFuncations.getImage();
+                  setState(() {});
                 },
                 icon: const Icon(
                   Icons.add_a_photo,

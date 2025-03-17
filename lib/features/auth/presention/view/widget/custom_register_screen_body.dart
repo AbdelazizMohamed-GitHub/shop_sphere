@@ -7,6 +7,7 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
+import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 
 class CustomRegisterBody extends StatefulWidget {
@@ -36,13 +37,13 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
 
     super.dispose();
   }
-  
-final formKey = GlobalKey<FormState>();
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Form(key: formKey,
-    
+    return Form(
+      key: formKey,
       child: Column(
         children: [
           CustomTextForm(
@@ -114,17 +115,14 @@ final formKey = GlobalKey<FormState>();
           CustomDropdown(
               categories: const ['Male', 'Female'],
               onCategorySelected: (valu) {
-      
-                  gender = valu;
+                gender = valu;
               }),
           const SizedBox(height: 20),
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return VerifyScreen(
-                    email: emailTextC.text.trim(),
-                  );
+                  return const MainScreen();
                 }));
               }
               if (state is AuthError) {
@@ -136,7 +134,9 @@ final formKey = GlobalKey<FormState>();
                   ? const CircularProgressIndicator()
                   : CustomButton(
                       onPressed: () async {
-                        if (formKey.currentState!.validate()&&birthDate!=null&&gender!=null) {
+                        if (formKey.currentState!.validate() &&
+                            birthDate != null &&
+                            gender != null) {
                           if (passwordTextC.text == confirmPasswordTextC.text) {
                             FocusScope.of(context).unfocus();
                             await context
@@ -146,8 +146,8 @@ final formKey = GlobalKey<FormState>();
                                   phoneNumber: phoneTextC.text.trim(),
                                   email: emailTextC.text.trim(),
                                   password: passwordTextC.text.trim(),
-                                  birthDate:birthDate??DateTime.now(),
-                                  gender: gender??"Male",
+                                  birthDate: birthDate ?? DateTime.now(),
+                                  gender: gender ?? "Male",
                                 );
                           } else {
                             Warning.showWarning(context,

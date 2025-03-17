@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
-import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 import 'package:shop_sphere/features/profile/domain/repo/profile_repo.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/profile_state.dart';
 

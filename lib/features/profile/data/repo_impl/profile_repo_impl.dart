@@ -31,6 +31,7 @@ class ProfileRepoImpl extends ProfileRepo {
           collection: "users",
           did: _firebaseAuth.currentUser!.uid,
           data: userModel);
+          await firestoreService.getData(collection: "users", did: _firebaseAuth.currentUser!.uid);
       return right(null);
     } on FirebaseException catch (e) {
       return Left(AuthFailure.fromCode(e.code));
