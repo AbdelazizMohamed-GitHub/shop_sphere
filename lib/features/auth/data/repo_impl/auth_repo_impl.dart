@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:shop_sphere/core/errors/auth_failure.dart';
 import 'package:shop_sphere/core/errors/failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
+import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
 
@@ -173,8 +173,15 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   @override
-  Future<Either<Failure, UserModel>> getUserData() {
-    firestoreService.getData(collection: "users", did: _firebaseAuth.currentUser!.uid);
-    throw UnimplementedError();
+  Future<Either<Failure, UserEntity>> getUserData() async {
+    try {UserEntity data=  await firestoreService.getData(collection: "users", did: _firebaseAuth.currentUser!.uid);
+    return right(data);} 
+      on FirebaseException catch (e) {
+      return Left(AuthFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(AuthFailure(e.toString()));
+    }
+    
+    }
   }
-}
+

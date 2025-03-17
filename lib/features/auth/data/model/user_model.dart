@@ -58,11 +58,11 @@ class UserModel extends UserEntity {
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       birthDate: DateTime.parse(map['birthDate']),
-      uid: map['uid'],
-      name: map['name'],
-      email: map['email'],
-      phoneNumber: map['phoneNumber'],
-      profileImage: map['profileImage'],
+      uid: map['uid']??"",
+      name: map['name']??"",
+      email: map['email']??"",
+      phoneNumber: map['phoneNumber']??"",
+      profileImage: map['profileImage']??"",
       address: List<AddressModel>.from(
           map['address']?.map((x) => AddressModel.fromMap(x)) ?? []),
       addressIndex: map['addressIndex'],

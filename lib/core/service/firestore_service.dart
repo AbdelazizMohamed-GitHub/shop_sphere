@@ -15,10 +15,20 @@ class FirestoreService {
    await firestore.collection(collection).doc(did).update(data.toMap());
 
   }
-  Future<UserEntity> getData({ required String collection,required String did})async {
-    DocumentSnapshot doc = await firestore.collection(collection).doc(did).get();
-    return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+  Future<UserEntity> getData({
+  required String collection,
+  required String did,
+}) async {
+  DocumentSnapshot<Map<String, dynamic>> doc =
+      await firestore.collection(collection).doc(did).get();
+
+  if (!doc.exists || doc.data() == null) {
+    throw Exception("Document not found in collection: $collection");
   }
+
+  return UserModel.fromMap(doc.data()!);
+}
+
   
    
 }

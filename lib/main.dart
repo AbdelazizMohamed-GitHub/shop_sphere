@@ -1,21 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_theme.dart';
-import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/profile_screen.dart';
 
 import 'package:shop_sphere/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -28,10 +28,7 @@ class ShopSphere extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit(
-          authRepo: AuthRepoImpl(
-              firestoreService:
-                  FirestoreService(firestore: FirebaseFirestore.instance))),
+      create: (context) => AppCubit(),
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           return MaterialApp(
@@ -45,7 +42,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const MainScreen(),
+                : const ProfileScreen(),
           );
         },
       ),

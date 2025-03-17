@@ -8,9 +8,9 @@ import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 
 class AppCubit extends Cubit<AppState> {
   AppCubit(
-   {required this.authRepo} 
+  
   ) : super(AppInitial());
-  final AuthRepo authRepo;
+ 
   void changeTheme(context) {
     emit(AppChangeThemeLoading());
     if (AppTheme.isLightTheme(context)) {
@@ -21,15 +21,7 @@ class AppCubit extends Cubit<AppState> {
   }
 
   
-Future<void> getuserData() async {
-    emit(GetUserDataLoading());
-    final result = await authRepo.getUserData();
-    result.fold(
-      (failure) => emit(GetUserDataFailure(errMessage: failure.message)),
-      (user) => emit(GetUserDataSucess(user: user)),
-    );
-  }
- 
+
 
   
 
