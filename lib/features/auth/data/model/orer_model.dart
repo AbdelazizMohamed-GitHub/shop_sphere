@@ -1,10 +1,17 @@
+import 'package:shop_sphere/features/auth/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class OrderHistoryModel {
+class OrderHistoryModel extends OrderEntity {
+  @override
   final String orderId;
+  @override
   final double totalAmount;
-  final List<ProductModel> items;
+  @override
+  final List<ProductEntity> items;
+  @override
   final String status;
+  @override
   final DateTime orderDate;
 
   OrderHistoryModel({
@@ -13,7 +20,7 @@ class OrderHistoryModel {
     required this.items,
     required this.status,
     required this.orderDate,
-  });
+  }) : super(orderId: orderId, totalAmount: totalAmount, items: items, status:status , orderDate: orderDate);
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {

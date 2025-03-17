@@ -26,18 +26,18 @@ class AuthRepoImpl extends AuthRepo {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      firestoreService.addData(
+      await firestoreService.addData(
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
+            birthDate: DateTime.now(),
             email: email,
             name: "",
-            phone: "",
+            phoneNumber: "",
             address: [],
             createdAt: DateTime.now(),
             addressIndex: 0,
-            uid: '',
-            phoneNumber: '',
+            uid: userCredential.user!.uid,
             profileImage: '',
             orderHistory: [],
           ));
@@ -45,9 +45,9 @@ class AuthRepoImpl extends AuthRepo {
 
       return Right(userCredential.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
-     if ( userCredential!.user != null) {
-   await userCredential.user!.delete();
-}
+      if (userCredential!.user != null) {
+        await userCredential.user!.delete();
+      }
       return Left(AuthFailure.fromCode(e.code));
     } catch (e) {
       return Left(AuthFailure(e.toString()));
@@ -91,7 +91,23 @@ class AuthRepoImpl extends AuthRepo {
           idToken: googleAuth.idToken,
         );
 
-        await _firebaseAuth.signInWithCredential(credential);
+        var userCredential =
+            await _firebaseAuth.signInWithCredential(credential);
+        await firestoreService.addData(
+            collection: "users",
+            did: userCredential.user!.uid,
+            data: UserModel(
+              email: userCredential.user!.email!,
+              name: userCredential.user!.displayName ?? "",
+              phoneNumber: userCredential.user!.phoneNumber ?? "",
+              address: [],
+              createdAt: DateTime.now(),
+              addressIndex: 0,
+              uid: userCredential.user!.uid,
+              profileImage: '',
+              orderHistory: [],
+              birthDate: userCredential.user!.metadata.creationTime!,
+            ));
       }
       return const Right(" Logged in successfully");
     } on FirebaseAuthException catch (e) {
@@ -158,6 +174,7 @@ class AuthRepoImpl extends AuthRepo {
   @override
   @override
   Future<Either<Failure, UserModel>> getUserData() {
+    firestoreService.getData(collection: "users", did: _firebaseAuth.currentUser!.uid);
     throw UnimplementedError();
   }
 }

@@ -1,8 +1,15 @@
-class AddressModel {
+import 'package:shop_sphere/features/auth/domain/entity/address_entity.dart';
+
+class AddressModel extends AddressEntity {
+  @override
   final String street;
+  @override
   final String city;
+  @override
   final String state;
+  @override
   final String country;
+  @override
   final String postalCode;
 
   AddressModel({
@@ -11,7 +18,7 @@ class AddressModel {
     required this.state,
     required this.country,
     required this.postalCode,
-  });
+  }) : super(street: street, city: city, state: state, country: country, postalCode: postalCode);
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {
