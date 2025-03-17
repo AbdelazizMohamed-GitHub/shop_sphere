@@ -17,4 +17,13 @@ final class GetUserDataFailure extends ProfileState {
   final String errMessage;
 
   GetUserDataFailure( {required this.errMessage});
+
+}
+final class EditProfileLoading extends ProfileState{}
+
+final class EditProfileSuccess extends ProfileState{}
+final class EditProfileFailure extends ProfileState{
+  final String errMessage;
+
+  EditProfileFailure( {required this.errMessage});
 }

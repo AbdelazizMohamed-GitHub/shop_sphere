@@ -1,4 +1,4 @@
-import 'package:shop_sphere/features/auth/domain/entity/address_entity.dart';
+import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 
 class AddressModel extends AddressEntity {
   @override

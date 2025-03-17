@@ -29,6 +29,7 @@ class FirestoreService {
   return UserModel.fromMap(doc.data()!);
 }
 
+
   
    
 }

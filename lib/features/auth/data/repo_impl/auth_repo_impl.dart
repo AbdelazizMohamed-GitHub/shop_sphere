@@ -37,12 +37,12 @@ class AuthRepoImpl extends AuthRepo {
             email: email,
             name: name,
             phoneNumber: phoneNumber,
-            address: [],
+          
             createdAt: DateTime.now(),
             addressIndex: 0,
             uid: userCredential.user!.uid,
             profileImage: '',
-            orderHistory: [],
+           
           ));
       await userCredential.user?.sendEmailVerification();
 
@@ -103,12 +103,12 @@ class AuthRepoImpl extends AuthRepo {
               email: userCredential.user!.email!,
               name: userCredential.user!.displayName ?? "",
               phoneNumber: userCredential.user!.phoneNumber ?? "",
-              address: [],
+            
               createdAt: DateTime.now(),
               addressIndex: 0,
               uid: userCredential.user!.uid,
               profileImage: '',
-              orderHistory: [],
+           
               birthDate: userCredential.user!.metadata.creationTime!,
             ));
       }
@@ -174,17 +174,7 @@ class AuthRepoImpl extends AuthRepo {
     return user == null ? false : true;
   }
 
-  @override
-  @override
-  Future<Either<Failure, UserEntity>> getUserData() async {
-    try {UserEntity data=  await firestoreService.getData(collection: "users", did: _firebaseAuth.currentUser!.uid);
-    return right(data);} 
-      on FirebaseException catch (e) {
-      return Left(AuthFailure.fromCode(e.code));
-    } catch (e) {
-      return Left(AuthFailure(e.toString()));
-    }
-    
-    }
+ 
+  
   }
 

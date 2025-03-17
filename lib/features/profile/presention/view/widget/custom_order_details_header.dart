@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 
 class CustomOrderDetailsHeader extends StatelessWidget {
@@ -35,7 +35,7 @@ class CustomOrderDetailsHeader extends StatelessWidget {
               ' ${order['status']}',
               style: TextStyle(
                   fontSize: 16,
-                  color: Funcations.getStatusColor(order['status'])),
+                  color: AppFuncations.getStatusColor(order['status'])),
             ),
           ],
         ),

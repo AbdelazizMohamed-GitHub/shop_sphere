@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 
@@ -14,7 +14,7 @@ class AddressScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.primaryColor,
           onPressed: () {
-            Funcations.addNewAddress(context);
+            AppFuncations.addNewAddress(context);
           },
           child: const Icon(
             Icons.add,
@@ -28,14 +28,14 @@ class AddressScreen extends StatelessWidget {
             ? const CustomBackButton()
             : IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon:const Icon(
+                icon: const Icon(
                   Icons.arrow_back_ios_new,
                   size: 25,
                 )),
       ),
       body: Container(
         margin: const EdgeInsets.all(16),
-        padding:const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppTheme.isLightTheme(context)
               ? Colors.white
@@ -54,7 +54,7 @@ class AddressScreen extends StatelessWidget {
               const Spacer(),
               IconButton(
                   onPressed: () {
-                    Funcations.addNewAddress(context);
+                    AppFuncations.addNewAddress(context);
                   },
                   icon: Icon(
                     Icons.edit,

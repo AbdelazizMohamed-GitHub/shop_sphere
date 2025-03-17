@@ -1,6 +1,6 @@
-import 'package:shop_sphere/features/auth/data/model/addres_model.dart';
-import 'package:shop_sphere/features/auth/data/model/orer_model.dart';
-import 'package:shop_sphere/features/auth/domain/entity/address_entity.dart';
+import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
+import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
+import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
@@ -18,10 +18,7 @@ class UserModel extends UserEntity {
   final String profileImage;
   @override
   final int addressIndex;
-  @override
-  final List<AddressModel> address;
-  @override
-  final List<OrderHistoryModel> orderHistory;
+  
 
   @override
   final DateTime createdAt;
@@ -33,10 +30,9 @@ class UserModel extends UserEntity {
     required this.email,
     required this.phoneNumber,
     required this.profileImage,
-    required this.address,
-    required this.orderHistory,
+   
     required this.createdAt,
-  }) : super(uid: uid, name: name, email: email, birthDate: birthDate, phoneNumber: phoneNumber, profileImage: profileImage, addressIndex: addressIndex, address:address , orderHistory: orderHistory, createdAt: createdAt);
+  }) : super(uid: uid, name: name, email: email, birthDate: birthDate, phoneNumber: phoneNumber, profileImage: profileImage, addressIndex: addressIndex, createdAt: createdAt);
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {
@@ -48,8 +44,7 @@ class UserModel extends UserEntity {
       'phoneNumber': phoneNumber,
       'profileImage': profileImage,
       'addressIndex': addressIndex,
-      'address': address.map((e) => e.toMap()).toList(),
-      'orderHistory': orderHistory.map((e) => e.toMap()).toList(),
+    
       'createdAt': createdAt.toIso8601String(),
     };
   }
@@ -63,11 +58,7 @@ class UserModel extends UserEntity {
       email: map['email']??"",
       phoneNumber: map['phoneNumber']??"",
       profileImage: map['profileImage']??"",
-      address: List<AddressModel>.from(
-          map['address']?.map((x) => AddressModel.fromMap(x)) ?? []),
-      addressIndex: map['addressIndex'],
-      orderHistory: List<OrderHistoryModel>.from(
-          map['orderHistory']?.map((x) => OrderHistoryModel.fromMap(x)) ?? []),
+      addressIndex: map['addressIndex']??0,
       createdAt: DateTime.parse(map['createdAt']),
     );
   }

@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
-import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
+import 'package:shop_sphere/features/profile/data/repo_impl/profile_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/profile_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/profile_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfileCubit(
-        authRepo: getIt<AuthRepoImpl>(),
+        profileRepo: getIt<ProfileRepoImpl>(),
       )..getUserData(),
       child: Scaffold(
         backgroundColor: AppTheme.isLightTheme(context)
