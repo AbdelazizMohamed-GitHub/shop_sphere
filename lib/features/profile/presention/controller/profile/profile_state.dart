@@ -7,10 +7,10 @@ final class ProfileInitial extends ProfileState {}
 
 final class GetUserDataLoading extends ProfileState {}
 
-final class GetUserDataSucess extends ProfileState {
+final class GetUserDataSuccess extends ProfileState {
   final UserEntity user;
 
-  GetUserDataSucess({required this.user});
+  GetUserDataSuccess({required this.user});
 }
 
 final class GetUserDataFailure extends ProfileState {

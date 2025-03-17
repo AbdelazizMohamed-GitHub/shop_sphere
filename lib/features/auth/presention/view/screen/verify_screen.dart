@@ -1,9 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
@@ -40,7 +38,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthCubit(authRepo:  AuthRepoImpl(firestoreService: FirestoreService(firestore: FirebaseFirestore.instance))),
+      create: (context) => AuthCubit(authRepo:  getIt<AuthRepoImpl>()),
       child: Scaffold(
           appBar: AppBar(
             foregroundColor: Colors.white,

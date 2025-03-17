@@ -5,9 +5,9 @@ import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_s
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(  {required this.authRepo }) : super(AuthInitial()) ;
 final AuthRepo authRepo;
-  Future<void> registerWithEmailAndPassword({required String password, required String email}) async {
+  Future<void> registerWithEmailAndPassword( {required String name,required String phoneNumber, required  String email,required String password,required DateTime birthDate,required String gender}) async {
     emit(AuthLoading());
-    final result = await authRepo.registerWithEmailAndPassword(email, password);
+    final result = await authRepo.registerWithEmailAndPassword(name: name, phoneNumber: phoneNumber, email: email, password: password, birthDate: birthDate, gender: gender);
     result.fold(
       (failure) => emit(AuthError(failure.message)),
       (uid) => emit(AuthSuccess()),

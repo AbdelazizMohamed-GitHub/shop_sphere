@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
@@ -26,37 +25,40 @@ class RegisterScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: AppColors.primaryColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 40),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 5,
-                    offset: Offset(1, 2),
+      body: Form(
+        
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              padding:
+                  const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 40),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 5,
+                      offset: Offset(1, 2),
+                    ),
+                  ]),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Register',
+                    style: AppStyles.text26BoldBlack,
                   ),
-                ]),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Register',
-                  style: AppStyles.text26BoldBlack,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                BlocProvider(
-                  create: (context) => AuthCubit(authRepo:  AuthRepoImpl(firestoreService: FirestoreService(firestore: FirebaseFirestore.instance))),
-                  child: const CustomRegisterBody(),
-                )
-              ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  BlocProvider(
+                    create: (context) => AuthCubit(authRepo:  getIt<AuthRepoImpl>()),
+                    child: const CustomRegisterBody(),
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -14,7 +14,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     final result = await authRepo.getUserData();
     result.fold(
       (failure) => emit(GetUserDataFailure(errMessage: failure.message)),
-      (user) => emit(GetUserDataSucess(user: user)),
+      (user) => emit(GetUserDataSuccess(user: user)),
     );
   }
 }

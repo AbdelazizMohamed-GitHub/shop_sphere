@@ -21,7 +21,10 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<Either<Failure, String>> registerWithEmailAndPassword(
-      String email, String password) async {
+     {required String name,required String phoneNumber,
+     required String email,required String password,required DateTime
+      birthDate,required String gender}
+      ) async {
     UserCredential? userCredential;
     try {
       UserCredential userCredential = await _firebaseAuth
@@ -30,10 +33,10 @@ class AuthRepoImpl extends AuthRepo {
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
-            birthDate: DateTime.now(),
+            birthDate:birthDate,
             email: email,
-            name: "",
-            phoneNumber: "",
+            name: name,
+            phoneNumber: phoneNumber,
             address: [],
             createdAt: DateTime.now(),
             addressIndex: 0,

@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -17,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthCubit(authRepo:  AuthRepoImpl(firestoreService: FirestoreService(firestore: FirebaseFirestore.instance))),
+      create: (context) => AuthCubit(authRepo:  getIt<AuthRepoImpl>()),
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
         body: SafeArea(

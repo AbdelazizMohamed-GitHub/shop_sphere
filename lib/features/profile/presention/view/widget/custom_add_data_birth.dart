@@ -6,8 +6,11 @@ class CustomAddBirthdate extends StatefulWidget {
   const CustomAddBirthdate({
     super.key,
     required this.onChanged,
+    this.dataTime,
   });
+
   final ValueChanged<DateTime> onChanged;
+  final DateTime? dataTime;
   @override
   State<CustomAddBirthdate> createState() => _CustomTimePickerState();
 }
@@ -32,16 +35,17 @@ class _CustomTimePickerState extends State<CustomAddBirthdate> {
         }
       },
       child: Container(
+        height: 55,
         alignment: Alignment.center,
         width: double.infinity,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(16)),
+            borderRadius: BorderRadius.circular(10)),
         child: Text(
           data == null
-              ? "Add your Birth Date"
-              : DateFormat.yMMMEd().format(data ?? DateTime.now()),
+              ? DateFormat.yMMMd().format(widget.dataTime ?? DateTime.now())
+              : DateFormat.yMMMd().format(data!),
           style: AppStyles.text16Regular,
         ),
       ),

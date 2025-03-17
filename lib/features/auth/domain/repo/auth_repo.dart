@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/failure.dart';
-import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 
 abstract class AuthRepo {
   Future<Either<Failure, String>> registerWithEmailAndPassword(
-      String email, String password);
+    {required String name,required String phoneNumber, required  String email,required String password,required DateTime birthDate,required String gender}
+     );
 
   Future<Either<Failure, String>> logInWithEmailAndPassword(
       String email, String password,context);
