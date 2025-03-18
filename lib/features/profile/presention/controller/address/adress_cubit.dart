@@ -5,18 +5,21 @@ import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/domain/repo/address_repo.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 
-class AdressCubit extends Cubit<AdressState> {
-  AdressCubit({
+class AddressCubit extends Cubit<AddressState> {
+  AddressCubit({
     required this.addressRepo,
   }) : super(AdressInitial());
   final AddressRepo addressRepo;
   Future<void> addAddress(
       {required String addressId, required AddressModel addressModel}) async {
-    emit(AddAdressLoading());
+    emit(AdressLoading());
     final result = await addressRepo.addAddress(addressId, addressModel);
     result.fold(
       (failure) => emit(AdressError(errMessage: failure.message)),
-      (user) => emit(AddAdressSuccess()),
+      (user) {
+        emit(AdressSuccess());
+        getAddress();
+      },
     );
   }
 

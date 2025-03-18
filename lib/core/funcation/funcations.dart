@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_new_address_body.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/add_new_address_screen.dart';
 
 class AppFuncations {
   static Color getStatusColor(String status) {
@@ -19,14 +19,8 @@ class AppFuncations {
     }
   }
 
-  static void addNewAddress(BuildContext context) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return const CustomAddNewAddressBody();
-        });
-  }
+ 
+
 
 static Future<Uint8List> getImage() async {
     final ImagePicker picker = ImagePicker();

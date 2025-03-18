@@ -28,12 +28,6 @@ final class EditProfileFirebaseFailure extends ProfileState {
   EditProfileFirebaseFailure({required this.errMessage});
 }
 
-final class AddAddressLoading extends ProfileState {}
 
-final class AddAddressSuccess extends ProfileState {}
 
-final class AddAddressFirebaseFailure extends ProfileState {
-  final String errMessage;
 
-  AddAddressFirebaseFailure({required this.errMessage});
-}

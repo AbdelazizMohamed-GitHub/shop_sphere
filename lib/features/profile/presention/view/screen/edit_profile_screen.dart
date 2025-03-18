@@ -49,7 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
           if (state is EditProfileSuccess) {
-            BlocProvider.of<ProfileCubit>(context).getUserData();
+           
             Navigator.pop(context);
           }
           if (state is EditProfileFirebaseFailure) {
@@ -78,6 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     );
                     FocusScope.of(context).unfocus();
                     context.read<ProfileCubit>().updateUserData(userModel);
+                     await BlocProvider.of<ProfileCubit>(context).getUserData();
                   },
                   child: Text("Save",
                       style: AppStyles.text18Regular.copyWith(

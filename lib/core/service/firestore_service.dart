@@ -68,7 +68,7 @@ class FirestoreService {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection("address")
+        .collection("address").orderBy("createdAt", descending: true)
         .get();
     return querySnapshot.docs.map((e) => AddressModel.fromMap(e.data())).toList();
   }
