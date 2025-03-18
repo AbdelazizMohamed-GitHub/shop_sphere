@@ -1,4 +1,3 @@
-import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 
 sealed class AppState {}
 

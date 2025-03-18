@@ -68,11 +68,10 @@ class ProfileScreen extends StatelessWidget {
                             CustomProfileListTile(
                               icon: Icons.person_outlined,
                               title: 'Edit Profile',
-                              funcation: ()async {
-                               
+                              funcation: () async {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return  EditProfileScreen(user: state.user);
+                                  return EditProfileScreen(user: state.user);
                                 }));
                               },
                             ),
@@ -128,7 +127,7 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       )
-                    : state is GetUserDataFailure
+                    : state is GetUserDataFirebaseFailure
                         ? Center(
                             child: Text(state.errMessage),
                           )

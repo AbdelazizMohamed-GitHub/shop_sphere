@@ -49,10 +49,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
           if (state is EditProfileSuccess) {
-              BlocProvider.of<ProfileCubit>(context).getUserData();
+            BlocProvider.of<ProfileCubit>(context).getUserData();
             Navigator.pop(context);
           }
-          if (state is EditProfileFailure) {
+          if (state is EditProfileFirebaseFailure) {
             Warning.showWarning(context, message: state.errMessage);
           }
         },
@@ -78,7 +78,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     );
                     FocusScope.of(context).unfocus();
                     context.read<ProfileCubit>().updateUserData(userModel);
-                  
                   },
                   child: Text("Save",
                       style: AppStyles.text18Regular.copyWith(

@@ -6,7 +6,6 @@ import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
-import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 

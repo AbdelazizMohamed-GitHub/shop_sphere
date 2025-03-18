@@ -1,11 +1,10 @@
-import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
-import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
-import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
+
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
   @override
   final String uid;
+  @override
   final String gender;
   @override
   final String name;

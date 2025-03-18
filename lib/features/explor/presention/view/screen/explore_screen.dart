@@ -39,7 +39,7 @@ class ExploreScreen extends StatelessWidget {
         ),
         body: BlocConsumer<ProductCubit, ProductState>(
           listener: (context, state) {
-            if (state is ProductFailure) {
+            if (state is ProductFirebaseFailure) {
               Warning.showWarning(context, message: state.errMessage);
             }
           },
@@ -59,7 +59,7 @@ class ExploreScreen extends StatelessWidget {
                       children: [
                         const CustomExploreScreenSearch(),
                         Padding(
-                          padding:const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           child: Row(
                             children: [
                               Text(

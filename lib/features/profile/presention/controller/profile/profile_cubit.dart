@@ -10,7 +10,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(GetUserDataLoading());
     final result = await profileRepo.getUserData();
     result.fold(
-      (failure) => emit(GetUserDataFailure(errMessage: failure.message)),
+      (failure) =>
+          emit(GetUserDataFirebaseFailure(errMessage: failure.message)),
       (user) => emit(GetUserDataSuccess(user: user)),
     );
   }
@@ -19,8 +20,11 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(EditProfileLoading());
     final result = await profileRepo.updateUserData(userModel);
     result.fold(
-      (failure) => emit(EditProfileFailure(errMessage: failure.message)),
+      (failure) =>
+          emit(EditProfileFirebaseFailure(errMessage: failure.message)),
       (user) => emit(EditProfileSuccess()),
     );
   }
+
+ 
 }

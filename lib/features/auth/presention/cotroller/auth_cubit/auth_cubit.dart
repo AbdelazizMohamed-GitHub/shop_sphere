@@ -3,48 +3,66 @@ import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(  {required this.authRepo }) : super(AuthInitial()) ;
-final AuthRepo authRepo;
-  Future<void> registerWithEmailAndPassword( {required String name,required String phoneNumber, required  String email,required String password,required DateTime birthDate,required String gender}) async {
+  AuthCubit({required this.authRepo}) : super(AuthInitial());
+  final AuthRepo authRepo;
+  Future<void> registerWithEmailAndPassword(
+      {required String name,
+      required String phoneNumber,
+      required String email,
+      required String password,
+      required DateTime birthDate,
+      required String gender}) async {
     emit(AuthLoading());
-    final result = await authRepo.registerWithEmailAndPassword(name: name, phoneNumber: phoneNumber, email: email, password: password, birthDate: birthDate, gender: gender);
+    final result = await authRepo.registerWithEmailAndPassword(
+        name: name,
+        phoneNumber: phoneNumber,
+        email: email,
+        password: password,
+        birthDate: birthDate,
+        gender: gender);
     result.fold(
-      (failure) => emit(AuthError(failure.message)),
+      (FirebaseFailure) => emit(AuthError(FirebaseFailure.message)),
       (uid) => emit(AuthSuccess()),
-     
     );
   }
-    void logInWithEmailAndPassword({required String password, required String email,required  context}) async {
+
+  void logInWithEmailAndPassword(
+      {required String password,
+      required String email,
+      required context}) async {
     emit(AuthLoading());
-    final result = await authRepo.logInWithEmailAndPassword(email, password,context);
+    final result =
+        await authRepo.logInWithEmailAndPassword(email, password, context);
     result.fold(
-      (failure) => emit(AuthError(failure.message)),
+      (FirebaseFailure) => emit(AuthError(FirebaseFailure.message)),
       (uid) => emit(AuthSuccess()),
     );
   }
+
   void loginWithGoogle() async {
     emit(GoogleAuthLoading());
     final result = await authRepo.logInWithGoogle();
     result.fold(
-      (failure) => emit(AuthError(failure.message)),
+      (FirebaseFailure) => emit(AuthError(FirebaseFailure.message)),
       (uid) => emit(AuthSuccess()),
     );
   }
+
   void resetPassword({required String email}) async {
     emit(ResetPassword());
     final result = await authRepo.resetPassword(email);
     result.fold(
-      (failure) => emit(AuthError(failure.message)),
+      (FirebaseFailure) => emit(AuthError(FirebaseFailure.message)),
       (_) => emit(AuthSuccess()),
     );
   }
- Future< void> verifiyEmaill() async {
+
+  Future<void> verifiyEmaill() async {
     emit(AuthLoading());
     final result = await authRepo.verifiyEmaill();
     result.fold(
-      (failure) => emit(AuthError(failure.message)),
+      (FirebaseFailure) => emit(AuthError(FirebaseFailure.message)),
       (massge) => emit(AuthVerifiy(massge)),
     );
   }
-  
 }

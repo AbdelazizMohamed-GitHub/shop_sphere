@@ -1,17 +1,20 @@
 import 'package:dartz/dartz.dart';
-import 'package:shop_sphere/core/errors/failure.dart';
-import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 
 abstract class AuthRepo {
-  Future<Either<Failure, String>> registerWithEmailAndPassword(
-    {required String name,required String phoneNumber, required  String email,required String password,required DateTime birthDate,required String gender}
-     );
+  Future<Either<FirebaseFailure, String>> registerWithEmailAndPassword(
+      {required String name,
+      required String phoneNumber,
+      required String email,
+      required String password,
+      required DateTime birthDate,
+      required String gender});
 
-  Future<Either<Failure, String>> logInWithEmailAndPassword(
-      String email, String password,context);
-      Future<Either<Failure, String>> logInWithGoogle();
-      Future<Either<Failure, String>> verifiyEmaill();
-  Future<Either<Failure, void>> resetPassword(String email);
-  Future<Either<Failure, void>> signOut();
+  Future<Either<FirebaseFailure, String>> logInWithEmailAndPassword(
+      String email, String password, context);
+  Future<Either<FirebaseFailure, String>> logInWithGoogle();
+  Future<Either<FirebaseFailure, String>> verifiyEmaill();
+  Future<Either<FirebaseFailure, void>> resetPassword(String email);
+  Future<Either<FirebaseFailure, void>> signOut();
   Future<bool> isSignedIn();
 }

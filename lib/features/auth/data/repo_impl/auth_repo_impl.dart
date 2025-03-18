@@ -3,11 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'package:shop_sphere/core/errors/auth_failure.dart';
-import 'package:shop_sphere/core/errors/failure.dart';
+
+import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
-import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
 
@@ -20,11 +19,13 @@ class AuthRepoImpl extends AuthRepo {
   });
 
   @override
-  Future<Either<Failure, String>> registerWithEmailAndPassword(
-     {required String name,required String phoneNumber,
-     required String email,required String password,required DateTime
-      birthDate,required String gender}
-      ) async {
+  Future<Either<FirebaseFailure, String>> registerWithEmailAndPassword(
+      {required String name,
+      required String phoneNumber,
+      required String email,
+      required String password,
+      required DateTime birthDate,
+      required String gender}) async {
     UserCredential? userCredential;
     try {
       UserCredential userCredential = await _firebaseAuth
@@ -33,16 +34,15 @@ class AuthRepoImpl extends AuthRepo {
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
-            birthDate:birthDate,
-            email: email,gender: gender,
+            birthDate: birthDate,
+            email: email,
+            gender: gender,
             name: name,
             phoneNumber: phoneNumber,
-          
             createdAt: DateTime.now(),
             addressIndex: 0,
             uid: userCredential.user!.uid,
             profileImage: '',
-           
           ));
       await userCredential.user?.sendEmailVerification();
 
@@ -51,14 +51,14 @@ class AuthRepoImpl extends AuthRepo {
       if (userCredential!.user != null) {
         await userCredential.user!.delete();
       }
-      return Left(AuthFailure.fromCode(e.code));
+      return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
-      return Left(AuthFailure(e.toString()));
+      return Left(FirebaseFailure( message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, String>> logInWithEmailAndPassword(
+  Future<Either<FirebaseFailure, String>> logInWithEmailAndPassword(
       String email, String password, context) async {
     try {
       UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
@@ -72,18 +72,18 @@ class AuthRepoImpl extends AuthRepo {
                 email: user.user!.email!,
               ),
             ));
-        return Left(AuthFailure("Email not verified"));
+        return Left(FirebaseFailure( message: "Email not verified",));
       }
       return Right(user.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
-      return Left(AuthFailure.fromCode(e.code));
+      return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
-      return Left(AuthFailure(e.toString()));
+      return Left(FirebaseFailure( message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, String>> logInWithGoogle() async {
+  Future<Either<FirebaseFailure, String>> logInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser != null) {
@@ -103,25 +103,24 @@ class AuthRepoImpl extends AuthRepo {
               email: userCredential.user!.email!,
               name: userCredential.user!.displayName ?? "",
               phoneNumber: userCredential.user!.phoneNumber ?? "",
-            
               createdAt: DateTime.now(),
               addressIndex: 0,
               uid: userCredential.user!.uid,
               profileImage: '',
-           
-              birthDate: userCredential.user!.metadata.creationTime!, gender: '',
+              birthDate: userCredential.user!.metadata.creationTime!,
+              gender: '',
             ));
       }
       return const Right(" Logged in successfully");
     } on FirebaseAuthException catch (e) {
-      return Left(AuthFailure.fromCode(e.code));
+      return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
-      return Left(AuthFailure(e.toString()));
+      return Left(FirebaseFailure( message: e.toString(),));
     }
   }
 
   @override
-  Future<Either<Failure, String>> verifiyEmaill() async {
+  Future<Either<FirebaseFailure, String>> verifiyEmaill() async {
     try {
       User? user = _firebaseAuth.currentUser;
 
@@ -130,41 +129,41 @@ class AuthRepoImpl extends AuthRepo {
           return const Right("Email is verified ✅");
         } else {
           await user.sendEmailVerification();
-          return Left(
-              AuthFailure("Verification email sent. Please check your inbox."));
+          return Left(FirebaseFailure(
+               message: "Verification email sent. Please check your inbox."));
         }
       } else {
-        return Left(AuthFailure("User not found"));
+        return Left(FirebaseFailure( message: "User not found",));
       }
     } on FirebaseAuthException catch (e) {
-      return Left(AuthFailure.fromCode(e.code));
+      return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
-      return Left(AuthFailure(e.toString()));
+      return Left(FirebaseFailure( message: e.toString(),));
     }
   }
 
   @override
-  Future<Either<Failure, void>> resetPassword(String email) async {
+  Future<Either<FirebaseFailure, void>> resetPassword(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
       return const Right(null);
     } on FirebaseAuthException catch (e) {
-      return Left(AuthFailure.fromCode(e.code));
+      return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
-      return Left(AuthFailure(e.toString()));
+      return Left(FirebaseFailure( message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> signOut() async {
+  Future<Either<FirebaseFailure, void>> signOut() async {
     try {
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
       return const Right(null);
     } on FirebaseAuthException catch (e) {
-      return Left(AuthFailure.fromCode(e.code));
+      return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
-      return Left(AuthFailure(e.toString()));
+      return Left(FirebaseFailure( message: e.toString()));
     }
   }
 
@@ -173,8 +172,4 @@ class AuthRepoImpl extends AuthRepo {
     User? user = _firebaseAuth.currentUser;
     return user == null ? false : true;
   }
-
- 
-  
-  }
-
+}
