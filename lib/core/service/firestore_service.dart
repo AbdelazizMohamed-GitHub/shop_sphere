@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
+import 'package:uuid/uuid.dart';
 
 class FirestoreService {
   FirebaseFirestore firestore;
@@ -27,6 +30,10 @@ class FirestoreService {
   }
 
   return UserModel.fromMap(doc.data()!);
+}
+Future <void> addAddress(AddressModel adress)async {
+  String addressId =const Uuid().v4();
+await firestore.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).collection("address").doc( addressId).set(adress.toMap()  );
 }
 
 
