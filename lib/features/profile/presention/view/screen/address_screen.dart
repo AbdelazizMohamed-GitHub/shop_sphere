@@ -1,17 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
-import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
-import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/add_new_address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_address_item.dart';
 

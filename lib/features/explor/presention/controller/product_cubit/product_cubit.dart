@@ -14,8 +14,8 @@ class ProductCubit extends Cubit<ProductState> {
     await Future.delayed(const Duration(seconds: 6));
 
     final result = await productRepo.getProducts();
-    result.fold((FirebaseFailure) {
-      emit(ProductFirebaseFailure(errMessage: FirebaseFailure.message));
+    result.fold((firebaseFailure) {
+      emit(ProductFirebaseFailure(errMessage: firebaseFailure.message));
     }, (products) {
       emit(ProductSuccess(products: products));
     });

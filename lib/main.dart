@@ -9,7 +9,6 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/profile_screen.dart';
 
 import 'package:shop_sphere/firebase_options.dart';
