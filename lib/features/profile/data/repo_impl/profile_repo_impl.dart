@@ -14,7 +14,7 @@ class ProfileRepoImpl extends ProfileRepo {
   @override
   Future<Either<FirebaseFailure, UserEntity>> getUserData() async {
     try {
-      UserEntity data = await firestoreService.getData(
+      UserEntity data = await firestoreService.getUserData(
           collection: "users", did: _firebaseAuth.currentUser!.uid);
       return right(data);
     } on FirebaseException catch (e) {
@@ -32,7 +32,7 @@ class ProfileRepoImpl extends ProfileRepo {
           collection: "users",
           did: _firebaseAuth.currentUser!.uid,
           data: userModel);
-      await firestoreService.getData(
+      await firestoreService.getUserData(
           collection: "users", did: _firebaseAuth.currentUser!.uid);
       return right(null);
     } on FirebaseException catch (e) {

@@ -40,8 +40,7 @@ class CustomProductItem extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => DetailsScreen(
                               product: product,
-                              products: products,
-                            ),
+                                                         ),
                           ));
                     },
                     child: Image.asset(

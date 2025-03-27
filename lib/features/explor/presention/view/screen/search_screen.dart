@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
@@ -23,7 +25,7 @@ class SearchScreen extends StatelessWidget {
               onChanged: (query) {
                 controller.openView();
               },
-              leading: Icon(Icons.search),
+              leading: const Icon(Icons.search),
             );
           },
           suggestionsBuilder: (
@@ -31,7 +33,7 @@ class SearchScreen extends StatelessWidget {
             SearchController controller,
           ) async {
             final query = controller.text.toLowerCase();
-            final products = await FirestoreService().gegettProducts();
+            final products = await FirestoreService(firestore: getIt<FirebaseFirestore>()).getProduct();
             final results = products
                 .where((product) => product.name.toLowerCase().contains(query))
                 .toList();
