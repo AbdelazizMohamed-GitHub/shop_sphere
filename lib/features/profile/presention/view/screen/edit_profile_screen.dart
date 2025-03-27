@@ -39,6 +39,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    nameTextC.dispose();
+    phoneTextC.dispose();
+    super.dispose();
+  }
+
   DateTime? selectedDate;
   String? selectGender;
 
@@ -49,7 +56,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {
           if (state is EditProfileSuccess) {
-           
             Navigator.pop(context);
           }
           if (state is EditProfileFirebaseFailure) {
@@ -78,7 +84,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     );
                     FocusScope.of(context).unfocus();
                     context.read<ProfileCubit>().updateUserData(userModel);
-                     await BlocProvider.of<ProfileCubit>(context).getUserData();
+                  
                   },
                   child: Text("Save",
                       style: AppStyles.text18Regular.copyWith(

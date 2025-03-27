@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 
@@ -14,10 +13,8 @@ class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
     super.key,
     required this.product,
-    required this.products,
   });
   final ProductEntity product;
-  final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,27 +42,27 @@ class DetailsScreen extends StatelessWidget {
                         color: AppColors.primaryColor),
                   ),
                 ),
-                CustomProductTitleSection(
-                  title: 'Related Products',
-                  funcation: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SeeAllScreen(
-                          products: products,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                // CustomProductTitleSection(
+                //   title: 'Related Products',
+                //   funcation: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => SeeAllScreen(
+                //           products: products,
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
-                    height: 200,
-                    child: CustomHorzintalProductList(
-                      products: products,
-                    ))
+                // SizedBox(
+                //     height: 200,
+                //     child: CustomHorzintalProductList(
+                //       products: products,
+                //     ))
               ]),
             )),
         bottomNavigationBar: const CustomDetailsButtom());

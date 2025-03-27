@@ -15,12 +15,11 @@ import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.da
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 
-
 class AddNewAddressScreen extends StatefulWidget {
   const AddNewAddressScreen({
     super.key,
-    required this.isupdate,  this.addressEntity,
-    
+    required this.isupdate,
+    this.addressEntity,
   });
   final bool isupdate;
   final AddressEntity? addressEntity;
@@ -45,8 +44,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       stateController.text = widget.addressEntity!.state;
     }
     super.initState();
-    
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -67,12 +66,15 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
           body: BlocConsumer<AddressCubit, AddressState>(
             listener: (context, state) {
               if (state is AdressSuccess) {
-                  BlocProvider.of<AddressCubit>(context).getAddress();
                 Navigator.pop(context);
                 Warning.showWarning(context,
                     message: widget.isupdate
                         ? "Address Update Successfully"
                         : "Address Added Successfully");
+              }
+              if (state is AdressError) {
+                Warning.showWarning(context, message: state.errMessage);
+                print("error" + state.errMessage);
               }
             },
             builder: (context, state) {
@@ -146,12 +148,14 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                       state is AdressLoading
                           ? const Center(child: CircularProgressIndicator())
                           : CustomButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   var addressId = const Uuid().v4();
                                   AddressModel addressModel = AddressModel(
                                     createdAt: Timestamp.now(),
-                                    id:widget.isupdate?widget.addressEntity!.id: addressId,
+                                    id: widget.isupdate
+                                        ? widget.addressEntity!.id
+                                        : addressId,
                                     title: titleController.text,
                                     phoneNumber: phoneController.text,
                                     street: streetController.text,
@@ -164,16 +168,15 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                                       ? context
                                           .read<AddressCubit>()
                                           .updateAddress(
-                                              addressId:widget.addressEntity!.id, 
-                                                
-                                               addressModel:addressModel )
+                                              addressId:
+                                                  widget.addressEntity!.id,
+                                              addressModel: addressModel)
                                       : context.read<AddressCubit>().addAddress(
                                           addressId: addressId,
                                           addressModel: addressModel);
-                                            BlocProvider.of<AddressCubit>(context).getAddress();
                                 }
                               },
-                              text: "Save",
+                              text: widget.isupdate ? "Update" : "Save",
                             )
                     ],
                   ),

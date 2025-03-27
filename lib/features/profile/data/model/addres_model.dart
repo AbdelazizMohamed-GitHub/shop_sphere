@@ -39,7 +39,7 @@ class AddressModel extends AddressEntity {
     return {
       'createdAt': createdAt,
       'title': title,
-      id: id,
+      'id': id,
       'phoneNumber': phoneNumber,
       'street': street,
       'city': city,

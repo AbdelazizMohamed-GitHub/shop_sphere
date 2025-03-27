@@ -1,11 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
@@ -19,32 +19,11 @@ class CustomAddressItem extends StatelessWidget {
   final AddressEntity addressEntity;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddressCubit, AddressState>(
-      builder: (context, state) {
-        return InkWell(
-          onLongPress: () {
-            showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      title:state is AdressLoading ? const CircularProgressIndicator(): const Text("Are You Sure for Delet Address"),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Cancel")),
-                        TextButton(
-                            onPressed: ()async {
-                             await context
-                                  .read<AddressCubit>()
-                                  .deleteAddress(addressId: addressEntity.id);
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Delete")),
-                      ],
-                    ));
-          },
-          child: Container(
+    return BlocProvider(
+      create: (context) => AddressCubit(addressRepo: getIt<AddressRepoImpl>()),
+      child: BlocBuilder<AddressCubit, AddressState>(
+        builder: (context, state) {
+          return Container(
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -81,19 +60,36 @@ class CustomAddressItem extends StatelessWidget {
                             : Colors.white,
                       ))
                 ]),
-                Text(
-                  addressEntity.phoneNumber,
-                  style: AppStyles.text16Regular,
-                ),
-                Text(
-                  "${addressEntity.city}, ${addressEntity.street} Egypt",
-                  style: AppStyles.text16Regular,
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          addressEntity.phoneNumber,
+                          style: AppStyles.text16Regular,
+                        ),
+                        Text(
+                          " ${addressEntity.street},${addressEntity.city},${addressEntity.state}} Egypt",
+                          style: AppStyles.text16Regular,
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    IconButton(
+                        onPressed: () async {
+                          await context
+                              .read<AddressCubit>()
+                              .deleteAddress(addressId: addressEntity.id);
+                        },
+                        icon: const Icon(Icons.delete, color: Colors.red))
+                  ],
                 ),
               ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -44,7 +44,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const AddressScreen(),
+                : const ProfileScreen(),
           );
         },
       ),
