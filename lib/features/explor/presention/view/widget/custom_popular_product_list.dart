@@ -25,7 +25,7 @@ class CustomVerticalProductList extends StatelessWidget {
       itemBuilder: (context, index) {
         return CustomProductItem(
           product: products[index],
-          products: products,
+         
         );
       },
     );

@@ -82,12 +82,10 @@ class FirestoreService {
   }
 
   Future<List<ProductEntity>> getProduct() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection("products")
-        .orderBy("createdAt", descending: true)
-        .get();
-    return querySnapshot.docs
-        .map((e) => ProductModel.fromMap(e.data()))
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await firestore.collection("products").get();
+    return snapshot.docs
+        .map((doc) => ProductModel.fromMap(doc.data()))
         .toList();
   }
 }

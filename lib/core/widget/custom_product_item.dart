@@ -11,10 +11,8 @@ class CustomProductItem extends StatelessWidget {
   const CustomProductItem({
     super.key,
     required this.product,
-    required this.products,
   });
   final ProductEntity product;
-  final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,11 +38,12 @@ class CustomProductItem extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => DetailsScreen(
                               product: product,
-                                                         ),
+                            ),
                           ));
                     },
-                    child: Image.asset(
+                    child: Image.network(
                       product.imageUrl,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

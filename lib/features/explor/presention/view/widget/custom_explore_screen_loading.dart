@@ -34,7 +34,9 @@ class CustomExploreScreenLoading extends StatelessWidget {
             ),
             const SizedBox(height: 40, child: CustomCategoryList()),
             const SizedBox(height: 10),
-            const CustomAdvertise(),
+            // const CustomAdvertise(
+            //   product: null,
+            // ),
             CustomProductTitleSection(
               title: 'New Arrivals',
               funcation: () {
