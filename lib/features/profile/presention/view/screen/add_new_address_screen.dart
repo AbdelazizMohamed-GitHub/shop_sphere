@@ -74,7 +74,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
               }
               if (state is AdressError) {
                 Warning.showWarning(context, message: state.errMessage);
-                print("error" + state.errMessage);
               }
             },
             builder: (context, state) {
