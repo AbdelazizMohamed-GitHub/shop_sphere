@@ -20,4 +20,20 @@ class ProductRepoImpl extends ProductRepo {
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
+  
+  @override
+  Future<Either<FirebaseFailure, void>> addAndRemoveToFavorite({required String productId})async {
+   try {
+     await firestoreService.addAndRemoveToFavorite(productId: productId);
+     return right(null);
+   }on FirebaseException catch (e) {
+return Left(FirebaseFailure.fromCode(e.code));
+   }
+   catch (e) {
+     return Left(FirebaseFailure(message: e.toString()));
+     
+   }
+  }
+
+
 }

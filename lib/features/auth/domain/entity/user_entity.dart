@@ -1,3 +1,5 @@
+import 'package:shop_sphere/features/explor/data/model/product_model.dart';
+
 class UserEntity {
   final String uid;
   final String name;
@@ -9,8 +11,9 @@ class UserEntity {
   final String gender;
 
   final DateTime createdAt;
+  final List<String> favProduct;
 
-  const UserEntity( {required this.gender,
+  const UserEntity( {required this.gender,required this.favProduct,
     required this.uid,
     required this.name,
     required this.email,

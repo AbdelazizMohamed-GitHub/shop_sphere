@@ -34,6 +34,7 @@ class AuthRepoImpl extends AuthRepo {
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
+            favProduct: [],
             birthDate: birthDate,
             email: email,
             gender: gender,
@@ -109,6 +110,7 @@ class AuthRepoImpl extends AuthRepo {
               profileImage: '',
               birthDate: userCredential.user!.metadata.creationTime!,
               gender: '',
+              favProduct: []
             ));
       }
       return const Right(" Logged in successfully");

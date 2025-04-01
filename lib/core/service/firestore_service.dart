@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
@@ -87,5 +89,19 @@ class FirestoreService {
     return snapshot.docs
         .map((doc) => ProductModel.fromMap(doc.data()))
         .toList();
+  }
+
+  Future<void> addAndRemoveToFavorite({required String productId}) async {
+    await firestore
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((value) {
+      UserModel userModel = UserModel.fromMap(value.data()!);
+      if (userModel.favProduct.contains(productId)) {
+         userModel.favProduct.remove(productId);
+      }else{
+        userModel.favProduct.add(productId);}  
+    });
   }
 }

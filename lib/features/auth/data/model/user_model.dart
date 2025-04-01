@@ -1,5 +1,5 @@
-
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 
 class UserModel extends UserEntity {
   @override
@@ -21,8 +21,10 @@ class UserModel extends UserEntity {
 
   @override
   final DateTime createdAt;
+ final List<String> favProduct;
 
-  UserModel( {required this.gender,
+  UserModel( {required this.favProduct,
+    required this.gender,
     required this.birthDate,
     required this.addressIndex,
     required this.uid,
@@ -31,7 +33,6 @@ class UserModel extends UserEntity {
     required this.phoneNumber,
     required this.profileImage,
     required this.createdAt,
-  
   }) : super(
             uid: uid,
             name: name,
@@ -41,7 +42,9 @@ class UserModel extends UserEntity {
             phoneNumber: phoneNumber,
             profileImage: profileImage,
             addressIndex: addressIndex,
-            createdAt: createdAt);
+            createdAt: createdAt,
+            favProduct: favProduct
+            );
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {
@@ -54,13 +57,13 @@ class UserModel extends UserEntity {
       'profileImage': profileImage,
       'addressIndex': addressIndex,
       'createdAt': createdAt.toIso8601String(),
+      'favProduct':favProduct
     };
   }
 
   // Convert from Map
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-     
       birthDate: DateTime.parse(map['birthDate']),
       uid: map['uid'] ?? "",
       name: map['name'] ?? "",
@@ -68,7 +71,9 @@ class UserModel extends UserEntity {
       phoneNumber: map['phoneNumber'] ?? "",
       profileImage: map['profileImage'] ?? "",
       addressIndex: map['addressIndex'] ?? 0,
-      createdAt: DateTime.parse(map['createdAt']), gender: map['gender'] ?? "",
+      createdAt: DateTime.parse(map['createdAt']),
+      gender: map['gender'] ?? "",
+     favProduct: map['favProduct'] ?? []
     );
   }
 }
