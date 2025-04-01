@@ -20,13 +20,5 @@ class ProductCubit extends Cubit<ProductState> {
       emit(ProductSuccess(products: products));
     });
   }
-Future<void> addAndRemoveToFavorite(String productId)async {
-    emit(ProductLoading());
-    final result = await productRepo.addAndRemoveToFavorite(productId: productId);
-    result.fold((firebaseFailure) {
-      emit(ProductFailure(errMessage: firebaseFailure.message));
-    }, (user) {
-      emit(AddProductToFavoriteSuccess());
-    });
-  }
+
 }

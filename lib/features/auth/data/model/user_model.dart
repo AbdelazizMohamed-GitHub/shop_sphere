@@ -21,9 +21,11 @@ class UserModel extends UserEntity {
 
   @override
   final DateTime createdAt;
- final List<String> favProduct;
+  @override
+  final List<String> favProduct;
 
-  UserModel( {required this.favProduct,
+  UserModel({
+    required this.favProduct,
     required this.gender,
     required this.birthDate,
     required this.addressIndex,
@@ -43,8 +45,7 @@ class UserModel extends UserEntity {
             profileImage: profileImage,
             addressIndex: addressIndex,
             createdAt: createdAt,
-            favProduct: favProduct
-            );
+            favProduct: favProduct);
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {
@@ -57,23 +58,22 @@ class UserModel extends UserEntity {
       'profileImage': profileImage,
       'addressIndex': addressIndex,
       'createdAt': createdAt.toIso8601String(),
-      'favProduct':favProduct
+      'favProduct': favProduct
     };
   }
 
   // Convert from Map
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      birthDate: DateTime.parse(map['birthDate']),
-      uid: map['uid'] ?? "",
-      name: map['name'] ?? "",
-      email: map['email'] ?? "",
-      phoneNumber: map['phoneNumber'] ?? "",
-      profileImage: map['profileImage'] ?? "",
-      addressIndex: map['addressIndex'] ?? 0,
-      createdAt: DateTime.parse(map['createdAt']),
-      gender: map['gender'] ?? "",
-     favProduct: map['favProduct'] ?? []
-    );
+        birthDate: DateTime.parse(map['birthDate']),
+        uid: map['uid'] ?? "",
+        name: map['name'] ?? "",
+        email: map['email'] ?? "",
+        phoneNumber: map['phoneNumber'] ?? "",
+        profileImage: map['profileImage'] ?? "",
+        addressIndex: map['addressIndex'] ?? 0,
+        createdAt: DateTime.parse(map['createdAt']),
+        gender: map['gender'] ?? "",
+        favProduct: List<String>.from(map['favProduct'] ?? []));
   }
 }

@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/domain/repo/product_repo.dart';
+import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
 class CustomProductItem extends StatelessWidget {
@@ -94,7 +100,16 @@ class CustomProductItem extends StatelessWidget {
                 icon: const Icon(
                   Icons.favorite_outline,
                 ),
-                funcation: () {}),
+                funcation: () async {
+                  try {
+                    await FirestoreService(
+                            firestore: FirebaseFirestore.instance)
+                        .addAndRemoveToFavorite(productId: product.id);
+
+                  } catch (e) {
+                    Warning.showWarning(context, message: e.toString());
+                  }
+                }),
           )
         ],
       ),

@@ -99,9 +99,28 @@ class FirestoreService {
         .then((value) {
       UserModel userModel = UserModel.fromMap(value.data()!);
       if (userModel.favProduct.contains(productId)) {
-         userModel.favProduct.remove(productId);
-      }else{
-        userModel.favProduct.add(productId);}  
+        userModel.favProduct.remove(productId);
+      } else {
+        userModel.favProduct.add(productId);
+      }
     });
   }
+
+  Future<bool> isFavoriteExit({required String productId}) async {
+    bool result = false;
+    await firestore
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get()
+        .then((value) {
+      UserModel userModel = UserModel.fromMap(value.data()!);
+      if (userModel.favProduct.contains(productId)) {
+        return result = true;
+      } else {
+        return result = false;
+      }
+    });
+    return result;
+  }
+
 }
