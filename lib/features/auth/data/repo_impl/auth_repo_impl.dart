@@ -34,6 +34,7 @@ class AuthRepoImpl extends AuthRepo {
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
+            cartProduct: [], 
             favProduct: [],
             birthDate: birthDate,
             email: email,
@@ -101,6 +102,7 @@ class AuthRepoImpl extends AuthRepo {
             collection: "users",
             did: userCredential.user!.uid,
             data: UserModel(
+              cartProduct: [],
               email: userCredential.user!.email!,
               name: userCredential.user!.displayName ?? "",
               phoneNumber: userCredential.user!.phoneNumber ?? "",

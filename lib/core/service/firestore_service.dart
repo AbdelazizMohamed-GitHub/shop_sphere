@@ -159,4 +159,74 @@ class FirestoreService {
       return products;
     });
   }
+  Future<void> addToCart({required String productId}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return; // Ensure user is logged in
+
+    DocumentReference userRef = firestore.collection("users").doc(userId);
+    DocumentSnapshot userDoc = await userRef.get();
+
+    if (!userDoc.exists) return; // Handle if user document doesn't exist
+
+    UserModel userModel =
+        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+
+    // Toggle cart status
+    if (userModel.cartProduct.contains(productId)) {
+      userModel.cartProduct.remove(productId);
+    } else {
+      userModel.cartProduct.add(productId);
+    }
+
+    // Update Firestore with modified cart
+    await userRef.update({"cartProduct": userModel.cartProduct});
+  }
+  Future<bool> isProductInCart({required String productId}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return false; // Ensure user is logged in
+
+    DocumentSnapshot userDoc =
+        await firestore.collection("users").doc(userId).get();
+
+    if (!userDoc.exists || userDoc.data() == null) return false;
+
+    UserModel userModel =
+        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+    return userModel.cartProduct.contains(productId);
+  }
+  Future<List<ProductEntity>> getAllProductsInCart() async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return []; // Ensure user is logged in
+
+    DocumentSnapshot userDoc =
+        await firestore.collection("users").doc(userId).get();
+
+    if (!userDoc.exists || userDoc.data() == null) return [];
+
+    UserModel userModel =
+        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+
+    if (userModel.cartProduct.isEmpty) return []; // No products in cart
+
+    // Fetch all products in cart
+    List<ProductEntity> products = [];
+    var productDocs = await firestore
+        .collection("products")
+        .where('id', whereIn: userModel.cartProduct)
+        .get();
+
+    for (var doc in productDocs.docs) {
+      products.add(ProductModel.fromMap(doc.data()));
+    }
+
+    return products;
+  }
+  Future<void> clearCart() async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return; // Ensure user is logged in
+
+    DocumentReference userRef = firestore.collection("users").doc(userId);
+    await userRef.update({"cartProduct": []});
+  }
+  
 }

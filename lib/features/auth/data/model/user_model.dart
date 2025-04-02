@@ -23,6 +23,7 @@ class UserModel extends UserEntity {
   final DateTime createdAt;
   @override
   final List<String> favProduct;
+  final List<String> cartProduct;
 
   UserModel({
     required this.favProduct,
@@ -35,6 +36,7 @@ class UserModel extends UserEntity {
     required this.phoneNumber,
     required this.profileImage,
     required this.createdAt,
+    required this.cartProduct,
   }) : super(
             uid: uid,
             name: name,
@@ -45,7 +47,8 @@ class UserModel extends UserEntity {
             profileImage: profileImage,
             addressIndex: addressIndex,
             createdAt: createdAt,
-            favProduct: favProduct);
+            favProduct: favProduct,
+            cartProduct: cartProduct);
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {
@@ -58,7 +61,8 @@ class UserModel extends UserEntity {
       'profileImage': profileImage,
       'addressIndex': addressIndex,
       'createdAt': createdAt.toIso8601String(),
-      'favProduct': favProduct
+      'favProduct': favProduct,
+      'cartProduct': cartProduct,
     };
   }
 
@@ -74,6 +78,7 @@ class UserModel extends UserEntity {
         addressIndex: map['addressIndex'] ?? 0,
         createdAt: DateTime.parse(map['createdAt']),
         gender: map['gender'] ?? "",
-        favProduct: List<String>.from(map['favProduct'] ?? []));
+        favProduct: List<String>.from(map['favProduct'] ?? []),
+        cartProduct: List<String>.from(map['cartProduct'] ?? []));
   }
 }
