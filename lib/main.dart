@@ -41,7 +41,7 @@ class ShopSphere extends StatelessWidget {
                 : state is AppChangeThemeLight
                     ? AppTheme.lightTheme
                     : AppTheme.darkTheme,
-            home: FirebaseAuth.instance.currentUser != null
+            home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
                 : const MainScreen(),
           );
