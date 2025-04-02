@@ -5,23 +5,24 @@ import 'package:shop_sphere/features/explor/domain/repo/cart_repo.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  CartCubit(
-    {required this.cartRepo,
-  }
-  ) : super(CartInitial());
+  CartCubit({
+    required this.cartRepo,
+  }) : super(CartInitial());
   final CartRepo cartRepo;
-  void addToCart({required String productId}) async {
+  Future<void> addToCart({required String productId}) async {
     emit(CartLoading());
     final result = await cartRepo.addToCart(productId: productId);
     result.fold(
       (failure) {
         emit(CartFailure(errMessage: failure.message));
       },
-      (data) {
+      (data) async {
         emit(CartSuccess());
+        await isProductInCart(productId: productId);
       },
     );
   }
+
   void getAllProductsInCart() async {
     emit(CartLoading());
     final result = await cartRepo.getAllProductsInCart();
@@ -34,7 +35,8 @@ class CartCubit extends Cubit<CartState> {
       },
     );
   }
-  void isProductInCart({required String productId}) async {
+
+  Future<void> isProductInCart({required String productId}) async {
     emit(CartLoading());
     final result = await cartRepo.isProductInCart(productId: productId);
     result.fold(
@@ -46,6 +48,7 @@ class CartCubit extends Cubit<CartState> {
       },
     );
   }
+
   void removeFromCart({required String productId}) async {
     emit(CartLoading());
     final result = await cartRepo.removeFromCart(productId: productId);
@@ -53,11 +56,13 @@ class CartCubit extends Cubit<CartState> {
       (failure) {
         emit(CartFailure(errMessage: failure.message));
       },
-      (data) {
+      (data) async {
         emit(CartSuccess());
+        await isProductInCart(productId: productId);
       },
     );
   }
+
   void clearCart() async {
     emit(CartLoading());
     final result = await cartRepo.clearCart();
@@ -70,5 +75,4 @@ class CartCubit extends Cubit<CartState> {
       },
     );
   }
-  
 }

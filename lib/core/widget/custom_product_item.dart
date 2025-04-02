@@ -6,8 +6,13 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/custom_favourite_icon.dart';
+import 'package:shop_sphere/core/widget/custom_product_item_loading.dart';
+import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_state.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
@@ -25,130 +30,112 @@ class CustomProductItem extends StatelessWidget {
         create: (context) =>
             FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>())
               ..isFavoriteExit(productId: product.id),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppTheme.isLightTheme(context)
-                ? Colors.white
-                : AppColors.secondaryDarkColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailsScreen(
-                                  product: product,
-                                ),
-                              ));
-                        },
-                        child: Image.network(
-                          product.imageUrl,
-                          fit: BoxFit.cover,
+        child: BlocProvider(
+          create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>())
+            ..isProductInCart(productId: product.id),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppTheme.isLightTheme(context)
+                  ? Colors.white
+                  : AppColors.secondaryDarkColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsScreen(
+                                    product: product,
+                                  ),
+                                ));
+                          },
+                          child: Image.network(
+                            product.imageUrl,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 150,
-                          child: Text(
-                            product.name,
-                            style: AppStyles.text14Regular,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('\$${product.price.toStringAsFixed(2)}',
-                                style: AppStyles.text16Regular),
-                            const Spacer(),
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                color: AppColors.primaryColor,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10)),
-                              ),
-                              child: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 30,
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            child: Text(
+                              product.name,
+                              style: AppStyles.text14Regular,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              BlocBuilder<FavouriteCubit, FavouriteState>(
-                builder: (context, state) {
-                  return Positioned(
-                      top: 10,
-                      left: 10,
-                      child: state is FavouriteLoading
-                          ? Skeletonizer(
-                              enabled: true,
-                              child: CustomCircleButton(
-                                  icon: Icon(Icons.favorite), funcation: () {}))
-                          : state is IsFavourite
-                              ? CustomCircleButton(
-                                  icon: state.isFavourite
-                                      ? const Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        )
-                                      : const Icon(
-                                          Icons.favorite_outline,
-                                        ),
-                                  funcation: () async {
-                                    await context
-                                        .read<FavouriteCubit>()
-                                        .addToFavorite(productId: product.id);
-
-                                   
-                                  })
-                              : state is IsFavourite
-                                  ? CustomCircleButton(
-                                      icon: state.isFavourite
-                                          ? const Icon(
-                                              Icons.favorite,
-                                              color: Colors.red,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('\$${product.price.toStringAsFixed(2)}',
+                                  style: AppStyles.text16Regular),
+                              const Spacer(),
+                              BlocBuilder<CartCubit, CartState>(
+                                builder: (context, state) {
+                                  return state is CartLoading
+                                      ? const CustomProductItemLoading()
+                                      : state is IsProductInCart
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                context
+                                                    .read<CartCubit>()
+                                                    .addToCart(
+                                                        productId: product.id);
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(5),
+                                                decoration: const BoxDecoration(
+                                                  color: AppColors.primaryColor,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  10)),
+                                                ),
+                                                child: state.isProductInCart
+                                                    ? const Icon(
+                                                        Icons.remove,
+                                                        color: Colors.white,
+                                                        size: 30,
+                                                      )
+                                                    : const Icon(
+                                                        Icons.add,
+                                                        color: Colors.white,
+                                                        size: 30,
+                                                      ),
+                                              ),
                                             )
-                                          : const Icon(
-                                              Icons.favorite_outline,
-                                            ),
-                                      funcation: () async {
-                                        await context
-                                            .read<FavouriteCubit>()
-                                            .addToFavorite(
-                                                productId: product.id);
-
-                                        context
-                                            .read<FavouriteCubit>()
-                                            .isFavoriteExit(
-                                                productId: product.id);
-                                      })
-                                  : Container());
-                },
-              )
-            ],
+                                          : Container();
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+               CustomFavouriteIcon(productId: product.id)
+              ],
+            ),
           ),
         ));
   }
