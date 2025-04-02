@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
@@ -115,7 +116,7 @@ class FirestoreService {
   }
 
   Future<List<String>> isFavoriteExist({required String productId}) async {
-    List<String> favProducts= [];
+    List<String> favProducts = [];
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return [];
 
@@ -128,8 +129,7 @@ class FirestoreService {
         return;
       }
 
-       favProducts =
-          List<String>.from(snapshot.data()?['favProduct'] ?? []);
+      favProducts = List<String>.from(snapshot.data()?['favProduct'] ?? []);
     });
     return favProducts;
   }
@@ -166,44 +166,30 @@ class FirestoreService {
     });
   }
 
-  Future<void> addToCart({required String productId}) async {
+  Future<void> addToCart({required CartItemModel cartItemModel,}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
-    DocumentReference userRef = firestore.collection("users").doc(userId);
+    DocumentReference userRef = firestore
+        .collection("users")
+        .doc(userId)
+        .collection("cart")
+        .doc(cartItemModel.id);
     DocumentSnapshot userDoc = await userRef.get();
 
     if (!userDoc.exists) return; // Handle if user document doesn't exist
 
-    UserModel userModel =
-        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
-
     // Toggle cart status
-    if (userModel.cartProduct.contains(productId)) {
-      userModel.cartProduct.remove(productId);
+    if (userDoc.exists) {
+     await userRef.delete();
     } else {
-      userModel.cartProduct.add(productId);
+      await userRef.set(cartItemModel.toMap());
     }
 
     // Update Firestore with modified cart
-    await userRef.update({"cartProduct": userModel.cartProduct});
   }
 
-  Future<bool> isProductInCart({required String productId}) async {
-    String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) return false; // Ensure user is logged in
-
-    DocumentSnapshot userDoc =
-        await firestore.collection("users").doc(userId).get();
-
-    if (!userDoc.exists || userDoc.data() == null) return false;
-
-    UserModel userModel =
-        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
-    return userModel.cartProduct.contains(productId);
-  }
-
-  Future<List<ProductEntity>> getAllProductsInCart() async {
+    Future<List<ProductEntity>> getAllProductsInCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return []; // Ensure user is logged in
 
@@ -220,7 +206,7 @@ class FirestoreService {
     // Fetch all products in cart
     List<ProductEntity> products = [];
     var productDocs = await firestore
-        .collection("products")
+        .collection("products").doc(userId).collection("cart")
         .where('id', whereIn: userModel.cartProduct)
         .get();
 
@@ -235,7 +221,11 @@ class FirestoreService {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
-    DocumentReference userRef = firestore.collection("users").doc(userId);
-    await userRef.update({"cartProduct": []});
+await firestore.collection("users").doc(userId).collection("cart").get().then((snapshot) {
+      for (var doc in snapshot.docs) {
+        doc.reference.delete();
+      }
+    });
+    
   }
 }

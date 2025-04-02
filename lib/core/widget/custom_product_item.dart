@@ -81,7 +81,7 @@ class CustomProductItem extends StatelessWidget {
                         Text('\$${product.price.toStringAsFixed(2)}',
                             style: AppStyles.text16Regular),
                         const Spacer(),
-                        CustomProductItemButton(productId: product.id),
+                        CustomProductItemButton(productEntity: product),
                       ],
                     ),
                   ],

@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
+import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -11,10 +13,10 @@ import 'package:skeletonizer/skeletonizer.dart';
 class CustomProductItemButton extends StatelessWidget {
   const CustomProductItemButton({
     super.key,
-    required this.productId,
+    required this.productEntity,
   });
 
-  final String productId;
+  final ProductEntity productEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +33,33 @@ class CustomProductItemButton extends StatelessWidget {
         }
 
         if (state is IsProductInCart) {
-          bool isProductInCart = state.cartProduct.contains(productId);
+          bool isProductInCart = state.cartProduct.contains(productEntity.id);
           print("isProductInCart: $isProductInCart");
 
           return GestureDetector(
             onTap: () {
-              context.read<CartCubit>().addToCart(productId: productId);
+              
+              if (isProductInCart) {
+                context.read<CartCubit>().removeFromCart(
+                      cartItemModel: CartItemModel(
+                        id: productEntity.id,
+                        name: '',
+                        imageUrl: '',
+                        price: 0.0,
+                      ),
+                    );
+              }
+              else {
+                context.read<CartCubit>().addToCart(
+                      cartItemModel: CartItemModel(
+                        id: productEntity.id,
+                        name:productEntity.name, 
+                        imageUrl: productEntity.imageUrl,
+                        price: productEntity.price,
+                      ),
+                    );
+              }
+             
             },
             child: _buildCartButton(isProductInCart),
           );
