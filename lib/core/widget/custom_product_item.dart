@@ -1,20 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
-import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/domain/repo/product_repo.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_state.dart';
-import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

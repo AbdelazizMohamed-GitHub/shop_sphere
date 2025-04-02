@@ -90,64 +90,73 @@ class FirestoreService {
         .map((doc) => ProductModel.fromMap(doc.data()))
         .toList();
   }
-Future<void> addToFavorite({required String productId}) async {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId == null) return; // Ensure user is logged in
 
-  DocumentReference userRef = firestore.collection("users").doc(userId);
-  DocumentSnapshot userDoc = await userRef.get();
+  Future<void> addToFavorite({required String productId}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return; // Ensure user is logged in
 
-  if (!userDoc.exists) return; // Handle if user document doesn't exist
+    DocumentReference userRef = firestore.collection("users").doc(userId);
+    DocumentSnapshot userDoc = await userRef.get();
 
-  UserModel userModel = UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+    if (!userDoc.exists) return; // Handle if user document doesn't exist
 
-  // Toggle favorite status
-  if (userModel.favProduct.contains(productId)) {
-    userModel.favProduct.remove(productId);
-  } else {
-    userModel.favProduct.add(productId);
-  }
+    UserModel userModel =
+        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
 
-  // Update Firestore with modified favorites
-  await userRef.update({"favProduct": userModel.favProduct});
-}
-   Future<bool> isFavoriteExist({required String productId}) async {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId == null) return false; // Ensure user is logged in
-
-  DocumentSnapshot userDoc = await firestore.collection("users").doc(userId).get();
-
-  if (!userDoc.exists || userDoc.data() == null) return false;
-
-  UserModel userModel = UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
-  return userModel.favProduct.contains(productId);
-}
-
-  Stream<List<ProductEntity>> getAllFavoriteProducts() {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId == null) return const Stream.empty();
-
-  return firestore.collection("users").doc(userId).snapshots().asyncMap((snapshot) async {
-    if (!snapshot.exists || snapshot.data() == null) return [];
-
-    UserModel userModel = UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
-    
-    if (userModel.favProduct.isEmpty) return []; // No favorites, return empty list
-
-    // Fetch all favorite products in a single Firestore query
-    List<ProductEntity> products = [];
-    var productDocs = await firestore
-        .collection("products")
-        .where('id', whereIn: userModel.favProduct)
-        .get();
-
-    for (var doc in productDocs.docs) {
-      products.add(ProductModel.fromMap(doc.data()));
+    // Toggle favorite status
+    if (userModel.favProduct.contains(productId)) {
+      userModel.favProduct.remove(productId);
+    } else {
+      userModel.favProduct.add(productId);
     }
 
-    return products;
-  });
-}
+    // Update Firestore with modified favorites
+    await userRef.update({"favProduct": userModel.favProduct});
+  }
 
+  Future<bool> isFavoriteExist({required String productId}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return false; // Ensure user is logged in
 
+    DocumentSnapshot userDoc =
+        await firestore.collection("users").doc(userId).get();
+
+    if (!userDoc.exists || userDoc.data() == null) return false;
+
+    UserModel userModel =
+        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+    return userModel.favProduct.contains(productId);
+  }
+
+  Stream<List<ProductEntity>> getAllFavoriteProducts() {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return const Stream.empty();
+
+    return firestore
+        .collection("users")
+        .doc(userId)
+        .snapshots()
+        .asyncMap((snapshot) async {
+      if (!snapshot.exists || snapshot.data() == null) return [];
+
+      UserModel userModel =
+          UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
+
+      if (userModel.favProduct.isEmpty)
+        return []; // No favorites, return empty list
+
+      // Fetch all favorite products in a single Firestore query
+      List<ProductEntity> products = [];
+      var productDocs = await firestore
+          .collection("products")
+          .where('id', whereIn: userModel.favProduct)
+          .get();
+
+      for (var doc in productDocs.docs) {
+        products.add(ProductModel.fromMap(doc.data()));
+      }
+
+      return products;
+    });
+  }
 }
