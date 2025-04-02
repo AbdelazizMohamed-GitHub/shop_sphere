@@ -1,7 +1,13 @@
 
+import 'package:equatable/equatable.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-sealed class CartState {}
+sealed class CartState extends Equatable {
+   @override
+  List<Object?> get props => [];
+}
+ 
+
 
 final class CartInitial extends CartState {}
 final class CartLoading extends CartState {}
@@ -11,8 +17,8 @@ final class GetCartSuccess extends CartState {
   GetCartSuccess({required this.products});
 }
 final class IsProductInCart extends CartState {
-  final bool isProductInCart;
-  IsProductInCart({required this.isProductInCart});
+  final List<String> cartProduct;
+  IsProductInCart({required this.cartProduct});
 }
 final class CartFailure extends CartState {
   final String errMessage;

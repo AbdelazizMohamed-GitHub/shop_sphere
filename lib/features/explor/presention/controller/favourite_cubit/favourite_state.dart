@@ -1,7 +1,12 @@
 
- import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+ import 'package:equatable/equatable.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class FavouriteState {}
+class FavouriteState extends Equatable {
+  @override
+  
+  List<Object?> get props => [];
+}
 
 final class FavouriteInitial extends FavouriteState {}
 final class FavouriteLoading extends FavouriteState {}
@@ -11,8 +16,8 @@ final class GetFavouriteSuccess extends FavouriteState {
   GetFavouriteSuccess({required this.products});
 }
 final class IsFavourite extends FavouriteState {
-  final bool isFavourite;
-  IsFavourite({required this.isFavourite});
+  final List<String> favProducts;
+  IsFavourite({required this.favProducts});
 }
 
 final class FavouriteFailure extends FavouriteState {

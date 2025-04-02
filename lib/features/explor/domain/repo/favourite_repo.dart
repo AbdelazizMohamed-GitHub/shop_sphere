@@ -4,6 +4,6 @@ import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 abstract class FavouriteRepo {
       Future<Either<FirebaseFailure, void>> addToFavorite({required String productId});
-      Future<Either<FirebaseFailure, bool>> isFavoriteExit({required String productId});
+      Future<Either<FirebaseFailure, List<String>>> isFavoriteExit({required String productId});
 
 } 

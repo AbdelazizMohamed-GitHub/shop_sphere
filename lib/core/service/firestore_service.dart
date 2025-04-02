@@ -114,18 +114,24 @@ class FirestoreService {
     await userRef.update({"favProduct": userModel.favProduct});
   }
 
-  Future<bool> isFavoriteExist({required String productId}) async {
+  Future<List<String>> isFavoriteExist({required String productId}) async {
+    List<String> favProducts= [];
     String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) return false; // Ensure user is logged in
+    if (userId == null) return [];
 
-    DocumentSnapshot userDoc =
-        await firestore.collection("users").doc(userId).get();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .snapshots()
+        .listen((snapshot) {
+      if (!snapshot.exists || snapshot.data() == null) {
+        return;
+      }
 
-    if (!userDoc.exists || userDoc.data() == null) return false;
-
-    UserModel userModel =
-        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
-    return userModel.favProduct.contains(productId);
+       favProducts =
+          List<String>.from(snapshot.data()?['favProduct'] ?? []);
+    });
+    return favProducts;
   }
 
   Stream<List<ProductEntity>> getAllFavoriteProducts() {
@@ -159,6 +165,7 @@ class FirestoreService {
       return products;
     });
   }
+
   Future<void> addToCart({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
@@ -181,6 +188,7 @@ class FirestoreService {
     // Update Firestore with modified cart
     await userRef.update({"cartProduct": userModel.cartProduct});
   }
+
   Future<bool> isProductInCart({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return false; // Ensure user is logged in
@@ -194,6 +202,7 @@ class FirestoreService {
         UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
     return userModel.cartProduct.contains(productId);
   }
+
   Future<List<ProductEntity>> getAllProductsInCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return []; // Ensure user is logged in
@@ -221,6 +230,7 @@ class FirestoreService {
 
     return products;
   }
+
   Future<void> clearCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
@@ -228,5 +238,4 @@ class FirestoreService {
     DocumentReference userRef = firestore.collection("users").doc(userId);
     await userRef.update({"cartProduct": []});
   }
-  
 }

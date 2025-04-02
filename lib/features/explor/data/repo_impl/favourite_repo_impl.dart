@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
-import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/domain/repo/favourite_repo.dart';
 
 class FavouriteRepoImpl extends FavouriteRepo {
@@ -23,10 +22,10 @@ class FavouriteRepoImpl extends FavouriteRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, bool>> isFavoriteExit(
+  Future<Either<FirebaseFailure, List<String>>> isFavoriteExit(
       {required String productId}) async {
     try {
-      bool data = await firestoreService.isFavoriteExist(productId: productId);
+      var data = await firestoreService.isFavoriteExist(productId: productId);
       return right(data
       );
     } on FirebaseException catch (e) {

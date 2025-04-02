@@ -8,7 +8,7 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/custom_favourite_icon.dart';
-import 'package:shop_sphere/core/widget/custom_product_item_loading.dart';
+import 'package:shop_sphere/core/widget/custom_product_item_button.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -27,119 +27,71 @@ class CustomProductItem extends StatelessWidget {
   final ProductEntity product;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) =>
-            FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>())
-              ..isFavoriteExit(productId: product.id),
-        child: BlocProvider(
-          create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>())
-            ..isProductInCart(productId: product.id),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppTheme.isLightTheme(context)
-                  ? Colors.white
-                  : AppColors.secondaryDarkColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Stack(
-              children: [
-                Column(
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.isLightTheme(context)
+            ? Colors.white
+            : AppColors.secondaryDarkColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsScreen(
+                                product: product,
+                              ),
+                            ));
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: product.imageUrl,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) =>
+                           const Icon(Icons.error),
+                      )),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                        child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailsScreen(
-                                      product: product,
-                                    ),
-                                  ));
-                            },
-                            child: CachedNetworkImage(
-                              imageUrl: product.imageUrl,
-                              placeholder: (context, url) =>
-                                  const CustomProductItemLoading(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                            )),
+                    SizedBox(
+                      width: 150,
+                      child: Text(
+                        product.name,
+                        style: AppStyles.text14Regular,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 150,
-                            child: Text(
-                              product.name,
-                              style: AppStyles.text14Regular,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('\$${product.price.toStringAsFixed(2)}',
-                                  style: AppStyles.text16Regular),
-                              const Spacer(),
-                              BlocBuilder<CartCubit, CartState>(
-                                builder: (context, state) {
-                                  return state is CartLoading
-                                      ? const CustomProductItemLoading()
-                                      : state is IsProductInCart
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                context
-                                                    .read<CartCubit>()
-                                                    .addToCart(
-                                                        productId: product.id);
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(5),
-                                                decoration: const BoxDecoration(
-                                                  color: AppColors.primaryColor,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  10),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  10)),
-                                                ),
-                                                child: state.isProductInCart
-                                                    ? const Icon(
-                                                        Icons.remove,
-                                                        color: Colors.white,
-                                                        size: 30,
-                                                      )
-                                                    : const Icon(
-                                                        Icons.add,
-                                                        color: Colors.white,
-                                                        size: 30,
-                                                      ),
-                                              ),
-                                            )
-                                          : Container();
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('\$${product.price.toStringAsFixed(2)}',
+                            style: AppStyles.text16Regular),
+                        const Spacer(),
+                        CustomProductItemButton(productId: product.id),
+                      ],
                     ),
                   ],
                 ),
-                CustomFavouriteIcon(productId: product.id)
-              ],
-            ),
+              ),
+            ],
           ),
-        ));
+          CustomFavouriteIcon(productId: product.id)
+        ],
+      ),
+    );
   }
 }
