@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
@@ -50,20 +51,22 @@ class CustomProductItem extends StatelessWidget {
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10)),
                         child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailsScreen(
-                                    product: product,
-                                  ),
-                                ));
-                          },
-                          child: Image.network(
-                            product.imageUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailsScreen(
+                                      product: product,
+                                    ),
+                                  ));
+                            },
+                            child: CachedNetworkImage(
+                              imageUrl: product.imageUrl,
+                              placeholder: (context, url) =>
+                                  const CustomProductItemLoading(),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            )),
                       ),
                     ),
                     Padding(
@@ -133,7 +136,7 @@ class CustomProductItem extends StatelessWidget {
                     ),
                   ],
                 ),
-               CustomFavouriteIcon(productId: product.id)
+                CustomFavouriteIcon(productId: product.id)
               ],
             ),
           ),

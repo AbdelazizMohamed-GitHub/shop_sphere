@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart'
     show CarouselOptions, CarouselSlider;
 import 'package:flutter/material.dart';
@@ -31,8 +32,14 @@ class CustomAdvertise extends StatelessWidget {
                     ),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(product!.imageUrl,
-                            fit: BoxFit.cover)),
+                        child: CachedNetworkImage(
+                            imageUrl: product!.imageUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error))),
                   ),
                   Positioned(
                     width: 120,

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
@@ -15,7 +16,12 @@ class CustomFavouriteIcon extends StatelessWidget {
   final String productId;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavouriteCubit, FavouriteState>(
+    return BlocConsumer<FavouriteCubit, FavouriteState>(
+      listener: (context, state) {
+        if (state is FavouriteFailure) {
+          Warning.showWarning(context, message: state.errMessage);
+        }
+      },
       builder: (context, state) {
         return Positioned(
           top: 10,
@@ -24,7 +30,7 @@ class CustomFavouriteIcon extends StatelessWidget {
               ? Skeletonizer(
                   enabled: true,
                   child: CustomCircleButton(
-                      icon:const Icon(Icons.favorite), funcation: () {}))
+                      icon: const Icon(Icons.favorite), funcation: () {}))
               : state is IsFavourite
                   ? CustomCircleButton(
                       icon: state.isFavourite
