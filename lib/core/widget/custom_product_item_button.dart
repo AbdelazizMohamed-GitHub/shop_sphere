@@ -22,7 +22,7 @@ class CustomProductItemButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          CartCubit(cartRepo: getIt<CartRepoImpl>()),
+          CartCubit(cartRepo: getIt<CartRepoImpl>())..listenIsProductInCart(),
       child: BlocConsumer<CartCubit, CartState>(listener: (context, state) {
         if (state is CartFailure) {
           Warning.showWarning(context, message: state.errMessage);

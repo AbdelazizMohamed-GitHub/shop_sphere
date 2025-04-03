@@ -11,9 +11,7 @@ class CartCubit extends Cubit<CartState> {
   final CartRepo cartRepo;
   // ✅ Store subscription
 
-  CartCubit({required this.cartRepo}) : super(CartInitial()) {
-   
-  }
+  CartCubit({required this.cartRepo}) : super(CartInitial()) ;
 
   Future<void> addToCart({required CartItemModel cartItemModel}) async {
     emit(CartLoading());
@@ -22,7 +20,7 @@ class CartCubit extends Cubit<CartState> {
         (data) {
       emit(CartSuccess());
       listenIsProductInCart(
-        productId: cartItemModel.id,
+      
       );
     });
   }
@@ -36,27 +34,22 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  void listenIsProductInCart(
-    {required String productId,}
-  ) {
-    String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) return;
+void listenIsProductInCart() {
+  String? userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId == null) return;
 
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId).collection("cart").doc(productId)
-        .snapshots()
-        .listen((snapshot) {
-      if (!snapshot.exists || snapshot.data() == null) {
-        emit(IsProductInCart(cartProduct: [])); // No favorites
-        return;
-      }
+  FirebaseFirestore.instance
+      .collection("users")
+      .doc(userId)
+      .collection("cart")
+      .snapshots()
+      .listen((snapshot) {
+    List<String> cartProductIds = snapshot.docs.map((doc) => doc.id).toList();
+    emit(IsProductInCart(cartProduct: cartProductIds));
+  });
+}
 
-      List<String> favProducts =
-          List<String>.from(snapshot.data()?['cartProduct'] ?? []);
-      emit(IsProductInCart(cartProduct: favProducts));
-    });
-  }
+
 
   Future<void> removeFromCart({required CartItemModel cartItemModel}) async {
     emit(CartLoading());
@@ -66,7 +59,7 @@ class CartCubit extends Cubit<CartState> {
       emit(CartSuccess());
 
       listenIsProductInCart( 
-        productId: cartItemModel.id,
+      
       );
     }
       

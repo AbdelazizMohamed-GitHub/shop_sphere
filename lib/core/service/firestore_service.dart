@@ -166,30 +166,30 @@ class FirestoreService {
     });
   }
 
-  Future<void> addToCart({required CartItemModel cartItemModel,}) async {
+  Future<void> addToCart({required CartItemModel cartItemModel}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
-
-    DocumentReference userRef = firestore
+    print("User ID: $userId");
+    DocumentReference userRef = FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
         .collection("cart")
         .doc(cartItemModel.id);
+
     DocumentSnapshot userDoc = await userRef.get();
 
-    if (!userDoc.exists) return; // Handle if user document doesn't exist
-
-    // Toggle cart status
     if (userDoc.exists) {
-     await userRef.delete();
+      // Item exists in cart, remove it
+      userDoc.reference.delete();
+     
     } else {
+      // Item doesn't exist, add it to cart
       await userRef.set(cartItemModel.toMap());
+     
     }
-
-    // Update Firestore with modified cart
   }
 
-    Future<List<ProductEntity>> getAllProductsInCart() async {
+  Future<List<ProductEntity>> getAllProductsInCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return []; // Ensure user is logged in
 
@@ -206,7 +206,9 @@ class FirestoreService {
     // Fetch all products in cart
     List<ProductEntity> products = [];
     var productDocs = await firestore
-        .collection("products").doc(userId).collection("cart")
+        .collection("products")
+        .doc(userId)
+        .collection("cart")
         .where('id', whereIn: userModel.cartProduct)
         .get();
 
@@ -221,11 +223,15 @@ class FirestoreService {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
-await firestore.collection("users").doc(userId).collection("cart").get().then((snapshot) {
+    await firestore
+        .collection("users")
+        .doc(userId)
+        .collection("cart")
+        .get()
+        .then((snapshot) {
       for (var doc in snapshot.docs) {
         doc.reference.delete();
       }
     });
-    
   }
 }
