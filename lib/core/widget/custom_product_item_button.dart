@@ -41,12 +41,7 @@ class CustomProductItemButton extends StatelessWidget {
               
               if (isProductInCart) {
                 context.read<CartCubit>().removeFromCart(
-                      cartItemModel: CartItemModel(
-                        id: productEntity.id,
-                        name: '',
-                        imageUrl: '',
-                        price: 0.0,
-                      ),
+                  productId: productEntity.id,
                     );
               }
               else {
@@ -56,6 +51,7 @@ class CustomProductItemButton extends StatelessWidget {
                         name:productEntity.name, 
                         imageUrl: productEntity.imageUrl,
                         price: productEntity.price,
+                        quantity: 1,
                       ),
                     );
               }

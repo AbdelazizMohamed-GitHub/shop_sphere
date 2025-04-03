@@ -1,23 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
-import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/custom_favourite_icon.dart';
 import 'package:shop_sphere/core/widget/custom_product_item_button.dart';
-import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
-import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
-import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
-import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
-import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_state.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CustomProductItem extends StatelessWidget {
   const CustomProductItem({

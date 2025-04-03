@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
-import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/explor/domain/repo/cart_repo.dart';
 
 class CartRepoImpl extends CartRepo {
@@ -37,7 +37,7 @@ class CartRepoImpl extends CartRepo {
       }
     
       @override
-      Future<Either<FirebaseFailure, List<ProductEntity>>> getAllProductsInCart()async {
+      Future<Either<FirebaseFailure, List<CartEntity>>> getAllProductsInCart()async {
     try {
       var data =  await firestoreService.getAllProductsInCart();
       return Right(data);
@@ -51,9 +51,9 @@ class CartRepoImpl extends CartRepo {
     
      
       @override
-      Future<Either<FirebaseFailure, void>> removeFromCart({required CartItemModel cartItemModel})async {
+      Future<Either<FirebaseFailure, void>> removeFromCart({required String productId})async {
     try {
-      await firestoreService.addToCart(cartItemModel: cartItemModel);
+      await firestoreService.removeFromCart(productId: productId);
       return const Right(null);
     }
     on FirebaseException catch (e) {
@@ -63,5 +63,18 @@ class CartRepoImpl extends CartRepo {
       return Left(FirebaseFailure(message: e.toString()));
     }
       }
+      
+        @override
+        Future<Either<FirebaseFailure, void>> isProductInCart({required String productId, required bool isIncrement})async {
+         try {
+      firestoreService.updateCartQuantity(productId: productId, isIncrement: isIncrement);
+      return const Right(null);
+
+        } on FirebaseException catch (e) {  
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+        }
     
 }

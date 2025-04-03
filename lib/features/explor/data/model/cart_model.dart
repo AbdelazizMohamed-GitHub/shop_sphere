@@ -5,15 +5,20 @@ class CartItemModel extends CartEntity {
   final String name;
   final String imageUrl;
   final double price;
-  int quantity;
+  final int quantity;
 
   CartItemModel({
     required this.id,
     required this.name,
     required this.imageUrl,
     required this.price,
-    this.quantity = 1,
-  }) : super(productId: id, productImage: imageUrl, productName: name, productPrice: price, productQuantity: quantity);
+    required this.quantity,
+  }) : super(
+            productId: id,
+            productImage: imageUrl,
+            productName: name,
+            productPrice: price,
+            productQuantity: quantity);
 
   // Convert CartItem to a map for Firestore
   Map<String, dynamic> toMap() {
@@ -22,20 +27,18 @@ class CartItemModel extends CartEntity {
       'name': name,
       'imageUrl': imageUrl,
       'price': price,
-      'quantity': quantity,
+      'quantity': quantity, // Default quantity to 1 if not provided
     };
   }
 
   // Convert a Firestore document to CartItem
   factory CartItemModel.fromMap(Map<String, dynamic> map) {
     return CartItemModel(
-      id: map['id'],
-      name: map['name'],
-      imageUrl: map['imageUrl'],
-      price: map['price'],
-      quantity: map['quantity'],
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      imageUrl: map['imageUrl'] ?? '',
+      price: map['price'] ?? 0.0,
+      quantity: map['quantity'] ?? 1, // Default quantity to 1 if not provided
     );
   }
 }
-
-

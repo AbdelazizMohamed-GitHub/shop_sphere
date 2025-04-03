@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +5,7 @@ import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
+import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
@@ -188,36 +188,41 @@ class FirestoreService {
      
     }
   }
-
-  Future<List<ProductEntity>> getAllProductsInCart() async {
+ Future<void> removeFromCart({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) return []; // Ensure user is logged in
-
-    DocumentSnapshot userDoc =
-        await firestore.collection("users").doc(userId).get();
-
-    if (!userDoc.exists || userDoc.data() == null) return [];
-
-    UserModel userModel =
-        UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
-
-    if (userModel.cartProduct.isEmpty) return []; // No products in cart
-
-    // Fetch all products in cart
-    List<ProductEntity> products = [];
-    var productDocs = await firestore
-        .collection("products")
+    if (userId == null) return; // Ensure user is logged in
+    await firestore
+        .collection("users")
         .doc(userId)
         .collection("cart")
-        .where('id', whereIn: userModel.cartProduct)
-        .get();
-
-    for (var doc in productDocs.docs) {
-      products.add(ProductModel.fromMap(doc.data()));
-    }
-
-    return products;
+        .doc(productId)
+        .delete();
   }
+
+  Future<List<CartEntity>> getAllProductsInCart() async {
+  String? userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId == null) return []; // Ensure user is logged in
+
+  // Fetch all cart items
+  QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
+      .collection("users")
+      .doc(userId)
+      .collection("cart")
+      .get();
+
+  if (cartSnapshot.docs.isEmpty) return []; // No products in cart
+
+  
+
+  // Fetch all product details based on IDs
+  
+
+  List<CartEntity> products =
+      cartSnapshot.docs.map((doc) => CartItemModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+
+  return products;
+}
+
 
   Future<void> clearCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -234,4 +239,33 @@ class FirestoreService {
       }
     });
   }
+  Future<void> updateCartQuantity({required String productId,required bool isIncrement}) async {
+  String? userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId == null) return;
+
+  DocumentReference cartItemRef = FirebaseFirestore.instance
+      .collection("users")
+      .doc(userId)
+      .collection("cart")
+      .doc(productId);
+
+  DocumentSnapshot cartSnapshot = await cartItemRef.get();
+
+  if (cartSnapshot.exists) {
+    int currentQuantity = cartSnapshot.get("quantity");
+
+    if (isIncrement) {
+      // Increase quantity
+      await cartItemRef.update({"quantity": currentQuantity + 1});
+    } else {
+      // Decrease quantity (remove item if quantity is 1)
+      if (currentQuantity > 1) {
+        await cartItemRef.update({"quantity": currentQuantity - 1});
+      } else {
+        await cartItemRef.delete();
+      }
+    }
+  }
+}
+
 }

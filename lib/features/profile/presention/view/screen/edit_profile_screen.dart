@@ -72,7 +72,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 TextButton(
                   onPressed: () async {
                     UserModel userModel = UserModel(
-                      cartProduct: widget.user.cartProduct,
+                   
                       favProduct: widget.user.favProduct,
                       name: nameTextC.text,
                       phoneNumber: phoneTextC.text,
