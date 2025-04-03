@@ -76,8 +76,18 @@ class CartCubit extends Cubit<CartState> {
   Future<void> updateCartQuantity(
       {required String productId, required bool isIncrement}) async {
     emit(CartLoading());
-    final result = await cartRepo.isProductInCart(
+    final result = await cartRepo.updateCartQuantity(
         productId: productId, isIncrement: isIncrement);
+    result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
+        (data) {
+      emit(CartSuccess());
+    });
+  }
+  Future<void> updateCartQuantityWithCount(
+      {required String productId, required int count}) async {
+    emit(CartLoading());
+    final result = await cartRepo.updateCartQuantityWithCount(
+        productId: productId, count: count);
     result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
         (data) {
       emit(CartSuccess());

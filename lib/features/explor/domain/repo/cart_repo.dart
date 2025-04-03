@@ -8,5 +8,7 @@ abstract class CartRepo {
   Future<Either<FirebaseFailure, void>> removeFromCart({required String productId});
   Future<Either<FirebaseFailure, void>> clearCart();
   Future<Either<FirebaseFailure, List<CartEntity>>> getAllProductsInCart();
-  Future<Either<FirebaseFailure, void>> isProductInCart({required String productId,required bool isIncrement });
+  Future<Either<FirebaseFailure, void>> updateCartQuantity({required String productId,required bool isIncrement });
+  Future<Either<FirebaseFailure, void>> updateCartQuantityWithCount({required String productId,required int count });
+
 }

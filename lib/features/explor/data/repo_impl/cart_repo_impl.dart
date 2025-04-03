@@ -64,13 +64,26 @@ class CartRepoImpl extends CartRepo {
     }
       }
       
+      
         @override
-        Future<Either<FirebaseFailure, void>> isProductInCart({required String productId, required bool isIncrement})async {
+        Future<Either<FirebaseFailure, void>> updateCartQuantity({required String productId, required bool isIncrement})async {
          try {
       firestoreService.updateCartQuantity(productId: productId, isIncrement: isIncrement);
       return const Right(null);
 
-        } on FirebaseException catch (e) {  
+        } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+        }
+        @override
+        Future<Either<FirebaseFailure, void>> updateCartQuantityWithCount({required String productId, required int count})async {
+         try {
+      firestoreService.updateCartQuantityWithCount(productId: productId, count: count);
+      return const Right(null);
+
+        } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));

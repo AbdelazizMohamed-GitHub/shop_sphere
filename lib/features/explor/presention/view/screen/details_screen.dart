@@ -66,6 +66,7 @@ class DetailsScreen extends StatelessWidget {
             )),
         bottomNavigationBar:  CustomDetailsButtom(
           cartCount:cartCount ,
+          productId: product.id,
         ));
   }
 }

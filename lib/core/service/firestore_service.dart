@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
@@ -181,14 +180,13 @@ class FirestoreService {
     if (userDoc.exists) {
       // Item exists in cart, remove it
       userDoc.reference.delete();
-     
     } else {
       // Item doesn't exist, add it to cart
       await userRef.set(cartItemModel.toMap());
-     
     }
   }
- Future<void> removeFromCart({required String productId}) async {
+
+  Future<void> removeFromCart({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
     await firestore
@@ -200,29 +198,26 @@ class FirestoreService {
   }
 
   Future<List<CartEntity>> getAllProductsInCart() async {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId == null) return []; // Ensure user is logged in
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return []; // Ensure user is logged in
 
-  // Fetch all cart items
-  QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
-      .collection("users")
-      .doc(userId)
-      .collection("cart")
-      .get();
+    // Fetch all cart items
+    QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("cart")
+        .get();
 
-  if (cartSnapshot.docs.isEmpty) return []; // No products in cart
+    if (cartSnapshot.docs.isEmpty) return []; // No products in cart
 
-  
+    // Fetch all product details based on IDs
 
-  // Fetch all product details based on IDs
-  
+    List<CartEntity> products = cartSnapshot.docs
+        .map((doc) => CartItemModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
 
-  List<CartEntity> products =
-      cartSnapshot.docs.map((doc) => CartItemModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
-
-  return products;
-}
-
+    return products;
+  }
 
   Future<void> clearCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -239,33 +234,54 @@ class FirestoreService {
       }
     });
   }
-  Future<void> updateCartQuantity({required String productId,required bool isIncrement}) async {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId == null) return;
 
-  DocumentReference cartItemRef = FirebaseFirestore.instance
-      .collection("users")
-      .doc(userId)
-      .collection("cart")
-      .doc(productId);
+  Future<void> updateCartQuantity({
+    required String productId,
+    required bool isIncrement,
+  }) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
 
-  DocumentSnapshot cartSnapshot = await cartItemRef.get();
+    DocumentReference cartItemRef = FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("cart")
+        .doc(productId);
 
-  if (cartSnapshot.exists) {
-    int currentQuantity = cartSnapshot.get("quantity");
+    DocumentSnapshot cartSnapshot = await cartItemRef.get();
 
-    if (isIncrement) {
-      // Increase quantity
-      await cartItemRef.update({"quantity": currentQuantity + 1});
-    } else {
-      // Decrease quantity (remove item if quantity is 1)
-      if (currentQuantity > 1) {
-        await cartItemRef.update({"quantity": currentQuantity - 1});
+    if (cartSnapshot.exists) {
+      int currentQuantity = cartSnapshot.get("quantity");
+
+      if (isIncrement) {
+        // Increase quantity
+        await cartItemRef.update({"quantity": currentQuantity + 1});
       } else {
-        await cartItemRef.delete();
+        // Decrease quantity (remove item if quantity is 1)
+        if (currentQuantity > 1) {
+          await cartItemRef.update({"quantity": currentQuantity - 1});
+        } else {
+          await cartItemRef.delete();
+        }
       }
     }
   }
-}
 
+  Future<void> updateCartQuantityWithCount(
+      {required String productId, required int count}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    DocumentReference cartItemRef = FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("cart")
+        .doc(productId);
+
+    DocumentSnapshot cartSnapshot = await cartItemRef.get();
+
+    if (cartSnapshot.exists) {
+      await cartItemRef.update({"quantity": count});
+    }
+  }
 }
