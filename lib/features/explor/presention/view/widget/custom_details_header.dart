@@ -1,7 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
+import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_state.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class CustomDetailsHeader extends StatelessWidget {
   const CustomDetailsHeader({
@@ -19,7 +27,13 @@ class CustomDetailsHeader extends StatelessWidget {
             left: 50,
             right: 10,
             bottom: 0,
-            child: Image.asset(product.imageUrl, fit: BoxFit.cover)),
+            child: CachedNetworkImage(
+                imageUrl: product.imageUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                errorWidget: (context, url, error) => const Icon(Icons.error))),
         Positioned(
           left: 20,
           right: 20,
@@ -37,15 +51,36 @@ class CustomDetailsHeader extends StatelessWidget {
                       Icons.arrow_back_ios,
                       color: Colors.black,
                     )),
-                CircleAvatar(
-                  backgroundColor: Colors.grey.shade200,
-                  radius: 20,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    ),
+                BlocProvider(
+                  create: (context) => FavouriteCubit(
+                      favouriteRepo: getIt<FavouriteRepoImpl>()),
+                  
+                  child: BlocBuilder<FavouriteCubit, FavouriteState>(
+                    builder: (context, state) {
+                      if (state is IsFavourite) {
+                        bool isFavourite = state.favProducts.contains(product.id);
+                        return CustomCircleButton(
+                          icon: isFavourite
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                )
+                              : const Icon(Icons.favorite_border),
+                          funcation: () async {
+                            await context
+                                .read<FavouriteCubit>()
+                                .addToFavorite(productId: product.id);
+                          },
+                        );
+                      }
+                      return  Skeletonizer(
+                        enabled: true,
+                        child: CustomCircleButton(
+                          icon:const Icon(Icons.favorite_border),
+                          funcation: () {},
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

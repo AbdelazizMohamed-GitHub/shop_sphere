@@ -1,17 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class CustomDetailsButtom extends StatefulWidget {
-  const CustomDetailsButtom({super.key});
+   CustomDetailsButtom({
+    Key? key,
+    required this.cartCount,
+  }) : super(key: key);
+   int cartCount;
 
   @override
   State<CustomDetailsButtom> createState() => _CustomDetailsButtomState();
 }
 
 class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
-  int count = 1;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,9 +35,9 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        if (count == 0) return;
+                        if (widget.cartCount == 0) return;
                         setState(() {
-                          count--;
+                         widget.cartCount--;
                         });
                       },
                       icon: const Icon(
@@ -40,14 +45,14 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
                         size: 30,
                       )),
                   Text(
-                    count.toString(),
+                    widget.cartCount.toString(),
                     style: AppStyles.text26BoldBlack,
                   ),
                   IconButton(
                       onPressed: () {
-                        if (count == 10) return;
+                        if (widget.cartCount == 10) return;
                         setState(() {
-                          count++;
+                          widget.cartCount++;
                         });
                       },
                       icon: const Icon(

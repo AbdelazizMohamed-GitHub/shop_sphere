@@ -10,8 +10,10 @@ class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
     super.key,
     required this.product,
+    this.cartCount = 0,
   });
   final ProductEntity product;
+  final int cartCount;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +64,8 @@ class DetailsScreen extends StatelessWidget {
                 //     ))
               ]),
             )),
-        bottomNavigationBar: const CustomDetailsButtom());
+        bottomNavigationBar:  CustomDetailsButtom(
+          cartCount:cartCount ,
+        ));
   }
 }

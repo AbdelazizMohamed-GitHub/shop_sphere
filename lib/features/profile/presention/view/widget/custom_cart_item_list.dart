@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/test_data/test_list.dart';
-import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
+
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_item.dart';
 
