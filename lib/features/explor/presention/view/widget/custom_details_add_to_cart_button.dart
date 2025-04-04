@@ -35,7 +35,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                         name: productEntity.name,
                         imageUrl: productEntity.imageUrl,
                         price: productEntity.price,
-                        quantity: cartCount,
+                        quantity: 1,
                       ),
                     );
               }

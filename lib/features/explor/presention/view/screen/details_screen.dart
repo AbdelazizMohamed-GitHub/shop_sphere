@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_details_buttom.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_details_header.dart';
 
@@ -10,10 +14,9 @@ class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
     super.key,
     required this.product,
-    this.cartCount = 0,
   });
   final ProductEntity product;
-  final int cartCount;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,16 +60,15 @@ class DetailsScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              // SizedBox(
-              //     height: 200,
-              //     child: CustomHorzintalProductList(
-              //       products: products,
-              //     ))
             ]),
           )),
-      bottomNavigationBar: CustomDetailsButtom(
-       
-        productEntity: product,
+      bottomNavigationBar: BlocProvider(
+        create: (context) => CartCubit(
+          cartRepo: getIt<CartRepoImpl>(),
+        )..getProductInCart(productId: product.id),
+        child: CustomDetailsButtom(
+          productEntity: product,
+        ),
       ),
     );
   }
