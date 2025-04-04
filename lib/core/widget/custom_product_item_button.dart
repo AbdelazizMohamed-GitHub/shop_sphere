@@ -34,7 +34,7 @@ class CustomProductItemButton extends StatelessWidget {
 
         if (state is IsProductInCart) {
           bool isProductInCart = state.cartProduct.contains(productEntity.id);
-          print("isProductInCart: $isProductInCart");
+         
 
           return GestureDetector(
             onTap: () {

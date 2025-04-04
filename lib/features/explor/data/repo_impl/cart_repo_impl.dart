@@ -7,87 +7,98 @@ import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/explor/domain/repo/cart_repo.dart';
 
 class CartRepoImpl extends CartRepo {
-   final FirestoreService firestoreService;
+  final FirestoreService firestoreService;
 
   CartRepoImpl({required this.firestoreService});
   @override
-  Future<Either<FirebaseFailure, void>> addToCart({required CartItemModel cartItemModel})async {
+  Future<Either<FirebaseFailure, void>> addToCart(
+      {required CartItemModel cartItemModel}) async {
     try {
-    var data =  await firestoreService.addToCart(cartItemModel: cartItemModel);
+      var data = await firestoreService.addToCart(cartItemModel: cartItemModel);
       return Right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));
     }
-    }
-    
-      @override
-      Future<Either<FirebaseFailure, void>> clearCart()async {
-   try {
-     await firestoreService.clearCart();
-     return const Right(null);
-   }on FirebaseException catch (e) {
-     return Left(FirebaseFailure.fromCode(e.code));
-   } 
-   catch (e) {
-     return Left(FirebaseFailure(message: e.toString()));
-     
-   }
-      }
-    
-      @override
-      Future<Either<FirebaseFailure, List<CartEntity>>> getAllProductsInCart()async {
+  }
+
+  @override
+  Future<Either<FirebaseFailure, void>> clearCart() async {
     try {
-      var data =  await firestoreService.getAllProductsInCart();
-      return Right(data);
-    }on FirebaseException catch (e) {
+      await firestoreService.clearCart();
+      return const Right(null);
+    } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
-    } 
-    catch (e) {
+    } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));
     }
-      } 
-    
-     
-      @override
-      Future<Either<FirebaseFailure, void>> removeFromCart({required String productId})async {
+  }
+
+  @override
+  Future<Either<FirebaseFailure, List<CartEntity>>>
+      getAllProductsInCart() async {
+    try {
+      var data = await firestoreService.getAllProductsInCart();
+      return Right(data);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseFailure, void>> removeFromCart(
+      {required String productId}) async {
     try {
       await firestoreService.removeFromCart(productId: productId);
       return const Right(null);
-    }
-    on FirebaseException catch (e) {
-      return Left(FirebaseFailure.fromCode(e.code));
-    } 
-    catch (e) {
-      return Left(FirebaseFailure(message: e.toString()));
-    }
-      }
-      
-      
-        @override
-        Future<Either<FirebaseFailure, void>> updateCartQuantity({required String productId, required bool isIncrement})async {
-         try {
-      firestoreService.updateCartQuantity(productId: productId, isIncrement: isIncrement);
-      return const Right(null);
-
-        } on FirebaseException catch (e) {
+    } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));
     }
-        }
-        @override
-        Future<Either<FirebaseFailure, void>> updateCartQuantityWithCount({required String productId, required int count})async {
-         try {
-      firestoreService.updateCartQuantityWithCount(productId: productId, count: count);
-      return const Right(null);
+  }
 
-        } on FirebaseException catch (e) {
+  @override
+  Future<Either<FirebaseFailure, void>> updateCartQuantity(
+      {required String productId, required bool isIncrement}) async {
+    try {
+      firestoreService.updateCartQuantity(
+          productId: productId, isIncrement: isIncrement);
+      return const Right(null);
+    } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));
     }
-        }
-    
+  }
+
+  @override
+  Future<Either<FirebaseFailure, void>> updateCartQuantityWithCount(
+      {required String productId, required int count}) async {
+    try {
+      firestoreService.updateCartQuantityWithCount(
+          productId: productId, count: count);
+      return const Right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseFailure, CartEntity>> getProductInCart(
+      {required String productId}) async {
+    try {
+      var data = await firestoreService.getProductInCart(productId: productId);
+      return Right(data!);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
 }

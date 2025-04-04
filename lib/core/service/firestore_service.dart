@@ -218,6 +218,28 @@ class FirestoreService {
 
     return products;
   }
+  Future<CartEntity?> getProductInCart({required String productId}) async {
+  String? userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId == null) return null;
+
+  DocumentSnapshot cartSnapshot = await FirebaseFirestore.instance
+      .collection("users")
+      .doc(userId)
+      .collection("cart")
+      .doc(productId)
+      .get();
+
+  // Check if document exists
+  if (!cartSnapshot.exists || cartSnapshot.data() == null) {
+    print("No product found in cart.");
+    return null; // or throw an exception
+  }
+
+  print("cartSnapshot.data(): ${cartSnapshot.data()}");
+
+  return CartItemModel.fromMap(cartSnapshot.data() as Map<String, dynamic>);
+}
+
 
   Future<void> clearCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;

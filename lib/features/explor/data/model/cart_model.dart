@@ -41,4 +41,6 @@ class CartItemModel extends CartEntity {
       quantity: map['quantity'] ?? 1, // Default quantity to 1 if not provided
     );
   }
+
+  
 }

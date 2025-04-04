@@ -93,4 +93,12 @@ class CartCubit extends Cubit<CartState> {
       emit(CartSuccess());
     });
   }
+  Future<void> getProductInCart({required String productId}) async {
+    emit(CartLoading());
+    final result = await cartRepo.getProductInCart(productId: productId);
+    result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
+        (data) {
+      emit(GetProductInCart(cartProduct: data));
+    });
+  }
 }

@@ -18,6 +18,10 @@ final class GetCartSuccess extends CartState {
   int total;
   GetCartSuccess({required this.cartItems,this.total = 0});
 }
+final class GetProductInCart extends CartState {
+  final CartEntity cartProduct;
+  GetProductInCart({required this.cartProduct});
+}
 
 final class IsProductInCart extends CartState {
   final List<String> cartProduct;

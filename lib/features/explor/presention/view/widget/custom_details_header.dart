@@ -52,13 +52,13 @@ class CustomDetailsHeader extends StatelessWidget {
                       color: Colors.black,
                     )),
                 BlocProvider(
-                  create: (context) => FavouriteCubit(
-                      favouriteRepo: getIt<FavouriteRepoImpl>()),
-                  
+                  create: (context) =>
+                      FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>()),
                   child: BlocBuilder<FavouriteCubit, FavouriteState>(
                     builder: (context, state) {
                       if (state is IsFavourite) {
-                        bool isFavourite = state.favProducts.contains(product.id);
+                        bool isFavourite =
+                            state.favProducts.contains(product.id);
                         return CustomCircleButton(
                           icon: isFavourite
                               ? const Icon(
@@ -66,20 +66,10 @@ class CustomDetailsHeader extends StatelessWidget {
                                   color: Colors.red,
                                 )
                               : const Icon(Icons.favorite_border),
-                          funcation: () async {
-                            await context
-                                .read<FavouriteCubit>()
-                                .addToFavorite(productId: product.id);
-                          },
+                          funcation: () {},
                         );
                       }
-                      return  Skeletonizer(
-                        enabled: true,
-                        child: CustomCircleButton(
-                          icon:const Icon(Icons.favorite_border),
-                          funcation: () {},
-                        ),
-                      );
+                      return  const SizedBox();
                     },
                   ),
                 ),
