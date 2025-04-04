@@ -10,7 +10,7 @@ class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
     super.key,
     required this.product,
-    this.cartCount = 1,
+    this.cartCount = 0,
   });
   final ProductEntity product;
   final int cartCount;
@@ -65,7 +65,7 @@ class DetailsScreen extends StatelessWidget {
             ]),
           )),
       bottomNavigationBar: CustomDetailsButtom(
-        cartCount: cartCount,
+       
         productEntity: product,
       ),
     );

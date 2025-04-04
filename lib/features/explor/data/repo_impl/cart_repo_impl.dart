@@ -90,11 +90,11 @@ class CartRepoImpl extends CartRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, CartEntity>> getProductInCart(
+  Future<Either<FirebaseFailure, CartEntity?>> getProductInCart(
       {required String productId}) async {
     try {
       var data = await firestoreService.getProductInCart(productId: productId);
-      return Right(data!);
+      return Right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {

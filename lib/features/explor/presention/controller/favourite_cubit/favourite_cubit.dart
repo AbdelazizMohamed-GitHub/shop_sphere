@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,8 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     listenToFavorites();
   }
   final FavouriteRepo favouriteRepo;
+     StreamSubscription? _favListener;
+
   Future<void> addToFavorite({required String productId}) async {
     emit(FavouriteLoading());
     final result = await favouriteRepo.addToFavorite(productId: productId);
@@ -29,7 +33,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return;
 
-    FirebaseFirestore.instance
+   _favListener = FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
         .snapshots()
@@ -43,5 +47,10 @@ class FavouriteCubit extends Cubit<FavouriteState> {
           List<String>.from(snapshot.data()?['favProduct'] ?? []);
       emit(IsFavourite(favProducts: favProducts));
     });
+  }
+  @override
+  Future<void> close() {
+    _favListener?.cancel(); // Cancel the listener when closing the cubit
+    return super.close();
   }
 }

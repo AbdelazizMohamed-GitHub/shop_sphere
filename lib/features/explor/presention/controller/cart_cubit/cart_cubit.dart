@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
+import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/explor/domain/repo/cart_repo.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 
@@ -11,6 +12,11 @@ class CartCubit extends Cubit<CartState> {
   // ✅ Store subscription
 
   CartCubit({required this.cartRepo}) : super(CartInitial());
+
+  static CartCubit get(context) => BlocProvider.of(context);
+  StreamSubscription? _cartListener;
+
+  CartEntity? cartEntity;
 
   Future<void> addToCart({required CartItemModel cartItemModel}) async {
     emit(CartLoading());
@@ -41,7 +47,7 @@ class CartCubit extends Cubit<CartState> {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return;
 
-    FirebaseFirestore.instance
+    _cartListener = FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
         .collection("cart")
@@ -54,7 +60,7 @@ class CartCubit extends Cubit<CartState> {
 
   Future<void> removeFromCart({required String productId}) async {
     emit(CartLoading());
-    final result = await cartRepo.removeFromCart(productId: productId );
+    final result = await cartRepo.removeFromCart(productId: productId);
     result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
         (data) {
       emit(CartSuccess());
@@ -83,6 +89,7 @@ class CartCubit extends Cubit<CartState> {
       emit(CartSuccess());
     });
   }
+
   Future<void> updateCartQuantityWithCount(
       {required String productId, required int count}) async {
     emit(CartLoading());
@@ -93,12 +100,22 @@ class CartCubit extends Cubit<CartState> {
       emit(CartSuccess());
     });
   }
+
   Future<void> getProductInCart({required String productId}) async {
     emit(CartLoading());
     final result = await cartRepo.getProductInCart(productId: productId);
     result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
-        (data) {
-      emit(GetProductInCart(cartProduct: data));
+        (data) async{
+     
+      
+      cartEntity = data;
+       listenIsProductInCart();
     });
+  }
+
+  @override
+  Future<void> close() {
+    _cartListener?.cancel();
+    return super.close();
   }
 }
