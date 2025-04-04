@@ -9,7 +9,6 @@ import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/car
 
 class CartCubit extends Cubit<CartState> {
   final CartRepo cartRepo;
-  // ✅ Store subscription
 
   CartCubit({required this.cartRepo}) : super(CartInitial());
 
@@ -103,13 +102,16 @@ class CartCubit extends Cubit<CartState> {
 
   Future<void> getProductInCart({required String productId}) async {
     emit(CartLoading());
+
     final result = await cartRepo.getProductInCart(productId: productId);
     result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
-        (data) async{
-     
-      
+        (data) async {
       cartEntity = data;
-       listenIsProductInCart();
+     
+
+      Future.delayed(const Duration(seconds: 3), () {
+        listenIsProductInCart();
+      });
     });
   }
 
