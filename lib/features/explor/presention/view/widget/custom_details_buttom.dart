@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/loading/details_screen_loading.dart';
 
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -81,7 +82,7 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
                     ],
                   );
                 }
-                return const SizedBox();
+                return const DetailsScreenLoading();
               },
             ),
           ),
