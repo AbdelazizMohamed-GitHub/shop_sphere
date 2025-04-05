@@ -147,8 +147,9 @@ class FirestoreService {
       UserModel userModel =
           UserModel.fromMap(snapshot.data() as Map<String, dynamic>);
 
-      if (userModel.favProduct.isEmpty)
+      if (userModel.favProduct.isEmpty) {
         return []; // No favorites, return empty list
+      }
 
       // Fetch all favorite products in a single Firestore query
       List<ProductEntity> products = [];

@@ -12,5 +12,5 @@ class CartEntity {
     required this.productPrice,
     required this.productQuantity,
   });
-  double get totalPrice => productPrice * productQuantity;
+  double get productTotal => productPrice * productQuantity;
 }

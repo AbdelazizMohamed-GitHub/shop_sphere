@@ -87,7 +87,7 @@ class CustomCartItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomCircleButton(
-                        icon: Icon(Icons.remove),
+                        icon: const Icon(Icons.remove),
                         funcation: () async {
                           await context.read<CartCubit>().updateCartQuantity(
                               productId: item.productId, isIncrement: false);

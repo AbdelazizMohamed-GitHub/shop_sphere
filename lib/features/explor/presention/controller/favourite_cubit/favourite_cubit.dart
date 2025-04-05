@@ -39,7 +39,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
         .snapshots()
         .listen((snapshot) {
       if (!snapshot.exists || snapshot.data() == null) {
-        emit(IsFavourite(favProducts: [])); // No favorites
+        emit(IsFavourite(favProducts: const [])); // No favorites
         return;
       }
 

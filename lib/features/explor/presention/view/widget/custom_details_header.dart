@@ -9,7 +9,6 @@ import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.d
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_state.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CustomDetailsHeader extends StatelessWidget {
   const CustomDetailsHeader({

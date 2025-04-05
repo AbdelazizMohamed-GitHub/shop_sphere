@@ -14,7 +14,7 @@ final class CartSuccess extends CartState {}
 
 final class GetCartSuccess extends CartState {
   final List<CartEntity> cartItems;
-  int total;
+ final int total;
   GetCartSuccess({required this.cartItems,this.total = 0});
 }
 
