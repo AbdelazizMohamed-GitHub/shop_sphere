@@ -16,17 +16,21 @@ class CustomAddressItem extends StatelessWidget {
   const CustomAddressItem({
     super.key,
     required this.addressEntity,
+    required this.isSelect,
   });
   final AddressEntity addressEntity;
+  final bool isSelect;
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppTheme.isLightTheme(context)
-            ? Colors.white
-            : AppColors.secondaryDarkColor,
+        color: isSelect
+            ? AppColors.primaryColor
+            : AppTheme.isLightTheme(context)
+                ? Colors.white
+                : AppColors.secondaryDarkColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -36,7 +40,9 @@ class CustomAddressItem extends StatelessWidget {
           Row(children: [
             Text(
               addressEntity.title,
-              style: AppStyles.text16Bold,
+              style: isSelect
+                  ? AppStyles.text16Bold.copyWith(color: Colors.white)
+                  : AppStyles.text16Bold,
             ),
             const Spacer(),
             IconButton(
@@ -64,11 +70,15 @@ class CustomAddressItem extends StatelessWidget {
                 children: [
                   Text(
                     addressEntity.phoneNumber,
-                    style: AppStyles.text16Regular,
+                    style: isSelect
+                        ? AppStyles.text16Regular.copyWith(color: Colors.white)
+                        : AppStyles.text16Regular,
                   ),
                   Text(
                     " ${addressEntity.street},${addressEntity.city},${addressEntity.state}} Egypt",
-                    style: AppStyles.text16Regular,
+                    style: isSelect
+                        ? AppStyles.text16Regular.copyWith(color: Colors.white)
+                        : AppStyles.text16Regular,
                   ),
                 ],
               ),

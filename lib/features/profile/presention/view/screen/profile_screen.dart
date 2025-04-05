@@ -114,7 +114,9 @@ class ProfileScreen extends StatelessWidget {
                           funcation: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const AddressScreen();
+                              return  AddressScreen(
+                                selectAddressIndex:user.addressIndex ,
+                              );
                             }));
                           },
                         ),

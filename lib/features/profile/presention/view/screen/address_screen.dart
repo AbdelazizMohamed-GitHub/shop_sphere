@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
@@ -15,8 +17,24 @@ import 'package:shop_sphere/features/profile/presention/controller/address/adres
 import 'package:shop_sphere/features/profile/presention/view/screen/add_new_address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_address_item.dart';
 
-class AddressScreen extends StatelessWidget {
-  const AddressScreen({super.key});
+class AddressScreen extends StatefulWidget {
+  const AddressScreen({
+    super.key,
+    required this.selectAddressIndex,
+  });
+  final int selectAddressIndex;
+
+  @override
+  State<AddressScreen> createState() => _AddressScreenState();
+}
+
+class _AddressScreenState extends State<AddressScreen> {
+  int selectAddressIndex = 0;
+  @override
+  void initState() {
+    selectAddressIndex = widget.selectAddressIndex;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +56,14 @@ class AddressScreen extends StatelessWidget {
               size: 30,
             )),
         appBar: AppBar(
+          actions: [
+            TextButton(
+                onPressed: () {},
+                child: const Text('Save', style: AppStyles.text16Bold)),
+            SizedBox(
+              width: 20,
+            )
+          ],
           title: const Text('Address'),
           leadingWidth: 100,
           leading: AppTheme.isLightTheme(context)
@@ -77,8 +103,16 @@ class AddressScreen extends StatelessWidget {
                   : ListView.builder(
                       itemCount: state.addresses.length,
                       itemBuilder: (context, index) {
-                        return CustomAddressItem(
-                          addressEntity: state.addresses[index],
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectAddressIndex = index;
+                            });
+                          },
+                          child: CustomAddressItem(
+                            addressEntity: state.addresses[index],
+                            isSelect: index == selectAddressIndex,
+                          ),
                         );
                       });
             }

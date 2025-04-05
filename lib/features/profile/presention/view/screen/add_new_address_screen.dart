@@ -98,7 +98,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   CustomTextForm(
                     pIcon: Icons.phone,
                     textController: phoneController,
-                    text: "Phone Number",
+                    text: "Contact Number",
                     kType: TextInputType.phone,
                   ),
                   const SizedBox(
@@ -135,7 +135,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   ),
                   CustomTextForm(
                     pIcon: Icons.location_searching,
-                    text: "State",
+                    text: "Governorat",
                     kType: TextInputType.name,
                     textController: stateController,
                   ),
