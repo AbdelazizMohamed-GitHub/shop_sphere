@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
+import 'package:shop_sphere/core/loading/address_screen_loadig.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -84,11 +85,7 @@ class _AddressScreenState extends State<AddressScreen> {
         body: BlocBuilder<AddressCubit, AddressState>(
           builder: (context, state) {
             if (state is AddressLoading) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                ),
-              );
+              return const Center(child: AddressScreenLoading());
             }
             if (state is AddressError) {
               return Center(
