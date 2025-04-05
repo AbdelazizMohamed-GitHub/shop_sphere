@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,76 +20,69 @@ class CustomAddressItem extends StatelessWidget {
   final AddressEntity addressEntity;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AddressCubit(addressRepo: getIt<AddressRepoImpl>()),
-      child: BlocBuilder<AddressCubit, AddressState>(
-        builder: (context, state) {
-          return Container(
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppTheme.isLightTheme(context)
-                  ? Colors.white
-                  : AppColors.secondaryDarkColor,
-              borderRadius: BorderRadius.circular(20),
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.isLightTheme(context)
+            ? Colors.white
+            : AppColors.secondaryDarkColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Text(
+              addressEntity.title,
+              style: AppStyles.text16Bold,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: [
+            const Spacer(),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddNewAddressScreen(
+                          isupdate: true,
+                          addressEntity: addressEntity,
+                        ),
+                      ));
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: AppTheme.isLightTheme(context)
+                      ? Colors.black
+                      : Colors.white,
+                ))
+          ]),
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    addressEntity.title,
-                    style: AppStyles.text16Bold,
+                    addressEntity.phoneNumber,
+                    style: AppStyles.text16Regular,
                   ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddNewAddressScreen(
-                                isupdate: true,
-                                addressEntity: addressEntity,
-                              ),
-                            ));
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: AppTheme.isLightTheme(context)
-                            ? Colors.black
-                            : Colors.white,
-                      ))
-                ]),
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          addressEntity.phoneNumber,
-                          style: AppStyles.text16Regular,
-                        ),
-                        Text(
-                          " ${addressEntity.street},${addressEntity.city},${addressEntity.state}} Egypt",
-                          style: AppStyles.text16Regular,
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    IconButton(
-                        onPressed: () async {
-                          await context
-                              .read<AddressCubit>()
-                              .deleteAddress(addressId: addressEntity.id);
-                        },
-                        icon: const Icon(Icons.delete, color: Colors.red))
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+                  Text(
+                    " ${addressEntity.street},${addressEntity.city},${addressEntity.state}} Egypt",
+                    style: AppStyles.text16Regular,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              IconButton(
+                  onPressed: () async {
+                    await context
+                        .read<AddressCubit>()
+                        .deleteAddress(addressId: addressEntity.id);
+                  },
+                  icon: const Icon(Icons.delete, color: Colors.red))
+            ],
+          ),
+        ],
       ),
     );
   }

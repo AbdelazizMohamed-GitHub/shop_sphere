@@ -48,141 +48,142 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) =>
-            AddressCubit(addressRepo: getIt<AddressRepoImpl>()),
-        child: Scaffold(
-          appBar: AppBar(
-            title: widget.isupdate
-                ? const Text("Update Address")
-                : const Text('Add New Address'),
-            leadingWidth: 100,
-            leading: AppTheme.isLightTheme(context)
-                ? const CustomBackButton()
-                : IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back_ios_new)),
-          ),
-          body: BlocConsumer<AddressCubit, AddressState>(
-            listener: (context, state) {
-              if (state is AdressSuccess) {
-                Navigator.pop(context);
-                Warning.showWarning(context,
-                    message: widget.isupdate
-                        ? "Address Update Successfully"
-                        : "Address Added Successfully");
-              }
-              if (state is AdressError) {
-                Warning.showWarning(context, message: state.errMessage);
-              }
-            },
-            builder: (context, state) {
-              return Padding(
-                padding: EdgeInsets.only(
-                    top: 30,
-                    left: 16,
-                    right: 16,
-                    bottom: (MediaQuery.of(context).viewInsets.bottom) + 20),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CustomTextForm(
-                        textController: titleController,
-                        pIcon: Icons.title_rounded,
-                        text: "Title",
-                        kType: TextInputType.name,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomTextForm(
-                        pIcon: Icons.phone,
-                        textController: phoneController,
-                        text: "Phone Number",
-                        kType: TextInputType.phone,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: 60,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextForm(
-                                textController: streetController,
-                                pIcon: Icons.streetview,
-                                text: "Street",
-                                kType: TextInputType.name,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: CustomTextForm(
-                                textController: cityController,
-                                pIcon: Icons.location_city,
-                                text: "City",
-                                kType: TextInputType.name,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomTextForm(
-                        pIcon: Icons.location_searching,
-                        text: "State",
-                        kType: TextInputType.name,
-                        textController: stateController,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      state is AdressLoading
-                          ? const Center(child: CircularProgressIndicator())
-                          : CustomButton(
-                              onPressed: () async {
-                                if (formKey.currentState!.validate()) {
-                                  var addressId = const Uuid().v4();
-                                  AddressModel addressModel = AddressModel(
-                                    createdAt: Timestamp.now(),
-                                    id: widget.isupdate
-                                        ? widget.addressEntity!.id
-                                        : addressId,
-                                    title: titleController.text,
-                                    phoneNumber: phoneController.text,
-                                    street: streetController.text,
-                                    city: cityController.text,
-                                    state: stateController.text,
-                                    country: "Egypt",
-                                    postalCode: "11511",
-                                  );
-                                  widget.isupdate
-                                      ? context
-                                          .read<AddressCubit>()
-                                          .updateAddress(
-                                              addressId:
-                                                  widget.addressEntity!.id,
-                                              addressModel: addressModel)
-                                      : context.read<AddressCubit>().addAddress(
-                                          addressId: addressId,
-                                          addressModel: addressModel);
-                                }
-                              },
-                              text: widget.isupdate ? "Update" : "Save",
-                            )
-                    ],
+    return Scaffold(
+      appBar: AppBar(
+        title: widget.isupdate
+            ? const Text("Update Address")
+            : const Text('Add New Address'),
+        leadingWidth: 100,
+        leading: AppTheme.isLightTheme(context)
+            ? const CustomBackButton()
+            : IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back_ios_new)),
+      ),
+      body: BlocConsumer<AddressCubit, AddressState>(
+        listener: (context, state) {
+          if (state is AddressSuccess) {
+           
+            Navigator.pop(context);
+            Warning.showWarning(context,
+                message: widget.isupdate
+                    ? "Address Update Successfully"
+                    : "Address Added Successfully");
+          }
+          if (state is AddressError) {
+            Warning.showWarning(context, message: state.errMessage);
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: EdgeInsets.only(
+                top: 30,
+                left: 16,
+                right: 16,
+                bottom: (MediaQuery.of(context).viewInsets.bottom) + 20),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomTextForm(
+                    textController: titleController,
+                    pIcon: Icons.title_rounded,
+                    text: "Title",
+                    kType: TextInputType.name,
                   ),
-                ),
-              );
-            },
-          ),
-        ));
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextForm(
+                    pIcon: Icons.phone,
+                    textController: phoneController,
+                    text: "Phone Number",
+                    kType: TextInputType.phone,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 60,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextForm(
+                            textController: streetController,
+                            pIcon: Icons.streetview,
+                            text: "Street",
+                            kType: TextInputType.name,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: CustomTextForm(
+                            textController: cityController,
+                            pIcon: Icons.location_city,
+                            text: "City",
+                            kType: TextInputType.name,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextForm(
+                    pIcon: Icons.location_searching,
+                    text: "State",
+                    kType: TextInputType.name,
+                    textController: stateController,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  state is AddressLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : CustomButton(
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              var addressId = const Uuid().v4();
+                              AddressModel addressModel = AddressModel(
+                                createdAt: Timestamp.now(),
+                                id: widget.isupdate
+                                    ? widget.addressEntity!.id
+                                    : addressId,
+                                title: titleController.text,
+                                phoneNumber: phoneController.text,
+                                street: streetController.text,
+                                city: cityController.text,
+                                state: stateController.text,
+                                country: "Egypt",
+                                postalCode: "11511",
+                              );
+                              if (widget.isupdate) {
+                                await context
+                                    .read<AddressCubit>()
+                                    .updateAddress(addressId: widget.addressEntity!.id,
+                                        addressModel: addressModel);
+                                       
+                              } else {
+                                await context
+                                    .read<AddressCubit>()
+                                    .addAddress(addressId: addressId,
+                                      addressModel: addressModel);
+                                    
+                              }
+                            }
+                          },
+                          text: widget.isupdate ? "Update" : "Save",
+                        )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

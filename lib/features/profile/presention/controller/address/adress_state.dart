@@ -1,24 +1,28 @@
 
 
 
- import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
+ import 'package:equatable/equatable.dart';
+import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 
-class AddressState {}
+class AddressState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
 
  class AdressInitial extends AddressState {}
 
 
- class GetAdressLoading extends AddressState {}
- class GetAdressSuccess extends AddressState {
+ class AddressLoading extends AddressState {}
+ class AddressSuccess extends AddressState {
    final List<AddressEntity> addresses;
-   GetAdressSuccess({required this.addresses});
+   AddressSuccess({required this.addresses});
  }
- class AdressLoading extends AddressState {}
- class AdressSuccess extends AddressState {}
 
 
- class AdressError extends AddressState {
+
+
+ class AddressError extends AddressState {
    final String errMessage;
 
-   AdressError({required this.errMessage});
+   AddressError({required this.errMessage});
  }

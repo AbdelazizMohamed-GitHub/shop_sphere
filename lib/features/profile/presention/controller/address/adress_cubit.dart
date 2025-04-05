@@ -12,42 +12,44 @@ class AddressCubit extends Cubit<AddressState> {
   final AddressRepo addressRepo;
   Future<void> addAddress(
       {required String addressId, required AddressModel addressModel}) async {
-    emit(AdressLoading());
+    emit(AddressLoading());
     final result = await addressRepo.addAddress(addressId, addressModel);
     result.fold(
-      (failure) => emit(AdressError(errMessage: failure.message)),
-      (user) {
-        emit(AdressSuccess());
-        getAddress();
+      (failure) => emit(AddressError(errMessage: failure.message)),
+      (user) async {
+        await getAddress();
       },
     );
   }
 
   Future<void> updateAddress(
       {required String addressId, required AddressModel addressModel}) async {
-    emit(AdressLoading());
+    emit(AddressLoading());
     final result = await addressRepo.updateAddress(addressId, addressModel);
-    result.fold(
-      (failure) => emit(AdressError(errMessage: failure.message)),
-      (user) => emit(AdressSuccess()),
-    );
+   
+    result.fold((failure) => emit(AddressError(errMessage: failure.message)),
+        (user) async {
+      await getAddress();
+    });
   }
 
   Future<void> deleteAddress({required String addressId}) async {
-    emit(AdressLoading());
+    emit(AddressLoading());
     final result = await addressRepo.deleteAddress(addressId);
     result.fold(
-      (failure) => emit(AdressError(errMessage: failure.message)),
-      (user) => emit(AdressSuccess()),
+      (failure) => emit(AddressError(errMessage: failure.message)),
+      (user) async {
+        await getAddress();
+      },
     );
   }
 
   Future<void> getAddress() async {
-    emit(GetAdressLoading());
+    emit(AddressLoading());
     final result = await addressRepo.getAddress();
     result.fold(
-      (failure) => emit(AdressError(errMessage: failure.message)),
-      (address) => emit(GetAdressSuccess(addresses: address)),
+      (failure) => emit(AddressError(errMessage: failure.message)),
+      (address) => emit(AddressSuccess(addresses: address)),
     );
   }
 }

@@ -9,6 +9,10 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
+import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
+import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/profile_screen.dart';
 import 'package:shop_sphere/firebase_options.dart';
 
 void main() async {
@@ -27,8 +31,15 @@ class ShopSphere extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AppCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AddressCubit(addressRepo: getIt<AddressRepoImpl>())..getAddress(),
+        ),
+      ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           return MaterialApp(
@@ -42,7 +53,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const MainScreen(),
+                : const AddressScreen(),
           );
         },
       ),
