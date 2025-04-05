@@ -36,6 +36,7 @@ class _AddressScreenState extends State<AddressScreen> {
     super.initState();
   }
 
+  int? indeX;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,9 +58,14 @@ class _AddressScreenState extends State<AddressScreen> {
             )),
         appBar: AppBar(
           actions: [
-            TextButton(
-                onPressed: () {},
-                child: const Text('Save', style: AppStyles.text16Bold)),
+            indeX == null
+                ? const Text('')
+                : TextButton(
+                    onPressed: () {
+                      context.read<AddressCubit>().updateAddressIndex(
+                          sellectAddress: selectAddressIndex);
+                    },
+                    child: const Text('Save', style: AppStyles.text16Bold)),
             SizedBox(
               width: 20,
             )
@@ -108,6 +114,7 @@ class _AddressScreenState extends State<AddressScreen> {
                             setState(() {
                               selectAddressIndex = index;
                             });
+                            indeX = index;
                           },
                           child: CustomAddressItem(
                             addressEntity: state.addresses[index],

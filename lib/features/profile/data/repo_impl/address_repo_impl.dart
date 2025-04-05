@@ -65,5 +65,18 @@ return right(data);
     }
   }
   
+  @override
+  Future<Either<FirebaseFailure, void>> updateAddressIndex({required int sellectAddress})async {
+    try {
+     await firestoreService.updateAddressIndex(sellectAddressIndex: sellectAddress);
+      return right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    }
+    catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
+  
   
 }

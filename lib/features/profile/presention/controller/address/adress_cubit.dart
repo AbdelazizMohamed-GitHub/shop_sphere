@@ -52,4 +52,16 @@ class AddressCubit extends Cubit<AddressState> {
       (address) => emit(AddressSuccess(addresses: address)),
     );
   }
+  Future<void> updateAddressIndex({required int sellectAddress}) async {
+    emit(AddressLoading());
+    final result = await addressRepo.updateAddressIndex(
+      sellectAddress: sellectAddress,
+    );
+    result.fold(
+      (failure) => emit(AddressError(errMessage: failure.message)),
+      (user) async {
+        await getAddress();
+      },
+    );
+  }
 }

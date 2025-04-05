@@ -70,6 +70,22 @@ class FirestoreService {
         .doc(addressId)
         .delete();
   }
+  Future<void> updateAddressIndex(
+    {required int sellectAddressIndex}
+  )async{
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return; // Ensure user is logged in
+
+    DocumentReference userRef = firestore.collection("users").doc(userId);
+    DocumentSnapshot userDoc = await userRef.get();
+
+    if (!userDoc.exists) return; // Handle if user document doesn't exist
+
+    
+
+    // Update the address index
+    await userRef.update({"addressIndex": sellectAddressIndex});
+  }
 
   Future<List<AddressEntity>> getAddress() async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
