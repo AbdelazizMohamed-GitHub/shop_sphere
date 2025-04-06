@@ -11,6 +11,7 @@ import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
@@ -64,7 +65,7 @@ class CustomCheckoutButton extends StatelessWidget {
                           uId: uId,
                           orderId: oId,
                           totalAmount: total + 50,
-                          items:  cartItems ,
+                          items: cartItems,
                           status: "Pending",
                           orderDate: Timestamp.now(),
                           address: address);
@@ -72,6 +73,7 @@ class CustomCheckoutButton extends StatelessWidget {
                       await context
                           .read<OrderCubit>()
                           .createOrder(order: order);
+
                     } else {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => PaypalCheckoutView(

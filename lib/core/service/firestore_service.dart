@@ -325,5 +325,6 @@ class FirestoreService {
     if (userId == null) return; // Ensure user is logged in
 
     await firestore.collection("orders").doc(order.orderId).set(order.toMap());
+    await clearCart();
   }
 }
