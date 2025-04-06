@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:shop_sphere/core/loading/custom_get_loaction_loading.dart';
 import 'package:shop_sphere/core/loading/custom_item_loading.dart';
 
 import 'package:shop_sphere/core/service/location_service.dart';
@@ -25,86 +26,95 @@ class CustomGetLocationWidget extends StatefulWidget {
 
 class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
   late Placemark place;
-  String title = "My Home";
-  String city = "Cairo";
-  String street = "3 El Nozha Street";
+  String title = "Title";
+  String city = "City";
+  String street = "Street";
+  String phoneNumber = "Phone Number";
+  bool isInisialzed = false;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddressCubit, AddressState>(
-      builder: (context, state) {
-        if (state is AddressLoading) {
-          return CustomItemLoading();
-        }
-        if (state is AddressError) {
-          return Center(
-            child: Text(
-              state.errMessage,
-              style: AppStyles.text16Regular,
-            ),
-          );
-        }
-        if (state is AddressSuccess) {
-          if (state.addresses.isNotEmpty) {
-            title = state.addresses[widget.currentIndex].title;
-            city = state.addresses[widget.currentIndex].city;
-            street = state.addresses[widget.currentIndex].street;
-          }
-        }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: AppStyles.text16Bold,
-            ),
-            const Text(
-              "01153019984",
-              style: AppStyles.text16Regular,
-            ),
-            Text(
-              "$city, $street",
-              style: AppStyles.text16Regular,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  height: 180,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        AppImages.map,
-                        fit: BoxFit.cover,
-                      )),
-                ),
-                Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.black.withValues(alpha: 0.5)),
-                ),
-                CustomCircleButton(
-                    icon: const Icon(
-                      Icons.location_on,
-                      color: AppColors.primaryColor,
-                    ),
-                    funcation: () async {
-                      place = await getLocation();
-                      setState(() {
-                        title = "Current Location";
-                        city = place.locality!;
-                        street = place.street!;
-                      });
-                    })
-              ],
-            ),
-          ],
+    return BlocBuilder<AddressCubit, AddressState>(builder: (context, state) {
+      if (state is AddressLoading) {
+        return const CustomItemLoading();
+      }
+      if (state is AddressError) {
+        return Center(
+          child: Text(
+            state.errMessage,
+            style: AppStyles.text16Regular,
+          ),
         );
-      },
-    );
+      }
+      if (state is AddressSuccess && !isInisialzed) {
+        if (state.addresses.isNotEmpty) {
+          title = state.addresses[widget.currentIndex].title;
+          city = state.addresses[widget.currentIndex].city;
+          street = state.addresses[widget.currentIndex].street;
+          phoneNumber = state.addresses[widget.currentIndex].phoneNumber;
+          isInisialzed = true;
+        }
+      }
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: AppStyles.text16Bold,
+          ),
+          Text(
+            phoneNumber,
+            style: AppStyles.text16Regular,
+          ),
+          Text(
+            "$city, $street",
+            style: AppStyles.text16Regular,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          loading
+              ?const CustomGetLoactionLoading()
+              : Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      height: 180,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            AppImages.map,
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                    Container(
+                      height: 180,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.black.withValues(alpha: 0.5)),
+                    ),
+                    CustomCircleButton(
+                        icon: const Icon(
+                          Icons.location_on,
+                          color: AppColors.primaryColor,
+                        ),
+                        funcation: () async {
+                          setState(() {
+                            loading = true;
+                          });
+                          place = await getLocation();
+                          setState(() {
+                            title = "Current Location";
+                            city = place.locality!;
+                            street = place.street!;
+                          });
+                          loading = false;
+                        })
+                  ],
+                ),
+        ],
+      );
+    });
   }
 }

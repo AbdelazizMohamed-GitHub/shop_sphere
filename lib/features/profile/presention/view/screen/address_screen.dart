@@ -15,6 +15,7 @@ import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
+import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/add_new_address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_address_item.dart';
 
@@ -33,6 +34,7 @@ class _AddressScreenState extends State<AddressScreen> {
   int selectAddressIndex = 0;
   @override
   void initState() {
+    context.read<AddressCubit>().getAddress();
     selectAddressIndex = widget.selectAddressIndex;
     super.initState();
   }
@@ -62,12 +64,13 @@ class _AddressScreenState extends State<AddressScreen> {
             indeX == null
                 ? const Text('')
                 : TextButton(
-                    onPressed: () {
-                      context.read<AddressCubit>().updateAddressIndex(
+                    onPressed: ()async {
+                   await   context.read<AddressCubit>().updateAddressIndex(
                           sellectAddress: selectAddressIndex);
+                      context.read<UserCubit>().getUserData(); 
                     },
                     child: const Text('Save', style: AppStyles.text16Bold)),
-            SizedBox(
+          const  SizedBox(
               width: 20,
             )
           ],

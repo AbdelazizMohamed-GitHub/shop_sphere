@@ -9,11 +9,11 @@ class AddressScreenLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+     
       backgroundColor: AppColors.backgroundColor,
       body: Skeletonizer(
         enabled: true,
-        child: ListView.separated(
+        child: ListView.separated(padding: const EdgeInsets.only(top: 20),
           itemCount: 10,
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(
