@@ -1,18 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/loading/address_screen_loadig.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
-import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
-import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
@@ -67,6 +61,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     onPressed: ()async {
                    await   context.read<AddressCubit>().updateAddressIndex(
                           sellectAddress: selectAddressIndex);
+                      // ignore: use_build_context_synchronously
                       context.read<UserCubit>().getUserData(); 
                     },
                     child: const Text('Save', style: AppStyles.text16Bold)),

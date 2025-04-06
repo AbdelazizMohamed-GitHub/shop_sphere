@@ -12,6 +12,7 @@ import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/car
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_details_buttom.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_details_header.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
@@ -27,7 +28,14 @@ class DetailsScreen extends StatelessWidget {
         ..getProductInCart(productId: product.id),
       child: BlocConsumer<CartCubit, CartState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is CartFailure) {
+            Warning.showWarning(context, message: state.errMessage);
+          }
+          if (state is CartSuccess) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const CartScreen();
+            }));
+          }
         },
         builder: (context, state) {
           if (state is CartFailure) {

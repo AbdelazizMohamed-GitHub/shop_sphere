@@ -16,7 +16,7 @@ class AddressScreenLoading extends StatelessWidget {
         child: ListView.separated(padding: const EdgeInsets.only(top: 20),
           itemCount: 10,
           separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
+            return const SizedBox(
               height: 10,
             );
           },
@@ -33,7 +33,7 @@ class AddressScreenLoading extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Loading...",
+                  const Text("Loading...",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -42,7 +42,7 @@ class AddressScreenLoading extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Loading...Loading...Loading...",
+                      const Text("Loading...Loading...Loading...",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

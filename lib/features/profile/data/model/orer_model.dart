@@ -3,7 +3,6 @@ import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
-import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class OrderModel extends OrderEntity {
   @override

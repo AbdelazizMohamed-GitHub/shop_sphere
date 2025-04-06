@@ -10,12 +10,9 @@ import 'package:shop_sphere/core/utils/app_keys.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
-import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
-import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
-import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/order_done_screen.dart';
@@ -23,13 +20,13 @@ import 'package:uuid/uuid.dart';
 
 class CustomCheckoutButton extends StatelessWidget {
   const CustomCheckoutButton({
-    Key? key,
+    super.key,
     required this.currentIndex,
     required this.total,
     required this.cartItems,
     required this.uId,
     required this.address,
-  }) : super(key: key);
+  });
   final int currentIndex;
   final double total;
   final List<CartItemModel> cartItems;
@@ -44,7 +41,6 @@ class CustomCheckoutButton extends StatelessWidget {
         listener: (context, state) {
           if (state is OrderError) {
             Warning.showWarning(context, message: state.error);
-            print(state.error);
           } else if (state is AddOrderSuccess) {
             Navigator.push(
               context,

@@ -35,6 +35,7 @@ class CustomCartItem extends StatelessWidget {
                   .get()
                   .then((value) => ProductModel.fromMap(value.data()!));
               Navigator.push(
+                // ignore: use_build_context_synchronously
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailsScreen(
@@ -91,7 +92,7 @@ class CustomCartItem extends StatelessWidget {
                         funcation: () async {
                           await context.read<CartCubit>().updateCartQuantity(
                               productId: item.productId, isIncrement: false);
-                          context.read<CartCubit>().getAllProductsInCart();
+                          
                         }),
                     const SizedBox(
                       width: 20,
@@ -101,7 +102,7 @@ class CustomCartItem extends StatelessWidget {
                         funcation: () async {
                           await context.read<CartCubit>().updateCartQuantity(
                               productId: item.productId, isIncrement: true);
-                          context.read<CartCubit>().getAllProductsInCart();
+
                         }),
                     const SizedBox(
                       width: 50,
@@ -112,7 +113,6 @@ class CustomCartItem extends StatelessWidget {
                               .read<CartCubit>()
                               .removeFromCart(productId: item.productId);
 
-                          context.read<CartCubit>().getAllProductsInCart();
                         },
                         icon: const Icon(
                           Icons.delete,

@@ -6,14 +6,12 @@ import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
-import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 
@@ -156,11 +154,13 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   CustomButton(
                       onPressed: () async {
                         Placemark place = await getLocation();
+                        // ignore: unnecessary_null_comparison
                         if (place != null) {
                           streetController.text = place.street!;
                           cityController.text = place.locality!;
                           stateController.text = place.administrativeArea!;
                         } else {
+                          // ignore: use_build_context_synchronously
                           Warning.showWarning(context,
                               message: "Please Enable Location Service");
                         }

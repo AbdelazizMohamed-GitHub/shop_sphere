@@ -12,16 +12,15 @@ import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
-import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 
 class CustomGetLocationWidget extends StatefulWidget {
   const CustomGetLocationWidget({
-    Key? key,
+    super.key,
     required this.currentIndex,
     required this.onLocationSelected,
-  }) : super(key: key);
+  });
   final int currentIndex;
   final ValueChanged<AddressModel> onLocationSelected;
   @override

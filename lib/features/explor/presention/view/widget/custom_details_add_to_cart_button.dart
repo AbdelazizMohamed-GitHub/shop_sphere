@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
@@ -15,7 +16,18 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
   final ProductEntity productEntity;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartCubit, CartState>(
+    return BlocConsumer<CartCubit, CartState>(
+      listener: (context, state) {
+        if (state is CartFailure) {
+           Warning.showWarning(context, message: state.errMessage);
+        }
+        
+        if (state is CartSuccess) {
+         Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const CartScreen();
+                }));
+        }
+      },
       builder: (context, state) {
         if (state is IsProductInCart) {
           bool isProductInCart = state.cartProduct.contains(productEntity.id);
@@ -25,9 +37,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                 await context.read<CartCubit>().updateCartQuantityWithCount(
                     productId: productEntity.id, count: cartCount);
 
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const CartScreen();
-                }));
+               
               } else {
                 context.read<CartCubit>().addToCart(
                       cartItemModel: CartItemModel(
