@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:uuid/uuid.dart';
 
@@ -47,6 +49,16 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   }
 
   @override
+  void dispose() {
+    titleController.dispose();
+    phoneController.dispose();
+    streetController.dispose();
+    cityController.dispose();
+    stateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +75,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       body: BlocConsumer<AddressCubit, AddressState>(
         listener: (context, state) {
           if (state is AddressSuccess) {
-           
             Navigator.pop(context);
             Warning.showWarning(context,
                 message: widget.isupdate
@@ -111,7 +122,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                         Expanded(
                           child: CustomTextForm(
                             textController: streetController,
-                            pIcon: Icons.streetview,
+                            pIcon: Icons.streetview_sharp,
                             text: "Street",
                             kType: TextInputType.name,
                           ),
@@ -142,6 +153,24 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   const SizedBox(
                     height: 20,
                   ),
+                  CustomButton(
+                      onPressed: () async {
+                        Placemark place = await getLocation();
+                        if (place != null) {
+                          streetController.text = place.street!;
+                          cityController.text = place.locality!;
+                          stateController.text = place.administrativeArea!;
+                        } else {
+                          Warning.showWarning(context,
+                              message: "Please Enable Location Service");
+                        }
+                      },
+                      text: widget.isupdate
+                          ? "Update From Location"
+                          : "Add From Location"),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   state is AddressLoading
                       ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
@@ -164,15 +193,13 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                               if (widget.isupdate) {
                                 await context
                                     .read<AddressCubit>()
-                                    .updateAddress(addressId: widget.addressEntity!.id,
+                                    .updateAddress(
+                                        addressId: widget.addressEntity!.id,
                                         addressModel: addressModel);
-                                       
                               } else {
-                                await context
-                                    .read<AddressCubit>()
-                                    .addAddress(addressId: addressId,
-                                      addressModel: addressModel);
-                                    
+                                await context.read<AddressCubit>().addAddress(
+                                    addressId: addressId,
+                                    addressModel: addressModel);
                               }
                             }
                           },
