@@ -11,7 +11,7 @@ import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
-import 'package:shop_sphere/features/profile/data/repo_impl/profile_repo_impl.dart';
+import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
@@ -52,7 +52,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit(userRepo: getIt<ProfileRepoImpl>()),
+      create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>()),
       child: BlocConsumer<UserCubit, UserState>(
         listener: (context, state) {
           if (state is UserSuccess) {

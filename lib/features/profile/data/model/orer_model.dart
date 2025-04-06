@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
+import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class OrderHistoryModel extends OrderEntity {
+class OrderModel extends OrderEntity {
   @override
   final String orderId;
   @override
@@ -10,19 +13,21 @@ class OrderHistoryModel extends OrderEntity {
   @override
   final double totalAmount;
   @override
-  final List<ProductEntity> items;
+  final List<CartItemModel> items;
   @override
   final String status;
   @override
-  final DateTime orderDate;
+  final Timestamp orderDate;
+  @override
+  final AddressModel address;
 
-  OrderHistoryModel( {required this.uId,
+  OrderModel( {required this.uId,required this.address,
     required this.orderId,
     required this.totalAmount,
     required this.items,
     required this.status,
     required this.orderDate,
-  }) : super( uId: uId, orderId: orderId, totalAmount: totalAmount, items: items, status:status , orderDate: orderDate);
+  }) : super( uId: uId, orderId: orderId, totalAmount: totalAmount, items: items, status:status , orderDate: orderDate, address: address);
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {
@@ -30,22 +35,24 @@ class OrderHistoryModel extends OrderEntity {
       'uId': uId,
       'orderId': orderId,
       'totalAmount': totalAmount,
-      'items': items,
+      'items': items.map((x) => x.toMap()).toList(),
       'status': status,
-      'orderDate': orderDate.toIso8601String(),
+      'orderDate': orderDate,
+      'address': address.toMap(),
     };
   }
 
   // Convert from Map
-  factory OrderHistoryModel.fromMap(Map<String, dynamic> map) {
-    return OrderHistoryModel(
+  factory OrderModel.fromMap(Map<String, dynamic> map) {
+    return OrderModel(
+      address: AddressModel.fromMap(map['address']),
       uId: map['uId'],
       orderId: map['orderId'],
       totalAmount: map['totalAmount'],
-      items: List<ProductModel>.from(
+      items: List<CartItemModel>.from(
           map['items']?.map((x) => ProductModel.fromMap(x)) ?? []),
       status: map['status'],
-      orderDate: DateTime.parse(map['orderDate']),
+      orderDate: Timestamp.fromMicrosecondsSinceEpoch(map['orderDate']),
     );
   }
 }

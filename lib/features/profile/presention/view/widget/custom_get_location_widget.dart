@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
@@ -10,6 +11,8 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
+import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 
@@ -17,12 +20,15 @@ class CustomGetLocationWidget extends StatefulWidget {
   const CustomGetLocationWidget({
     Key? key,
     required this.currentIndex,
+    required this.onLocationSelected,
   }) : super(key: key);
   final int currentIndex;
+  final ValueChanged<AddressModel> onLocationSelected;
   @override
   State<CustomGetLocationWidget> createState() =>
       _CustomGetLocationWidgetState();
 }
+
 
 class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
   late Placemark place;
@@ -53,6 +59,20 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
           city = state.addresses[widget.currentIndex].city;
           street = state.addresses[widget.currentIndex].street;
           phoneNumber = state.addresses[widget.currentIndex].phoneNumber;
+     
+WidgetsBinding.instance.addPostFrameCallback((_) {
+  AddressModel addressModel = AddressModel(
+    id: state.addresses[widget.currentIndex].id,
+    title: state.addresses[widget.currentIndex].title,
+    city: state.addresses[widget.currentIndex].city,
+    street: state.addresses[widget.currentIndex].street,
+    phoneNumber: state.addresses[widget.currentIndex].phoneNumber,country: state.addresses[widget.currentIndex].country,
+    state: state.addresses[widget.currentIndex].state,
+    postalCode: state.addresses[widget.currentIndex].postalCode,
+    createdAt: Timestamp.now(),
+  );
+      widget.onLocationSelected(addressModel);
+    });        
           isInisialzed = true;
         }
       }
@@ -105,10 +125,19 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
                           });
                           place = await getLocation();
                           setState(() {
-                            title = "Current Location";
+                            title = "My Location";
                             city = place.locality!;
                             street = place.street!;
+                            
                           });
+                          widget.onLocationSelected(AddressModel(
+                            createdAt: Timestamp.now(),
+                              title: title,
+                              city: city,
+                              street: street,
+                              state: place.administrativeArea!,
+                              country: place.country!,
+                              phoneNumber: phoneNumber, id:'', postalCode: '' ));
                           loading = false;
                         })
                   ],

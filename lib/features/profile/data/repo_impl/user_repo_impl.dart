@@ -5,12 +5,12 @@ import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
-import 'package:shop_sphere/features/profile/domain/repo/profile_repo.dart';
+import 'package:shop_sphere/features/profile/domain/repo/user_repo.dart';
 
-class ProfileRepoImpl extends UserRepo {
+class UserRepoImpl extends UserRepo {
   final FirestoreService firestoreService;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  ProfileRepoImpl({required this.firestoreService});
+  UserRepoImpl({required this.firestoreService});
   @override
   Future<Either<FirebaseFailure, UserEntity>> getUserData() async {
     try {

@@ -1,16 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
-import 'package:shop_sphere/features/profile/data/repo_impl/profile_repo_impl.dart';
-
-import 'package:shop_sphere/features/profile/presention/controller/checkout/check_out_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/controller/checkout/check_out_state.dart';
+import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
+import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
+import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
+import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
+import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
@@ -21,7 +25,13 @@ import 'package:shop_sphere/features/profile/presention/view/widget/custom_check
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_get_location_widget.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+  const CheckoutScreen({
+    super.key,
+    required this.total,
+    required this.cartItems,
+  });
+  final double total;
+  final List<CartItemModel> cartItems;
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -33,6 +43,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     context.read<UserCubit>().getUserData();
     super.initState();
   }
+
+  AddressModel addressEntity=AddressModel(id: '', phoneNumber: '', title: '', street: '', city: '', state:  '', country: '', postalCode: '', createdAt: Timestamp.now());
+  int paymentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +62,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         leadingWidth: 100,
       ),
       body: BlocConsumer<UserCubit, UserState>(
-        listener: (context, state) {
-       
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           if (state is UserLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -81,7 +92,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               icon: const Icon(Icons.email_outlined,
                                   color: Colors.black),
                               isSelect: false),
-                           CustomCheckoutListile(
+                          CustomCheckoutListile(
                             title: state.user.phoneNumber,
                             subtitle: "Phone",
                             icon: const Icon(
@@ -103,20 +114,28 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               CustomCircleButton(
                                   icon: const Icon(Icons.add),
                                   funcation: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) =>
-                                           AddressScreen(selectAddressIndex: state.user.addressIndex,
-                                      
-                                      ),
-                                    ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AddressScreen(
+                                            selectAddressIndex:
+                                                state.user.addressIndex,
+                                          ),
+                                        ));
                                   })
                             ],
                           ),
                           const SizedBox(
                             height: 5,
                           ),
-                           CustomGetLocationWidget(
+                          CustomGetLocationWidget(
                             currentIndex: state.user.addressIndex,
+                            onLocationSelected: (AddressModel value) {
+                              setState(() {
+                                addressEntity = value;
+                              });
+                             
+                            },
                           ),
                           const SizedBox(
                             height: 20,
@@ -128,31 +147,34 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          const CustomCheckoutPayment(),
+                          CustomCheckoutPayment(
+                            onChanged: (value) {
+                              setState(() {
+                                paymentIndex = value;
+                              });
+                            },
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
                           CustomCartPrice(
-                              title: 'Total:',
-                              price: TestList.getTotalPrice()),
-                          const CustomCartPrice(
-                              title: 'Shipping:', price: 50),
+                              title: 'Total:', price: widget.total.toDouble()),
+                          const CustomCartPrice(title: 'Shipping:', price: 50),
                           const Divider(),
                           CustomCartPrice(
                               title: 'Total Cost:',
-                              price: TestList.getTotalPrice() + 50,
+                              price: widget.total + 50,
                               isTotalcoast: true),
                           const SizedBox(
                             height: 20,
                           ),
-                          BlocBuilder<CheckOutCubit, CheckOutState>(
-                            builder: (context, state) {
-                              return CustomCheckoutButton(
-                                  currentIndex: context
-                                      .read<CheckOutCubit>()
-                                      .currentPaymenMethodIndex);
-                            },
-                          ),
+                          CustomCheckoutButton(
+                            currentIndex: paymentIndex,
+                            total: widget.total,
+                            cartItems: widget.cartItems ,
+                            uId: state.user.uid,
+                            address: addressEntity,
+                          )
                         ],
                       ),
                     ),

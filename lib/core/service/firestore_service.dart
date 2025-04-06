@@ -7,6 +7,7 @@ import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
+import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 
 class FirestoreService {
@@ -30,7 +31,8 @@ class FirestoreService {
 
   Future<UserEntity> getUserData() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) throw Exception("User is not logged in"); // Ensure user is logged in
+    if (userId == null)
+      throw Exception("User is not logged in"); // Ensure user is logged in
     DocumentSnapshot<Map<String, dynamic>> doc =
         await firestore.collection('users').doc(userId).get();
 
@@ -69,9 +71,8 @@ class FirestoreService {
         .doc(addressId)
         .delete();
   }
-  Future<void> updateAddressIndex(
-    {required int sellectAddressIndex}
-  )async{
+
+  Future<void> updateAddressIndex({required int sellectAddressIndex}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
@@ -79,8 +80,6 @@ class FirestoreService {
     DocumentSnapshot userDoc = await userRef.get();
 
     if (!userDoc.exists) return; // Handle if user document doesn't exist
-
-    
 
     // Update the address index
     await userRef.update({"addressIndex": sellectAddressIndex});
@@ -234,28 +233,26 @@ class FirestoreService {
 
     return products;
   }
+
   Future<CartEntity?> getProductInCart({required String productId}) async {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId == null) return null;
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return null;
 
-  DocumentSnapshot cartSnapshot = await FirebaseFirestore.instance
-      .collection("users")
-      .doc(userId)
-      .collection("cart")
-      .doc(productId)
-      .get();
+    DocumentSnapshot cartSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("cart")
+        .doc(productId)
+        .get();
 
-  // Check if document exists
-  if (!cartSnapshot.exists || cartSnapshot.data() == null) {
-    print("No product found in cart.");
-    return null; // or throw an exception
+    // Check if document exists
+    if (!cartSnapshot.exists || cartSnapshot.data() == null) {
+      print("No product found in cart.");
+      return null; // or throw an exception
+    }
+
+    return CartItemModel.fromMap(cartSnapshot.data() as Map<String, dynamic>);
   }
-
-  print("cartSnapshot.data(): ${cartSnapshot.data()}");
-
-  return CartItemModel.fromMap(cartSnapshot.data() as Map<String, dynamic>);
-}
-
 
   Future<void> clearCart() async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -321,5 +318,12 @@ class FirestoreService {
     if (cartSnapshot.exists) {
       await cartItemRef.update({"quantity": count});
     }
+  }
+
+  Future<void> createOrder({required OrderModel order}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return; // Ensure user is logged in
+
+    await firestore.collection("orders").doc(order.orderId).set(order.toMap());
   }
 }

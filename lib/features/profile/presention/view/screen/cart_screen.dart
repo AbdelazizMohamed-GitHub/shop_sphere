@@ -39,59 +39,58 @@ class CartScreen extends StatelessWidget {
             } else if (snapshot.hasError) {
               return const Center(child: Text('Error'));
             } else if (snapshot.hasData) {
-              List<CartEntity> cartItems = snapshot.data!.docs.map((doc) {
+              List<CartItemModel> cartItems = snapshot.data!.docs.map((doc) {
                 return CartItemModel.fromMap(doc.data());
               }).toList();
               if (cartItems.isEmpty) {
                 return const Center(child: Text('Your cart is empty'));
-              }else {
+              } else {
                 // Calculate the total cost
                 double total = 0.0;
                 for (var item in cartItems) {
                   total += item.productPrice * item.productQuantity;
                 }
-                 return Column(
-              children: [
-                Expanded(
-                    child: CustomCartItemList(
-                  cartItems: cartItems
-                      .cast<CartEntity>(), // Cast to List<CartItemModel>
-                )),
-                Container(
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  )),
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(children: [
-                    CustomCartPrice(
-                        title: 'Total:', price: total),
-                    const CustomCartPrice(title: 'Shipping:', price: 50),
-                    const Divider(),
-                    CustomCartPrice(
-                        title: 'Total Cost:',
-                        price: total + 50,
-                        isTotalcoast: true),
-                    const SizedBox(height: 20.0),
-                    CustomButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const CheckoutScreen();
-                          }));
-                        },
-                        text: "Checkout")
-                  ]),
-                ),
-              ],
-            );
+                return Column(
+                  children: [
+                    Expanded(
+                        child: CustomCartItemList(
+                      cartItems: cartItems
+                          .cast<CartEntity>(), // Cast to List<CartItemModel>
+                    )),
+                    Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      )),
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(children: [
+                        CustomCartPrice(title: 'Total:', price: total),
+                        const CustomCartPrice(title: 'Shipping:', price: 50),
+                        const Divider(),
+                        CustomCartPrice(
+                            title: 'Total Cost:',
+                            price: total + 50,
+                            isTotalcoast: true),
+                        const SizedBox(height: 20.0),
+                        CustomButton(
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return CheckoutScreen(
+                                  total: total, cartItems: cartItems,
+                                );
+                              }));
+                            },
+                            text: "Checkout")
+                      ]),
+                    ),
+                  ],
+                );
               }
-             
             }
             return const Center(child: Text('No Data'));
           }),
-      
     );
   }
 }
