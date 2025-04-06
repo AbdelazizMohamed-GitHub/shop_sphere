@@ -7,15 +7,16 @@ import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/profile/domain/repo/profile_repo.dart';
 
-class ProfileRepoImpl extends ProfileRepo {
+class ProfileRepoImpl extends UserRepo {
   final FirestoreService firestoreService;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   ProfileRepoImpl({required this.firestoreService});
   @override
   Future<Either<FirebaseFailure, UserEntity>> getUserData() async {
     try {
+     
       UserEntity data = await firestoreService.getUserData(
-          collection: "users", did: _firebaseAuth.currentUser!.uid);
+      );
       return right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
@@ -33,7 +34,7 @@ class ProfileRepoImpl extends ProfileRepo {
           did: _firebaseAuth.currentUser!.uid,
           data: userModel);
       await firestoreService.getUserData(
-          collection: "users", did: _firebaseAuth.currentUser!.uid);
+         );
       return right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));

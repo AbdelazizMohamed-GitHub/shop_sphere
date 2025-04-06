@@ -10,7 +10,7 @@ import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/profile_repo_impl.dart';
-import 'package:shop_sphere/features/profile/presention/controller/profile/profile_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile_screen.dart';
@@ -25,9 +25,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => ProfileCubit(
-              profileRepo: getIt<ProfileRepoImpl>(),
-            )..getUserData(),
+        create: (context) => UserCubit(userRepo:getIt <ProfileRepoImpl> ())..getUserData(),
         child: Scaffold(
           backgroundColor: AppTheme.isLightTheme(context)
               ? AppColors.primaryColor

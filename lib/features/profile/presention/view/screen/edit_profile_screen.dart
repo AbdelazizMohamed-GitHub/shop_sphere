@@ -12,8 +12,8 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/profile_repo_impl.dart';
-import 'package:shop_sphere/features/profile/presention/controller/profile/profile_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/controller/profile/profile_state.dart';
+import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_photo.dart';
 
@@ -52,13 +52,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfileCubit(profileRepo: getIt<ProfileRepoImpl>()),
-      child: BlocConsumer<ProfileCubit, ProfileState>(
+      create: (context) => UserCubit(userRepo: getIt<ProfileRepoImpl>()),
+      child: BlocConsumer<UserCubit, UserState>(
         listener: (context, state) {
-          if (state is EditProfileSuccess) {
+          if (state is UserSuccess) {
             Navigator.pop(context);
           }
-          if (state is EditProfileFirebaseFailure) {
+          if (state is UserFailure) {
             Warning.showWarning(context, message: state.errMessage);
           }
         },
@@ -85,7 +85,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       createdAt: widget.user.createdAt,
                     );
                     FocusScope.of(context).unfocus();
-                    context.read<ProfileCubit>().updateUserData(userModel);
+                    context.read<UserCubit>().updateUserData(userModel);
                   
                   },
                   child: Text("Save",
@@ -98,7 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 )
               ],
             ),
-            body: state is EditProfileLoading
+            body: state is UserLoading
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )

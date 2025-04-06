@@ -28,15 +28,14 @@ class FirestoreService {
     await firestore.collection(collection).doc(did).update(data.toMap());
   }
 
-  Future<UserEntity> getUserData({
-    required String collection,
-    required String did,
-  }) async {
+  Future<UserEntity> getUserData() async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) throw Exception("User is not logged in"); // Ensure user is logged in
     DocumentSnapshot<Map<String, dynamic>> doc =
-        await firestore.collection(collection).doc(did).get();
+        await firestore.collection('users').doc(userId).get();
 
     if (!doc.exists || doc.data() == null) {
-      throw Exception("Document not found in collection: $collection");
+      throw Exception("Document not found in collection: users");
     }
 
     return UserModel.fromMap(doc.data()!);
