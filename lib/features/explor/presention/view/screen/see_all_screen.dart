@@ -17,23 +17,19 @@ class SeeAllScreen extends StatelessWidget {
   final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>())
-       ,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const CustomBackButton(),
-          leadingWidth: 100,
-          title: const Text("See All"),
-        ),
-        body: SingleChildScrollView(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: CustomVerticalProductList(
-            products: products,
-          ),
-        )),
+    return Scaffold(
+      appBar: AppBar(
+        leading: const CustomBackButton(),
+        leadingWidth: 100,
+        title: const Text("See All"),
       ),
+      body: SingleChildScrollView(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: CustomVerticalProductList(
+          products: products,
+        ),
+      )),
     );
   }
 }

@@ -10,13 +10,24 @@ import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_state.dart';
 
-class CustomFavouriteIcon extends StatelessWidget {
+class CustomFavouriteIcon extends StatefulWidget {
   const CustomFavouriteIcon({
     super.key,
     required this.productId, required this.onChanged,
   });
   final String productId;
  final ValueChanged<bool> onChanged;
+
+  @override
+  State<CustomFavouriteIcon> createState() => _CustomFavouriteIconState();
+}
+
+class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
+  @override
+  void initState() {
+    context.read<FavouriteCubit>().listenToFavorites();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FavouriteCubit, FavouriteState>(
@@ -26,8 +37,8 @@ class CustomFavouriteIcon extends StatelessWidget {
       }
     }, builder: (context, state) {
       if (state is IsFavourite) {
-        bool isFavourite = state.favProducts.contains(productId);
-        onChanged(isFavourite);
+        bool isFavourite = state.favProducts.contains(widget.productId);
+        widget.onChanged(isFavourite);
     
         return Positioned(
             top: 10,
@@ -44,7 +55,7 @@ class CustomFavouriteIcon extends StatelessWidget {
                 funcation: () async {
                   await context
                       .read<FavouriteCubit>()
-                      .addToFavorite(productId: productId);
+                      .addToFavorite(productId: widget.productId);
                 }));
       }
       return Skeletonizer(

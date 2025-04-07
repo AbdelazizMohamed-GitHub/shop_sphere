@@ -8,7 +8,9 @@ import 'package:shop_sphere/core/service/bloc_observer.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
+import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
+import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
@@ -40,13 +42,18 @@ class ShopSphere extends StatelessWidget {
           create: (context) => AppCubit(),
         ),
         BlocProvider(
-          create: (context) => AddressCubit(addressRepo: getIt<AddressRepoImpl>())..getAddress(),
-        ),   BlocProvider(
-          create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>()),
-        ),  BlocProvider(
-          create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())
+          create: (context) =>
+              FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>()),
         ),
-       
+        BlocProvider(
+          create: (context) =>
+              AddressCubit(addressRepo: getIt<AddressRepoImpl>())..getAddress(),
+        ),
+        BlocProvider(
+          create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>()),
+        ),
+        BlocProvider(
+            create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {

@@ -25,8 +25,15 @@ class OrderRepoImpl extends OrderRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, List<OrderEntity>>> getOrders() {
+  Future<Either<FirebaseFailure, List<OrderEntity>>> getOrders({required String status}) async{
     
-    throw UnimplementedError();
+    try {
+      var data = await firestoreService.getOrders(status: status);
+      return right(data);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
+import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class FirestoreService {
   FirebaseFirestore firestore;
@@ -327,5 +328,21 @@ class FirestoreService {
 
     await firestore.collection("orders").doc(order.orderId).set(order.toMap());
     await clearCart();
+  }
+  Future<List<OrderEntity>> getOrders({required String status}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return []; // Ensure user is logged in
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection("orders")
+        .where("userId", isEqualTo: userId,
+        )
+        .where("status", isEqualTo: status)
+        .orderBy("createdAt", descending: true)
+        .get();
+
+    return querySnapshot.docs
+        .map((e) => OrderModel.fromMap(e.data()))
+        .toList();
   }
 }

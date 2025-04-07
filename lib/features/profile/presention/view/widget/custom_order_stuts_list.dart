@@ -24,7 +24,10 @@ class CustomOrderStutsList extends StatelessWidget {
         return BlocBuilder<OrderCubit, OrderState>(
           builder: (context, state) {
             return InkWell(
-              onTap: () {
+              onTap: () async {
+                context
+                    .read<OrderCubit>()
+                    .getOrders(status: orderStauts[index]);
                 context.read<OrderCubit>().changeOrderStatus(index);
                 context.read<OrderCubit>().pageController.animateToPage(index,
                     duration: const Duration(milliseconds: 500),
