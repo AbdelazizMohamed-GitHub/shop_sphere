@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -9,12 +11,19 @@ import 'package:shop_sphere/core/widget/custom_product_item_button.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
-class CustomProductItem extends StatelessWidget {
+class CustomProductItem extends StatefulWidget {
   const CustomProductItem({
-    super.key,
+    Key? key,
     required this.product,
-  });
+  }) : super(key: key);
   final ProductEntity product;
+
+  @override
+  State<CustomProductItem> createState() => _CustomProductItemState();
+}
+
+class _CustomProductItemState extends State<CustomProductItem> {
+  bool isFav = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,17 +48,18 @@ class CustomProductItem extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DetailsScreen(
-                                product: product,
+                                isFaV: isFav,
+                                product: widget.product,
                               ),
                             ));
                       },
                       child: CachedNetworkImage(
-                        imageUrl: product.imageUrl,
+                        imageUrl: widget.product.imageUrl,
                         placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(),
+                          child: CustomImageLoading(),
                         ),
                         errorWidget: (context, url, error) =>
-                           const Icon(Icons.error),
+                            const Icon(Icons.error),
                       )),
                 ),
               ),
@@ -61,17 +71,17 @@ class CustomProductItem extends StatelessWidget {
                     SizedBox(
                       width: 150,
                       child: Text(
-                        product.name,
+                        widget.product.name,
                         style: AppStyles.text14Regular,
                       ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('\$${product.price.toStringAsFixed(2)}',
+                        Text('\$${widget.product.price.toStringAsFixed(2)}',
                             style: AppStyles.text16Regular),
                         const Spacer(),
-                        CustomProductItemButton(productEntity: product),
+                        CustomProductItemButton(productEntity: widget.product),
                       ],
                     ),
                   ],
@@ -79,7 +89,12 @@ class CustomProductItem extends StatelessWidget {
               ),
             ],
           ),
-          CustomFavouriteIcon(productId: product.id)
+          CustomFavouriteIcon(
+            productId: widget.product.id,
+            onChanged: (bool value) {
+              isFav = value;
+            },
+          )
         ],
       ),
     );

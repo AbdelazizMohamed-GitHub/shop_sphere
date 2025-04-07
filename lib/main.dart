@@ -4,20 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
-import 'package:shop_sphere/core/loading/address_screen_loadig.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/checkout_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/profile_screen.dart';
 import 'package:shop_sphere/firebase_options.dart';
 
 void main() async {
@@ -43,6 +41,8 @@ class ShopSphere extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AddressCubit(addressRepo: getIt<AddressRepoImpl>())..getAddress(),
+        ),   BlocProvider(
+          create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>()),
         ),  BlocProvider(
           create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())
         ),
@@ -61,7 +61,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const CartScreen(),
+                : const MainScreen(),
           );
         },
       ),

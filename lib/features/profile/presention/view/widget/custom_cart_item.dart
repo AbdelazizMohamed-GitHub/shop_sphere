@@ -39,6 +39,7 @@ class CustomCartItem extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailsScreen(
+                    isFaV: false,
                     product: product as ProductEntity,
                   ),
                 ),

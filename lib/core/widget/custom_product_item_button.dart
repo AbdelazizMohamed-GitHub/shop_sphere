@@ -10,7 +10,7 @@ import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/car
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class CustomProductItemButton extends StatelessWidget {
+class CustomProductItemButton extends StatefulWidget {
   const CustomProductItemButton({
     super.key,
     required this.productEntity,
@@ -19,51 +19,56 @@ class CustomProductItemButton extends StatelessWidget {
   final ProductEntity productEntity;
 
   @override
+  State<CustomProductItemButton> createState() =>
+      _CustomProductItemButtonState();
+}
+
+class _CustomProductItemButtonState extends State<CustomProductItemButton> {
+  @override
+  void initState() {
+    context.read<CartCubit>().listenIsProductInCart();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          CartCubit(cartRepo: getIt<CartRepoImpl>())..listenIsProductInCart(),
-      child: BlocConsumer<CartCubit, CartState>(listener: (context, state) {
-        if (state is CartFailure) {
-          Warning.showWarning(context, message: state.errMessage);
-        }
-      }, builder: (context, state) {
-        if (state is CartLoading) {
-          return _buildLoadingButton();
-        }
+    return BlocConsumer<CartCubit, CartState>(listener: (context, state) {
+      if (state is CartFailure) {
+        Warning.showWarning(context, message: state.errMessage);
+      }
+    }, builder: (context, state) {
+      if (state is CartLoading) {
+        return _buildLoadingButton();
+      }
 
-        if (state is IsProductInCart) {
-          bool isProductInCart = state.cartProduct.contains(productEntity.id);
-         
+      if (state is IsProductInCart) {
+        bool isProductInCart =
+            state.cartProduct.contains(widget.productEntity.id);
 
-          return GestureDetector(
-            onTap: () {
-              
-              if (isProductInCart) {
-                context.read<CartCubit>().removeFromCart(
-                  productId: productEntity.id,
-                    );
-              }
-              else {
-                context.read<CartCubit>().addToCart(
-                      cartItemModel: CartItemModel(
-                        id: productEntity.id,
-                        name:productEntity.name, 
-                        imageUrl: productEntity.imageUrl,
-                        price: productEntity.price,
-                        quantity: 1,
-                      ),
-                    );
-              }
-             
-            },
-            child: _buildCartButton(isProductInCart),
-          );
-        }
+        return GestureDetector(
+          onTap: () {
+            if (isProductInCart) {
+              context.read<CartCubit>().removeFromCart(
+                    productId: widget.productEntity.id,
+                  );
+            } else {
+              context.read<CartCubit>().addToCart(
+                    cartItemModel: CartItemModel(
+                      id: widget.productEntity.id,
+                      name: widget.productEntity.name,
+                      imageUrl: widget.productEntity.imageUrl,
+                      price: widget.productEntity.price,
+                      quantity: 1,
+                    ),
+                  );
+            }
+          },
+          child: _buildCartButton(isProductInCart),
+        );
+      }
 
-        return _buildLoadingButton(); // Default loading state
-      }),
-    );
+      return _buildLoadingButton(); // Default loading state
+    });
   }
 
   Widget _buildCartButton(bool isProductInCart) {

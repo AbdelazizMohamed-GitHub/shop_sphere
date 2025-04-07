@@ -62,7 +62,7 @@ class CartCubit extends Cubit<CartState> {
     final result = await cartRepo.removeFromCart(productId: productId);
     result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
         (data) {
-      emit(CartSuccess());
+      
 
       listenIsProductInCart();
     });
@@ -96,7 +96,7 @@ class CartCubit extends Cubit<CartState> {
         productId: productId, count: count);
     result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
         (data) {
-      emit(CartSuccess());
+      listenIsProductInCart();
     });
   }
 
@@ -107,11 +107,8 @@ class CartCubit extends Cubit<CartState> {
     result.fold((failure) => emit(CartFailure(errMessage: failure.message)),
         (data) async {
       cartEntity = data;
-     
 
-      Future.delayed(const Duration(seconds: 3), () {
-        listenIsProductInCart();
-      });
+      listenIsProductInCart();
     });
   }
 

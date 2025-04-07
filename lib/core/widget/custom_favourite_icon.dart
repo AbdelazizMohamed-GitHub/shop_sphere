@@ -13,46 +13,45 @@ import 'package:shop_sphere/features/explor/presention/controller/favourite_cubi
 class CustomFavouriteIcon extends StatelessWidget {
   const CustomFavouriteIcon({
     super.key,
-    required this.productId,
+    required this.productId, required this.onChanged,
   });
   final String productId;
+ final ValueChanged<bool> onChanged;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>()),
-      child: BlocConsumer<FavouriteCubit, FavouriteState>(
-          listener: (context, state) {
-        if (state is FavouriteFailure) {
-          Warning.showWarning(context, message: state.errMessage);
-        }
-      }, builder: (context, state) {
-        if (state is IsFavourite) {
-          bool isFavourite = state.favProducts.contains(productId);
-
-          return Positioned(
-              top: 10,
-              left: 10,
-              child: CustomCircleButton(
-                  icon: isFavourite
-                      ? const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        )
-                      : const Icon(
-                          Icons.favorite_outline,
-                        ),
-                  funcation: () async {
-                    await context
-                        .read<FavouriteCubit>()
-                        .addToFavorite(productId: productId);
-                  }));
-        }
-        return Skeletonizer(
-          enabled: true,
-          child: CustomCircleButton(
-              icon: const Icon(Icons.favorite_outline), funcation: () {}),
-        );
-      }),
-    );
+    return BlocConsumer<FavouriteCubit, FavouriteState>(
+        listener: (context, state) {
+      if (state is FavouriteFailure) {
+        Warning.showWarning(context, message: state.errMessage);
+      }
+    }, builder: (context, state) {
+      if (state is IsFavourite) {
+        bool isFavourite = state.favProducts.contains(productId);
+        onChanged(isFavourite);
+    
+        return Positioned(
+            top: 10,
+            left: 10,
+            child: CustomCircleButton(
+                icon: isFavourite
+                    ? const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      )
+                    : const Icon(
+                        Icons.favorite_outline,
+                      ),
+                funcation: () async {
+                  await context
+                      .read<FavouriteCubit>()
+                      .addToFavorite(productId: productId);
+                }));
+      }
+      return Skeletonizer(
+        enabled: true,
+        child: CustomCircleButton(
+            icon: const Icon(Icons.favorite_outline), funcation: () {}),
+      );
+    });
   }
 }

@@ -19,13 +19,11 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
     return BlocConsumer<CartCubit, CartState>(
       listener: (context, state) {
         if (state is CartFailure) {
-           Warning.showWarning(context, message: state.errMessage);
+          Warning.showWarning(context, message: state.errMessage);
         }
-        
+
         if (state is CartSuccess) {
-         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const CartScreen();
-                }));
+         
         }
       },
       builder: (context, state) {
@@ -36,10 +34,11 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
               if (isProductInCart) {
                 await context.read<CartCubit>().updateCartQuantityWithCount(
                     productId: productEntity.id, count: cartCount);
-
-               
+                     Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return const CartScreen();
+          }));
               } else {
-                context.read<CartCubit>().addToCart(
+                await context.read<CartCubit>().addToCart(
                       cartItemModel: CartItemModel(
                         id: productEntity.id,
                         name: productEntity.name,
@@ -48,6 +47,9 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                         quantity: 1,
                       ),
                     );
+                context
+                    .read<CartCubit>()
+                    .getProductInCart(productId: productEntity.id);
               }
             },
             child: Container(

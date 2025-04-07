@@ -1,8 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
 
+import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
@@ -12,10 +13,12 @@ import 'package:shop_sphere/features/explor/presention/controller/favourite_cubi
 
 class CustomDetailsHeader extends StatelessWidget {
   const CustomDetailsHeader({
-    super.key,
+    Key? key,
     required this.product,
-  });
+    required this.isFav,
+  }) : super(key: key);
   final ProductEntity product;
+  final bool isFav;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -50,27 +53,14 @@ class CustomDetailsHeader extends StatelessWidget {
                       Icons.arrow_back_ios,
                       color: Colors.black,
                     )),
-                BlocProvider(
-                  create: (context) =>
-                      FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>()),
-                  child: BlocBuilder<FavouriteCubit, FavouriteState>(
-                    builder: (context, state) {
-                      if (state is IsFavourite) {
-                        bool isFavourite =
-                            state.favProducts.contains(product.id);
-                        return CustomCircleButton(
-                          icon: isFavourite
-                              ? const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                )
-                              : const Icon(Icons.favorite_border),
-                          funcation: () {},
-                        );
-                      }
-                      return  const SizedBox();
-                    },
-                  ),
+                CustomCircleButton(
+                  icon: isFav
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : const Icon(Icons.favorite_border),
+                  funcation: () {},
                 ),
               ],
             ),

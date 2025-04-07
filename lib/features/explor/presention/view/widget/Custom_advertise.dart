@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart'
     show CarouselOptions, CarouselSlider;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/loading/custom_get_loaction_loading.dart';
+import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -35,9 +37,8 @@ class CustomAdvertise extends StatelessWidget {
                         child: CachedNetworkImage(
                             imageUrl: product!.imageUrl,
                             fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
+                            placeholder: (context, url) =>
+                                const CustomImageLoading(),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error))),
                   ),
