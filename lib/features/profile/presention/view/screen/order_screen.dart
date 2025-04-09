@@ -14,7 +14,8 @@ class OrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())..getOrders(status: 'Pending'),
+      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())
+        ..getOrders(status: 'Pending'),
       child: Scaffold(
         appBar: AppBar(
           leading: AppTheme.isLightTheme(context)
@@ -35,7 +36,14 @@ class OrderScreen extends StatelessWidget {
               const SizedBox(height: 40, child: CustomOrderStutsList()),
               BlocBuilder<OrderCubit, OrderState>(
                 builder: (context, state) {
-                  return const CustomOrderScreenBody();
+                  if (state is OrderLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is OrderError) {
+                    return const Center(child: Text('Error'));
+                  } else if (state is OrderSuccess) {
+                    return CustomOrderScreenBody(orders: state.orders);
+                  }
+                  return const Center(child: Text('No Data'));
                 },
               )
             ],

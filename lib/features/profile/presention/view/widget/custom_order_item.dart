@@ -1,17 +1,23 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/utils/screens_list.dart';
-import 'package:shop_sphere/core/test_data/test_list.dart';
+import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';
 
 class CustomOrderItem extends StatelessWidget {
-  const CustomOrderItem({super.key});
-
+  const CustomOrderItem({
+    Key? key,
+    required this.order,
+  }) : super(key: key);
+  final OrderEntity order;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OrderCubit, OrderState>(

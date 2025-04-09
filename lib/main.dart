@@ -20,6 +20,8 @@ import 'package:shop_sphere/features/profile/presention/controller/profile/user_
 import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 import 'package:shop_sphere/firebase_options.dart';
 
+import 'features/profile/presention/view/screen/order_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
@@ -68,7 +70,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const MainScreen(),
+                : const OrderScreen(),
           );
         },
       ),
