@@ -49,9 +49,9 @@ class OrderModel extends OrderEntity {
       orderId: map['orderId'],
       totalAmount: map['totalAmount'],
       items: List<CartItemModel>.from(
-          map['items']?.map((x) => ProductModel.fromMap(x)) ?? []),
+          map['items']?.map((x) => CartItemModel.fromMap(x)) ?? []),
       status: map['status'],
-      orderDate: Timestamp.fromMicrosecondsSinceEpoch(map['orderDate']),
+      orderDate: map['orderDate']  as Timestamp,
     );
   }
 }

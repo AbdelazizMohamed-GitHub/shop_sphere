@@ -329,21 +329,18 @@ class FirestoreService {
     await clearCart();
   }
 
-Future<List<OrderEntity>> getOrders({required String status}) async {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId == null) return [];
+  Future<List<OrderEntity>> getOrders({required String status}) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return [];
 
-  final querySnapshot = await firestore
-      .collection('orders')
-      .where('userId', isEqualTo: userId)
-      .where('status', isEqualTo: status)
-      .orderBy('createdAt', descending: true)
-      .orderBy(FieldPath.documentId, descending: true)
-      .get();
+    final querySnapshot = await firestore
+        .collection('orders')
+        .where('uId', isEqualTo: userId)
+        .where('status', isEqualTo: status)
+        .orderBy('orderDate', descending: true)
+        .orderBy(FieldPath.documentId, descending: true)
+        .get();
 
-  return querySnapshot.docs
-      .map((e) => OrderModel.fromMap(e.data()))
-      .toList();
-}
-
+    return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
+  }
 }
