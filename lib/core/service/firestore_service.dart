@@ -185,7 +185,7 @@ class FirestoreService {
   Future<void> addToCart({required CartItemModel cartItemModel}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
-  
+
     DocumentReference userRef = FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
@@ -249,7 +249,6 @@ class FirestoreService {
 
     // Check if document exists
     if (!cartSnapshot.exists || cartSnapshot.data() == null) {
-    
       return null; // or throw an exception
     }
 
@@ -329,20 +328,22 @@ class FirestoreService {
     await firestore.collection("orders").doc(order.orderId).set(order.toMap());
     await clearCart();
   }
-  Future<List<OrderEntity>> getOrders({required String status}) async {
-    String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) return []; // Ensure user is logged in
 
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection("orders")
-        .where("userId", isEqualTo: userId,
-        )
-        .where("status", isEqualTo: status)
-        .orderBy("createdAt", descending: true)
-        .get();
+Future<List<OrderEntity>> getOrders({required String status}) async {
+  String? userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId == null) return [];
 
-    return querySnapshot.docs
-        .map((e) => OrderModel.fromMap(e.data()))
-        .toList();
-  }
+  final querySnapshot = await firestore
+      .collection('orders')
+      .where('userId', isEqualTo: userId)
+      .where('status', isEqualTo: status)
+      .orderBy('createdAt', descending: true)
+      .orderBy(FieldPath.documentId, descending: true)
+      .get();
+
+  return querySnapshot.docs
+      .map((e) => OrderModel.fromMap(e.data()))
+      .toList();
+}
+
 }

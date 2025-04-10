@@ -39,9 +39,12 @@ class OrderScreen extends StatelessWidget {
                   if (state is OrderLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is OrderError) {
-                    return const Center(child: Text('Error'));
+                    return Center(child: Text(state.error));
                   } else if (state is OrderSuccess) {
-                    return CustomOrderScreenBody(orders: state.orders);
+                   
+                    return CustomOrderScreenBody(
+                      orders: state.orders,
+                    );
                   }
                   return const Center(child: Text('No Data'));
                 },

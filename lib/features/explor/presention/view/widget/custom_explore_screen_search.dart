@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/search_screen.dart';
 
 class CustomExploreScreenSearch extends StatelessWidget {
@@ -17,7 +16,7 @@ class CustomExploreScreenSearch extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                print('search');
+             
                 FocusScope.of(context).unfocus();
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const SearchScreen();

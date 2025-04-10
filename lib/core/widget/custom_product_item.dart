@@ -13,9 +13,9 @@ import 'package:shop_sphere/features/explor/presention/view/screen/details_scree
 
 class CustomProductItem extends StatefulWidget {
   const CustomProductItem({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
   final ProductEntity product;
 
   @override

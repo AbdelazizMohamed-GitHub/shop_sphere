@@ -1,13 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readmore/readmore.dart';
 
 import 'package:shop_sphere/core/loading/details_screen_loading.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
-import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
@@ -17,10 +14,10 @@ import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen( {
-    Key? key,
+    super.key,
     required this.product,
     required this.isFaV,
-  }) : super(key: key);
+  });
   final ProductEntity product;
   final bool isFaV;
 

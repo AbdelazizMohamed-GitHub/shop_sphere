@@ -34,6 +34,8 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
               if (isProductInCart) {
                 await context.read<CartCubit>().updateCartQuantityWithCount(
                     productId: productEntity.id, count: cartCount);
+
+                     // ignore: use_build_context_synchronously
                      Navigator.push(context, MaterialPageRoute(builder: (context) {
             return const CartScreen();
           }));
@@ -47,6 +49,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                         quantity: 1,
                       ),
                     );
+                // ignore: use_build_context_synchronously
                 context
                     .read<CartCubit>()
                     .getProductInCart(productId: productEntity.id);

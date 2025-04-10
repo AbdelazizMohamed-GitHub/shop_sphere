@@ -14,9 +14,9 @@ import 'package:shop_sphere/features/profile/presention/view/screen/order_detail
 
 class CustomOrderItem extends StatelessWidget {
   const CustomOrderItem({
-    Key? key,
+    super.key,
     required this.order,
-  }) : super(key: key);
+  });
   final OrderEntity order;
   @override
   Widget build(BuildContext context) {
