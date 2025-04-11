@@ -3,7 +3,7 @@
 
  import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
-class OrderState {}
+sealed class OrderState {}
 
 final class OrderInitial extends OrderState {}
 

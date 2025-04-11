@@ -15,8 +15,9 @@ class OrderModel extends OrderEntity {
   final List<CartItemModel> items;
   @override
   final String status;
+  
   @override
-  final Timestamp orderDate;
+  final DateTime orderDate;
   @override
   final AddressModel address;
 
@@ -51,7 +52,7 @@ class OrderModel extends OrderEntity {
       items: List<CartItemModel>.from(
           map['items']?.map((x) => CartItemModel.fromMap(x)) ?? []),
       status: map['status'],
-      orderDate: map['orderDate']  as Timestamp,
+      orderDate: (map['orderDate']  as Timestamp).toDate(),
     );
   }
 }

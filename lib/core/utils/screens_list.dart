@@ -17,8 +17,8 @@ List<PaymentMethodModel> paymentMethod = [
 ];
 List orderStauts = [
   'Pending',
-  'Delivered',
   'Processing',
+  'Delivered',
   'Cancelled',
 ];
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class CustomOrderInformation extends StatelessWidget {
   const CustomOrderInformation({super.key, required this.order});
-  final Map<String, dynamic> order;
+  final OrderEntity order;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,7 +83,7 @@ class CustomOrderInformation extends StatelessWidget {
               width: 50,
             ),
             Text(
-              "${order['total'].toStringAsFixed(2)} \$",
+              "${order.totalAmount} \$",
               style: AppStyles.text16Bold,
             )
           ],

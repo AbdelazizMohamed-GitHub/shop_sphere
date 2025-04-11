@@ -5,13 +5,14 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 
 class CustomOrderDetailsItem extends StatelessWidget {
   const CustomOrderDetailsItem({
     super.key,
     required this.item,
   });
-  final dynamic item;
+  final CartEntity item;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,14 +23,14 @@ class CustomOrderDetailsItem extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         leading: Image.asset(AppImages.product),
         title: Text(
-          item['name'],
+          item.productName,
           style: AppStyles.text16Bold,
         ),
         subtitle: Text(
-          'Quantity: ${item['quantity']}',
+          'Quantity: ${item.productQuantity}',
           style: AppStyles.text14Regular,
         ),
-        trailing: Text('\$${item['price'].toStringAsFixed(2)}',
+        trailing: Text('\$${item.productPrice.toStringAsFixed(2)}',
             style: AppStyles.text16Bold),
       ),
     );

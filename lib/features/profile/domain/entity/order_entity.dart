@@ -8,7 +8,7 @@ class OrderEntity {
   final double totalAmount;
   final List<CartEntity> items;
   final String status;
-  final Timestamp orderDate;
+  final DateTime orderDate;
    final AddressEntity address;
 
   OrderEntity(

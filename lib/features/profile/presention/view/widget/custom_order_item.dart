@@ -57,18 +57,18 @@ class CustomOrderItem extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                const Row(
+                Row(
                   children: [
                     Text(
-                      'Quantity:3 ',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      'Quantity: ${order.items.length} ',
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Text(
-                      'Total: \$ 100.0',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      'Total: \$${order.totalAmount}',
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -83,7 +83,7 @@ class CustomOrderItem extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                OrderDetailsScreen(order: TestList.order),
+                                OrderDetailsScreen(order: order),
                           ));
                     },
                     child: const Text(
@@ -92,8 +92,8 @@ class CustomOrderItem extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(orderStauts[context.read<OrderCubit>().currentStatus],
-                      style: const TextStyle(color: Colors.green, fontSize: 14))
+                  Text(orderStauts[3],
+                      style: const TextStyle(color: Colors.red, fontSize: 14))
                 ])
               ],
             ),

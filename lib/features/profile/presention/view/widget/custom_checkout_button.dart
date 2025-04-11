@@ -63,7 +63,7 @@ class CustomCheckoutButton extends StatelessWidget {
                           totalAmount: total + 50,
                           items: cartItems,
                           status: "Pending",
-                          orderDate: Timestamp.now(),
+                          orderDate: DateTime.now(),
                           address: address);
 
                       await context
