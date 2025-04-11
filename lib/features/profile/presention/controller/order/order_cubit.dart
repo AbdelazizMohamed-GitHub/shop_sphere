@@ -34,4 +34,16 @@ class OrderCubit extends Cubit<OrderState> {
       (orders) => emit(OrderSuccess(orders: orders)),
     );
   }
+
+  Future<void> deletOrder({required String orderId}) async {
+    emit(OrderLoading());
+    final result = await orderRepo.deletOrder(orderId: orderId);
+    result.fold(
+      (l) => emit(OrderError(error: l.message)),
+      (r) {
+      
+        getOrders(status: orderStauts[currentStatus]);
+      },
+    );
+  }
 }

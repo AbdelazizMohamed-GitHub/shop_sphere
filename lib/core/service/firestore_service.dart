@@ -343,4 +343,7 @@ class FirestoreService {
 
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
+  Future<void> deleteOrder({required String orderId}) async {
+    await firestore.collection("orders").doc(orderId).delete();
+  }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
@@ -31,14 +32,14 @@ class CustomOrderItem extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Column(
               children: [
-                const Row(children: [
+                Row(children: [
                   Text(
                     'Order # 19470',
                     style: AppStyles.text16Bold,
                   ),
                   Spacer(),
                   Text(
-                    ' 26-12-2022',
+                    '${DateFormat.yMMMEd().format(order.orderDate)}',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ]),
@@ -92,8 +93,10 @@ class CustomOrderItem extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(orderStauts[3],
-                      style: const TextStyle(color: Colors.red, fontSize: 14))
+                TextButton(onPressed: ()async{
+                await  context.read<OrderCubit>().deletOrder(orderId: order.orderId);
+                }, child:   Text(orderStauts[3],
+                      style: const TextStyle(color: Colors.red, fontSize: 14)))
                 ])
               ],
             ),

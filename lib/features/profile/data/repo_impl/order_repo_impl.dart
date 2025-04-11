@@ -36,4 +36,16 @@ class OrderRepoImpl extends OrderRepo {
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<FirebaseFailure, void>> deletOrder({required String orderId}) async{
+    try {
+      await firestoreService.deleteOrder(orderId: orderId);
+      return right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
 }

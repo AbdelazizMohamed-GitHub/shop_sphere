@@ -17,7 +17,7 @@ class CustomOrderInformation extends StatelessWidget {
         const Divider(
           height: 20,
         ),
-        const Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -30,7 +30,7 @@ class CustomOrderInformation extends StatelessWidget {
             Expanded(
               child: Text(
                 maxLines: 2,
-                "Ahmed Hassan12 Tahrir Street, Apartment 5 Downtown Cairo, Cairo Governorate 11511  Egypt  +20 153019984  ",
+                "${order.address.city}, ${order.address.street}, ${order.address.state}",
                 overflow: TextOverflow.ellipsis,
               ),
             )
@@ -49,7 +49,7 @@ class CustomOrderInformation extends StatelessWidget {
             Expanded(
               child: Text(
                 maxLines: 2,
-                "**** **** **** 1234",
+                "Pay on Delivery",
                 overflow: TextOverflow.ellipsis,
               ),
             )
