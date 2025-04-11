@@ -35,7 +35,8 @@ class OrderModel extends OrderEntity {
       'uId': uId,
       'orderId': orderId,
       'totalAmount': totalAmount,
-      'items': items.map((x) => x.toMap()).toList(),
+      'items': List<CartItemModel>.from(
+          items.map((x) => x.toMap())).toList(),
       'status': status,
       'orderDate': orderDate,
       'address': address.toMap(),
