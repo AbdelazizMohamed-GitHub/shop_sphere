@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -10,21 +11,19 @@ class CustomOrderDetailsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(order.orderDate);
     return Column(
       children: [
         Row(
           children: [
             Text(
-              'Order ID: ${order.orderId.substring(0, 5)}',
+              'Order ID: ${order.orderId.substring(0, 6)}',
               style: AppTheme.isLightTheme(context)
                   ? AppStyles.text18Regular
                   : AppStyles.text18RegularWhite,
             ),
             const Spacer(),
             Text(
-              '${order.orderDate}',
-              
+              DateFormat.yMMMEd().format(order.orderDate),
               style: AppStyles.text14Regular,
             ),
           ],

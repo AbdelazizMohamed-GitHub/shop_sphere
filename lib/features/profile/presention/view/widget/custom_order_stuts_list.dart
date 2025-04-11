@@ -12,29 +12,24 @@ class CustomOrderStutsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: orderStauts.length,
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(
-          width: 10,
-        );
-      },
       itemBuilder: (BuildContext context, int index) {
         return BlocBuilder<OrderCubit, OrderState>(
           builder: (context, state) {
             return InkWell(
               onTap: () async {
-                // context
-                //     .read<OrderCubit>()
-                //     .getOrders(status: orderStauts[index]);
                 context.read<OrderCubit>().changeOrderStatus(index);
                 context.read<OrderCubit>().pageController.animateToPage(index,
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.easeOut);
               },
               child: AnimatedContainer(
-                width: 100,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                margin: const EdgeInsets.only(right: 10),
                 curve: Curves.easeOut,
                 decoration: BoxDecoration(
                   color: index == context.read<OrderCubit>().currentStatus

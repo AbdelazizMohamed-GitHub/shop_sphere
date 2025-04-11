@@ -21,7 +21,8 @@ class CustomOrderDetailsItem extends StatelessWidget {
           : AppColors.secondaryDarkColor,
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        leading: Image.asset(AppImages.product),
+        leading: Image.network(item.productImage,
+            height: 50, width: 50, fit: BoxFit.cover),
         title: Text(
           item.productName,
           style: AppStyles.text16Bold,
@@ -30,7 +31,7 @@ class CustomOrderDetailsItem extends StatelessWidget {
           'Quantity: ${item.productQuantity}',
           style: AppStyles.text14Regular,
         ),
-        trailing: Text('\$${item.productPrice.toStringAsFixed(2)}',
+        trailing: Text('\$${item.productPrice}',
             style: AppStyles.text16Bold),
       ),
     );

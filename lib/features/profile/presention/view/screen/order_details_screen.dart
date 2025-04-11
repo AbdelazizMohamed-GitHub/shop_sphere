@@ -34,10 +34,10 @@ class OrderDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomOrderDetailsHeader(order:order ),
+            CustomOrderDetailsHeader(order: order),
             const SizedBox(height: 20),
             Text(
-              '${TestList.order["items"].length} Items',
+              '${order.items.length} Items',
               style: AppStyles.text18Regular,
             ),
             const SizedBox(
@@ -47,7 +47,6 @@ class OrderDetailsScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: order.items.length,
                 itemBuilder: (context, index) {
-                  
                   return CustomOrderDetailsItem(item: order.items[index]);
                 },
               ),
