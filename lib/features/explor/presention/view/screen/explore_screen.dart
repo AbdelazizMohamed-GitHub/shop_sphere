@@ -48,9 +48,21 @@ class ExploreScreen extends StatelessWidget {
                 return state is ProductLoading
                     ? const CustomExploreScreenLoading()
                     : state is ProductFailure
-                        ? Center(
-                            child: Text(state.errMessage),
-                          )
+                        ? Column(children: [
+                            const SizedBox(height: 20),
+                            Center(
+                              child: Text(
+                                state.errMessage,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () async{
+                               await context.read<ProductCubit>().getProducts();
+                              },
+                              child: const Text('Retry'),
+                            ),
+                          ])
                         : state is ProductSuccess
                             ? state.products.isEmpty
                                 ? const Center(

@@ -18,7 +18,7 @@ class CustomImageLoading extends StatelessWidget {
         ),
         child: const Icon(
           Icons.image,
-          size: 50,
+          size: 30,
           color: Colors.black,
         ),
       ),
