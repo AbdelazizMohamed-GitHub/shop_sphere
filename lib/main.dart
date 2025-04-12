@@ -11,6 +11,7 @@ import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
+import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
@@ -18,7 +19,6 @@ import 'package:shop_sphere/features/profile/presention/controller/address/adres
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/firebase_options.dart';
 
-import 'features/profile/presention/view/screen/order_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +68,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const OrderScreen(),
+                : const MainScreen(),
           );
         },
       ),

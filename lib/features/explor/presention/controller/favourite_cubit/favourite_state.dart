@@ -9,7 +9,13 @@ class FavouriteState extends Equatable {
 }
 
 final class FavouriteInitial extends FavouriteState {}
-final class FavouriteLoading extends FavouriteState {}
+final class FavouriteLoadingItem extends FavouriteState {
+    final String productId;
+  FavouriteLoadingItem({required this.productId});
+
+  @override
+  List<Object?> get props => [productId];
+}
 final class FavouriteSuccess extends FavouriteState {}
 final class GetFavouriteSuccess extends FavouriteState {
   final List<ProductEntity> products;
