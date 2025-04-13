@@ -39,3 +39,4 @@ List category = [
   "Automotive  ",
   "Books ",
 ];
+List timeRange = ["Daily", "Weekly", "Monthly", "Yearly"];

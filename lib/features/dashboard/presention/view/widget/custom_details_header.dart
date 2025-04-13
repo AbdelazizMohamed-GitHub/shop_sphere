@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_styles.dart';
-
-import 'package:shop_sphere_dashboard/features/domain/entity/prosuct_entity.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/screen/add_product_screen.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomDetailsHeader extends StatelessWidget {
   const CustomDetailsHeader({super.key, required this.product});

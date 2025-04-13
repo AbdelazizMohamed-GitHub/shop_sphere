@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shop_sphere_dashboard/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/core/widget/custom_text_form.dart';
 
 class ChatScreen extends StatelessWidget {
   final String staffId;

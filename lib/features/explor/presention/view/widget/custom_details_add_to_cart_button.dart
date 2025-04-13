@@ -28,12 +28,12 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is IsProductInCart) {
-          bool isProductInCart = state.cartProduct.contains(productEntity.id);
+          bool isProductInCart = state.cartProduct.contains(productEntity.pId);
           return GestureDetector(
             onTap: () async {
               if (isProductInCart) {
                 await context.read<CartCubit>().updateCartQuantityWithCount(
-                    productId: productEntity.id, count: cartCount);
+                    productId: productEntity.pId, count: cartCount);
 
                      // ignore: use_build_context_synchronously
                      Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -42,7 +42,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
               } else {
                 await context.read<CartCubit>().addToCart(
                       cartItemModel: CartItemModel(
-                        id: productEntity.id,
+                        id: productEntity.pId,
                         name: productEntity.name,
                         imageUrl: productEntity.imageUrl,
                         price: productEntity.price,
@@ -52,7 +52,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                 // ignore: use_build_context_synchronously
                 context
                     .read<CartCubit>()
-                    .getProductInCart(productId: productEntity.id);
+                    .getProductInCart(productId: productEntity.pId);
               }
             },
             child: Container(

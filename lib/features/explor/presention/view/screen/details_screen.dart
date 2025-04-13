@@ -28,7 +28,7 @@ class DetailsScreen extends StatefulWidget {
 class _DetailsScreenState extends State<DetailsScreen> {
   @override
   void initState() {
-    context.read<CartCubit>().getProductInCart(productId: widget.product.id);
+    context.read<CartCubit>().getProductInCart(productId: widget.product.pId);
     super.initState();
   }
 
@@ -54,7 +54,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
         }
 
         if (state is IsProductInCart) {
-          bool isProductInCart = state.cartProduct.contains(widget.product.id);
+          bool isProductInCart = state.cartProduct.contains(widget.product.pId);
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,

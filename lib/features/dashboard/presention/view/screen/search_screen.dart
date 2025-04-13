@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_sphere_dashboard/core/service/firestore_service.dart';
-import 'package:shop_sphere_dashboard/core/widget/custom_back_button.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/screen/details_screen.dart';
-
+import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/details_screen.dart';
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
@@ -31,7 +32,7 @@ class SearchScreen extends StatelessWidget {
             SearchController controller,
           ) async {
             final query = controller.text.toLowerCase();
-            final products = await FirestoreService().gettProducts();
+            final products = await FirestoreService(firestore: getIt<FirebaseFirestore>()).gettProducts();
             final results = products
                 .where((product) => product.name.toLowerCase().contains(query))
                 .toList();

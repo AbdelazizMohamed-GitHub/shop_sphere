@@ -64,7 +64,7 @@ catch (e) {
   @override
   Future<Either<FirebaseFailure, String>> updateProduct({ required ProductModel data})async {
  try {
-    await firestoreService.updateProduct(dId: data.id, data: data);
+    await firestoreService.updateProduct(dId: data.pId, data: data);
     return const Right('Product updated successfully');
  } on FirebaseException catch (e) {
    

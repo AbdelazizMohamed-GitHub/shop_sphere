@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
-import 'package:shop_sphere/core/test_data/test_list.dart';
 import 'package:shop_sphere/core/utils/app_keys.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -134,7 +133,7 @@ class CustomCheckoutButton extends StatelessWidget {
                   },
                   text: currentIndex == 0
                       ? "Check Out"
-                      : "Pay ${TestList.getTotalPrice() + 50}");
+                      : "Pay ${ 50}");
         },
       ),
     );

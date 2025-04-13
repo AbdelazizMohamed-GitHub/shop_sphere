@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_images.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_styles.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/screen/process_order_screen.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/process_order_screen.dart';
 
 class CustomOrderItem extends StatelessWidget {
   const CustomOrderItem({super.key, required this.item});

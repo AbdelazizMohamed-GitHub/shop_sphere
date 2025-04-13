@@ -41,18 +41,18 @@ class _CustomProductItemButtonState extends State<CustomProductItemButton> {
 
       if (state is IsProductInCart) {
         bool isProductInCart =
-            state.cartProduct.contains(widget.productEntity.id);
+            state.cartProduct.contains(widget.productEntity.pId);
 
         return GestureDetector(
           onTap: () {
             if (isProductInCart) {
               context.read<CartCubit>().removeFromCart(
-                    productId: widget.productEntity.id,
+                    productId: widget.productEntity.pId,
                   );
             } else {
               context.read<CartCubit>().addToCart(
                     cartItemModel: CartItemModel(
-                      id: widget.productEntity.id,
+                      id: widget.productEntity.pId,
                       name: widget.productEntity.name,
                       imageUrl: widget.productEntity.imageUrl,
                       price: widget.productEntity.price,

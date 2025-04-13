@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 
 class CustomOrderInformation extends StatelessWidget {
   const CustomOrderInformation({super.key, required this.order});

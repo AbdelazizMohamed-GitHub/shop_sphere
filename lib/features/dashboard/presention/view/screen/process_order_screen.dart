@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_styles.dart';
-import 'package:shop_sphere_dashboard/core/widget/custom_button.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/widget/custom_process_screen_item.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_process_screen_item.dart';
 
 class ProcessOrderScreen extends StatelessWidget {
   const ProcessOrderScreen({super.key});
@@ -21,14 +21,14 @@ class ProcessOrderScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           children: [
-            CustomProcessScreenItem(title: "Order Date", subTitle: "06/10/24"),
+            const CustomProcessScreenItem(title: "Order Date", subTitle: "06/10/24"),
 
             const Divider(height: 20),
-            CustomProcessScreenItem(title: "Order ID", subTitle: "19470"),
+            const CustomProcessScreenItem(title: "Order ID", subTitle: "19470"),
             const Divider(height: 20),
-            CustomProcessScreenItem(title: "Order Status", subTitle: "Pending"),
+            const CustomProcessScreenItem(title: "Order Status", subTitle: "Pending"),
             const Divider(height: 20),
-            CustomProcessScreenItem(
+            const CustomProcessScreenItem(
               title: "Customer Name",
               subTitle: "Abdelaziz",
             ),
@@ -37,7 +37,7 @@ class ProcessOrderScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Shipping Address", style: AppStyles.text18Regular),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     overflow: TextOverflow.ellipsis,
@@ -50,7 +50,7 @@ class ProcessOrderScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             CustomButton(
               onPressed: () {},
@@ -58,7 +58,7 @@ class ProcessOrderScreen extends StatelessWidget {
               color: Colors.white,
               textColor: Colors.black,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             CustomButton(onPressed: () {}, text: "Process Order"),
           ],
         ),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere_dashboard/core/service/setuplocator.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_color.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_styles.dart';
-import 'package:shop_sphere_dashboard/core/widget/custom_back_button.dart';
-import 'package:shop_sphere_dashboard/core/widget/custom_product_item.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/controller/product_cubit/product_cubit.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/controller/product_cubit/product_state.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/screen/add_product_screen.dart';
-import 'package:shop_sphere_dashboard/features/presention/view/screen/search_screen.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/core/widget/custom_product_item.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
+import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 
+import '../../../../explor/presention/controller/product_cubit/product_state.dart';
 class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
 
@@ -43,9 +43,9 @@ class ProductScreen extends StatelessWidget {
               print(state);
               return state is ProductLoading
                   ? Center(child: CircularProgressIndicator())
-                  : state is ProductFailer
+                  : state is ProductFailure
                   ? Center(child: Text(state.errMessage))
-                  : state is GetProductsSuccess
+                  : state is ProductSuccess
                   ? state.products.isEmpty
                       ? Center(
                         child: Text(

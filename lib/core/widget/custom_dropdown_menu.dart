@@ -1,13 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatefulWidget {
   final List<String> categories;
   final Function(String) onCategorySelected;
+  final bool isUpdate;
+
+  final String? productCategory;
 
   const CustomDropdown({
+    this.productCategory,
     super.key,
     required this.categories,
     required this.onCategorySelected,
+     this.isUpdate = false,
   });
 
   @override
@@ -17,15 +23,17 @@ class CustomDropdown extends StatefulWidget {
 
 class _CategoryDropdownState extends State<CustomDropdown> {
   String? selectedCategory;
-
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: selectedCategory,
+      value: widget.isUpdate ? widget.productCategory : selectedCategory,
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
-        hintText: "Select Gender",
+        hintText:
+            widget.isUpdate
+                ? widget.productCategory
+                : selectedCategory ?? "Select Category",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
       items:
@@ -37,7 +45,7 @@ class _CategoryDropdownState extends State<CustomDropdown> {
           }).toList(),
       onChanged: (value) {
         setState(() {
-          selectedCategory = value!;
+          selectedCategory = value;
         });
         widget.onCategorySelected(value!);
       },

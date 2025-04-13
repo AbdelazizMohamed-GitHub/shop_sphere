@@ -7,6 +7,7 @@ import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
@@ -68,7 +69,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const MainScreen(),
+                : const DashboardScreen (),
           );
         },
       ),

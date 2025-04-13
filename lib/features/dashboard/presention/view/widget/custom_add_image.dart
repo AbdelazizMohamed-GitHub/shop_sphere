@@ -2,10 +2,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 
-import 'package:shop_sphere_dashboard/core/funcation/funcations.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_color.dart';
-import 'package:shop_sphere_dashboard/core/utils/app_styles.dart';
 
 class CustomAddImage extends StatefulWidget {
   const CustomAddImage({Key? key, this.onTap, required this.imageUrl})
@@ -38,7 +38,7 @@ class _CustomAddImageState extends State<CustomAddImage> {
               : imageFile == null
               ? GestureDetector(
                 onTap: () async {
-                  File? _image = await Funcations.pickImageFromGallery();
+                  File? _image = await AppFuncations.pickImageFromGallery();
                   if (_image != null) {
                     setState(() {
                       imageFile = _image;
