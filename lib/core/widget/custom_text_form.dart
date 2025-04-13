@@ -4,21 +4,23 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 class CustomTextForm extends StatelessWidget {
   const CustomTextForm(
       {super.key,
-      required this.pIcon,
+       this.pIcon,
+      this.lines = 1,
       this.sIcon,
       required this.text,
       this.textController,
       this.obscureText = false,
       required this.kType});
-  final IconData pIcon;
+  final IconData? pIcon;
   final Widget? sIcon;
   final String text;
   final TextEditingController? textController;
   final bool obscureText;
   final TextInputType kType;
+  final int lines ;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextFormField(maxLines: lines,
       obscureText: obscureText,
       keyboardType: kType,
       validator: (value) {
@@ -39,7 +41,7 @@ class CustomTextForm extends StatelessWidget {
               borderSide: const BorderSide(color: AppColors.primaryColor)),
           enabledBorder: border,
           prefixIcon: Icon(pIcon),
-          suffixIcon: sIcon,
+          suffixIcon: sIcon?? const SizedBox(),
           hintText: text),
     );
   }

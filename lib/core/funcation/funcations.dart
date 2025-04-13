@@ -1,4 +1,5 @@
 
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -21,13 +22,18 @@ class AppFuncations {
  
 
 
-static Future<Uint8List> getImage() async {
+ static Future<File?> pickImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 20,
+    );
+
     if (image != null) {
-      return await image.readAsBytes();
+      return File(image.path);
     } else {
-      return Uint8List(0);
+      return null;
     }
   }
 }

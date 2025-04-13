@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class CustomAddPhoto extends StatefulWidget {
 }
 
 class _CustomAddPhotoState extends State<CustomAddPhoto> {
-  Uint8List? image;
+  File? image;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -21,7 +22,7 @@ class _CustomAddPhotoState extends State<CustomAddPhoto> {
           radius: 80,
           backgroundImage: image == null
               ? const AssetImage(AppImages.profile)
-              : MemoryImage(image!),
+              : FileImage(image!),
         ),
         Positioned(
           bottom: 0,
@@ -35,7 +36,7 @@ class _CustomAddPhotoState extends State<CustomAddPhoto> {
               ),
               child: IconButton(
                 onPressed: () async {
-                  image = await AppFuncations.getImage();
+                  image = await AppFuncations.pickImageFromGallery();
                   setState(() {});
                 },
                 icon: const Icon(

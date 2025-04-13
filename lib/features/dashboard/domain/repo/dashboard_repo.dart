@@ -1,0 +1,18 @@
+import 'package:dartz/dartz.dart';
+import 'package:shop_sphere/core/errors/fairebase_failure.dart';
+import 'package:shop_sphere/features/explor/data/model/product_model.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+
+abstract class DashboardRepo {
+  Future<Either<FirebaseFailure, String>> addProduct({
+    required ProductModel product,
+   
+  });
+  
+  Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts();
+  
+  Future<Either<FirebaseFailure, String>> deleteProduct({required String dId,required String imageUrl});
+  
+  Future<Either<FirebaseFailure, String>> updateProduct({ required ProductModel data});
+
+}

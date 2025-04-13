@@ -13,7 +13,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
 
   final FavouriteRepo favouriteRepo;
   StreamSubscription? _favListener;
-  // 👈 Add this
+
 
 
 
@@ -30,6 +30,8 @@ class FavouriteCubit extends Cubit<FavouriteState> {
       },
       (data) {
        
+        emit(FavouriteSuccess());
+
         listenToFavorites();
       },
     );
@@ -63,4 +65,3 @@ class FavouriteCubit extends Cubit<FavouriteState> {
   }
 }
 
-// New state for loading a specific product

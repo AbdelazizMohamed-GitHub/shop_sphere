@@ -37,20 +37,21 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
         }
       },
       builder: (context, state) {
-        final cubit = context.read<FavouriteCubit>();
+     
 
         bool isFavourite = false;
         bool isLoading = false;
+          if (state is FavouriteLoadingItem &&
+            state.productId == widget.productId) {
+          isLoading = true; 
+        }
 
         if (state is IsFavourite) {
           isFavourite = state.favProducts.contains(widget.productId);
           widget.onChanged(isFavourite);
         }
 
-        if (state is FavouriteLoadingItem &&
-            state.productId == widget.productId) {
-          isLoading = true; // 👈 Only mark this item as loading
-        }
+      
 
         return Positioned(
           top: 10,
@@ -69,7 +70,7 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
                   await  context.read<FavouriteCubit>().addToFavorite(
                           productId: widget.productId,
                         );
-                        
+
                   },
                 ),
         );

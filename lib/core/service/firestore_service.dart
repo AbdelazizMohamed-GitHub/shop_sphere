@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shop_sphere/core/service/supabase_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
@@ -16,6 +19,32 @@ class FirestoreService {
   FirestoreService({
     required this.firestore,
   });
+ 
+  Future<void> addProduct({ required ProductModel data,File ? image}) async {
+    String? imageUrl;
+    if (image != null) {
+      imageUrl = await SupabaseService().uploadImage(file: image);
+      data.imageUrl = imageUrl!;
+    
+    }
+ 
+      await firestore.collection('products').doc(data.pId).set(data.toMap());
+
+   
+  }
+    Future<List<ProductEntity>> gettProducts() async {
+    final snapshot = await firestore.collection('products').get();
+    return snapshot.docs.map((doc) => ProductModel.fromMap(doc.data())).toList();
+    
+  }
+  Future<void> deleteProduct({required String dId,required String imageUrl}) async {
+   
+    await SupabaseService().deleteImageFromUrl(imageUrl: imageUrl);
+    await firestore.collection('products').doc(dId).delete();
+  }
+  Future<void> updateProduct({required String dId, required ProductModel data}) async {
+    await firestore.collection('products').doc(dId).update(data.toMap());
+  }
   Future<void> addData(
       {required String collection,
       required String did,
