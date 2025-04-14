@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -10,16 +11,19 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/customer_s
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
+import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())..getOrders(
-        status: "all",
-      ),
+      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())
+        ..getOrders(
+          status: "all",
+        ),
       child: Scaffold(
         appBar: AppBar(title: const Text('Main Screen')),
         drawer: Drawer(
@@ -122,41 +126,73 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columns: const [
-                    DataColumn(label: Text('Order ID')),
-                    DataColumn(label: Text('Customer Name')),
-                    DataColumn(label: Text('Date')),
-                    DataColumn(label: Text('Status')),
-                    DataColumn(label: Text('Total Amount')),
-                  ],
-                  rows: [
-                    DataRow(
-                      cells: [
-                        const DataCell(Text('#12345')),
-                        const DataCell(Text('John Doe')),
-                        const DataCell(Text('2023-10-15')),
-                        DataCell(
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.yellow[100],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Text('Pending'),
+              BlocBuilder<OrderCubit, OrderState>(
+                builder: (context, state) {
+                  List<OrderEntity> orders = [];
+                  if (state is OrderLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (state is OrderError) {
+                    return Center(
+                      child: Text(
+                        state.error,
+                        style: AppStyles.text16Bold.copyWith(color: Colors.red),
+                      ),
+                    );
+                  }
+                  if (state is OrderSuccess) {
+                    orders = state.orders;
+                  }
+
+                  return orders.isEmpty
+                      ? Center(
+                          child: Text(
+                            'Total Orders: ${orders.length}',
+                            style: AppStyles.text26BoldBlack,
                           ),
-                        ),
-                        const DataCell(Text('\$150.00')),
-                      ],
-                    ),
-                    // Add more rows as needed
-                  ],
-                ),
+                        )
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            columns: const [
+                              DataColumn(label: Text('Order ID')),
+                              DataColumn(label: Text('Customer Name')),
+                              DataColumn(label: Text('Date')),
+                              DataColumn(label: Text('Status')),
+                              DataColumn(label: Text('Total Amount')),
+                            ],
+                            rows: orders
+                                .map(
+                                  (e) => DataRow(
+                                    cells: [
+                                      DataCell(Text(
+                                          '${e.orderId.substring(0, 5)}...')),
+                                      DataCell(Text(e.userName)),
+                                      DataCell(Text(DateFormat.yMMMEd()
+                                          .format(e.orderDate))),
+                                      DataCell(
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.yellow[100],
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Text(e.status),
+                                        ),
+                                      ),
+                                      DataCell(Text('\$${e.totalAmount}')),
+                                    ],
+                                  ),
+                                  // Add more rows as needed
+                                )
+                                .toList(),
+                          ),
+                        );
+                },
               ),
             ],
           ),

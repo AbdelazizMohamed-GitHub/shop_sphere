@@ -168,6 +168,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             total: widget.total,
                             cartItems: widget.cartItems ,
                             uId: state.user.uid,
+                            userName: state.user.name,
                             address: addressEntity,
                           )
                         ],

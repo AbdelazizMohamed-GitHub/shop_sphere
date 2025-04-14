@@ -23,12 +23,15 @@ class CustomCheckoutButton extends StatelessWidget {
     required this.cartItems,
     required this.uId,
     required this.address,
+    required this.userName,
+
   });
   final int currentIndex;
   final double total;
   final List<CartItemModel> cartItems;
   final AddressModel address;
   final String uId;
+  final String userName ; // Replace with actual user name
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,7 @@ class CustomCheckoutButton extends StatelessWidget {
                   onPressed: () async {
                     if (currentIndex == 0) {
                       var oId = const Uuid().v4();
-                      OrderModel order = OrderModel(
+                      OrderModel order = OrderModel(userName: userName,
                           uId: uId,
                           orderId: oId,
                           totalAmount: total + 50,

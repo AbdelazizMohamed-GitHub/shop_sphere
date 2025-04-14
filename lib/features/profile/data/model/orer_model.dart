@@ -7,6 +7,8 @@ class OrderModel extends OrderEntity {
   @override
   final String orderId;
   @override
+  final String userName;
+  @override
   final String uId;
   @override
   final double totalAmount;
@@ -21,17 +23,19 @@ class OrderModel extends OrderEntity {
   final AddressModel address;
 
   OrderModel( {required this.uId,required this.address,
+    required this.userName,
     required this.orderId,
     required this.totalAmount,
     required this.items,
     required this.status,
     required this.orderDate,
-  }) : super( uId: uId, orderId: orderId, totalAmount: totalAmount, items: items, status:status , orderDate: orderDate, address: address);
+  }) : super( uId: uId,userName: userName, orderId: orderId, totalAmount: totalAmount, items: items, status:status , orderDate: orderDate, address: address);
 
   // Convert to Map for Firebase or local storage
   Map<String, dynamic> toMap() {
     return {
       'uId': uId,
+      'userName': userName,
       'orderId': orderId,
       'totalAmount': totalAmount,
       'items': List<CartItemModel>.from(
@@ -45,6 +49,7 @@ class OrderModel extends OrderEntity {
   // Convert from Map
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
+      userName: map['userName']??'',
       address: AddressModel.fromMap(map['address']),
       uId: map['uId'],
       orderId: map['orderId'],
