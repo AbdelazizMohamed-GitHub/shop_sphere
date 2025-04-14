@@ -6,8 +6,9 @@ import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_keys.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/main_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart'
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/firebase_options.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 void main() async {
@@ -27,6 +29,10 @@ void main() async {
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+   await Supabase.initialize(
+    url: AppKeys.supbaseUrl,
+    anonKey: AppKeys.supbaseApiKey,
   );
   Bloc.observer = MyBlocObserver();
   runApp(const ShopSphere());
@@ -69,7 +75,7 @@ class ShopSphere extends StatelessWidget {
                     : AppTheme.darkTheme,
             home: FirebaseAuth.instance.currentUser == null
                 ? const GetStartedScreen()
-                : const MainScreen (),
+                : const DashboardScreen (),
           );
         },
       ),

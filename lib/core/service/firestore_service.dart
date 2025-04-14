@@ -227,12 +227,12 @@ class FirestoreService {
     DocumentSnapshot userDoc = await userRef.get();
 
     if (userDoc.exists) {
-      print("Item already exists in cart, removing it.");
+    
       // Item exists in cart, remove it
       userDoc.reference.delete();
     } else {
       // Item doesn't exist, add it to cart
-      print("Product not Exit");
+
       await userRef.set(cartItemModel.toMap());
     }
   }
@@ -365,16 +365,18 @@ class FirestoreService {
 
   Future<List<OrderEntity>> getOrders({required String status}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
+    QuerySnapshot<Map<String, dynamic>> querySnapshot;
     if (userId == null) return [];
 
-    final querySnapshot = await firestore
-        .collection('orders')
-        .where('uId', isEqualTo: userId)
-        .where('status', isEqualTo: status)
-        .orderBy('orderDate', descending: true)
-        .orderBy(FieldPath.documentId, descending: true)
-        .get();
-
+   if (status == "all") {
+      querySnapshot = await firestore.collection("orders").get();
+     
+   }else {
+      querySnapshot = await firestore
+         .collection("orders")
+         .where("status", isEqualTo: status)
+         .get();
+   }
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
 

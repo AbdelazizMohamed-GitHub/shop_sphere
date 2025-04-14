@@ -29,7 +29,7 @@ class PaymentMethodModel {
   PaymentMethodModel({required this.title, required this.imagePath});
 }
 
-List category = [
+List appCategory = [
   "All",
   "Electronics ",
   "Clothing",

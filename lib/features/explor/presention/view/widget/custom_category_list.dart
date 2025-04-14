@@ -46,7 +46,7 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
             ),
             child: Center(
               child: Text(
-                category[index],
+                appCategory[index],
                 style: AppStyles.text16Bold.copyWith(
                     color: currentIndex == index
                         ? Colors.white
