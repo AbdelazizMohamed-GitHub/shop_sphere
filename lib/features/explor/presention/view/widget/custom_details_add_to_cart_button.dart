@@ -11,9 +11,12 @@ import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.
 
 class CustomDetailsAddToCartButton extends StatelessWidget {
   const CustomDetailsAddToCartButton(
-      {super.key, required this.cartCount, required this.productEntity});
+
+      {super.key, required this.cartCount, required this.productEntity,
+      required this.isProductInCart});
   final int cartCount;
   final ProductEntity productEntity;
+  final bool isProductInCart;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CartCubit, CartState>(

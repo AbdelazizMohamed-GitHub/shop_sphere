@@ -87,6 +87,7 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
           
           Expanded(
             child: CustomDetailsAddToCartButton(
+              isProductInCart: widget.isProductInCart,
               cartCount: cartCount,
               productEntity: widget.productEntity,
             ),
