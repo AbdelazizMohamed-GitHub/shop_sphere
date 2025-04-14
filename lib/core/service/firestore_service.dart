@@ -19,32 +19,35 @@ class FirestoreService {
   FirestoreService({
     required this.firestore,
   });
- 
-  Future<void> addProduct({ required ProductModel data,File ? image}) async {
+
+  Future<void> addProduct({required ProductModel data, File? image}) async {
     String? imageUrl;
     if (image != null) {
       imageUrl = await SupabaseService().uploadImage(file: image);
       data.imageUrl = imageUrl!;
-    
     }
- 
-      await firestore.collection('products').doc(data.pId).set(data.toMap());
 
-   
+    await firestore.collection('products').doc(data.pId).set(data.toMap());
   }
-    Future<List<ProductEntity>> gettProducts() async {
+
+  Future<List<ProductEntity>> gettProducts() async {
     final snapshot = await firestore.collection('products').get();
-    return snapshot.docs.map((doc) => ProductModel.fromMap(doc.data())).toList();
-    
+    return snapshot.docs
+        .map((doc) => ProductModel.fromMap(doc.data()))
+        .toList();
   }
-  Future<void> deleteProduct({required String dId,required String imageUrl}) async {
-   
+
+  Future<void> deleteProduct(
+      {required String dId, required String imageUrl}) async {
     await SupabaseService().deleteImageFromUrl(imageUrl: imageUrl);
     await firestore.collection('products').doc(dId).delete();
   }
-  Future<void> updateProduct({required String dId, required ProductModel data}) async {
+
+  Future<void> updateProduct(
+      {required String dId, required ProductModel data}) async {
     await firestore.collection('products').doc(dId).update(data.toMap());
   }
+
   Future<void> addData(
       {required String collection,
       required String did,
@@ -224,10 +227,12 @@ class FirestoreService {
     DocumentSnapshot userDoc = await userRef.get();
 
     if (userDoc.exists) {
+      print("Item already exists in cart, removing it.");
       // Item exists in cart, remove it
       userDoc.reference.delete();
     } else {
       // Item doesn't exist, add it to cart
+      print("Product not Exit");
       await userRef.set(cartItemModel.toMap());
     }
   }
@@ -372,6 +377,7 @@ class FirestoreService {
 
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
+
   Future<void> deleteOrder({required String orderId}) async {
     await firestore.collection("orders").doc(orderId).delete();
   }

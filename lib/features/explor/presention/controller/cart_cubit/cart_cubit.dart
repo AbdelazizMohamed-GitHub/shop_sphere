@@ -9,14 +9,22 @@ import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/car
 
 class CartCubit extends Cubit<CartState> {
   final CartRepo cartRepo;
-  CartCubit({required this.cartRepo}) : super(CartInitial());
+  CartCubit({required this.cartRepo}) : super(CartInitial()) {
+    listenIsProductInCart();
+  }
 
   static CartCubit get(context) => BlocProvider.of(context);
 
   StreamSubscription? _cartListener;
   final Set<String> _loadingItems = {};
-  List<String>? _latestCartProducts;
+  List<String> _cartProducts = [];
   CartEntity? cartEntity;
+  void _emitUpdatedCartState() {
+    emit(CartUpdated(
+      cartProduct: _cartProducts,
+      loadingItems: _loadingItems,
+    ));
+  }
 
   void listenIsProductInCart() {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -29,15 +37,17 @@ class CartCubit extends Cubit<CartState> {
         .collection("cart")
         .snapshots()
         .listen((snapshot) {
-      _latestCartProducts = snapshot.docs.map((doc) => doc.id).toList();
+      _cartProducts = snapshot.docs.map((doc) => doc.id).toList();
       _emitUpdatedCartState();
     });
+    _emitUpdatedCartState();
   }
 
   Future<void> addToCart({required CartItemModel cartItemModel}) async {
+    emit(CartLoading());
     _loadingItems.add(cartItemModel.id);
-    _emitUpdatedCartState();
 
+    _emitUpdatedCartState();
     final result = await cartRepo.addToCart(cartItemModel: cartItemModel);
     result.fold(
       (failure) {
@@ -47,36 +57,21 @@ class CartCubit extends Cubit<CartState> {
       },
       (_) {
         _loadingItems.remove(cartItemModel.id);
-        listenIsProductInCart(); // triggers state emit via snapshot
+        _emitUpdatedCartState();
       },
     );
   }
 
   Future<void> removeFromCart({required String productId}) async {
-    _loadingItems.add(productId);
-    _emitUpdatedCartState();
-
     final result = await cartRepo.removeFromCart(productId: productId);
     result.fold(
       (failure) {
-        _loadingItems.remove(productId);
         emit(CartFailure(errMessage: failure.message));
-        _emitUpdatedCartState();
       },
       (_) {
-        _loadingItems.remove(productId);
-        listenIsProductInCart();
+        emit(CartSuccess()); // Firestore listener will update cart
       },
     );
-  }
-
-  void _emitUpdatedCartState() {
-    if (_latestCartProducts != null) {
-      emit(IsProductInCart(
-        cartProduct: _latestCartProducts!,
-        loadingItems: _loadingItems,
-      ));
-    }
   }
 
   Future<void> clearCart() async {

@@ -27,7 +27,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is IsProductInCart) {
+        if (state is CartUpdated) {
           bool isProductInCart = state.cartProduct.contains(productEntity.pId);
           return GestureDetector(
             onTap: () async {

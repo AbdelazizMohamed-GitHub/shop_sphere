@@ -53,7 +53,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           return const DetailsScreenLoading();
         }
 
-        if (state is IsProductInCart) {
+        if (state is CartUpdated) {
           bool isProductInCart = state.cartProduct.contains(widget.product.pId);
 
           return Scaffold(
