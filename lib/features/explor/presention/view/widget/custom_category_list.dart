@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
-import 'package:shop_sphere/core/utils/screens_list.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 
 class CustomCategoryList extends StatefulWidget {
   const CustomCategoryList({

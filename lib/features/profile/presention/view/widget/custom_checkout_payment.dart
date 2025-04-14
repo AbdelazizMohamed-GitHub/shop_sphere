@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/utils/screens_list.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_checkout_listile.dart';
 
 class CustomCheckoutPayment extends StatefulWidget {

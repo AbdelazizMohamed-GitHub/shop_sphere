@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/screens_list.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
 
 class MainScreen extends StatefulWidget {

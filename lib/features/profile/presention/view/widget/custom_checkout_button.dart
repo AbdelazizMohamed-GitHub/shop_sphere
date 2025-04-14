@@ -71,8 +71,8 @@ class CustomCheckoutButton extends StatelessWidget {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => PaypalCheckoutView(
                           sandboxMode: true,
-                          clientId: kClientId,
-                          secretKey: kSecret,
+                          clientId: AppKeys.kClientId,
+                          secretKey: AppKeys.kSecret,
                           transactions: const [
                             {
                               "amount": {
