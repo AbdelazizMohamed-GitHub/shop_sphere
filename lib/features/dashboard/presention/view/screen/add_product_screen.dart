@@ -7,7 +7,6 @@ import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:shop_sphere/core/service/supabase_service.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -57,7 +56,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   final formKey = GlobalKey<FormState>();
-  String dId = Uuid().v4();
+  String dId = const Uuid().v4();
   String buttonText = "Add Product ";
   @override
   Widget build(BuildContext context) {
@@ -104,7 +103,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       child: CustomDropdown(
                         productCategory: selectedCategory,
                         isUpdate: widget.isUpdate,
-                        categories: [
+                        categories: const[
                           "Electronics",
                           "Fashion",
                           "Home Appliances",
@@ -126,7 +125,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   kType: TextInputType.text,
                   lines:4 ,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
 
                 CustomAddImage(
                   imageUrl:

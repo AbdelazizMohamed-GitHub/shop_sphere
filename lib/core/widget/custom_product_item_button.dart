@@ -30,43 +30,46 @@ class _CustomProductItemButtonState extends State<CustomProductItemButton> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CartCubit, CartState>(listener: (context, state) {
-      if (state is CartFailure) {
-        Warning.showWarning(context, message: state.errMessage);
-      }
-    }, builder: (context, state) {
-      if (state is CartLoading) {
-        return _buildLoadingButton();
-      }
+    return BlocConsumer<CartCubit, CartState>(
+      listener: (context, state) {
+        if (state is CartFailure) {
+          Warning.showWarning(context, message: state.errMessage);
+        }
+      },
+      builder: (context, state) {
+        if (state is IsProductInCart) {
+          final cartCubit = context.read<CartCubit>();
+          final productId = widget.productEntity.pId;
+          final isProductInCart = state.cartProduct.contains(productId);
+          final isLoading = state.loadingItems.contains(productId);
 
-      if (state is IsProductInCart) {
-        bool isProductInCart =
-            state.cartProduct.contains(widget.productEntity.pId);
+          return GestureDetector(
+            onTap: isLoading
+                ? null
+                : () {
+                    if (isProductInCart) {
+                      cartCubit.removeFromCart(productId: productId);
+                    } else {
+                      cartCubit.addToCart(
+                        cartItemModel: CartItemModel(
+                          id: productId,
+                          name: widget.productEntity.name,
+                          imageUrl: widget.productEntity.imageUrl,
+                          price: widget.productEntity.price,
+                          quantity: 1,
+                        ),
+                      );
+                    }
+                  },
+            child: isLoading
+                ? _buildLoadingButton()
+                : _buildCartButton(isProductInCart),
+          );
+        }
 
-        return GestureDetector(
-          onTap: () {
-            if (isProductInCart) {
-              context.read<CartCubit>().removeFromCart(
-                    productId: widget.productEntity.pId,
-                  );
-            } else {
-              context.read<CartCubit>().addToCart(
-                    cartItemModel: CartItemModel(
-                      id: widget.productEntity.pId,
-                      name: widget.productEntity.name,
-                      imageUrl: widget.productEntity.imageUrl,
-                      price: widget.productEntity.price,
-                      quantity: 1,
-                    ),
-                  );
-            }
-          },
-          child: _buildCartButton(isProductInCart),
-        );
-      }
-
-      return _buildLoadingButton(); // Default loading state
-    });
+        return _buildLoadingButton(); // default loading state
+      },
+    );
   }
 
   Widget _buildCartButton(bool isProductInCart) {

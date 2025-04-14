@@ -24,7 +24,7 @@ class SearchScreen extends StatelessWidget {
               onChanged: (query) {
                 controller.openView();
               },
-              leading: Icon(Icons.search),
+              leading: const Icon(Icons.search),
             );
           },
           suggestionsBuilder: (

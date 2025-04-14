@@ -36,7 +36,7 @@ class ProcessOrderScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Shipping Address", style: AppStyles.text18Regular),
+                const Text("Shipping Address", style: AppStyles.text18Regular),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(

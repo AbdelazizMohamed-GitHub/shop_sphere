@@ -11,7 +11,7 @@ class CustomerScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Customers")),
       body: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: 5,
 
         itemBuilder: (BuildContext context, int index) {
@@ -28,9 +28,9 @@ class CustomerScreen extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icon(Icons.message_rounded),
+                icon: const Icon(Icons.message_rounded),
               ),
-              leading: CircleAvatar(backgroundColor: AppColors.primaryColor),
+              leading: const CircleAvatar(backgroundColor: AppColors.primaryColor),
               subtitle: Text("Phone $index", style: AppStyles.text14Regular),
             ),
           );

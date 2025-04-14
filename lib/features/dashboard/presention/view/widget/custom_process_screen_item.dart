@@ -5,9 +5,9 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 
 class CustomProcessScreenItem extends StatelessWidget {
   const CustomProcessScreenItem({
-    Key? key,
+    super.key,
     required this.title,required this.subTitle,
-  }) : super(key: key);
+  });
 final String title,subTitle;
   @override
   Widget build(BuildContext context) {

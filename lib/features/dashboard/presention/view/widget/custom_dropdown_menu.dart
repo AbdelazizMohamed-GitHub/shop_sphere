@@ -10,11 +10,11 @@ class CustomDropdown extends StatefulWidget {
 
   const CustomDropdown({
     this.productCategory,
-    Key? key,
+    super.key,
     required this.categories,
     required this.onCategorySelected,
     required this.isUpdate,
-  }) : super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api

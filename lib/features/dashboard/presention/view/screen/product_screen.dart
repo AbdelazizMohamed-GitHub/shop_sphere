@@ -5,6 +5,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_product_item.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
@@ -16,10 +17,10 @@ class ProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<ProductCubit>()..getProducts(),
+      create: (context) => getIt<DashboardCubit>()..getProducts(),
       child: Scaffold(
         appBar: AppBar(
-          leading: CustomBackButton(),
+          leading: const CustomBackButton(),
           title: const Text("Products"),
           actions: [
             IconButton(
@@ -31,7 +32,7 @@ class ProductScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.search, size: 30),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
           ],
         ),
         body: RefreshIndicator(
@@ -40,14 +41,14 @@ class ProductScreen extends StatelessWidget {
           },
           child: BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
-              print(state);
+           
               return state is ProductLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : state is ProductFailure
                   ? Center(child: Text(state.errMessage))
                   : state is ProductSuccess
                   ? state.products.isEmpty
-                      ? Center(
+                      ? const Center(
                         child: Text(
                           "No Products",
                           style: AppStyles.text26BoldBlack,
@@ -59,7 +60,7 @@ class ProductScreen extends StatelessWidget {
                           slivers: [
                             SliverGrid.builder(
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     mainAxisSpacing: 10,
                                     crossAxisSpacing: 10,
@@ -88,7 +89,7 @@ class ProductScreen extends StatelessWidget {
             );
           },
 
-          child: Icon(Icons.add, color: Colors.white),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

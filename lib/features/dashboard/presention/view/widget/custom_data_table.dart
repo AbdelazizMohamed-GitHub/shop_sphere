@@ -9,7 +9,7 @@ class CustomDataTable extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          columns: [
+          columns: const [
             DataColumn(label: Text('Date')),
             DataColumn(label: Text('Users')),
             DataColumn(label: Text('Revenue')),

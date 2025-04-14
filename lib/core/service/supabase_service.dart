@@ -28,8 +28,7 @@ class SupabaseService {
       String imageUrl = supabase.storage.from('products').getPublicUrl(fileName);
       return imageUrl;
     } catch (e) {
-      print('Error uploading image: $e');
-      return null; // Return null on failure
+    throw Exception('Error uploading image: $e');
     }
   }
 

@@ -20,7 +20,7 @@ class _CustomTimeRangeState extends State<CustomTimeRange> {
       scrollDirection: Axis.horizontal,
       itemCount: timeRange.length,
       separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(width: 10);
+        return const SizedBox(width: 10);
       },
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
@@ -38,7 +38,7 @@ class _CustomTimeRangeState extends State<CustomTimeRange> {
                       : Colors.white,
             ),
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
 
             child: Text(
               "${timeRange[index]}",

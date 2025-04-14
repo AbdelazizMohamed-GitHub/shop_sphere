@@ -6,12 +6,12 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.text,
     this.color = AppColors.primaryColor,
      this.textColor=Colors.white,
-  }) : super(key: key);
+  });
   final void Function()? onPressed;
   final String text;
   final Color color;

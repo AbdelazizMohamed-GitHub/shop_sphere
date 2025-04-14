@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/loading/address_screen_loadig.dart';
-import 'package:shop_sphere/core/loading/custom_item_loading.dart';
 import 'package:shop_sphere/core/loading/order_screen_loading.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';

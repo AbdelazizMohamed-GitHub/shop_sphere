@@ -19,12 +19,19 @@ final class GetCartSuccess extends CartState {
 }
 
 
-final class IsProductInCart extends CartState {
-  final List<String> cartProduct;
-  IsProductInCart({required this.cartProduct});
-}
+
 
 final class CartFailure extends CartState {
   final String errMessage;
   CartFailure({required this.errMessage});
+}
+
+
+
+
+
+class IsProductInCart extends CartState {
+  final List<String> cartProduct;
+  final Set<String> loadingItems;
+  IsProductInCart({required this.cartProduct, required this.loadingItems});
 }

@@ -32,14 +32,14 @@ class CustomOrderItem extends StatelessWidget {
             child: Column(
               children: [
                 Row(children: [
-                  Text(
+                  const Text(
                     'Order # 19470',
                     style: AppStyles.text16Bold,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
-                    '${DateFormat.yMMMEd().format(order.orderDate)}',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    DateFormat.yMMMEd().format(order.orderDate),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ]),
                 const SizedBox(

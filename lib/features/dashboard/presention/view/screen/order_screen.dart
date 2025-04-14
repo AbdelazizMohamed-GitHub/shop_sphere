@@ -20,8 +20,8 @@ class OrderScreen extends StatelessWidget {
           title: const Text('All Order'),
           leadingWidth: 100,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        body: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             children: [
               CustomOrderItem(item:[0]),

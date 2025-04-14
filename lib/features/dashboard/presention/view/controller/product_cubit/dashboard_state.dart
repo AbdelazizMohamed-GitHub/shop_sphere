@@ -17,7 +17,7 @@ class DashboardSuccess extends DashboardState {
 }
 
 class DashboardFailer extends DashboardState {
-  String errMessage;
+final  String errMessage;
   DashboardFailer({required this.errMessage});
 }
 

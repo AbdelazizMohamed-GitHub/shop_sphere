@@ -20,11 +20,11 @@ class CustomOrderInformation extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+          const  Text(
               "Shipping Address",
               style: AppStyles.text16Regular,
             ),
-            SizedBox(
+           const SizedBox(
               width: 10,
             ),
             Expanded(

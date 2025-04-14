@@ -6,7 +6,7 @@ class ChatScreen extends StatelessWidget {
   final String staffId;
   final String customerId;
 
-  ChatScreen({required this.staffId, required this.customerId});
+  ChatScreen({super.key, required this.staffId, required this.customerId});
 
   final TextEditingController _messageController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -14,7 +14,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Chat")),
+      appBar: AppBar(title:const Text("Chat")),
       body: Column(
         children: [
           Expanded(
@@ -26,7 +26,7 @@ class ChatScreen extends StatelessWidget {
                       .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 var messages = snapshot.data!.docs;
                 return ListView.builder(
@@ -39,11 +39,11 @@ class ChatScreen extends StatelessWidget {
                       alignment:
                           isMe ? Alignment.centerRight : Alignment.centerLeft,
                       child: Container(
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                           vertical: 5,
                           horizontal: 10,
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: isMe ? Colors.blue : Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
@@ -62,7 +62,7 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
@@ -74,7 +74,7 @@ class ChatScreen extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send, color: Colors.blue),
+                  icon: const Icon(Icons.send, color: Colors.blue),
                   onPressed: () {},
                 ),
               ],

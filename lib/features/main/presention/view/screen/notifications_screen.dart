@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
-import 'package:shop_sphere/features/main/presention/view/widget/custom_notification_item.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -22,8 +21,8 @@ class NotificationScreen extends StatelessWidget {
           },
         ),
       ),
-      body:   Center(
-        
+      body:   const Center(child: Text('No Notifications')
+
       )
     );
   }

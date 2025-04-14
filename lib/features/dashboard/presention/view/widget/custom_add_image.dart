@@ -8,8 +8,7 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 
 
 class CustomAddImage extends StatefulWidget {
-  const CustomAddImage({Key? key, this.onTap, required this.imageUrl})
-    : super(key: key);
+  const CustomAddImage({super.key, this.onTap, required this.imageUrl});
   final void Function(File file)? onTap;
   final String? imageUrl;
   @override
@@ -38,15 +37,15 @@ class _CustomAddImageState extends State<CustomAddImage> {
               : imageFile == null
               ? GestureDetector(
                 onTap: () async {
-                  File? _image = await AppFuncations.pickImageFromGallery();
-                  if (_image != null) {
+                  File? image = await AppFuncations.pickImageFromGallery();
+                  if (image != null) {
                     setState(() {
-                      imageFile = _image;
+                      imageFile = image;
                     });
                     widget.onTap!(imageFile!);
                   }
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.add_a_photo),
@@ -76,11 +75,11 @@ class _CustomAddImageState extends State<CustomAddImage> {
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: AppColors.primaryColor,
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.close, color: Colors.white),
+                        child: const Icon(Icons.close, color: Colors.white),
                       ),
                     ),
                   ),

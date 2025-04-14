@@ -9,7 +9,7 @@ class CustomMainChart extends StatelessWidget {
     return  Card(
       elevation: 2,
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: BarChart(
           BarChartData(
             alignment: BarChartAlignment.spaceAround,
@@ -47,7 +47,7 @@ class CustomMainChart extends StatelessWidget {
                   }
                   return BarTooltipItem(
                     '$weekDay\n${rod.fromY.toInt()}',
-                    TextStyle(color: Colors.white),
+                    const TextStyle(color: Colors.white),
                   );
                 },
               ),

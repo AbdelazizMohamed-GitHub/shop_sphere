@@ -5,9 +5,9 @@ import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_dat
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_time_range.dart';
 
 class AnalyticsScreen extends StatefulWidget {
+  const AnalyticsScreen({super.key});
   @override
-  _AnalyticsScreenState createState() => _AnalyticsScreenState();
-}
+  State<AnalyticsScreen> createState() => _AnalyticsScreenState();}
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
  
@@ -17,36 +17,36 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Analytics Dashboard'),
+        title: const Text('Analytics Dashboard'),
         actions: [
-          IconButton(icon: Icon(Icons.refresh), onPressed: _refreshData),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _refreshData),
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Time range selector
-            SizedBox(height: 40, child: CustomTimeRange()),
-            SizedBox(height: 20),
+            const SizedBox(height: 40, child: CustomTimeRange()),
+            const SizedBox(height: 20),
 
             // Metric selector
 
             // Summary cards
             _buildSummaryCards(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Main chart
-            Container(height: 300, child: CustomMainChart()),
-            SizedBox(height: 20),
+          const  SizedBox(height: 300, child:  CustomMainChart()),
+            const SizedBox(height: 20),
 
             // Secondary charts row
             _buildSecondaryCharts(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Data table
-            CustomDataTable(),
+            const CustomDataTable(),
           ],
         ),
       ),
@@ -67,18 +67,18 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Expanded(
       child: Card(
         child: Padding(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: TextStyle(color: Colors.grey)),
-              SizedBox(height: 4),
+              Text(title, style: const TextStyle(color: Colors.grey)),
+              const SizedBox(height: 4),
               Text(
                 value,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 4),
-              Text(subtitle, style: TextStyle(color: Colors.green)),
+              const SizedBox(height: 4),
+              Text(subtitle, style: const TextStyle(color: Colors.green)),
             ],
           ),
         ),
@@ -94,7 +94,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             height: 200,
             child: Card(
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: PieChart(
                   PieChartData(
                     pieTouchData: PieTouchData(
@@ -123,17 +123,17 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             ),
           ),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Expanded(
           child: Container(
             height: 200,
             child: Card(
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: LineChart(
                   LineChartData(
-                    lineTouchData: LineTouchData(enabled: true),
-                    gridData: FlGridData(show: false),
+                    lineTouchData: const LineTouchData(enabled: true),
+                    gridData: const FlGridData(show: false),
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
@@ -141,7 +141,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           getTitlesWidget: (value, meta) {
                             return Text(
                               value.toInt().toString(),
-                              style: TextStyle(fontSize: 10),
+                              style: const TextStyle(fontSize: 10),
                             );
                           },
                         ),
@@ -152,15 +152,15 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           getTitlesWidget: (value, meta) {
                             return Text(
                               value.toInt().toString(),
-                              style: TextStyle(fontSize: 10),
+                              style: const TextStyle(fontSize: 10),
                             );
                           },
                         ),
                       ),
-                      rightTitles: AxisTitles(
+                      rightTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
-                      topTitles: AxisTitles(
+                      topTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false),
                       ),
                     ),
@@ -238,6 +238,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     // Implement data refresh logic here
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text('Refreshing data...')));
+    ).showSnackBar(const SnackBar(content: Text('Refreshing data...')));
   }
 }

@@ -11,66 +11,66 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Main Screen')),
+      appBar: AppBar(title: const Text('Main Screen')),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(color: Colors.blue),
               child: Text('Dashboard', style: AppStyles.text26BoldWhite),
             ),
             ListTile(
-              leading: Icon(Icons.shopping_cart),
-              title: Text('Orders'),
+              leading: const Icon(Icons.shopping_cart),
+              title: const Text('Orders'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return OrderScreen();
+                      return const OrderScreen();
                     },
                   ),
                 );
               },
             ),
             ListTile(
-              leading: Icon(Icons.inventory),
-              title: Text('Products'),
+              leading: const Icon(Icons.inventory),
+              title: const Text('Products'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return ProductScreen();
+                      return const ProductScreen();
                     },
                   ),
                 );
               },
             ),
             ListTile(
-              leading: Icon(Icons.people),
-              title: Text('Customers'),
+              leading: const Icon(Icons.people),
+              title: const Text('Customers'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return CustomerScreen();
+                      return const CustomerScreen();
                     },
                   ),
                 );
               },
             ),
             ListTile(
-              leading: Icon(Icons.analytics),
-              title: Text('Analytics'),
+              leading: const Icon(Icons.analytics),
+              title: const Text('Analytics'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return AnalyticsScreen();
+                      return const AnalyticsScreen();
                     },
                   ),
                 );
@@ -80,23 +80,23 @@ class DashboardScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Search and Filter Row
-            CustomTextForm(
+            const CustomTextForm(
               pIcon: Icons.search_rounded,
               text: "Search about order",
               kType: TextInputType.text,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
                   child: CustomDropdown(
                     isUpdate: false,
-                    categories: [
+                    categories: const [
                       "All",
                       "Pending",
                       "Process",
@@ -106,17 +106,17 @@ class DashboardScreen extends StatelessWidget {
                     onCategorySelected: (value) {},
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: CustomDropdown(
                     isUpdate: false,
-                    categories: ["Today", "Last 7 Days", "Last Mounth"],
+                    categories: const ["Today", "Last 7 Days", "Last Mounth"],
                     onCategorySelected: (value) {},
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Create New Order Button
 
@@ -124,7 +124,7 @@ class DashboardScreen extends StatelessWidget {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
-                columns: [
+                columns: const [
                   DataColumn(label: Text('Order ID')),
                   DataColumn(label: Text('Customer Name')),
                   DataColumn(label: Text('Date')),
@@ -134,12 +134,12 @@ class DashboardScreen extends StatelessWidget {
                 rows: [
                   DataRow(
                     cells: [
-                      DataCell(Text('#12345')),
-                      DataCell(Text('John Doe')),
-                      DataCell(Text('2023-10-15')),
+                      const DataCell(Text('#12345')),
+                      const DataCell(Text('John Doe')),
+                      const DataCell(Text('2023-10-15')),
                       DataCell(
                         Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 4,
                           ),
@@ -147,10 +147,10 @@ class DashboardScreen extends StatelessWidget {
                             color: Colors.yellow[100],
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text('Pending'),
+                          child: const Text('Pending'),
                         ),
                       ),
-                      DataCell(Text('\$150.00')),
+                      const DataCell(Text('\$150.00')),
                     ],
                   ),
                   // Add more rows as needed
