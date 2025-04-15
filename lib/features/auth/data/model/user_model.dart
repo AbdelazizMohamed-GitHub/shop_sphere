@@ -48,6 +48,7 @@ class UserModel extends UserEntity {
             addressIndex: addressIndex,
             createdAt: createdAt,
             favProduct: favProduct,
+            isStaff: isStaff,
             );
 
   // Convert to Map for Firebase or local storage

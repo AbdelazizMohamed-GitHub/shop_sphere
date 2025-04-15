@@ -22,7 +22,9 @@ class AuthCubit extends Cubit<AuthState> {
         gender: gender);
     result.fold(
       (firebaseFailure) => emit(AuthError(firebaseFailure.message)),
-      (uid) => emit(AuthSuccess()),
+      (uid) => emit(AuthSuccess(
+        uid: uid
+      )),
     );
   }
 
@@ -35,7 +37,9 @@ class AuthCubit extends Cubit<AuthState> {
         await authRepo.logInWithEmailAndPassword(email, password, context);
     result.fold(
       (firebaseFailure) => emit(AuthError(firebaseFailure.message)),
-      (uid) => emit(AuthSuccess()),
+      (uid) => emit(AuthSuccess(
+        uid: uid
+      )),
     );
   }
 
@@ -44,7 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.logInWithGoogle();
     result.fold(
       (firebaseFailure) => emit(AuthError(firebaseFailure.message)),
-      (uid) => emit(AuthSuccess()),
+      (uid) => emit(AuthSuccess(uid: uid)),
     );
   }
 
@@ -53,7 +57,9 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.resetPassword(email);
     result.fold(
       (firebaseFailure) => emit(AuthError(firebaseFailure.message)),
-      (_) => emit(AuthSuccess()),
+      (_) => emit(AuthSuccess(
+        uid: ''
+      )),
     );
   }
 

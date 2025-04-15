@@ -4,7 +4,11 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthSuccess extends AuthState {}
+class AuthSuccess extends AuthState {
+  final String? uid;
+
+  AuthSuccess({required this.uid});
+}
 class ResetPassword extends AuthState {}
 class GoogleAuthLoading extends AuthState {}
 

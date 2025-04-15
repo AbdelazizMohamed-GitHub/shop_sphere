@@ -5,6 +5,7 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 
 class CustomLogInWithGoogle extends StatelessWidget {
@@ -18,10 +19,11 @@ class CustomLogInWithGoogle extends StatelessWidget {
           Warning.showWarning(context, message: state.errMessage);
         }
         if (state is AuthSuccess) {
+
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => const MainScreen(),
+                builder: (context) => state.uid=='Staff'?const DashboardScreen(): const MainScreen(),
               ),
               (route) => false);
         }
