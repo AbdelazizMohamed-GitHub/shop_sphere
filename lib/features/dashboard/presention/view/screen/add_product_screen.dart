@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:uuid/uuid.dart';
@@ -62,7 +65,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:const CustomBackButton(),
+        leading: const CustomBackButton(),
         title: Text(widget.isUpdate ? "Update Product" : "Add Product"),
       ),
       body: Form(
@@ -103,12 +106,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       child: CustomDropdown(
                         productCategory: selectedCategory,
                         isUpdate: widget.isUpdate,
-                        categories: const[
-                          "Electronics",
-                          "Fashion",
-                          "Home Appliances",
-                          "Books",
-                        ],
+                        categories: appCategory
+                            .map((e) => e.toString())
+                            .toList(),
                         onCategorySelected: (value) {
                           selectedCategory = value;
                         },
@@ -117,16 +117,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ],
                 ),
                 const SizedBox(height: 15),
-
                 CustomTextForm(
                   textController: descriptionController,
                   pIcon: null,
                   text: "Product Description",
                   kType: TextInputType.text,
-                  lines:4 ,
+                  lines: 4,
                 ),
                 const SizedBox(height: 15),
-
                 CustomAddImage(
                   imageUrl:
                       widget.isUpdate ? widget.productEntity!.imageUrl : "",
@@ -148,48 +146,47 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     return state is DashboardLoading
                         ? const Center(child: CircularProgressIndicator())
                         : CustomButton(
-                          onPressed: () async {
-                            if (formKey.currentState!.validate() &&
-                                selectedCategory != null) {
-                              if (imageFile != null || widget.isUpdate) {
-                                buttonText = "Image Uploading ...";
-                                setState(() {});
-                                ProductModel product = ProductModel(
-                                  name: nameController.text,
-                                  price: double.parse(priceController.text),
-                                  stock: int.parse(quantityController.text),
-                                  category: selectedCategory!,
-                                  description: descriptionController.text,
-                                  pId:
-                                      widget.isUpdate
-                                          ? widget.productEntity!.pId
-                                          : dId,
-                                  sId: "123456789",
-                                  imageUrl:
-                                           widget.productEntity!.imageUrl
-                                     ,
-                                             isFeatured: false,
-                                );
-                                widget.isUpdate
-                                    ? await context
-                                        .read<DashboardCubit>()
-                                        .updateProduct(
-                                          dId: widget.productEntity!.pId,
-                                          data: product,
-                                        )
-                                    : await context
-                                        .read<DashboardCubit>()
-                                        .addProduct( product: product);
-                              } else {
-                                Warning.showWarning(
-                                  context,
-                                  message: "Please Add Image",
-                                );
+                            onPressed: () async {
+                              if (formKey.currentState!.validate() &&
+                                  selectedCategory != null) {
+                                if (imageFile != null || widget.isUpdate) {
+                                  buttonText = "Image Uploading ...";
+                                  setState(() {});
+                                  ProductModel product = ProductModel(
+                                    name: nameController.text,
+                                    price: double.parse(priceController.text),
+                                    stock: int.parse(quantityController.text),
+                                    category: selectedCategory!,
+                                    description: descriptionController.text,
+                                    pId: widget.isUpdate
+                                        ? widget.productEntity!.pId
+                                        : dId,
+                                    sId: "123456789",
+                                    imageUrl: widget.productEntity!.imageUrl,
+                                    isFeatured: false,
+                                  );
+                                  widget.isUpdate
+                                      ? await context
+                                          .read<DashboardCubit>()
+                                          .updateProduct(
+                                            dId: widget.productEntity!.pId,
+                                            data: product,
+                                          )
+                                      : await context
+                                          .read<DashboardCubit>()
+                                          .addProduct(product: product);
+                                } else {
+                                  Warning.showWarning(
+                                    context,
+                                    message: "Please Add Image",
+                                  );
+                                }
                               }
-                            }
-                          },
-                          text: widget.isUpdate ? "Update Product" : buttonText,
-                        );
+                            },
+                            text: widget.isUpdate
+                                ? "Update Product"
+                                : buttonText,
+                          );
                   },
                 ),
               ],

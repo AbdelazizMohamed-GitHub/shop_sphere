@@ -4,7 +4,9 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/produc
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
-  DashboardCubit({required this.dashboardRepo}) : super(DashboardInitial());
+  DashboardCubit({required this.dashboardRepo}) : super(DashboardInitial()){
+    getProducts();
+  }
   final DashboardRepo dashboardRepo;
   Future<void> addProduct({
     required ProductModel product,

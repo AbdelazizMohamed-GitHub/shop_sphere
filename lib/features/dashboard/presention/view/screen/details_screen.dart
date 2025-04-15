@@ -8,8 +8,8 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/produc
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_details_header.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key, required this.product});
+class DashBoardDetailsScreen extends StatelessWidget {
+  const DashBoardDetailsScreen({super.key, required this.product});
   final ProductEntity product;
   @override
   Widget build(BuildContext context) {

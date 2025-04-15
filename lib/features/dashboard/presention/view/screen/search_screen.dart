@@ -46,7 +46,7 @@ class SearchScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailsScreen(product: product),
+                      builder: (context) => DashBoardDetailsScreen(product: product),
                     ),
                   );
                 },
