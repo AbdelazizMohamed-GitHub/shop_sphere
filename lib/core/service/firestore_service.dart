@@ -377,4 +377,7 @@ class FirestoreService {
   Future<void> deleteOrder({required String orderId}) async {
     await firestore.collection("orders").doc(orderId).delete();
   }
+  Future <void> changeOrdeStatus({required String status,required String orderId})async {
+await firestore.collection('orders').doc(orderId).update({"status":status});
+  }
 }
