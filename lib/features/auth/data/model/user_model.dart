@@ -22,6 +22,7 @@ class UserModel extends UserEntity {
   final DateTime createdAt;
   @override
   final List<String> favProduct;
+  final bool isStaff;
 
   UserModel({
     required this.favProduct,
@@ -34,6 +35,8 @@ class UserModel extends UserEntity {
     required this.phoneNumber,
     required this.profileImage,
     required this.createdAt,
+    required this.isStaff,
+    
   }) : super(
             uid: uid,
             name: name,
@@ -59,12 +62,15 @@ class UserModel extends UserEntity {
       'addressIndex': addressIndex,
       'createdAt': createdAt.toIso8601String(),
       'favProduct': favProduct,
+      'gender': gender,
+      'isStaff': isStaff,
     };
   }
 
   // Convert from Map
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
+        isStaff: map['isStaff'] ?? false,
         birthDate: DateTime.parse(map['birthDate']),
         uid: map['uid'] ?? "",
         name: map['name'] ?? "",

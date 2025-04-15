@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class AuthRepoImpl extends AuthRepo {
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
-           
+           isStaff: false,  
             favProduct: [],
             birthDate: birthDate,
             email: email,
@@ -86,42 +87,53 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<Either<FirebaseFailure, String>> logInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
+  try {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    if (googleUser != null) {
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-        var userCredential =
-            await _firebaseAuth.signInWithCredential(credential);
+      var userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final uid = userCredential.user!.uid;
+
+      // 🔍 Check if user document exists
+      DocumentSnapshot userDoc =  await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get();
+
+      if ( userDoc.data() == null) {
+        // 🆕 Create new user document
         await firestoreService.addData(
-            collection: "users",
-            did: userCredential.user!.uid,
-            data: UserModel(
-          
-              email: userCredential.user!.email!,
-              name: userCredential.user!.displayName ?? "",
-              phoneNumber: userCredential.user!.phoneNumber ?? "",
-              createdAt: DateTime.now(),
-              addressIndex: 0,
-              uid: userCredential.user!.uid,
-              profileImage: '',
-              birthDate: userCredential.user!.metadata.creationTime!,
-              gender: '',
-              favProduct: []
-            ));
+          collection: "users",
+          did: uid,
+          data: UserModel(
+            isStaff: false,
+            email: userCredential.user!.email!,
+            name: userCredential.user!.displayName ?? "",
+            phoneNumber: userCredential.user!.phoneNumber ?? "",
+            createdAt: DateTime.now(),
+            addressIndex: 0,
+            uid: uid,
+            profileImage: '',
+            birthDate: userCredential.user!.metadata.creationTime!,
+            gender: '',
+            favProduct: [],
+          ),
+        );
       }
-      return const Right(" Logged in successfully");
-    } on FirebaseAuthException catch (e) {
-      return Left(FirebaseFailure.fromCode(e.code));
-    } catch (e) {
-      return Left(FirebaseFailure( message: e.toString(),));
     }
+    return const Right("Logged in successfully");
+  } on FirebaseAuthException catch (e) {
+    return Left(FirebaseFailure.fromCode(e.code));
+  } catch (e) {
+    return Left(FirebaseFailure(message: e.toString()));
   }
+}
 
   @override
   Future<Either<FirebaseFailure, String>> verifiyEmaill() async {

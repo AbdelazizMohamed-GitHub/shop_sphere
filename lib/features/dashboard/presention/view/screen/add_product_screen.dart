@@ -6,6 +6,8 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:uuid/uuid.dart';
@@ -139,7 +141,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Warning.showWarning(context, message: state.errMessage);
                     }
                     if (state is DashboardSuccess) {
-                      Navigator.pop(context);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const ProductScreen();
+                          },
+                        ),
+                      );
+                    
                     }
                   },
                   builder: (context, state) {
