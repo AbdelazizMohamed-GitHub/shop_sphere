@@ -48,4 +48,16 @@ class OrderRepoImpl extends OrderRepo {
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
+  
+  @override
+  Future<Either<FirebaseFailure, void>> changeOrdeStatus({required String status, required String orderId})async {
+    try {
+    await  firestoreService.changeOrdeStatus(status: status, orderId: orderId);
+      return right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
 }

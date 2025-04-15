@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_process_screen_item.dart';
@@ -61,26 +62,46 @@ class ProcessOrderScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-            BlocConsumer<OrderCubit, OrderState>(
+          order.status==orderStauts[0]?  BlocConsumer<OrderCubit, OrderState>(
               listener: (context, state) {
-                // TODO: implement listener
+                if (state is OrderSuccess) {
+                  Navigator.pop(context);
+                }
               },
               builder: (context, state) {
                 return Column(
                   children: [
-                    CustomButton(
-                      onPressed: () {},
-                      text: "Cancel Order",
-                      color: Colors.white,
-                      textColor: Colors.black,
-                    ),
+                    state is DeletOrderLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : CustomButton(
+                            onPressed: () async {
+                              await context
+                                  .read<OrderCubit>()
+                                  .deletOrder(orderId: order.orderId);
+                            },
+                            text: "Cancel Order",
+                            color: Colors.white,
+                            textColor: Colors.black,
+                          ),
                     const SizedBox(height: 20),
-                    CustomButton(onPressed: () {}, text: "Process Order"),
+                    state is UpdateOrderLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : CustomButton(
+                            onPressed: () async {
+                              context.read<OrderCubit>().changeOrdeStatus(
+                                  status: orderStauts[1],
+                                  orderId: order.orderId);
+                            },
+                            text: "Process Order"),
                   ],
                 );
               },
-            )
-          ],
+            ):const SizedBox()
+          ]
         ),
       ),
     );

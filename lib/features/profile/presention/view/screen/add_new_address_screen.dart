@@ -84,128 +84,130 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
           }
         },
         builder: (context, state) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 30,
-                left: 16,
-                right: 16,
-                bottom: (MediaQuery.of(context).viewInsets.bottom) + 20),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomTextForm(
-                    textController: titleController,
-                    pIcon: Icons.title_rounded,
-                    text: "Title",
-                    kType: TextInputType.name,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextForm(
-                    pIcon: Icons.phone,
-                    textController: phoneController,
-                    text: "Contact Number",
-                    kType: TextInputType.phone,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 60,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextForm(
-                            textController: streetController,
-                            pIcon: Icons.streetview_sharp,
-                            text: "Street",
-                            kType: TextInputType.name,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: CustomTextForm(
-                            textController: cityController,
-                            pIcon: Icons.location_city,
-                            text: "City",
-                            kType: TextInputType.name,
-                          ),
-                        ),
-                      ],
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 30,
+                  left: 16,
+                  right: 16,
+                  bottom: (MediaQuery.of(context).viewInsets.bottom) + 20),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomTextForm(
+                      textController: titleController,
+                      pIcon: Icons.title_rounded,
+                      text: "Title",
+                      kType: TextInputType.name,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextForm(
-                    pIcon: Icons.location_searching,
-                    text: "Governorat",
-                    kType: TextInputType.name,
-                    textController: stateController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                      onPressed: () async {
-                        Placemark place = await getLocation();
-                        // ignore: unnecessary_null_comparison
-                        if (place != null) {
-                          streetController.text = place.street!;
-                          cityController.text = place.locality!;
-                          stateController.text = place.administrativeArea!;
-                        } else {
-                          // ignore: use_build_context_synchronously
-                          Warning.showWarning(context,
-                              message: "Please Enable Location Service");
-                        }
-                      },
-                      text: widget.isupdate
-                          ? "Update From Location"
-                          : "Add From Location"),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  state is AddressLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : CustomButton(
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              var addressId = const Uuid().v4();
-                              AddressModel addressModel = AddressModel(
-                                createdAt: Timestamp.now(),
-                                id: widget.isupdate
-                                    ? widget.addressEntity!.id
-                                    : addressId,
-                                title: titleController.text,
-                                phoneNumber: phoneController.text,
-                                street: streetController.text,
-                                city: cityController.text,
-                                state: stateController.text,
-                                country: "Egypt",
-                                postalCode: "11511",
-                              );
-                              if (widget.isupdate) {
-                                await context
-                                    .read<AddressCubit>()
-                                    .updateAddress(
-                                        addressId: widget.addressEntity!.id,
-                                        addressModel: addressModel);
-                              } else {
-                                await context.read<AddressCubit>().addAddress(
-                                    addressId: addressId,
-                                    addressModel: addressModel);
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextForm(
+                      pIcon: Icons.phone,
+                      textController: phoneController,
+                      text: "Contact Number",
+                      kType: TextInputType.phone,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextForm(
+                              textController: streetController,
+                              pIcon: Icons.streetview_sharp,
+                              text: "Street",
+                              kType: TextInputType.name,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: CustomTextForm(
+                              textController: cityController,
+                              pIcon: Icons.location_city,
+                              text: "City",
+                              kType: TextInputType.name,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextForm(
+                      pIcon: Icons.location_searching,
+                      text: "Governorat",
+                      kType: TextInputType.name,
+                      textController: stateController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomButton(
+                        onPressed: () async {
+                          Placemark place = await getLocation();
+                          // ignore: unnecessary_null_comparison
+                          if (place != null) {
+                            streetController.text = place.street!;
+                            cityController.text = place.locality!;
+                            stateController.text = place.administrativeArea!;
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            Warning.showWarning(context,
+                                message: "Please Enable Location Service");
+                          }
+                        },
+                        text: widget.isupdate
+                            ? "Update From Location"
+                            : "Add From Location"),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    state is AddressLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : CustomButton(
+                            onPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                var addressId = const Uuid().v4();
+                                AddressModel addressModel = AddressModel(
+                                  createdAt: Timestamp.now(),
+                                  id: widget.isupdate
+                                      ? widget.addressEntity!.id
+                                      : addressId,
+                                  title: titleController.text,
+                                  phoneNumber: phoneController.text,
+                                  street: streetController.text,
+                                  city: cityController.text,
+                                  state: stateController.text,
+                                  country: "Egypt",
+                                  postalCode: "11511",
+                                );
+                                if (widget.isupdate) {
+                                  await context
+                                      .read<AddressCubit>()
+                                      .updateAddress(
+                                          addressId: widget.addressEntity!.id,
+                                          addressModel: addressModel);
+                                } else {
+                                  await context.read<AddressCubit>().addAddress(
+                                      addressId: addressId,
+                                      addressModel: addressModel);
+                                }
                               }
-                            }
-                          },
-                          text: widget.isupdate ? "Update" : "Save",
-                        )
-                ],
+                            },
+                            text: widget.isupdate ? "Update" : "Save",
+                          )
+                  ],
+                ),
               ),
             ),
           );

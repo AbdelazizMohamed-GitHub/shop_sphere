@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -39,7 +40,8 @@ class CustomOrderItem extends StatelessWidget {
                   const Spacer(),
                   Text(
                     DateFormat.yMMMEd().format(order.orderDate),
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ]),
                 const SizedBox(
@@ -92,10 +94,33 @@ class CustomOrderItem extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                TextButton(onPressed: ()async{
-                await  context.read<OrderCubit>().deletOrder(orderId: order.orderId);
-                }, child:   Text(orderStauts[3],
-                      style: const TextStyle(color: Colors.red, fontSize: 14)))
+                  order.status == orderStauts[0]
+                      ? TextButton(
+                          onPressed: () async {
+                            await context
+                                .read<OrderCubit>()
+                                .deletOrder(orderId: order.orderId);
+                          },
+                          child: Text(
+                           'Cancel',
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 14),
+                          ),
+                        )
+                      : order.status == orderStauts[1]
+                          ? TextButton(
+                              onPressed: () async {
+                                await context
+                                    .read<OrderCubit>()
+                                    .changeOrdeStatus(orderId: order.orderId,status: orderStauts[2]);
+                              },
+                              child: Text(
+                                orderStauts[2],
+                                style:  TextStyle(
+                                    color:AppFuncations.getStatusColor(orderStauts[2]), fontSize: 14),
+                              ),
+                            )
+                          : SizedBox()
                 ])
               ],
             ),

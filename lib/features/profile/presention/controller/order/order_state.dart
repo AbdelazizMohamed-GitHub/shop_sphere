@@ -8,7 +8,9 @@ sealed class OrderState {}
 final class OrderInitial extends OrderState {}
 
 final class OrderChangeStatus extends OrderState {}
-final class OrderLoading extends OrderState {}
+final class DeletOrderLoading extends OrderState {}
+final class UpdateOrderLoading extends OrderState {}
+final class GetOrderLoading extends OrderState {}
 final class OrderError extends OrderState {
   final String error;
   OrderError({required this.error});

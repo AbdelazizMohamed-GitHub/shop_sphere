@@ -19,7 +19,6 @@ List orderStauts = [
   'Pending',
   'Processing',
   'Delivered',
-  'Cancelled',
 ];
 
 class PaymentMethodModel {

@@ -21,8 +21,10 @@ import 'package:shop_sphere/features/explor/presention/controller/favourite_cubi
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
+import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -104,6 +106,10 @@ class _ShopSphereState extends State<ShopSphere> {
         BlocProvider(
           create: (context) => DashboardCubit(
               dashboardRepo: getIt<DashboardRepoImpl>()..getProducts()),
+        ),
+          BlocProvider(
+          create: (context) => OrderCubit(
+              orderRepo: getIt<OrderRepoImpl>()),
         ),
       ],
       child: BlocBuilder<AppCubit, AppState>(

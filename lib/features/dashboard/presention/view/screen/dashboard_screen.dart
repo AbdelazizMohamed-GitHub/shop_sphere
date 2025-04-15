@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -12,6 +14,7 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/analytics_
 import 'package:shop_sphere/features/dashboard/presention/view/screen/customer_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
+import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
@@ -96,15 +99,15 @@ class DashboardScreen extends StatelessWidget {
                 leading: const Icon(Icons.logout),
                 title: const Text('Sign Out'),
                 onTap: () {
-                 FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const LoginScreen();
-                            },
-                          ),
-                        );
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const LoginScreen();
+                      },
+                    ),
+                  );
                 },
               ),
             ],
@@ -143,32 +146,30 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              BlocBuilder<OrderCubit, OrderState>(
-                builder: (context, state) {
-                  List<OrderEntity> orders = [];
-                  if (state is OrderLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (state is OrderError) {
-                    return Center(
-                      child: Text(
-                        state.error,
-                        style: AppStyles.text16Bold.copyWith(color: Colors.red),
-                      ),
-                    );
-                  }
-                  if (state is OrderSuccess) {
-                    orders = state.orders;
-                  }
-
-                  return orders.isEmpty
-                      ? Center(
-                          child: Text(
-                            'Total Orders: ${orders.length}',
-                            style: AppStyles.text26BoldBlack,
-                          ),
-                        )
-                      : SingleChildScrollView(
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("orders")
+                      .snapshots(),
+                  builder: (context, snap) {
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snap.hasError) {
+                      return Center(
+                        child: Text(snap.error.toString()),
+                      );
+                    } else if (snap.hasData) {
+                      List<OrderEntity> orders = [];
+                      for (var element in snap.data!.docs) {
+                        orders.add(OrderModel.fromMap(element.data()));
+                      }
+                      if (orders.isEmpty) {
+                        return const Center(
+                          child: Text("No Orders Found"),
+                        );
+                      } else {
+                        return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             columns: const [
@@ -194,7 +195,8 @@ class DashboardScreen extends StatelessWidget {
                                             vertical: 4,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: Colors.yellow[100],
+                                            color: AppFuncations.getStatusColor(
+                                                e.status),
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                           ),
@@ -209,8 +211,10 @@ class DashboardScreen extends StatelessWidget {
                                 .toList(),
                           ),
                         );
-                },
-              ),
+                      }
+                    }
+                    return Container();
+                  }),
             ],
           ),
         ),

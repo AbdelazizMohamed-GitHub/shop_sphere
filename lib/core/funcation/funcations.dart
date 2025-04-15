@@ -8,9 +8,9 @@ class AppFuncations {
   static Color getStatusColor(String status) {
     switch (status) {
       case 'Pending':
+        return Colors.red;
+      case 'Processing':
         return Colors.orange;
-      case 'Shipped':
-        return Colors.blue;
       case 'Delivered':
         return Colors.green;
       default:

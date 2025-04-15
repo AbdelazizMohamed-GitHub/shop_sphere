@@ -29,30 +29,23 @@ class CustomOrderScreenBody extends StatelessWidget {
               shrinkWrap: true,
               itemCount: orders.length,
               itemBuilder: (context, index) {
-                return  CustomOrderItem(
+                return CustomOrderItem(
                   order: orders[index],
                 );
               },
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: orders.length,
               itemBuilder: (context, index) {
-                return  CustomOrderItem( order: orders[index]);
+                return CustomOrderItem(order: orders[index]);
               },
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: orders.length,
               itemBuilder: (context, index) {
-                return  CustomOrderItem( order: orders[index]);
-              },
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return  CustomOrderItem( order: orders[index]);
+                return CustomOrderItem(order: orders[index]);
               },
             ),
           ]),

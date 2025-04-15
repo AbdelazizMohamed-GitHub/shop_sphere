@@ -71,7 +71,7 @@ class CustomAddressItem extends StatelessWidget {
                         : AppStyles.text16Regular,
                   ),
                   Text(
-                    " ${addressEntity.street},${addressEntity.city},${addressEntity.state}} Egypt",
+                    " ${addressEntity.street},${addressEntity.city},${addressEntity.state}",
                     style: isSelect
                         ? AppStyles.text16Regular.copyWith(color: Colors.white)
                         : AppStyles.text16Regular,

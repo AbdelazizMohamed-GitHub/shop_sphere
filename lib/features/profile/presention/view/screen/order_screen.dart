@@ -37,7 +37,7 @@ class OrderScreen extends StatelessWidget {
               const SizedBox(height: 40, child: CustomOrderStutsList()),
               BlocBuilder<OrderCubit, OrderState>(
                 builder: (context, state) {
-                  if (state is OrderLoading) {
+                  if (state is GetOrderLoading) {
                     return const OrderScreenLoading();
                   } else if (state is OrderError) {
                     return Center(child: Text(state.error));

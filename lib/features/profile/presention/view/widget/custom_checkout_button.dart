@@ -51,7 +51,7 @@ class CustomCheckoutButton extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return state is OrderLoading
+          return state is GetOrderLoading
               ? const Center(child: CircularProgressIndicator())
               : CustomButton(
                   onPressed: () async {
