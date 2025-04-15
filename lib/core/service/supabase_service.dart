@@ -2,22 +2,20 @@ import 'dart:io';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 class SupabaseService {
-   final SupabaseClient supabase = Supabase.instance.client;
+  final SupabaseClient supabase = Supabase.instance.client;
 
-
-
-   Future<String?> uploadImage({required File file}) async {
+  Future<String?> uploadImage({required File file}) async {
     try {
-      final fileName = '${DateTime.now().millisecondsSinceEpoch}.${file.path.split('.').last}';
-      
+      final fileName =
+          '${DateTime.now().millisecondsSinceEpoch}.${file.path.split('.').last}';
+
       // Upload the file
       final response = await supabase.storage.from('products').upload(
-        fileName, 
-        file, 
-        fileOptions:const FileOptions(cacheControl: '3600', upsert: false),
-      );
+            fileName,
+            file,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          );
 
       // Check for errors
       if (response.isEmpty) {
@@ -25,40 +23,36 @@ class SupabaseService {
       }
 
       // Get Public URL
-      String imageUrl = supabase.storage.from('products').getPublicUrl(fileName);
+      String imageUrl =
+          supabase.storage.from('products').getPublicUrl(fileName);
       return imageUrl;
     } catch (e) {
-    throw Exception('Error uploading image: $e');
+      throw Exception('Error uploading image: $e');
     }
   }
 
-
-
-  
-
-    Future<void> deleteImageFromUrl({required String imageUrl}) async {
+ Future<void> deleteImageFromUrl({required String imageUrl}) async {
   try {
-    // Extract file path from the URL
+    if (imageUrl.isEmpty) {
+      throw Exception('Image URL is empty');
+    }
+
     final uri = Uri.parse(imageUrl);
     final pathSegments = uri.pathSegments;
-    
-    // Find the index of 'products' (the bucket name) and get the remaining path
+
     final bucketIndex = pathSegments.indexOf('products');
     if (bucketIndex == -1 || bucketIndex + 1 >= pathSegments.length) {
-      throw Exception('Invalid image URL');
+      throw Exception('Invalid image URL format: $imageUrl');
     }
-    
-    // Construct the file path (everything after 'products/')
+
     final filePath = pathSegments.sublist(bucketIndex + 1).join('/');
+  
 
-    // Delete the file from Supabase Storage
-    final response = await supabase.storage.from('products').remove([filePath]);
+     await supabase.storage.from('products').remove([filePath]);
 
-    if (response.isNotEmpty) {
-      throw Exception('Failed to delete image: ${response.first}');
-    }
-
-   
+    // if (response.isNotEmpty) {
+    //   throw Exception('Failed to delete image: ${response.first}');
+    // }
   } catch (e) {
     throw Exception('Error deleting image: $e');
   }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_process_screen_item.dart';
+import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class ProcessOrderScreen extends StatelessWidget {
-  const ProcessOrderScreen({super.key});
+  const ProcessOrderScreen({super.key, required this.order});
+  final OrderEntity order;
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +24,17 @@ class ProcessOrderScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           children: [
-            const CustomProcessScreenItem(title: "Order Date", subTitle: "06/10/24"),
-
+             CustomProcessScreenItem(
+                title: "Order Date", subTitle: DateFormat.yMMMEd().format(order.orderDate)),
             const Divider(height: 20),
-            const CustomProcessScreenItem(title: "Order ID", subTitle: "19470"),
+             CustomProcessScreenItem(title: "Order ID", subTitle: "${order.orderId.substring(0, 6)}"),
             const Divider(height: 20),
-            const CustomProcessScreenItem(title: "Order Status", subTitle: "Pending"),
+             CustomProcessScreenItem(
+                title: "Order Status", subTitle:order.status),
             const Divider(height: 20),
-            const CustomProcessScreenItem(
+             CustomProcessScreenItem(
               title: "Customer Name",
-              subTitle: "Abdelaziz",
+              subTitle:order.userName ,
             ),
             const Divider(height: 20),
             Row(
@@ -42,7 +46,7 @@ class ProcessOrderScreen extends StatelessWidget {
                   child: Text(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    "Ahmed Hassan12 Tahrir Street, Apartment 5 Downtown Cairo, Cairo Governorate 11511  Egypt  +20 153019984  ",
+                    "${order.address.street} , ${order.address.state} , ${order.address.city}  , ${order.address.phoneNumber}",
                     style: AppStyles.text14Regular.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -51,7 +55,6 @@ class ProcessOrderScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-
             CustomButton(
               onPressed: () {},
               text: "Cancel Order",

@@ -11,7 +11,7 @@ class ProductRepoImpl extends ProductRepo {
   @override
   Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts() async {
     try {
-    var data=  await firestoreService.getProduct();
+    var data=  await firestoreService.gettProducts();
     return right(data);
     }on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));

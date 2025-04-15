@@ -20,12 +20,12 @@ class FirestoreService {
     required this.firestore,
   });
 
-  Future<void> addProduct({required ProductModel data, File? image}) async {
+  Future<void> addProduct({required ProductModel data,required  File image}) async {
     String? imageUrl;
-    if (image != null) {
+    
       imageUrl = await SupabaseService().uploadImage(file: image);
       data.imageUrl = imageUrl!;
-    }
+   
 
     await firestore.collection('products').doc(data.pId).set(data.toMap());
   }
@@ -131,13 +131,7 @@ class FirestoreService {
         .toList();
   }
 
-  Future<List<ProductEntity>> getProduct() async {
-    QuerySnapshot<Map<String, dynamic>> snapshot =
-        await firestore.collection("products").get();
-    return snapshot.docs
-        .map((doc) => ProductModel.fromMap(doc.data()))
-        .toList();
-  }
+
 
   Future<void> addToFavorite({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;

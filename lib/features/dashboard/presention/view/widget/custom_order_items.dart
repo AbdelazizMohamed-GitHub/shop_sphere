@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/process_order_screen.dart';
+import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class CustomOrderItem extends StatelessWidget {
-  const CustomOrderItem({super.key, required this.item});
-  final dynamic item;
+  const CustomOrderItem({super.key, required this.orderEntity});
+  final OrderEntity orderEntity;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -14,7 +15,9 @@ class CustomOrderItem extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return const ProcessOrderScreen();
+              return  ProcessOrderScreen(
+                order: orderEntity,
+              );
             },
           ),
         );
@@ -24,7 +27,7 @@ class CustomOrderItem extends StatelessWidget {
         child: ListView.builder(
           padding: EdgeInsets.zero,
           shrinkWrap: true,
-          itemCount: 2,
+          itemCount: orderEntity.items.length,
 
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -41,9 +44,9 @@ class CustomOrderItem extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              title: Text(item['name'], style: AppStyles.text18Regular),
+              title: Text(orderEntity.items[index].productName, style: AppStyles.text18Regular),
               subtitle: Text(
-                '\$${item['price'].toStringAsFixed(2)} x ${item['quantity']}',
+                '\$${orderEntity.items[index].productPrice.toStringAsFixed(2)} x ${orderEntity.items[index].productQuantity}',
               ),
             );
           },

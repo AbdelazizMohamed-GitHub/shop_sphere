@@ -33,7 +33,7 @@ class SearchScreen extends StatelessWidget {
             SearchController controller,
           ) async {
             final query = controller.text.toLowerCase();
-            final products = await FirestoreService(firestore: getIt<FirebaseFirestore>()).getProduct();
+            final products = await FirestoreService(firestore: getIt<FirebaseFirestore>()).gettProducts();
             final results = products
                 .where((product) => product.name.toLowerCase().contains(query))
                 .toList();

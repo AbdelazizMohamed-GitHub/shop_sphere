@@ -59,7 +59,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   final formKey = GlobalKey<FormState>();
   String dId = const Uuid().v4();
-  String buttonText = "Add Product ";
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,8 +157,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               if (formKey.currentState!.validate() &&
                                   selectedCategory != null) {
                                 if (imageFile != null || widget.isUpdate) {
-                                  buttonText = "Image Uploading ...";
-                                  setState(() {});
+                                 
                                   ProductModel product = ProductModel(
                                     name: nameController.text,
                                     price: double.parse(priceController.text),
@@ -169,7 +168,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         ? widget.productEntity!.pId
                                         : dId,
                                     sId: "123456789",
-                                    imageUrl: widget.productEntity!.imageUrl,
+                                    imageUrl:widget.isUpdate ? widget.productEntity!.imageUrl : '',
                                     isFeatured: false,
                                   );
                                   widget.isUpdate
@@ -181,7 +180,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                           )
                                       : await context
                                           .read<DashboardCubit>()
-                                          .addProduct(product: product);
+                                          .addProduct(product: product,
+                                            imageFile: imageFile!);
                                 } else {
                                   Warning.showWarning(
                                     context,
@@ -192,7 +192,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             },
                             text: widget.isUpdate
                                 ? "Update Product"
-                                : buttonText,
+                                : "Add Product",
                           );
                   },
                 ),

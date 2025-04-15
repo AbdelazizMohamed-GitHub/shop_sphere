@@ -12,6 +12,7 @@ import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
@@ -60,10 +61,24 @@ class _ShopSphereState extends State<ShopSphere> {
 
   Future<void> _loadUser() async {
     if (FirebaseAuth.instance.currentUser != null) {
-      final doc = await getIt<FirestoreService>().getUserData();
+      try {
+      
+  final doc = await getIt<FirestoreService>().getUserData();
+  
+  setState(() {
+    user = doc;
+    isLoading = false;
+  });
+} on Exception catch (e) {
+  setState(() {
+    isLoading = false;
+  });
+  throw Exception("Error loading user data: $e");
 
+}
+    }
+    else {
       setState(() {
-        user = doc;
         isLoading = false;
       });
     }
