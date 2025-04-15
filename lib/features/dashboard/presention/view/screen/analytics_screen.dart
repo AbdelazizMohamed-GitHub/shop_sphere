@@ -90,7 +90,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Row(
       children: [
         Expanded(
-          child: Container(
+          child: SizedBox(
             height: 200,
             child: Card(
               child: Padding(
@@ -125,7 +125,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: Container(
+          child: SizedBox(
             height: 200,
             child: Card(
               child: Padding(

@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_keys.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
-import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
+import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
@@ -26,7 +26,6 @@ import 'package:shop_sphere/features/profile/presention/controller/profile/user_
 import 'package:shop_sphere/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
@@ -34,7 +33,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-   await Supabase.initialize(
+  await Supabase.initialize(
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
   );
@@ -42,16 +41,39 @@ void main() async {
   runApp(const ShopSphere());
 }
 
-class ShopSphere extends StatelessWidget {
+class ShopSphere extends StatefulWidget {
   const ShopSphere({super.key});
+
+  @override
+  State<ShopSphere> createState() => _ShopSphereState();
+}
+
+class _ShopSphereState extends State<ShopSphere> {
+  UserEntity? user;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      final doc = await getIt<FirestoreService>().getUserData();
+
+      setState(() {
+        user = doc;
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => AppCubit(),
-        ),
+        BlocProvider(create: (context) => AppCubit()),
         BlocProvider(
           create: (context) =>
               FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>()),
@@ -61,14 +83,12 @@ class ShopSphere extends StatelessWidget {
               AddressCubit(addressRepo: getIt<AddressRepoImpl>())..getAddress(),
         ),
         BlocProvider(
-          create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>()),
-        ),
+            create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>())),
         BlocProvider(
             create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())),
         BlocProvider(
           create: (context) => DashboardCubit(
-            dashboardRepo: getIt<DashboardRepoImpl>()..getProducts(),
-          ),
+              dashboardRepo: getIt<DashboardRepoImpl>()..getProducts()),
         ),
       ],
       child: BlocBuilder<AppCubit, AppState>(
@@ -82,9 +102,13 @@ class ShopSphere extends StatelessWidget {
                 : state is AppChangeThemeLight
                     ? AppTheme.lightTheme
                     : AppTheme.darkTheme,
-            home: FirebaseAuth.instance.currentUser == null
-                ? const GetStartedScreen()
-                : const LoginScreen (),
+            home: isLoading
+                ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+                : FirebaseAuth.instance.currentUser == null
+                    ? const GetStartedScreen()
+                    : (user?.isStaff ?? false)
+                        ? const DashboardScreen()
+                        : const MainScreen(),
           );
         },
       ),

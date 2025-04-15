@@ -22,6 +22,7 @@ class UserModel extends UserEntity {
   final DateTime createdAt;
   @override
   final List<String> favProduct;
+  @override
   final bool isStaff;
 
   UserModel({

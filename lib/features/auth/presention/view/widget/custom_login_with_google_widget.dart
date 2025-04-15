@@ -19,11 +19,14 @@ class CustomLogInWithGoogle extends StatelessWidget {
           Warning.showWarning(context, message: state.errMessage);
         }
         if (state is AuthSuccess) {
+        
 
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => state.uid=='Staff'?const DashboardScreen(): const MainScreen(),
+                builder: (context) => state.uid == 'Staff'
+                    ? const DashboardScreen()
+                    : const MainScreen(),
               ),
               (route) => false);
         }

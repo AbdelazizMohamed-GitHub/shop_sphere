@@ -42,6 +42,7 @@ class DashBoardDetailsScreen extends StatelessWidget {
                       dId: product.pId,
                       imageUrl: product.imageUrl,
                     );
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   },
                   text: "Delete",

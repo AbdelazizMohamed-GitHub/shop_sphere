@@ -58,9 +58,9 @@ class SupabaseService {
       throw Exception('Failed to delete image: ${response.first}');
     }
 
-    print('Image deleted successfully');
+   
   } catch (e) {
-    print('Error deleting image: $e');
+    throw Exception('Error deleting image: $e');
   }
 }
 

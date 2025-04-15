@@ -18,7 +18,7 @@ class CustomCartButtonLoading extends StatelessWidget {
                       bottomRight: Radius.circular(10),
                     ),
                   ),
-                  child: Icon(
+                  child:const Icon(
                   Icons.add,
                     color: Colors.white,
                     size: 30,
