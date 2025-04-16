@@ -104,7 +104,7 @@ class _ShopSphereState extends State<ShopSphere> {
             create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())),
         BlocProvider(
           create: (context) => DashboardCubit(
-              dashboardRepo: getIt<DashboardRepoImpl>()..getProducts()),
+              dashboardRepo: getIt<DashboardRepoImpl>()..getProducts(category: 'All')),
         ),
           BlocProvider(
           create: (context) => OrderCubit(

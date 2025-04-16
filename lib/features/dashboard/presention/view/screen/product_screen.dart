@@ -24,7 +24,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<DashboardCubit>().getProducts();
+    context.read<DashboardCubit>().getProducts(category: 'All');
   }
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await context.read<DashboardCubit>().getProducts();
+          await context.read<DashboardCubit>().getProducts(category: 'All');
         },
         child: BlocBuilder<DashboardCubit, DashboardState>(
           builder: (context, state) {

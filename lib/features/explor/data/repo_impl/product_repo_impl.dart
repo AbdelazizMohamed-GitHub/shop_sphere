@@ -9,9 +9,9 @@ class ProductRepoImpl extends ProductRepo {
   final FirestoreService firestoreService;
   ProductRepoImpl({required this.firestoreService});
   @override
-  Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts() async {
+  Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts({required String category}) async {
     try {
-    var data=  await firestoreService.gettProducts();
+    var data=  await firestoreService.gettProducts(category: category);
     return right(data);
     }on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));

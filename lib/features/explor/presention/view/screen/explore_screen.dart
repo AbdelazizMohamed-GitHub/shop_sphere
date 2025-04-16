@@ -25,7 +25,7 @@ class ExploreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) =>
-            ProductCubit(productRepo: getIt<ProductRepoImpl>())..getProducts(),
+            ProductCubit(productRepo: getIt<ProductRepoImpl>())..getProducts(category: 'All'),
         child: BlocProvider(
           create: (context) => FavouriteCubit(
             favouriteRepo: getIt<FavouriteRepoImpl>(),
@@ -58,7 +58,7 @@ class ExploreScreen extends StatelessWidget {
                             const SizedBox(height: 20),
                             ElevatedButton(
                               onPressed: () async{
-                               await context.read<ProductCubit>().getProducts();
+                               await context.read<ProductCubit>().getProducts(category:'All' );
                               },
                               child: const Text('Retry'),
                             ),
@@ -72,7 +72,7 @@ class ExploreScreen extends StatelessWidget {
                                     onRefresh: () async {
                                       await context
                                           .read<ProductCubit>()
-                                          .getProducts();
+                                          .getProducts(category: 'All');
                                     },
                                     child: SingleChildScrollView(
                                       child: Padding(

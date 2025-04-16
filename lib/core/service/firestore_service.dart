@@ -20,18 +20,28 @@ class FirestoreService {
     required this.firestore,
   });
 
-  Future<void> addProduct({required ProductModel data,required  File image}) async {
+  Future<void> addProduct(
+      {required ProductModel data, required File image}) async {
     String? imageUrl;
-    
-      imageUrl = await SupabaseService().uploadImage(file: image);
-      data.imageUrl = imageUrl!;
-   
+
+    imageUrl = await SupabaseService().uploadImage(file: image);
+    data.imageUrl = imageUrl!;
 
     await firestore.collection('products').doc(data.pId).set(data.toMap());
   }
 
-  Future<List<ProductEntity>> gettProducts() async {
-    final snapshot = await firestore.collection('products').get();
+  Future<List<ProductEntity>> gettProducts({required String category}) async {
+     QuerySnapshot<Map<String, dynamic>> snapshot;
+    if (category == "All") {
+       snapshot = await firestore.collection('products').get();
+    }else{
+       snapshot = await firestore
+        .collection('products')
+        .where('category', isEqualTo: category)
+        .get();
+    }
+
+    
     return snapshot.docs
         .map((doc) => ProductModel.fromMap(doc.data()))
         .toList();
@@ -131,8 +141,6 @@ class FirestoreService {
         .toList();
   }
 
-
-
   Future<void> addToFavorite({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
@@ -221,7 +229,6 @@ class FirestoreService {
     DocumentSnapshot userDoc = await userRef.get();
 
     if (userDoc.exists) {
-    
       // Item exists in cart, remove it
       userDoc.reference.delete();
     } else {
@@ -362,22 +369,26 @@ class FirestoreService {
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
     if (userId == null) return [];
 
-   if (status == "all") {
+    if (status == "all") {
       querySnapshot = await firestore.collection("orders").get();
-     
-   }else {
+    } else {
       querySnapshot = await firestore
-         .collection("orders")
-         .where("status", isEqualTo: status)
-         .get();
-   }
+          .collection("orders")
+          .where("status", isEqualTo: status)
+          .get();
+    }
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
 
   Future<void> deleteOrder({required String orderId}) async {
     await firestore.collection("orders").doc(orderId).delete();
   }
-  Future <void> changeOrdeStatus({required String status,required String orderId})async {
-await firestore.collection('orders').doc(orderId).update({"status":status});
+
+  Future<void> changeOrdeStatus(
+      {required String status, required String orderId}) async {
+    await firestore
+        .collection('orders')
+        .doc(orderId)
+        .update({"status": status});
   }
 }

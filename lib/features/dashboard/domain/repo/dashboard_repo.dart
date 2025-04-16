@@ -12,7 +12,7 @@ abstract class DashboardRepo {
    
   });
   
-  Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts();
+  Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts({required String category});
   
   Future<Either<FirebaseFailure, String>> deleteProduct({required String dId,required String imageUrl});
   

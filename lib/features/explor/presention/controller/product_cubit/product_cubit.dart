@@ -9,11 +9,11 @@ class ProductCubit extends Cubit<ProductState> {
   ProductCubit({required this.productRepo}) : super(ProductInitial());
   final ProductRepo productRepo;
 
-  Future<void> getProducts() async {
+  Future<void> getProducts({required String category}) async {
     emit(ProductLoading());
     
 
-    final result = await productRepo.getProducts();
+    final result = await productRepo.getProducts(category: category);
     result.fold((firebaseFailure) {
       emit(ProductFailure(errMessage: firebaseFailure.message));
     }, (products) {
