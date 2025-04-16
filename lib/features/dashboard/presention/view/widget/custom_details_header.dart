@@ -60,7 +60,7 @@ class CustomDetailsHeader extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Text(product.name, style: AppStyles.text22SemiBoldBlack),
+                Text(product.name, style: AppStyles.text22SemiBold),
                 const SizedBox(height: 10),
                 Text(
                   '\$${product.price.toStringAsFixed(2)}',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
@@ -21,18 +22,26 @@ class FavoriteScreen extends StatelessWidget {
                   context.read<MainCubit>().changeScreenIndex(0);
                 }),
             title: const Text('Favorite')),
-        body: StreamBuilder(stream: getIt<FirestoreService>().getAllFavoriteProducts(), builder: (context, snapshot) {
-        
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Error'));
-          } else if (snapshot.hasData) {
-            return CustomVerticalProductList(
-              products: snapshot.data as List<ProductEntity>,
-            );
-        }
-          return const Center(child: Text('No Data'));
-        }));
-}
+        body: StreamBuilder(
+            stream: getIt<FirestoreService>().getAllFavoriteProducts(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return const Center(child: Text('Error'));
+              } else if (snapshot.hasData) {
+                if ((snapshot.data as List<ProductEntity>).isEmpty) {
+                  return const Center(
+                      child: Text(
+                    'No Favorites',
+                    style: AppStyles.text22SemiBold,
+                  ));
+                }
+                return CustomVerticalProductList(
+                  products: snapshot.data as List<ProductEntity>,
+                );
+              }
+              return const Center(child: Text('No Data'));
+            }));
+  }
 }

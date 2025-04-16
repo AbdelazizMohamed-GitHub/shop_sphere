@@ -61,7 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       },
                       child: const Text(
                         "Back",
-                        style: AppStyles.text22SemiBoldBlack,
+                        style: AppStyles.text22SemiBold,
                       )),
                   const SizedBox(
                     width: 50,

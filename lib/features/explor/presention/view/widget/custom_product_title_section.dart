@@ -21,10 +21,7 @@ class CustomProductTitleSection extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppStyles.text22SemiBoldBlack.copyWith(
-                color: AppTheme.isLightTheme(context)
-                    ? Colors.black
-                    : Colors.white),
+            style: AppStyles.text22SemiBold,
             textAlign: TextAlign.start,
           ),
           const Spacer(),

@@ -20,10 +20,7 @@ class CustomCartPrice extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title,
-            style: AppStyles.text22SemiBoldBlack.copyWith(
-                color: AppTheme.isLightTheme(context)
-                    ? Colors.black
-                    : Colors.white)),
+            style: AppStyles.text22SemiBold),
         Text('\$${price.toStringAsFixed(2)}',
             style: isTotalcoast
                 ? AppStyles.text18Regular.copyWith(color: Colors.green)

@@ -26,7 +26,7 @@ class OrderDoneScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const Text("Your order has been placed successfully",
                 textAlign: TextAlign.center,
-                style: AppStyles.text22SemiBoldBlack),
+                style: AppStyles.text22SemiBold),
             const SizedBox(height: 20),
             const Text(
               "Thank you for choosing us! Feel free to continue shopping and explore our wide range of products. Happy Shopping!",

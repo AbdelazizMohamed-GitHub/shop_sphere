@@ -55,11 +55,7 @@ class ExploreScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Categories',
-                          style: AppStyles.text22SemiBoldBlack.copyWith(
-                            color: AppTheme.isLightTheme(context)
-                                ? Colors.black
-                                : Colors.white,
-                          ),
+                          style: AppStyles.text22SemiBold,
                           textAlign: TextAlign.start,
                         ),
                       ],
