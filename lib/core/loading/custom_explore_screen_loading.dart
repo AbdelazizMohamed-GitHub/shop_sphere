@@ -18,24 +18,6 @@ class CustomExploreScreenLoading extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const CustomExploreScreenSearch(),
-            const Padding(
-              padding: EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Text(
-                    'Categories',
-                    style: AppStyles.text18Regular,
-                    textAlign: TextAlign.start,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40, child: CustomCategoryList()),
-            const SizedBox(height: 10),
-            // const CustomAdvertise(
-            //   product: null,
-            // ),
             CustomProductTitleSection(
               title: 'New Arrivals',
               funcation: () {
@@ -51,7 +33,7 @@ class CustomExploreScreenLoading extends StatelessWidget {
             ),
             const SizedBox(
                 height: 200,
-                child:  CustomHorzintalProductList(
+                child: CustomHorzintalProductList(
                   products: [],
                 )),
             CustomProductTitleSection(

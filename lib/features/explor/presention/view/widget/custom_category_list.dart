@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 
 class CustomCategoryList extends StatefulWidget {
   const CustomCategoryList({
@@ -29,6 +31,7 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
+            context.read<ProductCubit>().getProducts(category: appCategory[index]);
             setState(() {
               currentIndex = index;
             });
