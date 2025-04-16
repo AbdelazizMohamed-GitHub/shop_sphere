@@ -101,9 +101,9 @@ class CustomOrderItem extends StatelessWidget {
                                 .read<OrderCubit>()
                                 .deletOrder(orderId: order.orderId);
                           },
-                          child: Text(
+                          child:const Text(
                            'Cancel',
-                            style: const TextStyle(
+                            style:  TextStyle(
                                 color: Colors.red, fontSize: 14),
                           ),
                         )
@@ -120,7 +120,7 @@ class CustomOrderItem extends StatelessWidget {
                                     color:AppFuncations.getStatusColor(orderStauts[2]), fontSize: 14),
                               ),
                             )
-                          : SizedBox()
+                          : const SizedBox()
                 ])
               ],
             ),

@@ -5,7 +5,6 @@ import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
-import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/checkout_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_item_list.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';

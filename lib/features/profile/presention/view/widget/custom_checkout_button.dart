@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_keys.dart';
@@ -41,7 +39,7 @@ class CustomCheckoutButton extends StatelessWidget {
       child: BlocConsumer<OrderCubit, OrderState>(
         listener: (context, state) {
           if (state is OrderError) {
-            print(state.error);
+        
             Warning.showWarning(context, message: state.error);
           } else if (state is AddOrderSuccess) {
             Navigator.push(

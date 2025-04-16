@@ -34,7 +34,7 @@ class ProcessOrderScreen extends StatelessWidget {
             const Divider(height: 20),
             CustomProcessScreenItem(
                 title: "Order ID",
-                subTitle: "${order.orderId.substring(0, 6)}"),
+                subTitle: order.orderId.substring(0, 6)),
             const Divider(height: 20),
             CustomProcessScreenItem(
                 title: "Order Status", subTitle: order.status),

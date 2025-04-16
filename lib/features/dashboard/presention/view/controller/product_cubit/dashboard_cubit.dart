@@ -21,7 +21,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     result.fold(
       (error) {
-        print(error.message);
+   
         emit(DashboardFailer(errMessage: error.message));
       },
       (r) async {

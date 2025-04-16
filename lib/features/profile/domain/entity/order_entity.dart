@@ -1,5 +1,4 @@
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
-import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 
 class OrderEntity {
