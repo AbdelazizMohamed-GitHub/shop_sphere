@@ -123,7 +123,7 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  void getAllProductsInCart() async {
+  Future<void> getAllProductsInCart() async {
     int total = 0;
     emit(CartLoading());
     final result = await cartRepo.getAllProductsInCart();

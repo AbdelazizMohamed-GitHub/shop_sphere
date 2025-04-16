@@ -30,6 +30,15 @@ class CartItemModel extends CartEntity {
       'quantity': quantity, // Default quantity to 1 if not provided
     };
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'imageUrl': imageUrl,
+      'name': name,
+      'price': price,
+      'quantity': quantity,
+    };
+  }
 
   // Convert a Firestore document to CartItem
   factory CartItemModel.fromMap(Map<String, dynamic> map) {
@@ -41,6 +50,7 @@ class CartItemModel extends CartEntity {
       quantity: map['quantity'] ?? 1, // Default quantity to 1 if not provided
     );
   }
+   
 
   
 }

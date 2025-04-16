@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_keys.dart';
@@ -24,14 +26,13 @@ class CustomCheckoutButton extends StatelessWidget {
     required this.uId,
     required this.address,
     required this.userName,
-
   });
   final int currentIndex;
   final double total;
   final List<CartItemModel> cartItems;
   final AddressModel address;
   final String uId;
-  final String userName ; // Replace with actual user name
+  final String userName; // Replace with actual user name
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class CustomCheckoutButton extends StatelessWidget {
       child: BlocConsumer<OrderCubit, OrderState>(
         listener: (context, state) {
           if (state is OrderError) {
+            print(state.error);
             Warning.showWarning(context, message: state.error);
           } else if (state is AddOrderSuccess) {
             Navigator.push(
@@ -57,7 +59,8 @@ class CustomCheckoutButton extends StatelessWidget {
                   onPressed: () async {
                     if (currentIndex == 0) {
                       var oId = const Uuid().v4();
-                      OrderModel order = OrderModel(userName: userName,
+                      OrderModel order = OrderModel(
+                          userName: userName,
                           uId: uId,
                           orderId: oId,
                           totalAmount: total + 50,
@@ -69,7 +72,6 @@ class CustomCheckoutButton extends StatelessWidget {
                       await context
                           .read<OrderCubit>()
                           .createOrder(order: order);
-
                     } else {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => PaypalCheckoutView(
@@ -134,9 +136,7 @@ class CustomCheckoutButton extends StatelessWidget {
                       ));
                     }
                   },
-                  text: currentIndex == 0
-                      ? "Check Out"
-                      : "Pay ${ 50}");
+                  text: currentIndex == 0 ? "Check Out" : "Pay ${50}");
         },
       ),
     );

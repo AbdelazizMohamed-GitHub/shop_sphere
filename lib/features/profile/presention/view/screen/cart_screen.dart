@@ -55,7 +55,7 @@ class CartScreen extends StatelessWidget {
                     Expanded(
                         child: CustomCartItemList(
                       cartItems: cartItems
-                          .cast<CartEntity>(), // Cast to List<CartItemModel>
+                       
                     )),
                     Container(
                       decoration: const BoxDecoration(

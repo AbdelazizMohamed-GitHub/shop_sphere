@@ -20,7 +20,7 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
     return ListView.separated(
       padding: const EdgeInsets.only(right: 12),
       scrollDirection: Axis.horizontal,
-      itemCount: 5,
+      itemCount: appCategory.length,
       separatorBuilder: (BuildContext context, int index) {
         return const SizedBox(
           width: 10,
