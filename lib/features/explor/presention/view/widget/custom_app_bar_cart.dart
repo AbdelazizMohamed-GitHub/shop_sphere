@@ -22,14 +22,14 @@ class CustomAppBarCart extends StatelessWidget {
                     builder: (context) => const CartScreen(),
                   ));
             }),
-        const Positioned(
-          top: 0,
-          right: 0,
-          child: CircleAvatar(
-            backgroundColor: AppColors.primaryColor,
-            radius: 8,
-          ),
-        ),
+        // const Positioned(
+        //   top: 0,
+        //   right: 0,
+        //   child: CircleAvatar(
+        //     backgroundColor: AppColors.primaryColor,
+        //     radius: 8,
+        //   ),
+        // ),
       ],
     );
   }

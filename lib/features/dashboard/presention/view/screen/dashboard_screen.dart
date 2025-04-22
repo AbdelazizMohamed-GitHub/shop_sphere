@@ -19,11 +19,19 @@ import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  List<OrderEntity> orders = [];
+  List<OrderEntity> filteredOrders = [];
+  String searchText = '';
   @override
   Widget build(BuildContext context) {
-    List<OrderEntity> orders = [];
     return BlocProvider(
       create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())
         ..getOrders(
@@ -121,9 +129,15 @@ class DashboardScreen extends StatelessWidget {
               // Search and Filter Row
               CustomTextForm(
                 onChanged: (value) {
-                final filteredOrders =  orders.map((e) {
-                    e.userName.toLowerCase().contains(value.toLowerCase()) ||
-                        e.orderId.toLowerCase().contains(value.toLowerCase());
+                  searchText = value;
+                  setState(() {
+                    filteredOrders = orders.where((e) {
+                      return e.userName
+                              .toLowerCase()
+                              .contains(value.toLowerCase()) ||
+                          e.orderId.toLowerCase().contains(value.toLowerCase());
+                    }).toList();
+                    print(filteredOrders.length);
                   });
                 },
                 pIcon: Icons.search_rounded,
@@ -135,6 +149,7 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomDropdown(
+                      text: 'Select Category',
                       isUpdate: false,
                       categories: appCategory.map((e) => e.toString()).toList(),
                       onCategorySelected: (value) {
@@ -146,6 +161,7 @@ class DashboardScreen extends StatelessWidget {
                   const SizedBox(width: 10),
                   Expanded(
                     child: CustomDropdown(
+                      text: 'Select Status',
                       isUpdate: false,
                       categories: const ["Today", "Last 7 Days", "Last Mounth"],
                       onCategorySelected: (value) {},
@@ -169,10 +185,14 @@ class DashboardScreen extends StatelessWidget {
                         child: Text(snap.error.toString()),
                       );
                     } else if (snap.hasData) {
-                      for (var element in snap.data!.docs) {
-                        orders.add(OrderModel.fromMap(element.data()));
-                      }
-                      if (orders.isEmpty) {
+                      orders = snap.data!.docs
+                          .map((e) => OrderModel.fromMap(e.data()))
+                          .toList();
+
+                      final displayOrders =
+                          searchText.isEmpty ? orders : filteredOrders;
+
+                      if (displayOrders.isEmpty) {
                         return const Center(
                           child: Text("No Orders Found"),
                         );
@@ -187,12 +207,12 @@ class DashboardScreen extends StatelessWidget {
                               DataColumn(label: Text('Status')),
                               DataColumn(label: Text('Total Amount')),
                             ],
-                            rows: orders
+                            rows: displayOrders
                                 .map(
                                   (e) => DataRow(
                                     cells: [
                                       DataCell(Text(
-                                          '${e.orderId.substring(0, 5)}...')),
+                                          '${e.orderId.substring(0, 9)}..')),
                                       DataCell(Text(e.userName)),
                                       DataCell(Text(DateFormat.yMMMEd()
                                           .format(e.orderDate))),

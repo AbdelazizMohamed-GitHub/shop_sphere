@@ -53,7 +53,7 @@ class CustomProductItemButton extends StatelessWidget {
                   ),
                 ),
                 child: Icon(
-                  isProductInCart ? Icons.remove : Icons.add,
+                  isProductInCart ? Icons.add : Icons.add,
                   color: Colors.white,
                   size: 30,
                 ),

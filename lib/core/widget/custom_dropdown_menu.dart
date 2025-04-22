@@ -7,14 +7,17 @@ class CustomDropdown extends StatefulWidget {
   final bool isUpdate;
 
   final String? productCategory;
+  final String? text;
 
   const CustomDropdown({
     this.productCategory,
+    this.text='Select Category',
     super.key,
     required this.categories,
     required this.onCategorySelected,
      this.isUpdate = false,
   });
+
 
   @override
   // ignore: library_private_types_in_public_api
@@ -33,7 +36,7 @@ class _CategoryDropdownState extends State<CustomDropdown> {
         hintText:
             widget.isUpdate
                 ? widget.productCategory
-                : selectedCategory ?? "Select Category",
+                : selectedCategory ?? widget.text,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
       items:
