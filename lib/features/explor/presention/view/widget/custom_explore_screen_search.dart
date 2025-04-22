@@ -16,7 +16,6 @@ class CustomExploreScreenSearch extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-             
                 FocusScope.of(context).unfocus();
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const SearchScreen();
@@ -49,7 +48,11 @@ class CustomExploreScreenSearch extends StatelessWidget {
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Image.asset(AppImages.filter, width: 30, height: 30),
+            child: const Icon(
+              Icons.support_agent,
+              size: 30,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
