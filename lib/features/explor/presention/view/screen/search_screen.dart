@@ -4,6 +4,7 @@ import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/search_resualt_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -33,9 +34,13 @@ class SearchScreen extends StatelessWidget {
             SearchController controller,
           ) async {
             final query = controller.text.toLowerCase();
-            final products = await FirestoreService(firestore: getIt<FirebaseFirestore>()).gettProducts(category: "All");
+            final products =
+                await FirestoreService(firestore: getIt<FirebaseFirestore>())
+                    .gettProducts(category: "All");
             final results = products
-                .where((product) => product.name.toLowerCase().contains(query))
+                .where((product) =>
+                    product.name.toLowerCase().contains(query) ||
+                    product.category.toLowerCase().contains(query))
                 .toList();
 
             return results.map((product) {
@@ -47,7 +52,9 @@ class SearchScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailsScreen(product: product,isFaV: false,),
+                      builder: (context) => SearchResualtScreen(
+                        products: results,
+                      ),
                     ),
                   );
                 },
