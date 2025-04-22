@@ -163,7 +163,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: CustomDropdown(
                       text: 'Select Status',
                       isUpdate: false,
-                      categories: const ["Today", "Last 7 Days", "Last Mounth"],
+                      categories: orderStauts.map((e) => e.toString()).toList(),
                       onCategorySelected: (value) {},
                     ),
                   ),
