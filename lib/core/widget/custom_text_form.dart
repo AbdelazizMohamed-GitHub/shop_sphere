@@ -10,6 +10,7 @@ class CustomTextForm extends StatelessWidget {
       required this.text,
       this.textController,
       this.obscureText = false,
+      this.onChanged,
       required this.kType});
   final IconData? pIcon;
   final Widget? sIcon;
@@ -18,9 +19,11 @@ class CustomTextForm extends StatelessWidget {
   final bool obscureText;
   final TextInputType kType;
   final int lines ;
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextFormField(maxLines: lines,
+    onChanged:onChanged ,
       obscureText: obscureText,
       keyboardType: kType,
       validator: (value) {

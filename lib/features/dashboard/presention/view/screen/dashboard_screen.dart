@@ -23,6 +23,7 @@ class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    List<OrderEntity> orders = [];
     return BlocProvider(
       create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())
         ..getOrders(
@@ -97,8 +98,8 @@ class DashboardScreen extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text('Sign Out'),
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -118,9 +119,15 @@ class DashboardScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Search and Filter Row
-              const CustomTextForm(
+              CustomTextForm(
+                onChanged: (value) {
+                final filteredOrders =  orders.map((e) {
+                    e.userName.toLowerCase().contains(value.toLowerCase()) ||
+                        e.orderId.toLowerCase().contains(value.toLowerCase());
+                  });
+                },
                 pIcon: Icons.search_rounded,
-                text: "Search about order",
+                text: "Search for order & customer",
                 kType: TextInputType.text,
               ),
               const SizedBox(height: 10),
@@ -130,7 +137,10 @@ class DashboardScreen extends StatelessWidget {
                     child: CustomDropdown(
                       isUpdate: false,
                       categories: appCategory.map((e) => e.toString()).toList(),
-                      onCategorySelected: (value) {},
+                      onCategorySelected: (value) {
+                        BlocProvider.of<OrderCubit>(context)
+                            .getOrders(status: value);
+                      },
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -159,7 +169,6 @@ class DashboardScreen extends StatelessWidget {
                         child: Text(snap.error.toString()),
                       );
                     } else if (snap.hasData) {
-                      List<OrderEntity> orders = [];
                       for (var element in snap.data!.docs) {
                         orders.add(OrderModel.fromMap(element.data()));
                       }
