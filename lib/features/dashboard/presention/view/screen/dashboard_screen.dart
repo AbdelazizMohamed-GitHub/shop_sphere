@@ -137,7 +137,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               .contains(value.toLowerCase()) ||
                           e.orderId.toLowerCase().contains(value.toLowerCase());
                     }).toList();
-                    print(filteredOrders.length);
                   });
                 },
                 pIcon: Icons.search_rounded,
@@ -146,27 +145,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               const SizedBox(height: 10),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: CustomDropdown(
-                      text: 'Select Category',
-                      isUpdate: false,
-                      categories: appCategory.map((e) => e.toString()).toList(),
-                      onCategorySelected: (value) {
-                        BlocProvider.of<OrderCubit>(context)
-                            .getOrders(status: value);
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
+                    flex: 2,
                     child: CustomDropdown(
                       text: 'Select Status',
                       isUpdate: false,
                       categories: orderStauts.map((e) => e.toString()).toList(),
-                      onCategorySelected: (value) {},
+                      onCategorySelected: (value) {
+                        filteredOrders =
+                            orders.where((e) => e.status == value).toList();
+                        searchText = value;
+                        setState(() {});
+                      },
                     ),
                   ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        "${filteredOrders.isEmpty ? '' : filteredOrders.length} Orders",
+                        style: AppStyles.text22SemiBold,
+                      )),
                 ],
               ),
               const SizedBox(height: 20),
