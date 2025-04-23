@@ -46,6 +46,7 @@ class CustomCartItem extends StatelessWidget {
               );
             },
             child: Card(
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               color: AppTheme.isLightTheme(context)
                   ? Colors.white
                   : AppColors.secondaryDarkColor,
@@ -79,12 +80,8 @@ class CustomCartItem extends StatelessWidget {
                           ? Colors.black
                           : Colors.white),
                 ),
-                subtitle: Text(
-                    '\$${item.productPrice.toStringAsFixed(2)} x ${item.productQuantity}',
-                    style: AppStyles.text14Regular.copyWith(
-                        color: AppTheme.isLightTheme(context)
-                            ? Colors.black
-                            : Colors.white)),
+                subtitle: Text('\$${item.productPrice.toStringAsFixed(1)}',
+                    style: AppStyles.text14Regular),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -93,27 +90,31 @@ class CustomCartItem extends StatelessWidget {
                         funcation: () async {
                           await context.read<CartCubit>().updateCartQuantity(
                               productId: item.productId, isIncrement: false);
-                          
                         }),
                     const SizedBox(
-                      width: 20,
+                      width: 10,
+                    ),
+                    Text(
+                      item.productQuantity.toString(),
+                      style: AppStyles.text18Regular,
+                    ),
+                    const SizedBox(
+                      width: 10,
                     ),
                     CustomCircleButton(
                         icon: const Icon(Icons.add),
                         funcation: () async {
                           await context.read<CartCubit>().updateCartQuantity(
                               productId: item.productId, isIncrement: true);
-
                         }),
                     const SizedBox(
-                      width: 50,
+                      width: 20,
                     ),
                     IconButton(
                         onPressed: () async {
                           await context
                               .read<CartCubit>()
                               .removeFromCart(productId: item.productId);
-
                         },
                         icon: const Icon(
                           Icons.delete,

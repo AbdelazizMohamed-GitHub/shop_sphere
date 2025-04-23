@@ -16,6 +16,7 @@ List<PaymentMethodModel> paymentMethod = [
   PaymentMethodModel(title: "Paypal", imagePath: AppImages.paypal),
 ];
 List orderStauts = [
+  'All',
   'Pending',
   'Processing',
   'Delivered',
