@@ -71,22 +71,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               actions: [
                 TextButton(
                   onPressed: () async {
-                    UserModel userModel = UserModel(
-                   isStaff: false,
-                      favProduct: widget.user.favProduct,
+                    UserModel? userModel;
+                    userModel!.copyWith(
+                     
                       name: nameTextC.text,
+
                       phoneNumber: phoneTextC.text,
-                      birthDate: selectedDate ?? widget.user.birthDate,
-                      email: widget.user.email,
-                      gender: selectGender ?? widget.user.gender,
-                      addressIndex: widget.user.addressIndex,
-                      uid: widget.user.uid,
-                      profileImage: widget.user.profileImage,
-                      createdAt: widget.user.createdAt,
-                    );
+                      birthDate: selectedDate,
+                      gender: selectGender,                    );
+
                     FocusScope.of(context).unfocus();
                     context.read<UserCubit>().updateUserData(userModel);
-                  
                   },
                   child: Text("Save",
                       style: AppStyles.text18Regular.copyWith(
@@ -140,7 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           const SizedBox(
                             height: 15,
                           ),
-                          CustomDropdown(
+                          CustomDropdown(text:widget.user.gender ?? 'Select Gender', 
                               categories: const ['Male', 'Female'],
                               onCategorySelected: (valu) {
                                 selectGender = valu;

@@ -6,6 +6,7 @@ import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/notification_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_keys.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -35,6 +36,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+   await NotificationService().init();
+   await NotificationService().getDeviceToken();
+
+
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,

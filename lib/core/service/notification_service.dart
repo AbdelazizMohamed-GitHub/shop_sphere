@@ -13,7 +13,7 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    await Firebase.initializeApp();
+    
     await _requestPermission();
     await _initLocalNotification();
     _initFirebaseListeners();
@@ -69,8 +69,8 @@ class NotificationService {
 
     const iosDetails = DarwinNotificationDetails();
 
-    final notificationDetails =
-        NotificationDetails(android: androidDetails, iOS: iosDetails);
+    const notificationDetails =
+       NotificationDetails(android: androidDetails, iOS: iosDetails);
 
     await _flutterLocalNotificationsPlugin.show(
       0,

@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/notification_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
@@ -35,6 +36,7 @@ class AuthRepoImpl extends AuthRepo {
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
+            fcmToken: NotificationService().getDeviceToken().toString(),
             isStaff: false,
             favProduct: [],
             birthDate: birthDate,
@@ -113,6 +115,7 @@ class AuthRepoImpl extends AuthRepo {
             collection: "users",
             did: uid,
             data: UserModel(
+              fcmToken: NotificationService().getDeviceToken().toString(),
               isStaff: false,
               email: userCredential.user!.email!,
               name: userCredential.user!.displayName ?? "",
