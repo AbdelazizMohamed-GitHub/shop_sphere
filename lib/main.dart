@@ -37,6 +37,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await NotificationService.initialize();
+   await NotificationService.getToken();
+ 
 
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
