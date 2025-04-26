@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
@@ -167,7 +168,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     pId: widget.isUpdate
                                         ? widget.productEntity!.pId
                                         : dId,
-                                    sId: "123456789",
+                                    sId: FirebaseAuth.instance.currentUser!.uid,
                                     imageUrl:widget.isUpdate ? widget.productEntity!.imageUrl : '',
                                     isFeatured: false,
                                   );

@@ -36,7 +36,7 @@ class AuthRepoImpl extends AuthRepo {
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
-            fcmToken: NotificationService().getDeviceToken().toString(),
+            fcmToken: NotificationService.getToken().toString(),
             isStaff: false,
             favProduct: [],
             birthDate: birthDate,
@@ -115,7 +115,7 @@ class AuthRepoImpl extends AuthRepo {
             collection: "users",
             did: uid,
             data: UserModel(
-              fcmToken: NotificationService().getDeviceToken().toString(),
+              fcmToken: NotificationService.getToken().toString(),
               isStaff: false,
               email: userCredential.user!.email!,
               name: userCredential.user!.displayName ?? "",

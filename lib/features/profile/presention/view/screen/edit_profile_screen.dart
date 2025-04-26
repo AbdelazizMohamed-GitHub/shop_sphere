@@ -72,7 +72,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 TextButton(
                   onPressed: () async {
                     UserModel? userModel;
-                    userModel!.copyWith(
+             final user =       userModel!.copyWith(
                      
                       name: nameTextC.text,
 
@@ -81,7 +81,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       gender: selectGender,                    );
 
                     FocusScope.of(context).unfocus();
-                    context.read<UserCubit>().updateUserData(userModel);
+                    context.read<UserCubit>().updateUserData(user);
                   },
                   child: Text("Save",
                       style: AppStyles.text18Regular.copyWith(

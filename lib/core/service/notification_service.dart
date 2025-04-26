@@ -1,90 +1,63 @@
+  import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
-  static final NotificationService _instance = NotificationService._internal();
-  factory NotificationService() => _instance;
-  NotificationService._internal();
+  static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
-  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  static Future<void> initialize() async {
+    // طلب الإذن
+    await _messaging.requestPermission();
 
-  Future<void> init() async {
-    
-    await _requestPermission();
-    await _initLocalNotification();
-    _initFirebaseListeners();
-  }
-
-  /// Request permissions for iOS and Android 13+
-  Future<void> _requestPermission() async {
-    NotificationSettings settings = await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    print('Permission granted: ${settings.authorizationStatus}');
-  }
-
-  /// Initialize flutter_local_notifications
-  Future<void> _initLocalNotification() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const iosSettings = DarwinInitializationSettings();
-    const initSettings = InitializationSettings(android: androidSettings, iOS: iosSettings);
-
-    await _flutterLocalNotificationsPlugin.initialize(initSettings);
-  }
-
-  /// Listen to Firebase messages
-  void _initFirebaseListeners() {
+    // الحصول على FCM token (ممكن تحفظه في Firestore)
+   
+    // التطبيق مفتوح
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      _showNotification(message);
+      print("📩 onMessage (foreground): ${message.notification?.title}");
+      // هنا تقدر تظهر Dialog أو Snackbar حسب حاجتك
     });
 
+    // التطبيق في الخلفية وتم فتحه من الإشعار
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Notification clicked: ${message.notification?.title}');
+      print("🚪 onMessageOpenedApp: ${message.notification?.title}");
+      // هنا تقدر تنقل المستخدم لصفحة معينة
     });
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // التطبيق مغلق وتم فتحه عن طريق إشعار
+    RemoteMessage? initialMessage = await _messaging.getInitialMessage();
+    if (initialMessage != null) {
+      print("📦 getInitialMessage: ${initialMessage.notification?.title}");
+      // التعامل مع الحالة هذه
+    }
   }
-
-  /// Background message handler
-  static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    await Firebase.initializeApp();
-    print('Handling background message: ${message.messageId}');
-  }
-
-  /// Show local notification
-  Future<void> _showNotification(RemoteMessage message) async {
-    const androidDetails = AndroidNotificationDetails(
-      'channel_id',
-      'channel_name',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-
-    const iosDetails = DarwinNotificationDetails();
-
-    const notificationDetails =
-       NotificationDetails(android: androidDetails, iOS: iosDetails);
-
-    await _flutterLocalNotificationsPlugin.show(
-      0,
-      message.notification?.title ?? 'No title',
-      message.notification?.body ?? 'No body',
-      notificationDetails,
-    );
-  }
-
-  /// Get FCM Token
-  Future<String?> getDeviceToken() async {
+ static Future<String?> getToken() async {
     String? token = await _messaging.getToken();
-    print("FCM Token: $token");
     return token;
   }
-}
 
+
+Future<void> sendPushMessage(String token, String title, String body) async {
+  try {
+    await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'key=YOUR_SERVER_KEY', // from Firebase Console
+      },
+      body: jsonEncode({
+        'to': token,
+        'notification': {
+          'title': title,
+          'body': body,
+        },
+        'data': {
+          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+        },
+      }),
+    );
+  } catch (e) {
+    print("Error sending push notification: $e");
+  }
+}
+}

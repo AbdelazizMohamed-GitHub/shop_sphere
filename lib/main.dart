@@ -36,9 +36,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-   await NotificationService().init();
-   await NotificationService().getDeviceToken();
-
+  await NotificationService.initialize();
 
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
@@ -68,22 +66,19 @@ class _ShopSphereState extends State<ShopSphere> {
   Future<void> _loadUser() async {
     if (FirebaseAuth.instance.currentUser != null) {
       try {
-      
-  final doc = await getIt<FirestoreService>().getUserData();
-  
-  setState(() {
-    user = doc;
-    isLoading = false;
-  });
-} on Exception catch (e) {
-  setState(() {
-    isLoading = false;
-  });
-  throw Exception("Error loading user data: $e");
+        final doc = await getIt<FirestoreService>().getUserData();
 
-}
-    }
-    else {
+        setState(() {
+          user = doc;
+          isLoading = false;
+        });
+      } on Exception catch (e) {
+        setState(() {
+          isLoading = false;
+        });
+        throw Exception("Error loading user data: $e");
+      }
+    } else {
       setState(() {
         isLoading = false;
       });
@@ -109,11 +104,11 @@ class _ShopSphereState extends State<ShopSphere> {
             create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())),
         BlocProvider(
           create: (context) => DashboardCubit(
-              dashboardRepo: getIt<DashboardRepoImpl>()..getProducts(category: 'All')),
+              dashboardRepo: getIt<DashboardRepoImpl>()
+                ..getProducts(category: 'All')),
         ),
-          BlocProvider(
-          create: (context) => OrderCubit(
-              orderRepo: getIt<OrderRepoImpl>()),
+        BlocProvider(
+          create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
         ),
       ],
       child: BlocBuilder<AppCubit, AppState>(
@@ -128,7 +123,8 @@ class _ShopSphereState extends State<ShopSphere> {
                     ? AppTheme.lightTheme
                     : AppTheme.darkTheme,
             home: isLoading
-                ? const Scaffold(body: Center(child: CircularProgressIndicator()))
+                ? const Scaffold(
+                    body: Center(child: CircularProgressIndicator()))
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
                     : !(user?.isStaff ?? false)

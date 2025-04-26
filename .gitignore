@@ -42,3 +42,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 lib/core/utils/app_keys.dart
+assets/firebase_service_account.json
+
