@@ -32,12 +32,11 @@ class AuthRepoImpl extends AuthRepo {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      String token = (await NotificationService.getToken()) ?? '';
-      await firestoreService.addData(
+ String? token = await NotificationService.getToken();      await firestoreService.addData(
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
-            fcmToken: token,
+            fcmToken: token.toString(),
             isStaff: false,
             favProduct: [],
             birthDate: birthDate,
@@ -111,12 +110,13 @@ class AuthRepoImpl extends AuthRepo {
             await FirebaseFirestore.instance.collection("users").doc(uid).get();
 
         if (userDoc.data() == null) {
+           String? token = await NotificationService.getToken();
           // 🆕 Create new user document
           await firestoreService.addData(
             collection: "users",
             did: uid,
             data: UserModel(
-              fcmToken: NotificationService.getToken().toString(),
+              fcmToken: token.toString(),
               isStaff: false,
               email: userCredential.user!.email!,
               name: userCredential.user!.displayName ?? "",
