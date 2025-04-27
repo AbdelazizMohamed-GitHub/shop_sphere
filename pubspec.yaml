@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  build_runner: ^2.4.15
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cloud_firestore: ^5.6.5
@@ -52,9 +53,13 @@ dependencies:
   google_sign_in: ^6.2.2
   googleapis: ^14.0.0
   googleapis_auth: ^2.0.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  hive_generator: ^2.0.1
   http: ^1.3.0
   image_picker: ^1.1.2
   intl: ^0.20.2
+  path_provider: ^2.1.5
   readmore: ^3.0.0
   skeletonizer: ^1.4.3
   smooth_page_indicator: ^1.2.0+3
