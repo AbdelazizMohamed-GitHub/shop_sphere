@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/notification_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_const.dart';
 import 'package:shop_sphere/core/utils/app_keys.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
@@ -18,6 +20,7 @@ import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
+import 'package:shop_sphere/features/main/data/notification_model.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
@@ -46,6 +49,9 @@ void main() async {
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
   );
+  Hive.registerAdapter(NotificationModelAdapter());
+  
+  await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
   Bloc.observer = MyBlocObserver();
   runApp(const ShopSphere());
 }

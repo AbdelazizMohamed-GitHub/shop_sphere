@@ -10,7 +10,7 @@ class NotificationModel extends HiveObject {
 @HiveField(1)
   final String description;
 @HiveField(2)
-  final String date;
+  final DateTime date;
 
   NotificationModel({required this.title, required this.description, required this.date});
 }

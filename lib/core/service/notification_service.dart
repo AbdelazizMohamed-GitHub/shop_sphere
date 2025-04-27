@@ -1,15 +1,21 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shop_sphere/core/utils/app_const.dart';
+import 'package:shop_sphere/features/main/data/notification_model.dart';
 
 class NotificationService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   static const _scope = 'https://www.googleapis.com/auth/firebase.messaging';
   static const projectId = 'shopsphere-b422e';
-  static const _messagingUrl = 'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
+  static const _messagingUrl =
+      'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
 
   // ----------- Initialization -----------
 
@@ -21,6 +27,7 @@ class NotificationService {
   static void _notificationMessage() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("📩 onMessage (foreground): ${message.notification?.body}");
+      saveNotification(title: message.notification!.title!, body: message.notification!.body!);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -40,7 +47,8 @@ class NotificationService {
   // ----------- Sending Notification -----------
 
   static Future<ServiceAccountCredentials> _loadServiceAccount() async {
-    final jsonString = await rootBundle.loadString('assets/firebase_service_account.json');
+    final jsonString =
+        await rootBundle.loadString('assets/firebase_service_account.json');
     final jsonMap = jsonDecode(jsonString);
     return ServiceAccountCredentials.fromJson(jsonMap);
   }
@@ -85,5 +93,17 @@ class NotificationService {
     } finally {
       client.close();
     }
+  }
+
+ static Future<void> saveNotification(
+      {required String title, required String body}) async {
+    final notification = NotificationModel(
+      title: title,
+      description: body,
+      date: DateTime.now(),
+    );
+
+    final box = Hive.box<NotificationModel>(AppConst.appNotificationBox);
+    await box.add(notification);
   }
 }
