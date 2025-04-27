@@ -38,6 +38,8 @@ List appCategory = [
   "Toys ",
   "Automotive  ",
   "Books ",
-  'Fashion'
+  'Fashion',
+  'Beauty	',
+  'Health	',
 ];
 List timeRange = ["Daily", "Weekly", "Monthly", "Yearly"];
