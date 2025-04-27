@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
@@ -39,19 +40,22 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Hive.initFlutter(); // 🛠️ هنا تهيئة Hive
+
+  Hive.registerAdapter(NotificationModelAdapter());
+
+  await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
   await NotificationService.initialize();
   String? token = await NotificationService.getToken();
   print(token);
-   await NotificationService.sendNotification(title: "title", body: "Hell World", token: "$token");
- 
+  await NotificationService.sendNotification(
+      title: "title", body: "Hell World", token: "$token");
 
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
   );
-  Hive.registerAdapter(NotificationModelAdapter());
-  
-  await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
+
   Bloc.observer = MyBlocObserver();
   runApp(const ShopSphere());
 }
@@ -137,7 +141,7 @@ class _ShopSphereState extends State<ShopSphere> {
                     body: Center(child: CircularProgressIndicator()))
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
-                    : !(user?.isStaff ?? false)
+                    : (user?.isStaff ?? false)
                         ? const DashboardScreen()
                         : const MainScreen(),
           );

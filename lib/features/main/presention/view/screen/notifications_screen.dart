@@ -26,24 +26,41 @@ class NotificationScreen extends StatelessWidget {
           },
         ),
       ),
-      body:   ValueListenableBuilder(
-        valueListenable:box.listenable() ,
-        builder: (BuildContext context, Box<NotificationModel> box, Widget? child) {
+      body: ValueListenableBuilder(
+        valueListenable: box.listenable(),
+        builder:
+            (BuildContext context, Box<NotificationModel> box, Widget? child) {
           if (box.values.isEmpty) {
             return const Center(child: Text('لا توجد إشعارات بعد 📭'));
           }
-         
+
           return ListView.builder(
             itemCount: box.length,
             itemBuilder: (context, index) {
               final notification = box.getAt(index);
 
-              return ListTile(
-                title: Text(notification?.title ?? ''),
-                subtitle: Text(notification?.description ?? ''),
-                trailing: Text(
-                  notification?.date.toString().substring(0, 16) ?? '',
-                  style: const TextStyle(fontSize: 12),
+              return Dismissible(
+                key: ValueKey(notification?.date.toIso8601String()),
+                onDismissed: (_) => notification?.delete(),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: const Icon(Icons.delete, color: Colors.white),
+                ),
+                child: Card(
+                  margin: const EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    title: Text(notification?.title ?? ''),
+                    subtitle: Text(notification?.description ?? ''),
+                    trailing: Text(
+                      notification?.date.toString().substring(0, 16) ?? '',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
                 ),
               );
             },
