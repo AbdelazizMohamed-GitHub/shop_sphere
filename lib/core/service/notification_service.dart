@@ -1,48 +1,43 @@
-  import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
-  static Future<void> initialize() async {
-    // طلب الإذن
-    await _messaging.requestPermission();
+  static const _scope = 'https://www.googleapis.com/auth/firebase.messaging';
+  static const projectId = 'shopsphere-b422e';
+  static const _messagingUrl = 'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
 
-    // الحصول على FCM token (ممكن تحفظه في Firestore)
-   
-    // التطبيق مفتوح
+  // ----------- Initialization -----------
+
+  static Future<void> initialize() async {
+    await _messaging.requestPermission();
+    _notificationMessage();
+  }
+
+  static void _notificationMessage() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("📩 onMessage (foreground): ${message.notification?.title}");
-      // هنا تقدر تظهر Dialog أو Snackbar حسب حاجتك
+      print("📩 onMessage (foreground): ${message.notification?.body}");
     });
 
-    // التطبيق في الخلفية وتم فتحه من الإشعار
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print("🚪 onMessageOpenedApp: ${message.notification?.title}");
-      // هنا تقدر تنقل المستخدم لصفحة معينة
     });
 
-    // التطبيق مغلق وتم فتحه عن طريق إشعار
     RemoteMessage? initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
       print("📦 getInitialMessage: ${initialMessage.notification?.title}");
-      // التعامل مع الحالة هذه
     }
   }
- static Future<String?> getToken() async {
-    String? token = await _messaging.getToken();
-    
-    return token;
-    
+
+  static Future<String?> getToken() async {
+    return await _messaging.getToken();
   }
 
-
-
-  static const _scope = 'https://www.googleapis.com/auth/firebase.messaging';
-  static const projectId = 'shopsphere-b422e'; // عدله باسم مشروعك
-  static const _messagingUrl = 'https://fcm.googleapis.com/v1/projects/shopsphere-b422e/messages:send';
+  // ----------- Sending Notification -----------
 
   static Future<ServiceAccountCredentials> _loadServiceAccount() async {
     final jsonString = await rootBundle.loadString('assets/firebase_service_account.json');
@@ -72,25 +67,23 @@ class NotificationService {
       }
     };
 
-    final response = await client.post(
-      Uri.parse(_messagingUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(message),
-    );
+    try {
+      final response = await client.post(
+        Uri.parse(_messagingUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(message),
+      );
 
-    if (response.statusCode == 200) {
-      print('🎉 Notification sent successfully!');
-    } else {
-      print('🤯 Failed to send notification: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      if (response.statusCode == 200) {
+        print('🎉 Notification sent successfully!');
+      } else {
+        print('🤯 Failed to send notification: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      print('❌ Error sending notification: $e');
+    } finally {
+      client.close();
     }
-
-    client.close();
   }
 }
-
-
-
-
-
-

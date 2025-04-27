@@ -37,7 +37,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await NotificationService.initialize();
-   await NotificationService.getToken();
+  String? token = await NotificationService.getToken();
+  print(token);
+   await NotificationService.sendNotification(title: "title", body: "Hell World", token: "$token");
  
 
   await Supabase.initialize(
