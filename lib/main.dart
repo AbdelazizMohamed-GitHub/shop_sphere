@@ -1,7 +1,9 @@
+import 'package:awesome_notifications/awesome_notifications.dart' show AwesomeNotifications;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/monitoring/v3.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
@@ -45,7 +47,7 @@ void main() async {
 
   await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
   await NotificationService.initialize();
-
+  await NotificationService.initializeLocalNotifications();
   await NotificationService.sendNotification(
       title: "title", body: "Hell World", token: "dnrqx_D_S_-RSGdf7zzkqR:APA91bHy0qQVPWgIktQAX3JE4qwIy8Ec0AyFbcXvLpv6PSia5wIbo3JV0qtTPrUazny5o7_jVH4DEdqHxcGc4519-MIxDI5GoJvbqKgbnhK0GkZj0lFIizE");
   await Supabase.initialize(
