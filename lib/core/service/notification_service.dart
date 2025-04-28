@@ -33,29 +33,20 @@ class NotificationService {
   static void _notificationMessage() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("📩 onMessage (foreground): ${message.notification?.body}");
-      saveNotification(
-          title: message.notification!.title!,
-          body: message.notification!.body!);
-      AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: 100,
-          channelKey: 'basic_channel',
-          title: message.notification?.title ?? 'عنوان إشعار',
-          body: message.notification?.body ?? 'محتوى الإشعار',
-          notificationLayout: NotificationLayout.Default,
-          wakeUpScreen: true,
-          category: NotificationCategory.Message,
-        ),
-      );
+      showNotification(message: message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("🚪 onMessageOpenedApp: ${message.notification?.title}");
+      print("📩 onMessageOpenedApp: ${message.notification?.body}");
+          showNotification(message: message);
+
     });
 
     RemoteMessage? initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
       print("📦 getInitialMessage: ${initialMessage.notification?.title}");
+            showNotification(message: initialMessage);
+
     }
   }
 
@@ -141,5 +132,21 @@ class NotificationService {
         debug: true);
 
     // Get initial notification action is optional
+  }
+
+  static void showNotification({required RemoteMessage message}) {
+    saveNotification(
+        title: message.notification!.title!, body: message.notification!.body!);
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 100,
+        channelKey: 'basic_channel',
+        title: message.notification?.title ?? 'عنوان إشعار',
+        body: message.notification?.body ?? 'محتوى الإشعار',
+        notificationLayout: NotificationLayout.Default,
+        wakeUpScreen: true,
+        category: NotificationCategory.Message,
+      ),
+    );
   }
 }

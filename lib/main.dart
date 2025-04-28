@@ -46,8 +46,9 @@ void main() async {
   await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
   await NotificationService.initialize();
   await NotificationService.initializeLocalNotifications();
+  String? token = await NotificationService.getToken();
   await NotificationService.sendNotification(
-      title: "title", body: "Hell World", token: "dnrqx_D_S_-RSGdf7zzkqR:APA91bHy0qQVPWgIktQAX3JE4qwIy8Ec0AyFbcXvLpv6PSia5wIbo3JV0qtTPrUazny5o7_jVH4DEdqHxcGc4519-MIxDI5GoJvbqKgbnhK0GkZj0lFIizE");
+      title: "title", body: "Hell World", token: "$token");
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
