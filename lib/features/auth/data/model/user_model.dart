@@ -51,6 +51,7 @@ class UserModel extends UserEntity {
           createdAt: createdAt,
           favProduct: favProduct,
           isStaff: isStaff,
+          fcmToken: fcmToken,
         );
 
   // Convert to Map for Firebase or local storage

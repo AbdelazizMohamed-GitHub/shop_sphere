@@ -12,6 +12,7 @@ class UserEntity {
   final DateTime createdAt;
   final List<String> favProduct;
   final bool isStaff;
+  final String fcmToken;
 
   const UserEntity( {required this.gender,required this.favProduct,
     required this.uid,
@@ -22,6 +23,7 @@ class UserEntity {
     required this.profileImage,
     required this.addressIndex,
     required this.createdAt,
-    required this.isStaff,
+    required this.isStaff,required this.fcmToken
+
   });
 }

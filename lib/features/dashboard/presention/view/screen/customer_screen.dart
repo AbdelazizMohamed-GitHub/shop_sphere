@@ -4,6 +4,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/add_notification_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/massage_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/notifications_screen.dart';
 
@@ -48,7 +49,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                         const NotificationScreen(),
+                          AddNotificationScreen(fCM: users[index].fcmToken,),
                     ),
                   );
                 },
