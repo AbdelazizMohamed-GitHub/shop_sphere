@@ -1,7 +1,13 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'package:awesome_notifications/awesome_notifications.dart' show AwesomeNotifications, NotificationChannel, NotificationContent, NotificationLayout;
+import 'package:awesome_notifications/awesome_notifications.dart'
+    show
+        AwesomeNotifications,
+        NotificationCategory,
+        NotificationChannel,
+        NotificationContent,
+        NotificationLayout;
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -28,16 +34,20 @@ class NotificationService {
   static void _notificationMessage() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("📩 onMessage (foreground): ${message.notification?.body}");
-      saveNotification(title: message.notification!.title!, body: message.notification!.body!);
-       AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: 100,
-      channelKey: 'basic_channel',
-      title: message.notification?.title ?? 'عنوان إشعار',
-      body: message.notification?.body ?? 'محتوى الإشعار',
-      notificationLayout: NotificationLayout.Default,
-    ),
-  );
+      saveNotification(
+          title: message.notification!.title!,
+          body: message.notification!.body!);
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 100,
+          channelKey: 'basic_channel',
+          title: message.notification?.title ?? 'عنوان إشعار',
+          body: message.notification?.body ?? 'محتوى الإشعار',
+          notificationLayout: NotificationLayout.Default,
+          wakeUpScreen: true,
+          category: NotificationCategory.Message,
+        ),
+      );
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -105,7 +115,7 @@ class NotificationService {
     }
   }
 
- static Future<void> saveNotification(
+  static Future<void> saveNotification(
       {required String title, required String body}) async {
     final notification = NotificationModel(
       title: title,
@@ -116,21 +126,21 @@ class NotificationService {
     final box = Hive.box<NotificationModel>(AppConst.appNotificationBox);
     await box.add(notification);
   }
-    static Future<void> initializeLocalNotifications() async {
+
+  static Future<void> initializeLocalNotifications() async {
     await AwesomeNotifications().initialize(
-        null, //'resource://drawable/res_app_icon',//
+        'resource://drawable/res_app_icon',
         [
           NotificationChannel(
-              channelKey: 'basic_channel',
-              channelName: 'basic_channel',
-              channelDescription: 'Notification tests as alerts',
-              playSound: true,
-              onlyAlertOnce: true,
+            channelKey: 'basic_channel',
+            channelName: 'basic_channel',
+            channelDescription: 'Notification tests as alerts',
+            playSound: true,
+            onlyAlertOnce: true,
           )
         ],
         debug: true);
 
     // Get initial notification action is optional
- 
   }
 }
