@@ -22,12 +22,12 @@ class DashBoardDetailsScreen extends StatelessWidget {
             children: [
               CustomDetailsHeader(product: product),
 
-           const   Text(
-                "The iPhone 15 Pro is crafted with aerospace-grade titanium, making it lighter yet more durable than ever. Powered by the A17 Pro chip, it delivers unparalleled performance for gaming, photography, and everyday tasks.",
+              Text(
+                product.description,
                 style: AppStyles.text16Regular,
               ),
             ],
-          ),
+          ),  
         ),
       ),
       bottomNavigationBar: Padding(

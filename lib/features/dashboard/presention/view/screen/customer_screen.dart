@@ -5,11 +5,9 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_notification_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/massage_screen.dart';
-import 'package:shop_sphere/features/main/presention/view/screen/notifications_screen.dart';
 
 class CustomerScreen extends StatefulWidget {
-  const CustomerScreen({super.key});
+  const CustomerScreen({Key? key}) : super(key: key);
 
   @override
   State<CustomerScreen> createState() => _CustomerScreenState();
@@ -17,51 +15,59 @@ class CustomerScreen extends StatefulWidget {
 
 class _CustomerScreenState extends State<CustomerScreen> {
   List<UserEntity> users = [];
+
   Future<List<UserEntity>> getUsers() async {
-    await FirebaseFirestore.instance.collection("users").get().then((value) {
-      for (var element in value.docs) {
-        users.add(UserModel.fromMap(element.data()));
-      }
-    });
-    return users;
+    final snapshot = await FirebaseFirestore.instance.collection("users").get();
+    return snapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
 
   @override
   void initState() {
-   getUsers();
     super.initState();
+    fetchUsers();
+  }
+
+  void fetchUsers() async {
+    final fetchedUsers = await getUsers();
+    setState(() {
+      users = fetchedUsers;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Customers")),
-      body: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        itemCount: users.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: ListTile(
-              title: Text(users[index].name, style: AppStyles.text16Bold),
-              trailing: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          AddNotificationScreen(fCM: users[index].fcmToken,),
+      body: users.isEmpty
+          ? const Center(child: Text("No Customer Founded"))
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: users.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: ListTile(
+                    title: Text(users[index].name, style: AppStyles.text16Bold),
+                    trailing: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddNotificationScreen(
+                              fCM: users[index].fcmToken,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.message_rounded),
                     ),
-                  );
-                },
-                icon: const Icon(Icons.message_rounded),
-              ),
-              leading:
-                  const CircleAvatar(backgroundColor: AppColors.primaryColor),
-              subtitle: Text("Phone $index", style: AppStyles.text14Regular),
+                    leading: const CircleAvatar(
+                        backgroundColor: AppColors.primaryColor),
+                    subtitle: Text(users[index].phoneNumber,
+                        style: AppStyles.text14Regular),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }

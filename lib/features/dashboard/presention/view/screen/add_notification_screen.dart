@@ -5,9 +5,9 @@ import 'package:shop_sphere/core/service/notification_service.dart';
 
 class AddNotificationScreen extends StatefulWidget {
   const AddNotificationScreen({
-    Key? key,
+    super.key,
     required this.fCM,
-  }) : super(key: key);
+  });
   final String fCM;
 
   @override
@@ -50,11 +50,12 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
               onPressed: () async {
                 if (_titleController.text.isNotEmpty &&
                     _bodyController.text.isNotEmpty) {
-                  await NotificationService.sendNotification(
-                    title: _titleController.text,
-                    body: _bodyController.text,
-                    token: widget.fCM,
-                  );
+                  print('${widget.fCM}');
+                  // await NotificationService.sendNotification(
+                  //   title: _titleController.text,
+                  //   body: _bodyController.text,
+                  //   token: widget.fCM,
+                  // );
                   Navigator.pop(context);
                 }
               },

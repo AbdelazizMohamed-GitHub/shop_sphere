@@ -69,7 +69,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     Padding(
                       padding: const EdgeInsets.only(right: 10, top: 20),
                       child: ReadMoreText(
-                        '${widget.product.description}  Perfumes vary in their compositions and longevity, ranging from highly concentrated perfumes (like "Parfum") to lighter fragrances (like "Eau de Cologne"). Each perfume is distinguished by its unique ingredients, which may be floral, woody, citrusy, or oriental, reflecting a distinctive character and personality for each wearer. 🌿✨',
+                        '${widget.product.description} ',
                         style: const TextStyle(fontSize: 16),
                         trimMode: TrimMode.Length,
                         trimLines: 2,
