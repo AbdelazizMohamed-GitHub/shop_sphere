@@ -8,7 +8,6 @@ import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/notification_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
-import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
 
@@ -90,59 +89,61 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, String>> logInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
+ Future<Either<FirebaseFailure, String>> logInWithGoogle() async {
+  try {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    if (googleUser != null) {
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final uid = userCredential.user!.uid;
+
+      // 🔍 Check if user document exists
+      final userDoc = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+ final String token = (await NotificationService.getToken()) ?? '';
+      if (!userDoc.exists) {
+       
+
+        // 🆕 Create new user document
+        await firestoreService.addData(
+          collection: "users",
+          did: uid,
+          data: UserModel(
+            fcmToken: token,
+            isStaff: false,
+            email: userCredential.user!.email ?? '',
+            name: userCredential.user!.displayName ?? '',
+            phoneNumber: userCredential.user!.phoneNumber ?? '',
+            createdAt: DateTime.now(),
+            addressIndex: 0,
+            uid: uid,
+            profileImage: '',
+            birthDate: userCredential.user!.metadata.creationTime ?? DateTime.now(),
+            gender: '',
+            favProduct: [],
+          ),
         );
-
-        var userCredential =
-            await _firebaseAuth.signInWithCredential(credential);
-        final uid = userCredential.user!.uid;
-
-        // 🔍 Check if user document exists
-        DocumentSnapshot userDoc =
-            await FirebaseFirestore.instance.collection("users").doc(uid).get();
-
-        if (userDoc.data() == null) {
-           String? token = await NotificationService.getToken();
-          // 🆕 Create new user document
-          await firestoreService.addData(
-            collection: "users",
-            did: uid,
-            data: UserModel(
-              fcmToken: token.toString(),
-              isStaff: false,
-              email: userCredential.user!.email!,
-              name: userCredential.user!.displayName ?? "",
-              phoneNumber: userCredential.user!.phoneNumber ?? "",
-              createdAt: DateTime.now(),
-              addressIndex: 0,
-              uid: uid,
-              profileImage: '',
-              birthDate: userCredential.user!.metadata.creationTime!,
-              gender: '',
-              favProduct: [],
-            ),
-          );
-        }
       }
-      UserEntity data = await firestoreService.getUserData();
+
+      final data = await firestoreService.getUserData();
+
       if (data.isStaff) {
         return const Right('Staff');
       }
       return const Right("Logged in successfully");
-    } on FirebaseAuthException catch (e) {
-      return Left(FirebaseFailure.fromCode(e.code));
-    } catch (e) {
-      return Left(FirebaseFailure(message: e.toString()));
+    } else {
+      return Left(FirebaseFailure(message: 'Sign in aborted by user.'));
     }
+  } on FirebaseAuthException catch (e) {
+    return Left(FirebaseFailure.fromCode(e.code));
+  } catch (e) {
+    return Left(FirebaseFailure(message: e.toString()));
   }
+}
 
   @override
   Future<Either<FirebaseFailure, String>> verifiyEmaill() async {

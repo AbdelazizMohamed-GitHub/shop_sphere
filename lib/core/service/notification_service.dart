@@ -119,7 +119,7 @@ class NotificationService {
 
   static Future<void> initializeLocalNotifications() async {
     await AwesomeNotifications().initialize(
-        'resource://drawable/res_app_icon',
+        'resource://drawable/appLogo.png',
         [
           NotificationChannel(
             channelKey: 'basic_channel',

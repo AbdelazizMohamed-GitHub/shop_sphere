@@ -50,12 +50,13 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
               onPressed: () async {
                 if (_titleController.text.isNotEmpty &&
                     _bodyController.text.isNotEmpty) {
-                  print('${widget.fCM}');
-                  // await NotificationService.sendNotification(
-                  //   title: _titleController.text,
-                  //   body: _bodyController.text,
-                  //   token: widget.fCM,
-                  // );
+                  String token=await NotificationService.getToken() ?? '';
+                  print('$token');
+                  await NotificationService.sendNotification(
+                    title: _titleController.text,
+                    body: _bodyController.text,
+                    token: token,
+                  );
                   Navigator.pop(context);
                 }
               },
