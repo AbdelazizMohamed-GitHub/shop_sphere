@@ -39,16 +39,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Hive.initFlutter(); // 🛠️ هنا تهيئة Hive
+  await Hive.initFlutter(); 
 
   Hive.registerAdapter(NotificationModelAdapter());
 
   await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
   await NotificationService.initialize();
   await NotificationService.initializeLocalNotifications();
-  String? token = await NotificationService.getToken();
-  await NotificationService.sendNotification(
-      title: "title", body: "Hell World", token: "$token");
+  
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
