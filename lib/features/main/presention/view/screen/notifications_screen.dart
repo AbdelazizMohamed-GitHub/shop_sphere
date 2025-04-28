@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';

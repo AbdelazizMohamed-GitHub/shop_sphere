@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/see_all_screen.dart';
-import 'package:shop_sphere/features/explor/presention/view/widget/custom_category_list.dart';
-import 'package:shop_sphere/features/explor/presention/view/widget/custom_explore_screen_search.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_new_arrivels_list.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_product_title_section.dart';

@@ -10,7 +10,6 @@ import 'package:awesome_notifications/awesome_notifications.dart'
         NotificationLayout;
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';

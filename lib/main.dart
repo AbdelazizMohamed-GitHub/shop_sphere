@@ -1,9 +1,7 @@
-import 'package:awesome_notifications/awesome_notifications.dart' show AwesomeNotifications;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:googleapis/monitoring/v3.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';

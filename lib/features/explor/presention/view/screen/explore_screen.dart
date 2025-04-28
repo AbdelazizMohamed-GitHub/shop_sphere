@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
@@ -49,8 +48,8 @@ class ExploreScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const CustomExploreScreenSearch(),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
+                  const Padding(
+                    padding: EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Text(
@@ -87,7 +86,7 @@ class ExploreScreen extends StatelessWidget {
                                 ])
                               : state is ProductSuccess
                                   ? state.products.isEmpty
-                                      ? Column(
+                                      ? const Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
@@ -155,7 +154,7 @@ class ExploreScreen extends StatelessWidget {
                                             ],
                                           ),
                                         )
-                                  : SizedBox();
+                                  : const SizedBox();
                     },
                   )
                 ],
