@@ -29,13 +29,7 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            
             const SizedBox(height: 16),
             TextField(
               controller: _bodyController,
@@ -50,8 +44,8 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
               onPressed: () async {
                 if (_titleController.text.isNotEmpty &&
                     _bodyController.text.isNotEmpty) {
-                  String token=await NotificationService.getToken() ?? '';
-                  print('$token');
+                  String token = await NotificationService.getToken() ?? '';
+                  print('test v${token}');
                   await NotificationService.sendNotification(
                     title: _titleController.text,
                     body: _bodyController.text,
