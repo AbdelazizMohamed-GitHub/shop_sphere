@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
@@ -20,10 +21,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
     final snapshot = await FirebaseFirestore.instance.collection("users").get();
     return snapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
-
+bool isLoading = true;
   @override
   void initState() {
     super.initState();
+
     fetchUsers();
   }
 
@@ -31,6 +33,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     final fetchedUsers = await getUsers();
     setState(() {
       users = fetchedUsers;
+      isLoading = false;
     });
   }
 
@@ -38,7 +41,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Customers")),
-      body: users.isEmpty
+      body:isLoading?Center(child: CircularProgressIndicator(),): users.isEmpty
           ? const Center(child: Text("No Customer Founded"))
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -60,10 +63,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       },
                       icon: const Icon(Icons.message_rounded),
                     ),
-                    leading: const CircleAvatar(
-                        backgroundColor: AppColors.primaryColor),
-                    subtitle: Text(users[index].phoneNumber,
-                        style: AppStyles.text14Regular),
+                    leading: Image.asset(AppImages.profile)
                   ),
                 );
               },

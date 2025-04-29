@@ -1,7 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/notification_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
+import 'package:shop_sphere/features/dashboard/data/repo_impl/notification_repo_impl.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/add_notification_cubit/add_notification_cubit.dart';
 
 class AddNotificationScreen extends StatefulWidget {
   const AddNotificationScreen({
@@ -11,7 +16,7 @@ class AddNotificationScreen extends StatefulWidget {
   final String fCM;
 
   @override
-  _NotificationScreenState createState() => _NotificationScreenState();
+  State<AddNotificationScreen> createState() => _NotificationScreenState();
 }
 
 class _NotificationScreenState extends State<AddNotificationScreen> {
@@ -20,48 +25,70 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Notification'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            
-            const SizedBox(height: 16),
-            TextField(
-              controller: _bodyController,
-              decoration: const InputDecoration(
-                labelText: 'Body',
-                border: OutlineInputBorder(),
+    return BlocProvider(
+      create: (context) =>
+          AddNotificationCubit(notificationRepo: getIt<NotificationRepoImpl>()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Notification'),
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text(
+                widget.fCM,
               ),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () async {
-                if (_titleController.text.isNotEmpty &&
-                    _bodyController.text.isNotEmpty) {
-                  String token = await NotificationService.getToken() ?? '';
-                  print('test v${token}');
-                  await NotificationService.sendNotification(
-                    title: _titleController.text,
-                    body: _bodyController.text,
-                    token: token,
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              icon: const Icon(Icons.send),
-              label: const Text('Send Notification'),
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              CustomTextForm(
+                text: "Title",
+                textController: _titleController,
+                kType: TextInputType.text,
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              CustomTextForm(
+                lines: 4,
+                text: "Body",
+                textController: _bodyController,
+                kType: TextInputType.text,
+              ),
+              const SizedBox(height: 30),
+              BlocConsumer<AddNotificationCubit, AddNotificationState>(
+                listener: (context, state) {
+                  if (state is AddNotificationSuccess) {
+                    Navigator.pop(context);
+                  } else if (state is AddNotificationFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.errMessage)));
+                  }
+                },
+                builder: (context, state) {
+                  return state is AddNotificationLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : CustomButton(
+                          text: 'Send',
+                          onPressed: () async {
+                            // String? token =  await NotificationService.getToken();
+                            print(widget.fCM);
+                            if (_titleController.text.isNotEmpty &&
+                                _bodyController.text.isNotEmpty) {
+                              await context
+                                  .read<AddNotificationCubit>()
+                                  .addNotification(
+                                    token: widget.fCM.toString().trim(),
+                                    title: _titleController.text.trim(),
+                                    body: _bodyController.text.trim(),
+                                  );
+                            } else {
+                              Warning.showWarning(context,
+                                  message: 'Please fill all fields');
+                            }
+                          },
+                        );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
