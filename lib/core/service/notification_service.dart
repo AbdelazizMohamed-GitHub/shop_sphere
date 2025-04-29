@@ -13,6 +13,7 @@ import 'package:hive/hive.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/main/data/notification_model.dart';
 
 class NotificationService {
@@ -38,15 +39,13 @@ class NotificationService {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print("📩 onMessageOpenedApp: ${message.notification?.body}");
-          showNotification(message: message);
-
+      showNotification(message: message);
     });
 
     RemoteMessage? initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
       print("📦 getInitialMessage: ${initialMessage.notification?.title}");
-            showNotification(message: initialMessage);
-
+      showNotification(message: initialMessage);
     }
   }
 
@@ -119,7 +118,7 @@ class NotificationService {
 
   static Future<void> initializeLocalNotifications() async {
     await AwesomeNotifications().initialize(
-        'resource://drawable/appLogo.png',
+        'resource://drawable/logo',
         [
           NotificationChannel(
             channelKey: 'basic_channel',
@@ -134,8 +133,8 @@ class NotificationService {
     // Get initial notification action is optional
   }
 
-  static void showNotification({required RemoteMessage message}) {
-    saveNotification(
+  static void showNotification({required RemoteMessage message})async {
+   await saveNotification(
         title: message.notification!.title!, body: message.notification!.body!);
     AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -146,6 +145,8 @@ class NotificationService {
         notificationLayout: NotificationLayout.Default,
         wakeUpScreen: true,
         category: NotificationCategory.Message,
+        icon: AppImages.logo
+        
       ),
     );
   }

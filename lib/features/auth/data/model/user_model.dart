@@ -24,6 +24,7 @@ class UserModel extends UserEntity {
   final List<String> favProduct;
   @override
   final bool isStaff;
+  @override
   final String fcmToken;
 
   UserModel({
