@@ -391,5 +391,12 @@ class FirestoreService {
         .doc(orderId)
         .update({"status": status});
   }
+  Future<List<UserEntity>> getUsers({required bool isStaff}) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection("users")
+        .where("isStaff", isEqualTo: isStaff)
+        .get();
+    return querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
+  }
   
 }
