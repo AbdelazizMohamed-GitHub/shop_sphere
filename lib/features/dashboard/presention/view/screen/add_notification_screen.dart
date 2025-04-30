@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/notification_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -22,6 +21,13 @@ class AddNotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<AddNotificationScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _bodyController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

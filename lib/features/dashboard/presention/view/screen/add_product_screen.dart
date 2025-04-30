@@ -139,14 +139,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Warning.showWarning(context, message: state.errMessage);
                     }
                     if (state is DashboardSuccess) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const ProductScreen();
-                          },
-                        ),
-                      );
+                   Navigator.pop(context);
+                   Navigator.pop(context);
                     
                     }
                   },
@@ -168,7 +162,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     pId: widget.isUpdate
                                         ? widget.productEntity!.pId
                                         : dId,
-                                    sId: FirebaseAuth.instance.currentUser!.uid,
+                                    sId: widget.isUpdate
+                                        ? widget.productEntity!.sId
+                                        : FirebaseAuth.instance.currentUser!.uid,
                                     imageUrl:widget.isUpdate ? widget.productEntity!.imageUrl : '',
                                     isFeatured: false,
                                   );

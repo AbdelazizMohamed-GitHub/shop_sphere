@@ -145,7 +145,7 @@ class NotificationService {
         notificationLayout: NotificationLayout.Default,
         wakeUpScreen: true,
         category: NotificationCategory.Message,
-        icon: AppImages.logo
+      //  icon: AppImages.logo
         
       ),
     );

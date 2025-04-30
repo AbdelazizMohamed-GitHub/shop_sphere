@@ -11,7 +11,7 @@ import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/analytics_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/customer_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
@@ -77,13 +77,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.people),
-                title: const Text('Customers'),
+                title: const Text('Users'),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return const CustomerScreen();
+                        return const UsersScreen();
                       },
                     ),
                   );

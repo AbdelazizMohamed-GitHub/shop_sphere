@@ -34,7 +34,7 @@ class ProductModel extends ProductEntity {
   
    required this.isFeatured,
 
-  }) : super(
+  }) : super(sId: sId,
             pId: pId,
             name: name,
             description: description,
