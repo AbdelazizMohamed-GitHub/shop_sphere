@@ -55,28 +55,33 @@ class UsersScreen extends StatelessWidget {
                 return state.users.isEmpty
                     ? const Center(child: Text("No Users Found"))
                     : ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         itemCount: state.users.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            child: ListTile(
-                                title: Text(state.users[index].name,
-                                    style: AppStyles.text16Bold),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddNotificationScreen(
-                                          fCM: state.users[index].fcmToken,
+                          return InkWell(
+                            onTap: () {
+                              
+                            },
+                            child: Card(color: Colors.white,
+                              child: ListTile(contentPadding: EdgeInsets.all(16),
+                                  title: Text(state.users[index].name,
+                                      style: AppStyles.text16Bold),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddNotificationScreen(
+                                            fCM: state.users[index].fcmToken,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.message_rounded),
-                                ),
-                                leading: Image.asset(AppImages.profile)),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.message_rounded),
+                                  ),
+                                  leading: Image.asset(AppImages.profile)),
+                            ),
                           );
                         },
                       );
