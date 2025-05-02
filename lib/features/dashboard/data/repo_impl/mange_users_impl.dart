@@ -5,9 +5,9 @@ import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/dashboard/domain/repo/mange_users_repo.dart';
 
-class MangeUsersImpl extends MangeUsersRepo {
+class MangeUsersRepoImpl extends MangeUsersRepo {
   final FirestoreService firestoreService;
-  MangeUsersImpl({required this.firestoreService});
+  MangeUsersRepoImpl({required this.firestoreService});
   @override
   Future<Either<FirebaseFailure, List<UserEntity>>> getUsers(
       {required bool isStaff}) async {

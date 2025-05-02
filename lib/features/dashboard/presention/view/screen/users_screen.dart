@@ -42,74 +42,53 @@ class _CustomerScreenState extends State<UsersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Users"),
-        actions:const [
-          // PopupMenuButton<String>(
-          //   onSelected: (value) {
-          //     displayUsers = filterUsers;
-          //     setState(() {});
-          //     // تعامل مع الاختيار
-          //     if (value == 'Customers') {
-          //       filterUsers = users.where((user) {
-          //         return !user.isStaff;
-          //       }).toList();
-
-          //       setState(() {});
-
-          //       // تنفذ كود التحديث
-          //     } else if (value == 'Staff') {
-          //       filterUsers = users.where((user) {
-          //         return user.isStaff;
-          //       }).toList();
-          //       setState(() {});
-          //     }
-          //   },
-          //   itemBuilder: (BuildContext context) => [
-          //     const PopupMenuItem(
-          //       value: 'Customers',
-          //       child: Text('Customers'),
-          //     ),
-          //     const PopupMenuItem(
-          //       value: 'Staff',
-          //       child: Text('Staff'),
-          //     )
-          //   ],
-          // )
-        ],
-      ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : users.isEmpty
-              ? const Center(child: Text("No Users Founded"))
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: users.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: ListTile(
-                          title: Text(users[index].name,
-                              style: AppStyles.text16Bold),
-                          trailing: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddNotificationScreen(
-                                    fCM: users[index].fcmToken,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Users"),
+          bottom: TabBar(
+            onTap: (value) {
+              
+            },
+            tabs: [
+              Tab(text: "Staff"),
+              Tab(text: "Customers"),
+            ],
+          ),
+        ),
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : users.isEmpty
+                ? const Center(child: Text("No Users Founded"))
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: users.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        child: ListTile(
+                            title: Text(users[index].name,
+                                style: AppStyles.text16Bold),
+                            trailing: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddNotificationScreen(
+                                      fCM: users[index].fcmToken,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.message_rounded),
-                          ),
-                          leading: Image.asset(AppImages.profile)),
-                    );
-                  },
-                ),
+                                );
+                              },
+                              icon: const Icon(Icons.message_rounded),
+                            ),
+                            leading: Image.asset(AppImages.profile)),
+                      );
+                    },
+                  ),
+      ),
     );
   }
 }
