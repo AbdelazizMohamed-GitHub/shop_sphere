@@ -398,5 +398,15 @@ class FirestoreService {
         .get();
     return querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
+  Future< List<ProductEntity>> getStaffProducts({required String staffId}) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection("products").where(
+          "sId",
+          isEqualTo: staffId,
+
+        )
+        .get();
+    return querySnapshot.docs.map((e) => ProductModel.fromMap(e.data())).toList();
+  }
   
 }
