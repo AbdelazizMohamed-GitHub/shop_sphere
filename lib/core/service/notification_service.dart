@@ -3,10 +3,12 @@
 import 'dart:convert';
 import 'package:awesome_notifications/awesome_notifications.dart'
     show
+        ActionType,
         AwesomeNotifications,
         NotificationCategory,
         NotificationChannel,
         NotificationContent,
+        NotificationImportance,
         NotificationLayout;
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -126,15 +128,18 @@ class NotificationService {
             channelDescription: 'Notification tests as alerts',
             playSound: true,
             onlyAlertOnce: true,
-          )
+            importance: NotificationImportance.High,
+            channelShowBadge: true,
+            enableVibration: true,
+          ),
         ],
-        debug: true);
+      );
 
     // Get initial notification action is optional
   }
 
-  static void showNotification({required RemoteMessage message})async {
-   await saveNotification(
+  static void showNotification({required RemoteMessage message}) async {
+    await saveNotification(
         title: message.notification!.title!, body: message.notification!.body!);
     AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -145,8 +150,14 @@ class NotificationService {
         notificationLayout: NotificationLayout.Default,
         wakeUpScreen: true,
         category: NotificationCategory.Message,
-      //  icon: AppImages.logo
-        
+        autoDismissible: true,
+        payload: {
+          'image': AppImages.logo,
+          'title': message.notification?.title ?? 'عنوان إشعار',
+          'body': message.notification?.body ?? 'محتوى الإشعار',
+        },
+        actionType: ActionType.Default,
+        displayOnBackground: true,
       ),
     );
   }

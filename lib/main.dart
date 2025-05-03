@@ -16,6 +16,7 @@ import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
@@ -141,7 +142,7 @@ class _ShopSphereState extends State<ShopSphere> {
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
                     : (user?.isStaff ?? false)
-                        ? const ProductScreen()
+                        ? const UsersScreen()
                         : const MainScreen(),
           );
         },
