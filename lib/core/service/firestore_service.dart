@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/service/supabase_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
@@ -408,5 +409,30 @@ class FirestoreService {
         .get();
     return querySnapshot.docs.map((e) => ProductModel.fromMap(e.data())).toList();
   }
+  Future<void> updateStockAfterOrder(List<CartItemModel> items) async {
+  final firestore = FirebaseFirestore.instance;
+
+  for (final item in items) {
+    final productRef = firestore.collection('products').doc(item.productId);
+
+    await firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(productRef);
+
+      if (!snapshot.exists) return;
+
+      final currentStock = snapshot.get('stock') as int;
+      final orderedQuantity = item.quantity;
+
+      final newStock = currentStock - orderedQuantity;
+
+      if (newStock >= 0) {
+        transaction.update(productRef, {'stock': newStock});
+      } else {
+        debugPrint("Insufficient stock for product: ${item.productId}");
+      }
+    });
+  }
+}
+
   
 }

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/app_cubit/app_state.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
@@ -45,17 +47,17 @@ class CartScreen extends StatelessWidget {
                 return const Center(child: Text('Your cart is empty'));
               } else {
                 // Calculate the total cost
+                int totalQuantity = 0;
+                for (var item in cartItems) {
+                  totalQuantity += item.productQuantity;
+                }
                 double total = 0.0;
                 for (var item in cartItems) {
                   total += item.productPrice * item.productQuantity;
                 }
                 return Column(
                   children: [
-                    Expanded(
-                        child: CustomCartItemList(
-                      cartItems: cartItems
-                       
-                    )),
+                    Expanded(child: CustomCartItemList(cartItems: cartItems)),
                     Container(
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -64,13 +66,22 @@ class CartScreen extends StatelessWidget {
                       )),
                       padding: const EdgeInsets.all(12.0),
                       child: Column(children: [
-                        CustomCartPrice(title: 'Total:', price: total),
-                        const CustomCartPrice(title: 'Shipping:', price: 50),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Total Quntity : ",
+                              style: AppStyles.text18Regular,
+                            ),
+
+                            Text(
+                              totalQuantity.toString(),
+                              style: AppStyles.text22SemiBold,
+                            )
+                          ],
+                        ),
                         const Divider(),
                         CustomCartPrice(
-                            title: 'Total Cost:',
-                            price: total + 50,
-                            isTotalcoast: true),
+                            title: ' Cost:', price: total, isTotalcoast: true),
                         const SizedBox(height: 20.0),
                         CustomButton(
                             onPressed: () {

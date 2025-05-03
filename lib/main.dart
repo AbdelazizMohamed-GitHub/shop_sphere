@@ -32,6 +32,7 @@ import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart'
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 import 'package:shop_sphere/firebase_options.dart';
 import 'package:shop_sphere/test_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -142,7 +143,7 @@ class _ShopSphereState extends State<ShopSphere> {
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
                     : (user?.isStaff ?? false)
-                        ? const UsersScreen()
+                        ? const CartScreen()
                         : const MainScreen(),
           );
         },

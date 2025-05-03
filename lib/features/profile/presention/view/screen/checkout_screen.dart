@@ -164,6 +164,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             height: 20,
                           ),
                           CustomCheckoutButton(
+                            shippingCoast: 50,
                             currentIndex: paymentIndex,
                             total: widget.total,
                             cartItems: widget.cartItems ,

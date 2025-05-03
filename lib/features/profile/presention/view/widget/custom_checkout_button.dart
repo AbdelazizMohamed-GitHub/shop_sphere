@@ -24,13 +24,15 @@ class CustomCheckoutButton extends StatelessWidget {
     required this.uId,
     required this.address,
     required this.userName,
+    required this.shippingCoast,
   });
   final int currentIndex;
   final double total;
   final List<CartItemModel> cartItems;
   final AddressModel address;
   final String uId;
-  final String userName; // Replace with actual user name
+  final String userName;
+  final int shippingCoast; // Replace with actual user name
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,6 @@ class CustomCheckoutButton extends StatelessWidget {
       child: BlocConsumer<OrderCubit, OrderState>(
         listener: (context, state) {
           if (state is OrderError) {
-        
             Warning.showWarning(context, message: state.error);
           } else if (state is AddOrderSuccess) {
             Navigator.push(
@@ -61,7 +62,7 @@ class CustomCheckoutButton extends StatelessWidget {
                           userName: userName,
                           uId: uId,
                           orderId: oId,
-                          totalAmount: total + 50,
+                          totalAmount: total + shippingCoast,
                           items: cartItems,
                           status: "Pending",
                           orderDate: DateTime.now(),
