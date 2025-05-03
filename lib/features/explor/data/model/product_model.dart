@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class ProductModel extends ProductEntity {
   @override
   final String pId;
+  @override
   final String sId;
   @override
   final String name;
@@ -11,36 +13,39 @@ class ProductModel extends ProductEntity {
   @override
   final double price;
   @override
-   String imageUrl;
- 
+  String imageUrl;
+
   @override
   final String category;
   @override
   final int stock;
-  
+
   @override
   final bool isFeatured;
+  final DateTime createdAt;
+  final String staffName;
 
-  ProductModel( {required this.imageUrl,
+  ProductModel({
+  required this.staffName,
+    required this.imageUrl,
+    required this.createdAt,
     required this.pId,
     required this.sId,
     required this.name,
     required this.description,
     required this.price,
-
-   
     required this.category,
     required this.stock,
-  
-   required this.isFeatured,
-
-  }) : super(sId: sId,
+    required this.isFeatured,
+  }) : super(
+            staffName: staffName, 
+            sId: sId,
+            createdAt: createdAt,
             pId: pId,
             name: name,
             description: description,
             price: price,
             imageUrl: imageUrl,
-         
             category: category,
             stock: stock,
             isFeatured: isFeatured);
@@ -53,20 +58,19 @@ class ProductModel extends ProductEntity {
       'description': description,
       'price': price,
       'imageUrl': imageUrl,
-      
       'category': category,
       'stock': stock,
-     
+      'createdAt': createdAt,
       'isFeatured': isFeatured,
       'sId': sId,
-
+      'staffName': staffName,
     };
   }
 
   // Create ProductModel from Map
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-    
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       pId: map['id'] ?? '',
       sId: map['sId'] ?? '',
       name: map['name'] ?? '',
@@ -75,8 +79,8 @@ class ProductModel extends ProductEntity {
       imageUrl: map['imageUrl'] ?? '',
       category: map['category'] ?? '',
       stock: map['stock'] ?? 0,
-    
       isFeatured: map['isFeatured'] ?? false,
+      staffName: map['staffName'] ?? '',
     );
   }
 }

@@ -33,7 +33,7 @@ class FirestoreService {
   Future<List<ProductEntity>> gettProducts({required String category}) async {
      QuerySnapshot<Map<String, dynamic>> snapshot;
     if (category == "All") {
-       snapshot = await firestore.collection('products').get();
+       snapshot = await firestore.collection('products').orderBy("createdAt", descending: true).get();
     }else{
        snapshot = await firestore
         .collection('products')

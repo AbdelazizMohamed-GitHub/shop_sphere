@@ -11,7 +11,11 @@ class ProductEntity {
 
   final bool isFeatured;
   final String sId;
+   final DateTime createdAt;
+  final String staffName;
   ProductEntity({
+    required this.staffName,
+    required this.createdAt,
     required this.pId,
     required this.name,
     required this.description,

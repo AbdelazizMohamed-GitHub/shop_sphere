@@ -17,7 +17,7 @@ class CustomDetailsHeader extends StatelessWidget {
             left: 50,
             right: 10,
             bottom: 0,
-            child: Image.network(product.imageUrl, fit: BoxFit.cover),
+            child: Image.network(product.imageUrl, fit: BoxFit.contain),
           ),
           Positioned(
             left: 20,
@@ -46,7 +46,10 @@ class CustomDetailsHeader extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>  AddProductScreen(isUpdate: true,productEntity:product ,),
+                              builder: (context) => AddProductScreen(
+                                isUpdate: true,
+                                productEntity: product,
+                              ),
                             ),
                           );
                         },

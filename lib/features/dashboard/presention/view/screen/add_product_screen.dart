@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
+import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:uuid/uuid.dart';
@@ -152,8 +154,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               if (formKey.currentState!.validate() &&
                                   selectedCategory != null) {
                                 if (imageFile != null || widget.isUpdate) {
+                                UserEntity user =  await FirestoreService(firestore: FirebaseFirestore.instance).getUserData();
+                                     
+                                 
                                  
                                   ProductModel product = ProductModel(
+                                    staffName:widget.isUpdate ? widget.productEntity!.staffName : user.name,
+                                    createdAt:widget.isUpdate ? widget.productEntity!.createdAt : DateTime.now(),
                                     name: nameController.text,
                                     price: double.parse(priceController.text),
                                     stock: int.parse(quantityController.text),
