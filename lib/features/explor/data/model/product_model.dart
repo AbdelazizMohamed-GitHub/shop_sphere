@@ -82,5 +82,31 @@ class ProductModel extends ProductEntity {
       isFeatured: map['isFeatured'] ?? false,
       staffName: map['staffName'] ?? '',
     );
+  } ProductModel copyWith({
+    String? pId,
+    String? sId,
+    String? name,
+    String? description,
+    double? price,
+    String? imageUrl,
+    String? category,
+    int? stock,
+    bool? isFeatured,
+    DateTime? createdAt,
+    String? staffName,
+  }) {
+    return ProductModel(
+      pId: pId ?? this.pId,
+      sId: sId ?? this.sId,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      imageUrl: imageUrl ?? this.imageUrl,
+      category: category ?? this.category,
+      stock: stock ?? this.stock,
+      isFeatured: isFeatured ?? this.isFeatured,
+      createdAt: createdAt ?? this.createdAt,
+      staffName: staffName ?? this.staffName,
+    );
   }
 }

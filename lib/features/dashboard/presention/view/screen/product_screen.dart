@@ -10,15 +10,12 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/add_produc
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
-
 }
-
 
 class _ProductScreenState extends State<ProductScreen> {
   @override
@@ -26,6 +23,7 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
     context.read<DashboardCubit>().getProducts(category: 'All');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +59,7 @@ class _ProductScreenState extends State<ProductScreen> {
             if (state is DashboardFailer) {
               return Center(child: Text(state.errMessage));
             }
-    
+
             return products.isEmpty
                 ? const Center(
                     child: Text(
@@ -79,9 +77,11 @@ class _ProductScreenState extends State<ProductScreen> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
+                            childAspectRatio: 5 / 6,
                           ),
                           itemCount: products.length,
-                          itemBuilder: (context, index) => CustomDashboardProductItem(
+                          itemBuilder: (context, index) =>
+                              CustomDashboardProductItem(
                             product: products[index],
                           ),
                         ),

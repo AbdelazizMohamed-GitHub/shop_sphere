@@ -1,3 +1,6 @@
+
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
-import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:uuid/uuid.dart';
@@ -62,7 +65,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   final formKey = GlobalKey<FormState>();
   String dId = const Uuid().v4();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +111,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       child: CustomDropdown(
                         productCategory: selectedCategory,
                         isUpdate: widget.isUpdate,
-                        categories: appCategory
-                            .map((e) => e.toString())
-                            .toList(),
+                        categories:
+                            appCategory.map((e) => e.toString()).toList(),
                         onCategorySelected: (value) {
                           selectedCategory = value;
                         },
@@ -141,63 +143,65 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Warning.showWarning(context, message: state.errMessage);
                     }
                     if (state is DashboardSuccess) {
-                   Navigator.pop(context);
-                   Navigator.pop(context);
-                    
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DashboardScreen()),
+                          (route) => false);
                     }
                   },
                   builder: (context, state) {
                     return state is DashboardLoading
                         ? const Center(child: CircularProgressIndicator())
-                        : CustomButton(
-                            onPressed: () async {
-                              if (formKey.currentState!.validate() &&
-                                  selectedCategory != null) {
-                                if (imageFile != null || widget.isUpdate) {
-                                UserEntity user =  await FirestoreService(firestore: FirebaseFirestore.instance).getUserData();
-                                     
-                                 
-                                 
-                                  ProductModel product = ProductModel(
-                                    staffName:widget.isUpdate ? widget.productEntity!.staffName : user.name,
-                                    createdAt:widget.isUpdate ? widget.productEntity!.createdAt : DateTime.now(),
-                                    name: nameController.text,
-                                    price: double.parse(priceController.text),
-                                    stock: int.parse(quantityController.text),
-                                    category: selectedCategory!,
-                                    description: descriptionController.text,
-                                    pId: widget.isUpdate
-                                        ? widget.productEntity!.pId
-                                        : dId,
-                                    sId: widget.isUpdate
-                                        ? widget.productEntity!.sId
-                                        : FirebaseAuth.instance.currentUser!.uid,
-                                    imageUrl:widget.isUpdate ? widget.productEntity!.imageUrl : '',
-                                    isFeatured: false,
-                                  );
-                                  widget.isUpdate
-                                      ? await context
-                                          .read<DashboardCubit>()
-                                          .updateProduct(
-                                            dId: widget.productEntity!.pId,
-                                            data: product,
-                                          )
-                                      : await context
-                                          .read<DashboardCubit>()
-                                          .addProduct(product: product,
-                                            imageFile: imageFile!);
-                                } else {
-                                  Warning.showWarning(
-                                    context,
-                                    message: "Please Add Image",
-                                  );
-                                }
-                              }
-                            },
-                            text: widget.isUpdate
-                                ? "Update Product"
-                                : "Add Product",
-                          );
+                        :CustomButton(
+  onPressed: () async {
+    if (formKey.currentState!.validate() && selectedCategory != null) {
+      if (imageFile != null || widget.isUpdate) {
+        final user = await FirestoreService(
+          firestore: FirebaseFirestore.instance,
+        ).getUserData();
+
+        final baseProduct = widget.isUpdate
+            ? (widget.productEntity! as ProductModel).copyWith(
+                name: nameController.text,
+                price: double.parse(priceController.text),
+                stock: int.parse(quantityController.text),
+                category: selectedCategory!,
+                description: descriptionController.text,
+              )
+            : ProductModel(
+                staffName: user.name,
+                createdAt: DateTime.now(),
+                name: nameController.text,
+                price: double.parse(priceController.text),
+                stock: int.parse(quantityController.text),
+                category: selectedCategory!,
+                description: descriptionController.text,
+                pId: dId,
+                sId: FirebaseAuth.instance.currentUser!.uid,
+                imageUrl: '',
+                isFeatured: false,
+              );
+
+        if (widget.isUpdate) {
+          await context.read<DashboardCubit>().updateProduct(
+                dId: widget.productEntity!.pId,
+                data: baseProduct,
+              );
+        } else {
+          await context.read<DashboardCubit>().addProduct(
+                product: baseProduct,
+                imageFile: imageFile!,
+              );
+        }
+      } else {
+        Warning.showWarning(context, message: "Please Add Image");
+      }
+    }
+  },
+  text: widget.isUpdate ? "Update Product" : "Add Product",
+)
+;
                   },
                 ),
               ],

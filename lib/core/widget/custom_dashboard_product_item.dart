@@ -12,82 +12,76 @@ class CustomDashboardProductItem extends StatelessWidget {
   final ProductEntity product;
   @override
   Widget build(BuildContext context) {
-    return  InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return DashBoardDetailsScreen(product: product);
-                },
-              ),
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: product.imageUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => const CustomImageLoading(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                  ),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DashBoardDetailsScreen(product: product);
+            },
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                child: CachedNetworkImage(
+                  imageUrl: product.imageUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const CustomImageLoading(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(product.name,
+                      style: AppStyles.text14Regular,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 150,
-                        child:
-                            Text(product.name, style: AppStyles.text14Regular),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('\$ ${product.price}',
-                              style: AppStyles.text16Bold),
-                          const Spacer(),
-                          Text(
-                            '${product.stock} Stock',
-                            style: AppStyles.text14Regular,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Add By',
-                            style: AppStyles.text14Regular
-                                .copyWith(color: Colors.grey),
-                          ),
-                          const Icon(Icons.arrow_forward_ios,
-                              size: 15, color: Colors.grey),
-                        ],
+                      Text('\$ ${product.price}', style: AppStyles.text16Bold),
+                      const Spacer(),
+                      Text(
+                        '${product.stock} Stock',
+                        style: AppStyles.text14Regular,
                       ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 5),
+                  const Text(
+                    'Add By ',
+                    style: AppStyles.text16Regular,
+                  ),
+                  Text(
+                    maxLines: 1,
+                    product.staffName,
+                    overflow: TextOverflow.fade,
+                    style: AppStyles.text14Regular,
+                  )
+                ],
+              ),
             ),
-          ),
-        );
-   
+          ],
+        ),
+      ),
+    );
   }
 }
