@@ -6,6 +6,7 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/mange_users_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/mange_users/mange_users_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_notification_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/staff_product_screen.dart';
 
 class UsersScreen extends StatelessWidget {
   const UsersScreen({super.key});
@@ -60,10 +61,10 @@ class UsersScreen extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
                             onTap: () {
-                              
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => StaffProductScreen( staffId: state.users[index].uid,)));
                             },
                             child: Card(color: Colors.white,
-                              child: ListTile(contentPadding: EdgeInsets.all(16),
+                              child: ListTile(contentPadding: const EdgeInsets.all(16),
                                   title: Text(state.users[index].name,
                                       style: AppStyles.text16Bold),
                                   trailing: IconButton(
