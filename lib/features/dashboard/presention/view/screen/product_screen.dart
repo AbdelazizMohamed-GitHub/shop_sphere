@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
@@ -8,6 +9,7 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/produc
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
+import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -43,54 +45,39 @@ class _ProductScreenState extends State<ProductScreen> {
           const SizedBox(width: 10),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await context.read<DashboardCubit>().getProducts(category: 'All');
-        },
-        child: BlocBuilder<DashboardCubit, DashboardState>(
-          builder: (context, state) {
-            List<ProductEntity> products = [];
-            if (state is DashboardLoading) {
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('products')
+              .orderBy("createdAt", descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text(snapshot.error.toString()));
+            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: Text("No Products Found"));
+            } else {
+              final List<ProductEntity> products = snapshot.data!.docs
+                  .map((doc) => ProductModel.fromMap(doc.data()))
+                  .toList();
+              return GridView.builder(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 5 / 6,
+                ),
+                itemCount: products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return CustomDashboardProductItem(product: products[index]);
+                },
+              );
             }
-            if (state is DashboardSuccess) {
-              products = state.products;
-            }
-            if (state is DashboardFailer) {
-              return Center(child: Text(state.errMessage));
-            }
-
-            return products.isEmpty
-                ? const Center(
-                    child: Text(
-                      "No Products",
-                      style: AppStyles.text26BoldBlack,
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverGrid.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 5 / 6,
-                          ),
-                          itemCount: products.length,
-                          itemBuilder: (context, index) =>
-                              CustomDashboardProductItem(
-                            product: products[index],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-          },
-        ),
-      ),
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
         onPressed: () {
