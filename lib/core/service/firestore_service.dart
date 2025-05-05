@@ -363,7 +363,32 @@ class FirestoreService {
 
     await firestore.collection("orders").doc(order.orderId).set(order.toMap());
     await clearCart();
+    await updateStockAfterOrder(order.items);
+  } Future<void> updateStockAfterOrder(List<CartItemModel> items) async {
+  final firestore = FirebaseFirestore.instance;
+
+  for (final item in items) {
+    final productRef = firestore.collection('products').doc(item.productId);
+
+    await firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(productRef);
+
+      if (!snapshot.exists) return;
+
+      final currentStock = snapshot.get('stock') as int;
+      final orderedQuantity = item.quantity;
+
+      final newStock = currentStock - orderedQuantity;
+
+      if (newStock >= 0) {
+        transaction.update(productRef, {'stock': newStock});
+      } else {
+        // Handle case where stock is insufficient
+        throw Exception('Insufficient stock for product: ${item.productId}');
+      }
+    });
   }
+}
 
   Future<List<OrderEntity>> getOrders({required String status}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -409,30 +434,7 @@ class FirestoreService {
         .get();
     return querySnapshot.docs.map((e) => ProductModel.fromMap(e.data())).toList();
   }
-  Future<void> updateStockAfterOrder(List<CartItemModel> items) async {
-  final firestore = FirebaseFirestore.instance;
-
-  for (final item in items) {
-    final productRef = firestore.collection('products').doc(item.productId);
-
-    await firestore.runTransaction((transaction) async {
-      final snapshot = await transaction.get(productRef);
-
-      if (!snapshot.exists) return;
-
-      final currentStock = snapshot.get('stock') as int;
-      final orderedQuantity = item.quantity;
-
-      final newStock = currentStock - orderedQuantity;
-
-      if (newStock >= 0) {
-        transaction.update(productRef, {'stock': newStock});
-      } else {
-        debugPrint("Insufficient stock for product: ${item.productId}");
-      }
-    });
-  }
-}
+ 
 
   
 }

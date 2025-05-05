@@ -143,7 +143,7 @@ class _ShopSphereState extends State<ShopSphere> {
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
                     : (user?.isStaff ?? false)
-                        ? const CartScreen()
+                        ? const MainScreen()
                         : const MainScreen(),
           );
         },
