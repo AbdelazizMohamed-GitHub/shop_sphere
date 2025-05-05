@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/features/dashboard/domain/repo/notification_repo.dart';
 
 part 'add_notification_state.dart';

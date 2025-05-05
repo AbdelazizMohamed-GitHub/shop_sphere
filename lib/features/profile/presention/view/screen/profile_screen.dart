@@ -15,7 +15,6 @@ import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile
 import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_screen_header.dart';
-import 'package:shop_sphere/features/profile/presention/view/widget/custom_theme_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

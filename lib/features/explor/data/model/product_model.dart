@@ -22,7 +22,9 @@ class ProductModel extends ProductEntity {
 
   @override
   final bool isFeatured;
+  @override
   final DateTime createdAt;
+  @override
   final String staffName;
 
   ProductModel({

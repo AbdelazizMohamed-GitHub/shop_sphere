@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -35,10 +37,10 @@ class _TestScreenState extends State<TestScreen> {
                   setState(() {
                     isLoading = false;
                   });
+                  // ignore: use_build_context_synchronously
                   Warning.showWarning(context, message: e.toString());
                 } finally {
                   // Optionally, you can show a success message or perform any other action here.
-                  print("Operation completed.");
                 }
               },
               child: const Text("Go to Details"),

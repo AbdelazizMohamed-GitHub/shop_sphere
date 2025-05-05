@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/dashboard/domain/repo/mange_users_repo.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';

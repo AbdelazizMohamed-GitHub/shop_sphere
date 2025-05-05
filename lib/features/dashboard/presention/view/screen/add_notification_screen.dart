@@ -74,8 +74,6 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
                       : CustomButton(
                           text: 'Send',
                           onPressed: () async {
-                            // String? token =  await NotificationService.getToken();
-                            print(widget.fCM);
                             if (_titleController.text.isNotEmpty &&
                                 _bodyController.text.isNotEmpty) {
                               await context

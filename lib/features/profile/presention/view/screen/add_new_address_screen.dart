@@ -5,7 +5,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:uuid/uuid.dart';
 
@@ -164,7 +163,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                           // ignore: unnecessary_null_comparison
                           if (place != null) {
                         
-                            print(place.subThoroughfare);
                             streetController.text = place.subThoroughfare!;
                             cityController.text = place.subAdministrativeArea!;
                             stateController.text = place.administrativeArea!;
