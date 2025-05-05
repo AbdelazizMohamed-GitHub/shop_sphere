@@ -28,7 +28,6 @@ class CustomGetLocationWidget extends StatefulWidget {
       _CustomGetLocationWidgetState();
 }
 
-
 class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
   late Placemark place;
   String title = "Title";
@@ -58,20 +57,21 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
           city = state.addresses[widget.currentIndex].city;
           street = state.addresses[widget.currentIndex].street;
           phoneNumber = state.addresses[widget.currentIndex].phoneNumber;
-     
-WidgetsBinding.instance.addPostFrameCallback((_) {
-  AddressModel addressModel = AddressModel(
-    id: state.addresses[widget.currentIndex].id,
-    title: state.addresses[widget.currentIndex].title,
-    city: state.addresses[widget.currentIndex].city,
-    street: state.addresses[widget.currentIndex].street,
-    phoneNumber: state.addresses[widget.currentIndex].phoneNumber,country: state.addresses[widget.currentIndex].country,
-    state: state.addresses[widget.currentIndex].state,
-    postalCode: state.addresses[widget.currentIndex].postalCode,
-    createdAt: Timestamp.now(),
-  );
-      widget.onLocationSelected(addressModel);
-    });        
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AddressModel addressModel = AddressModel(
+              id: state.addresses[widget.currentIndex].id,
+              title: state.addresses[widget.currentIndex].title,
+              city: state.addresses[widget.currentIndex].city,
+              street: state.addresses[widget.currentIndex].street,
+              phoneNumber: state.addresses[widget.currentIndex].phoneNumber,
+              country: state.addresses[widget.currentIndex].country,
+              state: state.addresses[widget.currentIndex].state,
+              postalCode: state.addresses[widget.currentIndex].postalCode,
+              createdAt: Timestamp.now(),
+            );
+            widget.onLocationSelected(addressModel);
+          });
           isInisialzed = true;
         }
       }
@@ -94,7 +94,7 @@ WidgetsBinding.instance.addPostFrameCallback((_) {
             height: 10,
           ),
           loading
-              ?const CustomGetLoactionLoading()
+              ? const CustomGetLoactionLoading()
               : Stack(
                   alignment: Alignment.center,
                   children: [
@@ -127,16 +127,17 @@ WidgetsBinding.instance.addPostFrameCallback((_) {
                             title = "My Location";
                             city = place.locality!;
                             street = place.street!;
-                            
                           });
                           widget.onLocationSelected(AddressModel(
-                            createdAt: Timestamp.now(),
+                              createdAt: Timestamp.now(),
                               title: title,
                               city: city,
                               street: street,
                               state: place.administrativeArea!,
                               country: place.country!,
-                              phoneNumber: phoneNumber, id:'', postalCode: '' ));
+                              phoneNumber: phoneNumber,
+                              id: '',
+                              postalCode: ''));
                           loading = false;
                         })
                   ],

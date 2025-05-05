@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 
 
 import 'package:shop_sphere/core/utils/app_color.dart';
@@ -33,6 +34,7 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  double shippingPrice = 0.0;
   @override
   void initState() {
     context.read<UserCubit>().getUserData();
@@ -129,6 +131,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               setState(() {
                                 addressEntity = value;
                               });
+                                 shippingPrice  =         AppFuncations.getShippingPrice(addressEntity.state);
+
                              
                             },
                           ),
@@ -154,7 +158,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           CustomCartPrice(
                               title: 'Total:', price: widget.total.toDouble()),
-                          const CustomCartPrice(title: 'Shipping:', price: 50),
+                           CustomCartPrice(title: 'Shipping:', price:shippingPrice),
                           const Divider(),
                           CustomCartPrice(
                               title: 'Total Cost:',

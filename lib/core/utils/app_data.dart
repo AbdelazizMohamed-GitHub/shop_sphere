@@ -72,4 +72,35 @@ List<String> egyptGovernorates = [
   'North Sinai',
   'Sohag'
 ];
+Map<String, double> shippingPrices = {
+  'Cairo': 50.0,
+  'Giza': 50.0,
+  'Qalyubia': 60.0,
+  'Alexandria': 80.0,
+  'Dakahlia': 80.0,
+  'Red Sea': 100.0,
+  'Beheira': 90.0,
+  'Fayoum': 90.0,
+  'Gharbia': 80.0,
+  'Ismailia': 80.0,
+  'Menoufia': 80.0,
+  'Minya': 90.0,
+  'New Valley': 90.0,
+  'Suez': 90.0,
+  'Aswan': 120.0,
+  'Assiut': 90.0,
+  'Beni Suef': 80.0,
+  'Port Said': 90.0,
+  'Damietta': 80.0,
+  'Sharqia': 80.0,
+  'South Sinai': 120.0,
+  'Kafr El Sheikh': 100.0,
+  'Matrouh': 120.0,
+  'Luxor': 100.0,
+  'Qena': 110.0,
+  'North Sinai': 120.0,
+  'Sohag': 100.0,
+  'Other': 100.0,
+  
+};
 

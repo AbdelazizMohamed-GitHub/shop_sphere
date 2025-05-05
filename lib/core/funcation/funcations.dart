@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 
 class AppFuncations {
   static Color getStatusColor(String status) {
@@ -35,14 +36,8 @@ class AppFuncations {
       return null;
     }
   }
-  Map<String, double> shippingPrices = {
-  'Cairo': 40.0,
-  'Giza': 50.0,
-  'Qalyubia': 55.0,
-  'Alexandria': 60.0,
-  'Dakahlia': 70.0,
-  'Luxor': 90.0,
-  'Aswan': 110.0,
-  'Other': 100.0, // لأي محافظة مش مذكورة
-};
+ static double getShippingPrice(String governorate) {
+  return shippingPrices[governorate] ?? shippingPrices['Other']!;
+}
+  
 }
