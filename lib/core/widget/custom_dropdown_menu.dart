@@ -26,6 +26,7 @@ class CustomDropdown extends StatefulWidget {
 
 class _CategoryDropdownState extends State<CustomDropdown> {
   String? selectedCategory;
+  
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
