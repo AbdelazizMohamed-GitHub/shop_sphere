@@ -21,6 +21,7 @@ class _CustomThemeWidgetState extends State<CustomThemeWidget> {
           activeColor: Colors.white,
           value: active,
           onChanged: (val) {
+           
             context.read<AppCubit>().changeTheme(context);
             setState(() {
               active = val;

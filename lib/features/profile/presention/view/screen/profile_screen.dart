@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -16,8 +17,15 @@ import 'package:shop_sphere/features/profile/presention/view/widget/custom_profi
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_screen_header.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_theme_widget.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+    bool active = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +121,25 @@ class ProfileScreen extends StatelessWidget {
                         }));
                       },
                     ),
-                    const CustomThemeWidget(),
+                    
+                  CustomProfileListTile(
+      icon: Icons.dark_mode_outlined,
+      title: 'Dark Mode',
+      trailing: Switch(
+          activeColor: Colors.white,
+          value: active,
+          onChanged: (val) {
+           setState(() {
+             active = val;
+           });
+            context.read<AppCubit>().changeTheme(context);
+            setState(() {
+              
+            });
+          },
+          inactiveTrackColor: Colors.white),
+      funcation: () {},
+    ),
                     const Divider(
                       color: Colors.white,
                     ),

@@ -11,6 +11,7 @@ class SeeAllScreen extends StatelessWidget {
     required this.products,
   });
   final List<ProductEntity> products;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

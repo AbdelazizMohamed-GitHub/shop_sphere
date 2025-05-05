@@ -148,7 +148,9 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     ),
                     CustomDropdown(
                         categories: egyptGovernorates,
-                        text: "Select Governorate",
+                        text: stateController.text == ''
+                            ? "Select Governorate"
+                            : stateController.text,
                         isUpdate: widget.isupdate,
                         onCategorySelected: (val) {
                           stateController.text = val;
@@ -161,9 +163,12 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                           Placemark place = await getLocation();
                           // ignore: unnecessary_null_comparison
                           if (place != null) {
-                            streetController.text = place.street!;
-                            cityController.text = place.locality!;
+                        
+                            print(place.subThoroughfare);
+                            streetController.text = place.subThoroughfare!;
+                            cityController.text = place.subAdministrativeArea!;
                             stateController.text = place.administrativeArea!;
+                            setState(() {});
                           } else {
                             // ignore: use_build_context_synchronously
                             Warning.showWarning(context,

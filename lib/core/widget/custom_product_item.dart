@@ -81,9 +81,24 @@ class _CustomProductItemState extends State<CustomProductItem> {
                         Text('\$${widget.product.price.toStringAsFixed(2)}',
                             style: AppStyles.text16Regular),
                         const Spacer(),
-                        CustomProductItemButton(productEntity: widget.product),
+                        Text(
+                          widget.product.category,
+                          style: AppStyles.text14Regular,
+                        ),
                       ],
                     ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        widget.product.stock == 0
+                            ? const Text('Out of Stock')
+                            : Text(
+                                '${widget.product.stock.toString()} Stock',
+                              ),
+                        const Spacer(),
+                        CustomProductItemButton(productEntity: widget.product),
+                      ],
+                    )
                   ],
                 ),
               ),

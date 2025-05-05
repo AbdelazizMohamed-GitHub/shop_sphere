@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
@@ -64,97 +65,86 @@ class ExploreScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   BlocBuilder<ProductCubit, ProductState>(
                     builder: (context, state) {
-                      return state is ProductLoading
-                          ? const CustomExploreScreenLoading()
-                          : state is ProductFailure
-                              ? Column(children: [
-                                  const SizedBox(height: 20),
-                                  Center(
-                                    child: Text(
-                                      state.errMessage,
+                      if (state is ProductLoading) {
+                        return const CustomExploreScreenLoading();
+                      } else if (state is ProductFailure) {
+                        return Column(children: [
+                          const SizedBox(height: 20),
+                          Center(
+                            child: Text(
+                              state.errMessage,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await context
+                                  .read<ProductCubit>()
+                                  .getProducts(category: 'All');
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ]);
+                      } else if (state is ProductSuccess) {
+                        if (state.products.isEmpty) {
+                          return const Center(
+                            child: Text('No Products'),
+                          );
+                        }
+                          final popularProducts = [...state.products]..shuffle();
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            await context
+                                .read<ProductCubit>()
+                                .getProducts(category: 'All');
+                          },
+                          child: Column(
+                            children: [
+                              CustomAdvertise(
+                                product: state.products.first,
+                              ),
+                              CustomProductTitleSection(
+                                title: 'New Arrivals',
+                                funcation: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SeeAllScreen(
+                                        products: state.products,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      await context
-                                          .read<ProductCubit>()
-                                          .getProducts(category: 'All');
-                                    },
-                                    child: const Text('Retry'),
-                                  ),
-                                ])
-                              : state is ProductSuccess
-                                  ? state.products.isEmpty
-                                      ? const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              height: 200,
-                                            ),
-                                            Text('No products found'),
-                                          ],
-                                        )
-                                      : RefreshIndicator(
-                                          onRefresh: () async {
-                                            await context
-                                                .read<ProductCubit>()
-                                                .getProducts(category: 'All');
-                                          },
-                                          child: Column(
-                                            children: [
-                                              CustomAdvertise(
-                                                product: state.products.first,
-                                              ),
-                                              CustomProductTitleSection(
-                                                title: 'New Arrivals',
-                                                funcation: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SeeAllScreen(
-                                                        products:
-                                                            state.products,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                              SizedBox(
-                                                  height: 200,
-                                                  child:
-                                                      CustomHorzintalProductList(
-                                                    products: state.products,
-                                                  )),
-                                              CustomProductTitleSection(
-                                                title: 'Popular Products',
-                                                funcation: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SeeAllScreen(
-                                                        products:
-                                                            state.products,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 12),
-                                                child:
-                                                    CustomVerticalProductList(
-                                                  products: state.products,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                  : const SizedBox();
+                                  );
+                                },
+                              ),
+                              SizedBox(
+                                  height: 200,
+                                  child: CustomHorzintalProductList(
+                                    products: state.products,
+                                  )),
+                              CustomProductTitleSection(
+                                title: 'Popular Products',
+                                funcation: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SeeAllScreen(
+                                        products: popularProducts,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: CustomVerticalProductList(
+                                  products: popularProducts,
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
                     },
                   )
                 ],
