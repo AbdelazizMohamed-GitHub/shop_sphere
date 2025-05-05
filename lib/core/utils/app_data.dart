@@ -43,3 +43,33 @@ List appCategory = [
   'Health	',
 ];
 List timeRange = ["Daily", "Weekly", "Monthly", "Yearly"];
+List<String> egyptGovernorates = [
+  'Cairo',
+  'Giza',
+  'Qalyubia',
+  'Alexandria',
+  'Dakahlia',
+  'Red Sea',
+  'Beheira',
+  'Fayoum',
+  'Gharbia',
+  'Ismailia',
+  'Menoufia',
+  'Minya',
+  'New Valley',
+  'Suez',
+  'Aswan',
+  'Assiut',
+  'Beni Suef',
+  'Port Said',
+  'Damietta',
+  'Sharqia',
+  'South Sinai',
+  'Kafr El Sheikh',
+  'Matrouh',
+  'Luxor',
+  'Qena',
+  'North Sinai',
+  'Sohag'
+];
+
