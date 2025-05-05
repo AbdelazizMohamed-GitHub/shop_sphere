@@ -35,4 +35,14 @@ class AppFuncations {
       return null;
     }
   }
+  Map<String, double> shippingPrices = {
+  'Cairo': 40.0,
+  'Giza': 50.0,
+  'Qalyubia': 55.0,
+  'Alexandria': 60.0,
+  'Dakahlia': 70.0,
+  'Luxor': 90.0,
+  'Aswan': 110.0,
+  'Other': 100.0, // لأي محافظة مش مذكورة
+};
 }

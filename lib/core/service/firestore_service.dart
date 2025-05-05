@@ -32,17 +32,19 @@ class FirestoreService {
   }
 
   Future<List<ProductEntity>> gettProducts({required String category}) async {
-     QuerySnapshot<Map<String, dynamic>> snapshot;
+    QuerySnapshot<Map<String, dynamic>> snapshot;
     if (category == "All") {
-       snapshot = await firestore.collection('products').orderBy("createdAt", descending: true).get();
-    }else{
-       snapshot = await firestore
-        .collection('products')
-        .where('category', isEqualTo: category)
-        .get();
+      snapshot = await firestore
+          .collection('products')
+          .orderBy("createdAt", descending: true)
+          .get();
+    } else {
+      snapshot = await firestore
+          .collection('products')
+          .where('category', isEqualTo: category)
+          .get();
     }
 
-    
     return snapshot.docs
         .map((doc) => ProductModel.fromMap(doc.data()))
         .toList();
@@ -361,34 +363,36 @@ class FirestoreService {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
+    await updateStockAfterOrder(order.items);
     await firestore.collection("orders").doc(order.orderId).set(order.toMap());
     await clearCart();
-    await updateStockAfterOrder(order.items);
-  } Future<void> updateStockAfterOrder(List<CartItemModel> items) async {
-  final firestore = FirebaseFirestore.instance;
-
-  for (final item in items) {
-    final productRef = firestore.collection('products').doc(item.productId);
-
-    await firestore.runTransaction((transaction) async {
-      final snapshot = await transaction.get(productRef);
-
-      if (!snapshot.exists) return;
-
-      final currentStock = snapshot.get('stock') as int;
-      final orderedQuantity = item.quantity;
-
-      final newStock = currentStock - orderedQuantity;
-
-      if (newStock >= 0) {
-        transaction.update(productRef, {'stock': newStock});
-      } else {
-        // Handle case where stock is insufficient
-        throw Exception('Insufficient stock for product: ${item.productId}');
-      }
-    });
   }
-}
+
+  Future<void> updateStockAfterOrder(List<CartItemModel> items) async {
+    final firestore = FirebaseFirestore.instance;
+
+    for (final item in items) {
+      final productRef = firestore.collection('products').doc(item.productId);
+
+      await firestore.runTransaction((transaction) async {
+        final snapshot = await transaction.get(productRef);
+
+        if (!snapshot.exists) return;
+
+        final currentStock = snapshot.get('stock') as int;
+        final orderedQuantity = item.quantity;
+
+        final newStock = currentStock - orderedQuantity;
+
+        if (newStock >= 0) {
+          transaction.update(productRef, {'stock': newStock});
+        } else {
+          // Handle case where stock is insufficient
+          throw ('Out of stock for Product ${item.name}');
+        }
+      });
+    }
+  }
 
   Future<List<OrderEntity>> getOrders({required String status}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -417,6 +421,7 @@ class FirestoreService {
         .doc(orderId)
         .update({"status": status});
   }
+
   Future<List<UserEntity>> getUsers({required bool isStaff}) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection("users")
@@ -424,17 +429,18 @@ class FirestoreService {
         .get();
     return querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
-  Future< List<ProductEntity>> getStaffProducts({required String staffId}) async {
+
+  Future<List<ProductEntity>> getStaffProducts(
+      {required String staffId}) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection("products").where(
+        .collection("products")
+        .where(
           "sId",
           isEqualTo: staffId,
-
         )
         .get();
-    return querySnapshot.docs.map((e) => ProductModel.fromMap(e.data())).toList();
+    return querySnapshot.docs
+        .map((e) => ProductModel.fromMap(e.data()))
+        .toList();
   }
- 
-
-  
 }
