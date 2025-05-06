@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_order_items.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
@@ -18,6 +19,7 @@ class _OrderScreenState extends State<OrderScreen> {
     super.initState();
     BlocProvider.of<OrderCubit>(context).getOrders(status: "all");
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +31,7 @@ class _OrderScreenState extends State<OrderScreen> {
         title: const Text('All Order'),
         leadingWidth: 100,
       ),
-      body:  BlocBuilder<OrderCubit, OrderState>(
+      body: BlocBuilder<OrderCubit, OrderState>(
         builder: (context, state) {
           List<OrderEntity> orders = [];
           if (state is GetOrderLoading) {
@@ -37,7 +39,6 @@ class _OrderScreenState extends State<OrderScreen> {
           }
           if (state is OrderError) {
             return Center(child: Text(state.error));
-    
           }
           if (state is OrderSuccess) {
             orders = state.orders;
@@ -45,15 +46,21 @@ class _OrderScreenState extends State<OrderScreen> {
           if (orders.isEmpty) {
             return const Center(child: Text("No Orders Found"));
           }
+          final List displayOrder = orders.where(
+            (element) {
+             return element.status != orderStauts[3];
+            },
+          ).toList();
+
           return Padding(
-                padding:const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                child: ListView.builder(
-                  itemCount:orders.length ,
-                  itemBuilder: (BuildContext context, int index) {
-                    return  CustomOrderItem(orderEntity:orders[index]);
-                  },
-                ),
-              );
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: ListView.builder(
+              itemCount: displayOrder.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CustomOrderItem(orderEntity: displayOrder[index]);
+              },
+            ),
+          );
         },
       ),
     );

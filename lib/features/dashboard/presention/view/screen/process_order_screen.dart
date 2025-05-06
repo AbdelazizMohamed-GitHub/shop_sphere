@@ -62,7 +62,7 @@ class ProcessOrderScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-          order.status==orderStauts[0]?  BlocConsumer<OrderCubit, OrderState>(
+          order.status==orderStauts[1]?  BlocConsumer<OrderCubit, OrderState>(
               listener: (context, state) {
                 if (state is OrderSuccess) {
                   Navigator.pop(context);
