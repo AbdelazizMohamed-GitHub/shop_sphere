@@ -30,141 +30,142 @@ class _ProductScreenState extends State<ProductScreen> {
     context.read<DashboardCubit>().getProducts(category: 'All');
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold( drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Text('Dashboard', style: AppStyles.text26BoldWhite),
-              ),
-              ListTile(
-                leading: const Icon(Icons.shopping_cart),
-                title: const Text('Orders'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const OrderScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.inventory),
-                title: const Text('Products'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const ProductScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.people),
-                title: const Text('Users'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const UsersScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.analytics),
-                title: const Text('Order Analytics'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const DashboardScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Sign Out'),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacement(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const LoginScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      appBar: AppBar(
-        
-        title: const Text("Products"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SearchScreen()),
-              );
-            },
-            icon: const Icon(Icons.search, size: 30),
-          ),
-          const SizedBox(width: 10),
-        ],
-      ),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('products')
-              .orderBy("createdAt", descending: true)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text(snapshot.error.toString()));
-            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("No Products Found"));
-            } else {
-              final List<ProductEntity> products = snapshot.data!.docs
-                  .map((doc) => ProductModel.fromMap(doc.data()))
-                  .toList();
-              return GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('products')
+            .orderBy("createdAt", descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          } else if (snapshot.hasError) {
+            return Center(child: Text(snapshot.error.toString()));
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("No Products Found"));
+          } else {
+            final List<ProductEntity> products = snapshot.data!.docs
+                .map((doc) => ProductModel.fromMap(doc.data()))
+                .toList();
+
+            return Scaffold(
+                drawer: Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      const DrawerHeader(
+                        decoration: BoxDecoration(color: Colors.blue),
+                        child:
+                            Text('Dashboard', style: AppStyles.text26BoldWhite),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.shopping_cart),
+                        title: const Text('Orders'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const OrderScreen();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.inventory),
+                        title: const Text('Products'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ProductScreen();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.people),
+                        title: const Text('Users'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const UsersScreen();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.analytics),
+                        title: const Text('Order Analytics'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const DashboardScreen();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.logout),
+                        title: const Text('Sign Out'),
+                        onTap: () async {
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.pushReplacement(
+                            // ignore: use_build_context_synchronously
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const LoginScreen();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 5 / 6,
+                appBar: AppBar(
+                  title: Text("Products :${products.length}"),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SearchScreen()),
+                        );
+                      },
+                      icon: const Icon(Icons.search, size: 30),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
                 ),
-                itemCount: products.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return CustomDashboardProductItem(product: products[index]);
-                },
-              );
-            }
-          }),
-      floatingActionButton: FloatingActionButton(
+                body: GridView.builder(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 5 / 6,
+                  ),
+                  itemCount: products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CustomDashboardProductItem(product: products[index]);
+                  },
+                ), floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
         onPressed: () {
           Navigator.push(
@@ -175,7 +176,8 @@ class _ProductScreenState extends State<ProductScreen> {
           );
         },
         child: const Icon(Icons.add, color: Colors.white),
-      ),
-    );
+      ),);
+          }
+        });
   }
 }
