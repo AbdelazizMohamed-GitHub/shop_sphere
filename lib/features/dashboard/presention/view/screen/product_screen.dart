@@ -9,6 +9,7 @@ import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.da
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/analytics_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
@@ -83,13 +84,13 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.analytics),
-                title: const Text('Analytics'),
+                title: const Text('Order Analytics'),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return const AnalyticsScreen();
+                        return const DashboardScreen();
                       },
                     ),
                   );
