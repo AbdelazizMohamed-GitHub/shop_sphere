@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/analytics_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
@@ -16,19 +13,11 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/users_scre
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class ProductScreen extends StatefulWidget {
+class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState();
-}
 
-class _ProductScreenState extends State<ProductScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<DashboardCubit>().getProducts(category: 'All');
-  }
 
 
   @override

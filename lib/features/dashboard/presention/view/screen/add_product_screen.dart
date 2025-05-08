@@ -143,11 +143,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Warning.showWarning(context, message: state.errMessage);
                     }
                     if (state is DashboardSuccess) {
+                      Warning.showWarning(context,
+                          message: widget.isUpdate
+                              ? "Product Updated Successfully"
+                              : "Product Added Successfully");
                       Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProductScreen()),
-                          (route) => false);
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductScreen(),
+                        ),
+                        (route) => false,
+                      );
                     }
                   },
                   builder: (context, state) {

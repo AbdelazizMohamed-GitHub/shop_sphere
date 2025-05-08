@@ -6,9 +6,7 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/produc
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
-  DashboardCubit({required this.dashboardRepo}) : super(DashboardInitial()) {
-    getProducts(category: 'All');
-  }
+  DashboardCubit({required this.dashboardRepo}) : super(DashboardInitial());
   final DashboardRepo dashboardRepo;
   Future<void> addProduct({
     required ProductModel product,
@@ -21,24 +19,10 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     result.fold(
       (error) {
-   
         emit(DashboardFailer(errMessage: error.message));
       },
       (r) async {
-        await getProducts(category: 'All');
-      },
-    );
-  }
-
-  Future<void> getProducts({required String category}) async {
-    emit(DashboardLoading());
-    var result = await dashboardRepo.getProducts(category: category);
-    result.fold(
-      (error) {
-        emit(DashboardFailer(errMessage: error.message));
-      },
-      (products) {
-        emit(DashboardSuccess(products: products));
+        emit(DashboardSuccess());
       },
     );
   }
@@ -51,8 +35,8 @@ class DashboardCubit extends Cubit<DashboardState> {
       (error) {
         emit(DashboardFailer(errMessage: error.message));
       },
-      (r) async {
-        await getProducts(category: 'All');
+      (r)  {
+        emit(DashboardSuccess());
       },
     );
   }
@@ -67,8 +51,8 @@ class DashboardCubit extends Cubit<DashboardState> {
       (error) {
         emit(DashboardFailer(errMessage: error.message));
       },
-      (r) async {
-        await getProducts(category: 'All');
+      (r)  {
+        emit(DashboardSuccess());
       },
     );
   }

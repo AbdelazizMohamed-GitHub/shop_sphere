@@ -11,8 +11,7 @@ class DashboardInitial extends DashboardState {}
 class DashboardLoading extends DashboardState {}
 
 class DashboardSuccess extends DashboardState {
-   final List<ProductEntity> products;
-  DashboardSuccess({required this.products});
+    DashboardSuccess();
 
 }
 
