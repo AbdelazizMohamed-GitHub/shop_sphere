@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -9,24 +8,19 @@ import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
-import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/analytics_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+class OrderAnalycisScreen extends StatefulWidget {
+  const OrderAnalycisScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<OrderAnalycisScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<OrderAnalycisScreen> {
   List<OrderEntity> orders = [];
   List<OrderEntity> filteredOrders = [];
   String searchText = '';
@@ -39,89 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       child: Scaffold(
         appBar: AppBar(title: const Text('Main Screen')),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Text('Dashboard', style: AppStyles.text26BoldWhite),
-              ),
-              ListTile(
-                leading: const Icon(Icons.shopping_cart),
-                title: const Text('Orders'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const OrderScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.inventory),
-                title: const Text('Products'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const ProductScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.people),
-                title: const Text('Users'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const UsersScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.analytics),
-                title: const Text('Analytics'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const AnalyticsScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Sign Out'),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacement(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const LoginScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+        
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -170,7 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                       flex: 1,
                       child: Text(
-                        "${filteredOrders.isEmpty ? '' : filteredOrders.length} Orders",
+                        "${searchText.isEmpty ? orders.length : filteredOrders.length } Orders",
                         style: AppStyles.text22SemiBold,
                       )),
                 ],
@@ -243,12 +155,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   // Add more rows as needed
                                 )
                                 .toList(),
+                                
                           ),
                         );
+                        
                       }
                     }
                     return Container();
                   }),
+                  
             ],
           ),
         ),

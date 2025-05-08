@@ -9,7 +9,7 @@ import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.da
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/analytics_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
@@ -110,7 +110,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const DashboardScreen();
+                                return const OrderAnalycisScreen();
                               },
                             ),
                           );
