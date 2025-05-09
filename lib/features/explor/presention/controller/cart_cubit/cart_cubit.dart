@@ -58,6 +58,7 @@ class CartCubit extends Cubit<CartState> {
       (_) {
         _loadingItems.remove(cartItemModel.id);
         _emitUpdatedCartState();
+        emit(ProductAddedToCart());
       },
     );
   }

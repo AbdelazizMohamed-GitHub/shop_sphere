@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class DashboardState extends Equatable {
   @override

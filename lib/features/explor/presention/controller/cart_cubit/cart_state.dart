@@ -23,4 +23,9 @@ class CartUpdated extends CartState {
   final List<String> cartProduct;
   final Set<String> loadingItems;
   CartUpdated({required this.cartProduct, required this.loadingItems});
+
+}
+class ProductAddedToCart extends CartState {
+  // final String productId;
+  // ProductAddedToCart({required this.productId});
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/loading/custom_cart_button_loading.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
@@ -18,11 +17,7 @@ class CustomProductItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CartCubit, CartState>(listener: (context, state) {
-      if (state is CartFailure) {
-        Warning.showWarning(context, message: state.errMessage);
-      }
-    }, builder: (context, state) {
+    return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
       bool isProductInCart = false;
       bool isLoading = false;
       if (state is CartUpdated) {

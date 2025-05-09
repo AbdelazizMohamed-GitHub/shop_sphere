@@ -30,6 +30,10 @@ class CustomOrderItem extends StatelessWidget {
           itemCount: orderEntity.items.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
+              trailing: Text(
+                '\$${orderEntity.items[index].productPrice*orderEntity.items[index].productQuantity}',
+                style: AppStyles.text18Regular,
+              ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 8),
               leading: Container(
                 width: 70,
