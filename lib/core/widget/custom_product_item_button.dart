@@ -28,7 +28,7 @@ class CustomProductItemButton extends StatelessWidget {
           ? const CustomCartButtonLoading()
           : GestureDetector(
               onTap: () async {
-                await context.read<CartCubit>().addToCart(
+              isProductInCart?null:  await context.read<CartCubit>().addToCart(
                       cartItemModel: CartItemModel(
                         id: productEntity.pId,
                         name: productEntity.name,

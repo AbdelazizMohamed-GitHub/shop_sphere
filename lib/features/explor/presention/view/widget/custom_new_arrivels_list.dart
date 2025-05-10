@@ -10,38 +10,21 @@ class CustomHorzintalProductList extends StatelessWidget {
   final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CartCubit, CartState>(
-      listener: (context, state) {
-        if (state is CartFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errMessage),
-            ),
-          );
-        }if (state is ProductAddedToCart) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Product added to cart'),
-            ),
-          );
-        }
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: products.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: const EdgeInsets.only(
+            right: 10,
+          ),
+          child: SizedBox(
+              width: 150,
+              child: CustomProductItem(
+                product: products[index],
+              )),
+        );
       },
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: products.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              right: 10,
-            ),
-            child: SizedBox(
-                width: 150,
-                child: CustomProductItem(
-                  product: products[index],
-                )),
-          );
-        },
-      ),
     );
   }
 }

@@ -230,12 +230,7 @@ class FirestoreService {
 
     DocumentSnapshot userDoc = await userRef.get();
 
-    if (userDoc.exists) {
-      // Item exists in cart, remove it
-      userDoc.reference.delete();
-    } else {
-      // Item doesn't exist, add it to cart
-
+    if (!userDoc.exists) {
       await userRef.set(cartItemModel.toMap());
     }
   }

@@ -1,10 +1,13 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_state.dart';
@@ -46,108 +49,121 @@ class ExploreScreen extends StatelessWidget {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                children: [
-                  const CustomExploreScreenSearch(),
-                  const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Categories',
-                          style: AppStyles.text22SemiBold,
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 40, child: CustomCategoryList()),
-                  const SizedBox(height: 10),
-                  BlocBuilder<ProductCubit, ProductState>(
-                    builder: (context, state) {
-                      if (state is ProductLoading) {
-                        return const CustomExploreScreenLoading();
-                      } else if (state is ProductFailure) {
-                        return Column(children: [
-                          const SizedBox(height: 20),
-                          Center(
-                            child: Text(
-                              state.errMessage,
-                            ),
+              child: BlocListener<CartCubit, CartState>(
+                listener: (context, state) {
+                  if (state is ProductAddedToCart) {
+                    Warning.showWarning(
+                      context,
+                      message: 'Product Added To Cart',
+                    );
+                  }
+                },
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),   
+                    Text('${FirebaseAuth.instance.currentUser?.displayName}'),
+                    const CustomExploreScreenSearch(),
+                    const Padding(
+                      padding: EdgeInsets.all(12),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Categories',
+                            style: AppStyles.text22SemiBold,
+                            textAlign: TextAlign.start,
                           ),
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () async {
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40, child: CustomCategoryList()),
+                    const SizedBox(height: 10),
+                    BlocBuilder<ProductCubit, ProductState>(
+                      builder: (context, state) {
+                        if (state is ProductLoading) {
+                          return const CustomExploreScreenLoading();
+                        } else if (state is ProductFailure) {
+                          return Column(children: [
+                            const SizedBox(height: 20),
+                            Center(
+                              child: Text(
+                                state.errMessage,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () async {
+                                await context
+                                    .read<ProductCubit>()
+                                    .getProducts(category: 'All');
+                              },
+                              child: const Text('Retry'),
+                            ),
+                          ]);
+                        } else if (state is ProductSuccess) {
+                          if (state.products.isEmpty) {
+                            return const Center(
+                              child: Text('No Products'),
+                            );
+                          }
+                          final popularProducts = [...state.products]
+                            ..shuffle();
+                          return RefreshIndicator(
+                            onRefresh: () async {
                               await context
                                   .read<ProductCubit>()
                                   .getProducts(category: 'All');
                             },
-                            child: const Text('Retry'),
-                          ),
-                        ]);
-                      } else if (state is ProductSuccess) {
-                        if (state.products.isEmpty) {
-                          return const Center(
-                            child: Text('No Products'),
+                            child: Column(
+                              children: [
+                                CustomAdvertise(
+                                  product: state.products.first,
+                                ),
+                                CustomProductTitleSection(
+                                  title: 'New Arrivals',
+                                  funcation: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SeeAllScreen(
+                                          products: state.products,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                SizedBox(
+                                    height: 200,
+                                    child: CustomHorzintalProductList(
+                                      products: state.products,
+                                    )),
+                                CustomProductTitleSection(
+                                  title: 'Popular Products',
+                                  funcation: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SeeAllScreen(
+                                          products: popularProducts,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 12),
+                                  child: CustomVerticalProductList(
+                                    products: popularProducts,
+                                  ),
+                                )
+                              ],
+                            ),
                           );
                         }
-                          final popularProducts = [...state.products]..shuffle();
-                        return RefreshIndicator(
-                          onRefresh: () async {
-                            await context
-                                .read<ProductCubit>()
-                                .getProducts(category: 'All');
-                          },
-                          child: Column(
-                            children: [
-                              CustomAdvertise(
-                                product: state.products.first,
-                              ),
-                              CustomProductTitleSection(
-                                title: 'New Arrivals',
-                                funcation: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SeeAllScreen(
-                                        products: state.products,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(
-                                  height: 200,
-                                  child: CustomHorzintalProductList(
-                                    products: state.products,
-                                  )),
-                              CustomProductTitleSection(
-                                title: 'Popular Products',
-                                funcation: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SeeAllScreen(
-                                        products: popularProducts,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12),
-                                child: CustomVerticalProductList(
-                                  products: popularProducts,
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  )
-                ],
+                        return const SizedBox.shrink();
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           ),
