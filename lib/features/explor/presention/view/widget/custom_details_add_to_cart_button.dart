@@ -30,6 +30,12 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
         }
       },
       builder: (context, state) {
+       
+        if (state is CartLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         if (state is CartUpdated) {
           bool isProductInCart = state.cartProduct.contains(productEntity.pId);
           return GestureDetector(
@@ -49,10 +55,13 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                         name: productEntity.name,
                         imageUrl: productEntity.imageUrl,
                         price: productEntity.price,
-                        quantity: 1,
+                        quantity: cartCount== 0 ? 1 : cartCount,
                       ),
+                      
                     );
-                // ignore: use_build_context_synchronously
+                //      await context.read<CartCubit>().updateCartQuantityWithCount(
+                //     productId: productEntity.pId, count: cartCount);
+                // // ignore: use_build_context_synchronously
                 context
                     .read<CartCubit>()
                     .getProductInCart(productId: productEntity.pId);
@@ -69,7 +78,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    isProductInCart ? 'Go to cart' : 'Add to cart',
+                    isProductInCart|| cartCount == 0 ? 'Go to cart' : 'Add to cart',
                     style: AppStyles.text26BoldWhite,
                   ),
                   const SizedBox(

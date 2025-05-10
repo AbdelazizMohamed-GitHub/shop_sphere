@@ -10,13 +10,12 @@ class CustomDetailsButtom extends StatefulWidget {
   const CustomDetailsButtom({
     super.key,
     required this.productEntity,
-   required this.isProductInCart ,
-  
+    required this.isProductInCart,
   });
 
   final ProductEntity productEntity;
 
- final  bool isProductInCart;
+  final bool isProductInCart;
 
   @override
   State<CustomDetailsButtom> createState() => _CustomDetailsButtomState();
@@ -24,21 +23,20 @@ class CustomDetailsButtom extends StatefulWidget {
 
 class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
   int cartCount = 0;
-   bool isInitialized=false;
-   bool isProductInCart=false;
-  // ✅ Track if cartCount was already set
-// ✅ Set cartCount once when the product is in the cart and not yet initialized
-                 @override
+  bool isInitialized = false;
+  bool isProductInCart = false;
+
+  @override
   void initState() {
     super.initState();
     isProductInCart = widget.isProductInCart;
-   
+
     if (isProductInCart && !isInitialized) {
-                    cartCount =
-                        context.read<CartCubit>().cartEntity?.productQuantity ??
-                            0;
-                    isInitialized = true; // ✅ prevent future updates
-                  }}
+      cartCount = context.read<CartCubit>().cartEntity?.productQuantity ?? 0;
+      isInitialized = true; // ✅ prevent future updates
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -52,46 +50,41 @@ class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            child:
-                  
-
-                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          if (cartCount == 0) return;
-                          setState(() {
-                            cartCount--;
-                          });
-                        },
-                        icon: const Icon(Icons.remove, size: 30),
-                      ),
-                      Text(
-                        cartCount.toString(),
-                        style: AppStyles.text26BoldBlack,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          if (cartCount == 10) return;
-                          setState(() {
-                            cartCount++;
-                          });
-                        },
-                        icon: const Icon(Icons.add, size: 30),
-                      ),
-                    ],
-          ))
-        ,
-              
-          
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    if (cartCount == 0) return;
+                    setState(() {
+                      cartCount--;
+                    });
+                  },
+                  icon: const Icon(Icons.remove, size: 30),
+                ),
+                Text(
+                  cartCount.toString(),
+                  style: AppStyles.text26BoldBlack,
+                ),
+                IconButton(
+                  onPressed: () {
+                    if (cartCount == 10) return;
+                    setState(() {
+                      cartCount++;
+                    });
+                  },
+                  icon: const Icon(Icons.add, size: 30),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: CustomDetailsAddToCartButton(
               isProductInCart: widget.isProductInCart,
               cartCount: cartCount,
               productEntity: widget.productEntity,
             ),
-         ),
+          ),
         ],
       ),
     );

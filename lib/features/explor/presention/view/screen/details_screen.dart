@@ -39,19 +39,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
         if (state is CartFailure) {
           Warning.showWarning(context, message: state.errMessage);
         }
-        if (state is CartSuccess) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const CartScreen();
-          }));
-        }
+       
       },
       builder: (context, state) {
         if (state is CartFailure) {
           Warning.showWarning(context, message: state.errMessage);
         }
-        if (state is CartLoading) {
-          return const DetailsScreenLoading();
-        }
+       
 
         if (state is CartUpdated) {
           bool isProductInCart = state.cartProduct.contains(widget.product.pId);
