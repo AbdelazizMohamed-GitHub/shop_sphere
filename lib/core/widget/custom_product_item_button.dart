@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/loading/custom_cart_button_loading.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
@@ -27,17 +28,24 @@ class CustomProductItemButton extends StatelessWidget {
       return isLoading
           ? const CustomCartButtonLoading()
           : GestureDetector(
-              onTap: () async {
-              isProductInCart?null:  await context.read<CartCubit>().addToCart(
-                      cartItemModel: CartItemModel(
-                        id: productEntity.pId,
-                        name: productEntity.name,
-                        imageUrl: productEntity.imageUrl,
-                        price: productEntity.price,
-                        quantity: 1,
-                      ),
-                    );
-              },
+              onTap: isProductInCart
+                  ? () {
+                      Warning.showWarning(
+                        context,
+                        message: 'Product Already In Cart',
+                      );
+                    }
+                  : () async {
+                      await context.read<CartCubit>().addToCart(
+                            cartItemModel: CartItemModel(
+                              id: productEntity.pId,
+                              name: productEntity.name,
+                              imageUrl: productEntity.imageUrl,
+                              price: productEntity.price,
+                              quantity: 1,
+                            ),
+                          );
+                    },
               child: Container(
                 padding: const EdgeInsets.all(5),
                 decoration: const BoxDecoration(
@@ -48,7 +56,7 @@ class CustomProductItemButton extends StatelessWidget {
                   ),
                 ),
                 child: Icon(
-                  isProductInCart ? Icons.add : Icons.add,
+                  isProductInCart ? Icons.check : Icons.add,
                   color: Colors.white,
                   size: 30,
                 ),

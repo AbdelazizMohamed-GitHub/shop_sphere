@@ -78,7 +78,7 @@ class _CustomProductItemState extends State<CustomProductItem> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('\$${widget.product.price.toStringAsFixed(2)}',
+                        Text('\$${widget.product.price.toStringAsFixed(1)}',
                             style: AppStyles.text16Regular),
                         const Spacer(),
                         Text(

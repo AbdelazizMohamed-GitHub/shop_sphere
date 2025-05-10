@@ -59,9 +59,13 @@ class ExploreScreen extends StatelessWidget {
                   }
                 },
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),   
-                    Text('${FirebaseAuth.instance.currentUser?.displayName}'),
+                    const SizedBox(height: 10),
+                    Text(
+                      '${FirebaseAuth.instance.currentUser?.displayName}',
+                      style: AppStyles.text18Regular,
+                    ),
                     const CustomExploreScreenSearch(),
                     const Padding(
                       padding: EdgeInsets.all(12),
