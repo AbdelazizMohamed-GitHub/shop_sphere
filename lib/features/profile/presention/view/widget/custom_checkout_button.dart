@@ -56,7 +56,16 @@ class CustomCheckoutButton extends StatelessWidget {
               ? const Center(child: CircularProgressIndicator())
               : CustomButton(
                   onPressed: () async {
-                    if (currentIndex == 0) {
+                    if (address.state.isEmpty &&
+                        address.city.isEmpty &&
+                      
+                        address.street.isEmpty &&
+                        address.phoneNumber.isEmpty 
+                       ) {
+                      Warning.showWarning(context,
+                          message: 'Please add address');
+                    } else {
+                             if (currentIndex == 0) {
                       var oId = const Uuid().v4();
                       OrderModel order = OrderModel(
                           userName: userName,
@@ -133,6 +142,7 @@ class CustomCheckoutButton extends StatelessWidget {
                           },
                         ),
                       ));
+                    }
                     }
                   },
                   text: currentIndex == 0 ? "Check Out" : "Pay ${50}");

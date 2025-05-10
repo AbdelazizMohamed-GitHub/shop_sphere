@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 
-
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -41,7 +40,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     super.initState();
   }
 
-  AddressModel addressEntity=AddressModel(id: '', phoneNumber: '', title: '', street: '', city: '', state:  '', country: '', postalCode: '', createdAt: Timestamp.now());
+  AddressModel addressEntity = AddressModel(
+      id: '',
+      phoneNumber: '',
+      title: '',
+      street: '',
+      city: '',
+      state: '',
+      country: '',
+      postalCode: '',
+      createdAt: Timestamp.now());
   int paymentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -131,9 +139,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               setState(() {
                                 addressEntity = value;
                               });
-                                 shippingPrice  =         AppFuncations.getShippingPrice(addressEntity.state);
-
-                             
+                              shippingPrice = AppFuncations.getShippingPrice(
+                                  addressEntity.state);
                             },
                           ),
                           const SizedBox(
@@ -158,7 +165,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           CustomCartPrice(
                               title: 'Total:', price: widget.total.toDouble()),
-                           CustomCartPrice(title: 'Shipping:', price:shippingPrice),
+                          CustomCartPrice(
+                              title: 'Shipping:', price: shippingPrice),
                           const Divider(),
                           CustomCartPrice(
                               title: 'Total Cost:',
@@ -171,7 +179,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             shippingCoast: 50,
                             currentIndex: paymentIndex,
                             total: widget.total,
-                            cartItems: widget.cartItems ,
+                            cartItems: widget.cartItems,
                             uId: state.user.uid,
                             userName: state.user.name,
                             address: addressEntity,
