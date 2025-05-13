@@ -40,14 +40,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await Hive.initFlutter(); 
+  await Hive.initFlutter();
 
   Hive.registerAdapter(NotificationModelAdapter());
 
   await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
   await NotificationService.initialize();
   await NotificationService.initializeLocalNotifications();
-  
+
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
@@ -138,9 +138,9 @@ class _ShopSphereState extends State<ShopSphere> {
                     body: Center(child: CircularProgressIndicator()))
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
-                    : !(user?.isStaff ?? false)
+                    : (user?.isStaff ?? false)
                         ? const ProductScreen()
-                        : const TestScreen(),
+                        : const MainScreen(),
           );
         },
       ),

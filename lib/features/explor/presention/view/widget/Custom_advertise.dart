@@ -13,14 +13,12 @@ import 'package:shop_sphere/features/explor/presention/controller/product_cubit/
 
 class CustomAdvertise extends StatelessWidget {
   const CustomAdvertise({super.key, required this.product});
-  final ProductEntity? product;
+  final List<ProductEntity> product;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductCubit, ProductState>(
-      builder: (context, state) {
-        return CarouselSlider(
-            items: [
-              Stack(
+    return CarouselSlider(
+            items: product.take(4)
+                .map((item) =>Stack(
                 children: [
                   Container(
                     margin: const EdgeInsets.all(5.0),
@@ -34,7 +32,7 @@ class CustomAdvertise extends StatelessWidget {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: CachedNetworkImage(
-                            imageUrl: product!.imageUrl,
+                            imageUrl: item.imageUrl,
                             fit: BoxFit.cover,
                             placeholder: (context, url) =>
                                 const CustomImageLoading(),
@@ -52,20 +50,20 @@ class CustomAdvertise extends StatelessWidget {
                         color: AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Text(
-                        'offer 50%',
+                      child:  Text(
+                        '${item.discount}% off',
                         style: AppStyles.text22SemBoldWhite,
                       ),
                     ),
                   ),
                 ],
-              )
-            ],
+              ))
+                .toList(),
             options: CarouselOptions(
+              
               autoPlay: true,
               height: 200,
             ));
-      },
-    );
-  }
+      }
+   
 }

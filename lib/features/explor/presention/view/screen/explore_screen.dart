@@ -6,6 +6,7 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
@@ -109,8 +110,12 @@ class ExploreScreen extends StatelessWidget {
                               child: Text('No Products'),
                             );
                           }
+
                           final popularProducts = [...state.products]
                             ..shuffle();
+                          final sortedProducts = List<ProductEntity>.from(
+                              state.products)
+                            ..sort((a, b) => b.discount.compareTo(a.discount));
                           return RefreshIndicator(
                             onRefresh: () async {
                               await context
@@ -120,7 +125,7 @@ class ExploreScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 CustomAdvertise(
-                                  product: state.products.first,
+                                  product: sortedProducts,
                                 ),
                                 CustomProductTitleSection(
                                   title: 'New Arrivals',
