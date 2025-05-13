@@ -11,26 +11,19 @@ import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.
 
 class CustomDetailsAddToCartButton extends StatelessWidget {
   const CustomDetailsAddToCartButton(
-
-      {super.key, required this.cartCount, required this.productEntity,
+      {super.key,
+      required this.cartCount,
+      required this.productEntity,
       required this.isProductInCart});
   final int cartCount;
   final ProductEntity productEntity;
   final bool isProductInCart;
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CartCubit, CartState>(
-      listener: (context, state) {
-        if (state is CartFailure) {
-          Warning.showWarning(context, message: state.errMessage);
-        }
-
-        if (state is CartSuccess) {
-         
-        }
-      },
+    return BlocBuilder<CartCubit, CartState>(
+     
+      
       builder: (context, state) {
-       
         if (state is CartLoading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -44,10 +37,10 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                 await context.read<CartCubit>().updateCartQuantityWithCount(
                     productId: productEntity.pId, count: cartCount);
 
-                     // ignore: use_build_context_synchronously
-                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const CartScreen();
-          }));
+                // ignore: use_build_context_synchronously
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const CartScreen();
+                }));
               } else {
                 await context.read<CartCubit>().addToCart(
                       cartItemModel: CartItemModel(
@@ -55,14 +48,11 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                         name: productEntity.name,
                         imageUrl: productEntity.imageUrl,
                         price: productEntity.price,
-                        quantity: cartCount== 0 ? 1 : cartCount,
+                        quantity: cartCount == 0 ? 1 : cartCount,
                       ),
-                      
                     );
-                //      await context.read<CartCubit>().updateCartQuantityWithCount(
-                //     productId: productEntity.pId, count: cartCount);
-                // // ignore: use_build_context_synchronously
-                context
+               
+            await    context
                     .read<CartCubit>()
                     .getProductInCart(productId: productEntity.pId);
               }
@@ -78,7 +68,9 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    isProductInCart|| cartCount == 0 ? 'Go to cart' : 'Add to cart',
+                    isProductInCart || cartCount != 0
+                        ? 'Go to cart'
+                        : 'Add to cart',
                     style: AppStyles.text26BoldWhite,
                   ),
                   const SizedBox(
