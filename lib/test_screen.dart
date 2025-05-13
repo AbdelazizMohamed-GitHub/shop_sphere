@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -29,7 +31,7 @@ class _TestScreenState extends State<TestScreen> {
                   setState(() {
                     isLoading = true;
                   });
-                  await addStaffNameToAllProducts();
+                  await addDiscontField();
                   setState(() {
                     isLoading = false;
                   });
@@ -74,11 +76,32 @@ Future<void> addStaffNameToAllProducts() async {
     final staffName = staffDoc.data()?['name'] ?? 'Unknown';
 
     // فقط لو staffName مش موجود
-    if (!data.containsKey('staffName')) {
-      await doc.reference.update({'staffName': staffName});
+    if (!data.containsKey('discount')) {
+      await doc.reference.update({'discount': staffName});
       print("✅ Updated product ${doc.id} with staffName: $staffName");
     }
   }
 
   print("🎉 All products updated!");
+}
+Future<void> addDiscontField()async {
+  final productsRef = FirebaseFirestore.instance.collection('products');
+  final productsSnapshot = await productsRef.get();
+
+  for (final doc in productsSnapshot.docs) {
+    final data = doc.data();
+    if (!data.containsKey('discount')) {
+      await doc.reference.update({'discount': getRandomDiscount()});
+      print("✅ Updated product ${doc.id} with discount: ${data['discount']}");
+    }
+  }
+
+  print("🎉 All products updated!");
+
+
+}
+int getRandomDiscount() {
+  final discounts = [0, 5, 10, 20, 30, 40];
+  final random = Random();
+  return discounts[random.nextInt(discounts.length)];
 }

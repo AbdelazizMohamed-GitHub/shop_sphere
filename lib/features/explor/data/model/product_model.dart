@@ -26,9 +26,11 @@ class ProductModel extends ProductEntity {
   final DateTime createdAt;
   @override
   final String staffName;
+  final int discount;
 
   ProductModel({
-  required this.staffName,
+    required this.discount,
+    required this.staffName,
     required this.imageUrl,
     required this.createdAt,
     required this.pId,
@@ -40,7 +42,7 @@ class ProductModel extends ProductEntity {
     required this.stock,
     required this.isFeatured,
   }) : super(
-            staffName: staffName, 
+            staffName: staffName,
             sId: sId,
             createdAt: createdAt,
             pId: pId,
@@ -66,12 +68,14 @@ class ProductModel extends ProductEntity {
       'isFeatured': isFeatured,
       'sId': sId,
       'staffName': staffName,
+      'discount': discount,
     };
   }
 
   // Create ProductModel from Map
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
+      discount: map['discount'] ?? 0,
       createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       pId: map['id'] ?? '',
       sId: map['sId'] ?? '',
@@ -84,7 +88,8 @@ class ProductModel extends ProductEntity {
       isFeatured: map['isFeatured'] ?? false,
       staffName: map['staffName'] ?? '',
     );
-  } ProductModel copyWith({
+  }
+  ProductModel copyWith({
     String? pId,
     String? sId,
     String? name,
@@ -109,6 +114,7 @@ class ProductModel extends ProductEntity {
       isFeatured: isFeatured ?? this.isFeatured,
       createdAt: createdAt ?? this.createdAt,
       staffName: staffName ?? this.staffName,
+      discount: discount,
     );
   }
 }
