@@ -16,7 +16,7 @@ class OrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())
-        ..getOrders(status: 'Pending'),
+        ..getUserOrders(status: 'All'),
       child: Scaffold(
         appBar: AppBar(
           leading: AppTheme.isLightTheme(context)

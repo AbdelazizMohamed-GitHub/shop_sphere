@@ -388,17 +388,18 @@ class FirestoreService {
     }
   }
 
-  Future<List<OrderEntity>> getOrders({required String status}) async {
+  Future<List<OrderEntity>> getUserOrders({required String status}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
     if (userId == null) return [];
 
-    if (status == "all") {
+    if (status == "All") {
       querySnapshot = await firestore.collection("orders").get();
     } else {
       querySnapshot = await firestore
           .collection("orders")
-          .where("status", isEqualTo: status)
+          .where("status", isEqualTo: status,
+              ).where("uId", isEqualTo: userId)
           .get();
     }
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
@@ -436,5 +437,11 @@ class FirestoreService {
     return querySnapshot.docs
         .map((e) => ProductModel.fromMap(e.data()))
         .toList();
+  }
+  Future <List<OrderEntity>> getAllOrders() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection("orders")
+        .get();
+    return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
 }

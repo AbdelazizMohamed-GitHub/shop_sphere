@@ -94,33 +94,36 @@ class CustomOrderItem extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  order.status == orderStauts[0]
+                  order.status == orderStauts[1]
                       ? TextButton(
                           onPressed: () async {
                             await context
                                 .read<OrderCubit>()
                                 .deletOrder(orderId: order.orderId);
                           },
-                          child:const Text(
-                           'Cancel',
-                            style:  TextStyle(
-                                color: Colors.red, fontSize: 14),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.red, fontSize: 14),
                           ),
                         )
-                      : order.status == orderStauts[1]
+                      : order.status == orderStauts[2]
                           ? TextButton(
                               onPressed: () async {
                                 await context
                                     .read<OrderCubit>()
-                                    .changeOrdeStatus(orderId: order.orderId,status: orderStauts[2]);
+                                    .changeOrdeStatus(
+                                        orderId: order.orderId,
+                                        status: orderStauts[3]);
                               },
                               child: Text(
                                 orderStauts[2],
-                                style:  TextStyle(
-                                    color:AppFuncations.getStatusColor(orderStauts[2]), fontSize: 14),
+                                style: TextStyle(
+                                    color: AppFuncations.getStatusColor(
+                                        orderStauts[2]),
+                                    fontSize: 14),
                               ),
                             )
-                          : const SizedBox()
+                          : Text(orderStauts[3],style: TextStyle(color: AppFuncations.getStatusColor(orderStauts[3]),fontSize: 14))
                 ])
               ],
             ),

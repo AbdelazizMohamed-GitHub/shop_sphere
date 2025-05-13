@@ -14,7 +14,7 @@ class OrderCubit extends Cubit<OrderState> {
   PageController pageController = PageController(initialPage: 0);
   void changeOrderStatus(int index) {
     currentStatus = index;
-    getOrders(status: orderStauts[index]);
+    getUserOrders(status: orderStauts[index]);
   }
 
   Future<void> createOrder({required OrderModel order}) async {
@@ -26,9 +26,9 @@ class OrderCubit extends Cubit<OrderState> {
     );
   }
 
-  Future<void> getOrders({required String status}) async {
+  Future<void> getUserOrders({required String status}) async {
     emit(GetOrderLoading());
-    final result = await orderRepo.getOrders(status: status);
+    final result = await orderRepo.getUserOrders(status: status);
     result.fold(
       (l) => emit(OrderError(error: l.message)),
       (orders) => emit(OrderSuccess(orders: orders)),
@@ -41,7 +41,7 @@ class OrderCubit extends Cubit<OrderState> {
     result.fold(
       (l) => emit(OrderError(error: l.message)),
       (r) {
-        getOrders(status: orderStauts[currentStatus]);
+        getUserOrders(status: orderStauts[currentStatus]);
       },
     );
   }
@@ -52,7 +52,15 @@ class OrderCubit extends Cubit<OrderState> {
     final result =
         await orderRepo.changeOrdeStatus(status: status, orderId: orderId);
     result.fold((l) => emit(OrderError(error: l.message)), (r) {
-      getOrders(status: 'all');
+      getUserOrders(status: status);
     });
+  }
+  Future<void> getAllOrders() async {
+    emit(GetOrderLoading());
+    final result = await orderRepo.getAllOrders();
+    result.fold(
+      (l) => emit(OrderError(error: l.message)),
+      (orders) => emit(OrderSuccess(orders: orders)),
+    );
   }
 }

@@ -11,24 +11,22 @@ class OrderRepoImpl extends OrderRepo {
   OrderRepoImpl({required this.firestoreService});
   @override
   Future<Either<FirebaseFailure, void>> craeteOrders(
-      {required OrderModel orderModel}
-  ) async{
+      {required OrderModel orderModel}) async {
     try {
-      await firestoreService.createOrder(order: orderModel );
+      await firestoreService.createOrder(order: orderModel);
       return right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));
     }
-  
   }
 
   @override
-  Future<Either<FirebaseFailure, List<OrderEntity>>> getOrders({required String status}) async{
-    
+  Future<Either<FirebaseFailure, List<OrderEntity>>> getUserOrders(
+      {required String status}) async {
     try {
-      var data = await firestoreService.getOrders(status: status);
+      var data = await firestoreService.getUserOrders(status: status);
       return right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
@@ -38,7 +36,8 @@ class OrderRepoImpl extends OrderRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, void>> deletOrder({required String orderId}) async{
+  Future<Either<FirebaseFailure, void>> deletOrder(
+      {required String orderId}) async {
     try {
       await firestoreService.deleteOrder(orderId: orderId);
       return right(null);
@@ -48,12 +47,25 @@ class OrderRepoImpl extends OrderRepo {
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
-  
+
   @override
-  Future<Either<FirebaseFailure, void>> changeOrdeStatus({required String status, required String orderId})async {
+  Future<Either<FirebaseFailure, void>> changeOrdeStatus(
+      {required String status, required String orderId}) async {
     try {
-    await  firestoreService.changeOrdeStatus(status: status, orderId: orderId);
+      await firestoreService.changeOrdeStatus(status: status, orderId: orderId);
       return right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseFailure, List<OrderEntity>>> getAllOrders() async {
+    try {
+      var data =await firestoreService.getAllOrders();
+      return right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {

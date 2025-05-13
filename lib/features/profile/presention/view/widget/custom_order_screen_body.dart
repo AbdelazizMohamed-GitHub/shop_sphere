@@ -25,6 +25,15 @@ class CustomOrderScreenBody extends StatelessWidget {
                 curve: Curves.easeOut);
           },
           children: [
+             ListView.builder(
+              shrinkWrap: true,
+              itemCount: orders.length,
+              itemBuilder: (context, index) {
+                return CustomOrderItem(
+                  order: orders[index],
+                );
+              },
+            ),
             ListView.builder(
               shrinkWrap: true,
               itemCount: orders.length,

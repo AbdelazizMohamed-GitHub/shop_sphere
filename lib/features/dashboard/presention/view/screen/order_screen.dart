@@ -17,7 +17,7 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<OrderCubit>(context).getOrders(status: "all");
+    BlocProvider.of<OrderCubit>(context).getAllOrders();
   }
 
   @override

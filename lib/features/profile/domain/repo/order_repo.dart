@@ -5,7 +5,8 @@ import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 abstract class OrderRepo {
   Future<Either<FirebaseFailure, void>> craeteOrders({required OrderModel orderModel});
-  Future<Either<FirebaseFailure, List<OrderEntity>>> getOrders({required String status});
+  Future<Either<FirebaseFailure, List<OrderEntity>>> getUserOrders({required String status});
   Future<Either<FirebaseFailure, void>> deletOrder({required String orderId});
   Future<Either<FirebaseFailure, void>> changeOrdeStatus({required String status,required String orderId});
+Future<Either<FirebaseFailure, List<OrderEntity>>> getAllOrders();
 }
