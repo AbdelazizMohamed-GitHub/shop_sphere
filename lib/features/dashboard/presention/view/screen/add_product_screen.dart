@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
@@ -41,6 +40,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   TextEditingController quantityController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  int discount = 0;
   File? imageFile;
   @override
   void initState() {
@@ -50,6 +50,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       priceController.text = widget.productEntity!.price.toString();
       descriptionController.text = widget.productEntity!.description;
       selectedCategory = widget.productEntity!.category;
+      discount = widget.productEntity!.discount;
     }
     super.initState();
   }
@@ -107,18 +108,42 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      flex: 3,
+                      flex: 1,
                       child: CustomDropdown(
-                        productCategory: selectedCategory,
-                        isUpdate: widget.isUpdate,
-                        categories:
-                            appCategory.map((e) => e.toString()).toList(),
+                        
+                          isUpdate: widget.isUpdate,
+                        categories: const [
+                          '0',
+                          '5',
+                          '10',
+                          '20',
+                          '30',
+                          '40',
+                          '50',
+                          '60',
+                          '70',
+                          '80',
+                          '90',
+                          '100'
+                        ],
                         onCategorySelected: (value) {
-                          selectedCategory = value;
+                          discount = int.parse(value);
                         },
+                        text: "Discount",
+                       
+                        productCategory: discount.toString(),
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 10),
+                CustomDropdown(
+                  productCategory: selectedCategory,
+                  isUpdate: widget.isUpdate,
+                  categories: appCategory.map((e) => e.toString()).toList(),
+                  onCategorySelected: (value) {
+                    selectedCategory = value;
+                  },
                 ),
                 const SizedBox(height: 15),
                 CustomTextForm(
@@ -159,56 +184,71 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   builder: (context, state) {
                     return state is DashboardLoading
                         ? const Center(child: CircularProgressIndicator())
-                        :CustomButton(
-  onPressed: () async {
-    if (formKey.currentState!.validate() && selectedCategory != null) {
-      if (imageFile != null || widget.isUpdate) {
-        final user = await FirestoreService(
-          firestore: FirebaseFirestore.instance,
-        ).getUserData();
+                        : CustomButton(
+                            onPressed: () async {
+                              if (formKey.currentState!.validate() &&
+                                  selectedCategory != null) {
+                                if (imageFile != null || widget.isUpdate) {
+                                  final user = await FirestoreService(
+                                    firestore: FirebaseFirestore.instance,
+                                  ).getUserData();
 
-        final baseProduct = widget.isUpdate
-            ? (widget.productEntity! as ProductModel).copyWith(
-                name: nameController.text,
-                price: double.parse(priceController.text),
-                stock: int.parse(quantityController.text),
-                category: selectedCategory!,
-                description: descriptionController.text,
-              )
-            : ProductModel(
-              discount: 0,
-                staffName: user.name,
-                createdAt: DateTime.now(),
-                name: nameController.text,
-                price: double.parse(priceController.text),
-                stock: int.parse(quantityController.text),
-                category: selectedCategory!,
-                description: descriptionController.text,
-                pId: dId,
-                sId: FirebaseAuth.instance.currentUser!.uid,
-                imageUrl: '',
-                isFeatured: false,
-              );
+                                  final baseProduct = widget.isUpdate
+                                      ? (widget.productEntity! as ProductModel)
+                                          .copyWith(
+                                          name: nameController.text,
+                                          price: double.parse(
+                                              priceController.text),
+                                          stock: int.parse(
+                                              quantityController.text),
+                                          category: selectedCategory!,
+                                          description:
+                                              descriptionController.text,
+                                        )
+                                      : ProductModel(
+                                          discount: 0,
+                                          staffName: user.name,
+                                          createdAt: DateTime.now(),
+                                          name: nameController.text,
+                                          price: double.parse(
+                                              priceController.text),
+                                          stock: int.parse(
+                                              quantityController.text),
+                                          category: selectedCategory!,
+                                          description:
+                                              descriptionController.text,
+                                          pId: dId,
+                                          sId: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          imageUrl: '',
+                                          isFeatured: false,
+                                        );
 
-        if (widget.isUpdate) {
-          await context.read<DashboardCubit>().updateProduct(
-                dId: widget.productEntity!.pId,
-                data: baseProduct,
-              );
-        } else {
-          await context.read<DashboardCubit>().addProduct(
-                product: baseProduct,
-                imageFile: imageFile!,
-              );
-        }
-      } else {
-        Warning.showWarning(context, message: "Please Add Image");
-      }
-    }
-  },
-  text: widget.isUpdate ? "Update Product" : "Add Product",
-)
-;
+                                  if (widget.isUpdate) {
+                                    await context
+                                        .read<DashboardCubit>()
+                                        .updateProduct(
+                                          dId: widget.productEntity!.pId,
+                                          data: baseProduct,
+                                        );
+                                  } else {
+                                    await context
+                                        .read<DashboardCubit>()
+                                        .addProduct(
+                                          product: baseProduct,
+                                          imageFile: imageFile!,
+                                        );
+                                  }
+                                } else {
+                                  Warning.showWarning(context,
+                                      message: "Please Add Image");
+                                }
+                              }
+                            },
+                            text: widget.isUpdate
+                                ? "Update Product"
+                                : "Add Product",
+                          );
                   },
                 ),
               ],

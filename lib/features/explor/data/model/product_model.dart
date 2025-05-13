@@ -42,6 +42,7 @@ class ProductModel extends ProductEntity {
     required this.stock,
     required this.isFeatured,
   }) : super(
+            discount: discount,
             staffName: staffName,
             sId: sId,
             createdAt: createdAt,

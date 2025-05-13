@@ -13,7 +13,9 @@ class ProductEntity {
   final String sId;
    final DateTime createdAt;
   final String staffName;
+   final int discount;
   ProductEntity({
+    required this.discount,
     required this.staffName,
     required this.createdAt,
     required this.pId,
