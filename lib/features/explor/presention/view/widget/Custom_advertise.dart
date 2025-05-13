@@ -2,15 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart'
     show CarouselOptions, CarouselSlider;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:googleapis/containeranalysis/v1.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
-import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_state.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
 class CustomAdvertise extends StatelessWidget {
