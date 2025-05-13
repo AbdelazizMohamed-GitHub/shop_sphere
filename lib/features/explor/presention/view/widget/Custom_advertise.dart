@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart'
     show CarouselOptions, CarouselSlider;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/containeranalysis/v1.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -10,6 +11,7 @@ import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_state.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
 class CustomAdvertise extends StatelessWidget {
   const CustomAdvertise({super.key, required this.product});
@@ -43,16 +45,23 @@ class CustomAdvertise extends StatelessWidget {
                     width: 120,
                     right: 40,
                     bottom: 40,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child:  Text(
-                        '${item.discount}% off',
-                        style: AppStyles.text22SemBoldWhite,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return  DetailsScreen(product: item,isFaV: false,);
+                        }));
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child:  Text(
+                          '${item.discount}% off',
+                          style: AppStyles.text22SemBoldWhite,
+                        ),
                       ),
                     ),
                   ),
