@@ -21,6 +21,7 @@ class CustomAppBarCart extends StatelessWidget {
                   CustomCircleButton(
                       icon: const Icon(
                         Icons.shopping_cart,
+                        color: Colors.black,
                       ),
                       funcation: () {
                         Navigator.push(
@@ -29,14 +30,15 @@ class CustomAppBarCart extends StatelessWidget {
                               builder: (context) => const CartScreen(),
                             ));
                       }),
-                   Positioned(
+                  Positioned(
                     top: 0,
                     right: 0,
                     child: CircleAvatar(
                         backgroundColor: AppColors.primaryColor,
-                        radius: 8,
+                        radius: 9,
                         child: Text(
-                         state.cartProduct.length.toString() , // This should be replaced with the actual cart item count
+                          state.cartProduct.length
+                              .toString(), // This should be replaced with the actual cart item count
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,

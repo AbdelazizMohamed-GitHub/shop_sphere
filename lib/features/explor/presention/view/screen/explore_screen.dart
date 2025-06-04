@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
@@ -37,8 +38,18 @@ class ExploreScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             elevation: 0,
-            title: const Text(
-              'Explore',
+            centerTitle: false,
+            title: Row(
+              children: [
+                Text(' Welcome ',
+                    style: AppStyles.text18Regular.copyWith(
+                      color: AppColors.primaryColor,
+                    )),
+                Text(
+                  '${FirebaseAuth.instance.currentUser?.displayName?.split(' ').first}',
+                  style: AppStyles.text18Regular,
+                ),
+              ],
             ),
             actions: const [
               CustomAppBarCart(),
@@ -49,11 +60,9 @@ class ExploreScreen extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: RefreshIndicator(
-               onRefresh: () async {
-                              await context
-                                  .read<ProductCubit>()
-                                  .getProducts(category: 'All');
-                            },
+              onRefresh: () async {
+                await context.read<ProductCubit>().getProducts(category: 'All');
+              },
               child: Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: BlocListener<CartCubit, CartState>(
@@ -68,11 +77,6 @@ class ExploreScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        '${FirebaseAuth.instance.currentUser?.displayName}',
-                        style: AppStyles.text18Regular,
-                      ),
                       const CustomExploreScreenSearch(),
                       const Padding(
                         padding: EdgeInsets.all(12),
@@ -116,12 +120,13 @@ class ExploreScreen extends StatelessWidget {
                                 child: Text('No Products'),
                               );
                             }
-              
+
                             final popularProducts = [...state.products]
                               ..shuffle();
                             final sortedProducts = List<ProductEntity>.from(
                                 state.products)
-                              ..sort((a, b) => b.discount.compareTo(a.discount));
+                              ..sort(
+                                  (a, b) => b.discount.compareTo(a.discount));
                             return Column(
                               children: [
                                 CustomAdvertise(
