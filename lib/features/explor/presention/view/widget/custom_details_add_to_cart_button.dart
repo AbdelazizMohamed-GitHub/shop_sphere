@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
@@ -21,8 +20,6 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(
-     
-      
       builder: (context, state) {
         if (state is CartLoading) {
           return const Center(
@@ -34,10 +31,6 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
           return GestureDetector(
             onTap: () async {
               if (isProductInCart) {
-                await context.read<CartCubit>().updateCartQuantityWithCount(
-                    productId: productEntity.pId, count: cartCount);
-
-                // ignore: use_build_context_synchronously
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const CartScreen();
                 }));
@@ -48,11 +41,12 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                         name: productEntity.name,
                         imageUrl: productEntity.imageUrl,
                         price: productEntity.price,
-                        quantity: cartCount == 0 ? 1 : cartCount,
+                        quantity: 1,
                       ),
                     );
-               
-            await    context
+                    
+
+                await context
                     .read<CartCubit>()
                     .getProductInCart(productId: productEntity.pId);
               }

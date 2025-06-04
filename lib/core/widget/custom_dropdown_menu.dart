@@ -11,7 +11,7 @@ class CustomDropdown extends StatefulWidget {
 
   const CustomDropdown({
     this.productCategory,
-    this.text='Select Category',
+    this.text,
     super.key,
     required this.categories,
     required this.onCategorySelected,

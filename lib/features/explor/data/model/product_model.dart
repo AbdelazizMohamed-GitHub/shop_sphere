@@ -26,6 +26,7 @@ class ProductModel extends ProductEntity {
   final DateTime createdAt;
   @override
   final String staffName;
+  @override
   final int discount;
 
   ProductModel({

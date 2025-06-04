@@ -1,4 +1,3 @@
-
 class UserEntity {
   final String uid;
   final String name;
@@ -7,23 +6,23 @@ class UserEntity {
   final String phoneNumber;
   final String profileImage;
   final int addressIndex;
-  final String gender;
-
+  final String? gender;
   final DateTime createdAt;
   final List<String> favProduct;
   final bool isStaff;
   final String fcmToken;
 
-  const UserEntity( {required this.gender,required this.favProduct,
-    required this.uid,
-    required this.name,
-    required this.email,
-    required this.birthDate,
-    required this.phoneNumber,
-    required this.profileImage,
-    required this.addressIndex,
-    required this.createdAt,
-    required this.isStaff,required this.fcmToken
-
-  });
+  const UserEntity(
+      {required this.gender,
+      required this.favProduct,
+      required this.uid,
+      required this.name,
+      required this.email,
+      required this.birthDate,
+      required this.phoneNumber,
+      required this.profileImage,
+      required this.addressIndex,
+      required this.createdAt,
+      required this.isStaff,
+      required this.fcmToken});
 }

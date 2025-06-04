@@ -30,7 +30,6 @@ import 'package:shop_sphere/features/profile/presention/controller/address/adres
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/firebase_options.dart';
-import 'package:shop_sphere/test_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -138,7 +137,7 @@ class _ShopSphereState extends State<ShopSphere> {
                     body: Center(child: CircularProgressIndicator()))
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
-                    : (user?.isStaff ?? false)
+                    : !(user?.isStaff ?? false)
                         ? const ProductScreen()
                         : const MainScreen(),
           );

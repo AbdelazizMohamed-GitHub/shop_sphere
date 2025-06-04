@@ -21,21 +21,30 @@ class CustomDetailsButtom extends StatefulWidget {
 }
 
 class _CustomDetailsButtomState extends State<CustomDetailsButtom> {
-
-  bool isProductInCart= false;
-int cartCount = 0;
-bool updateCount=true;
+  bool isProductInCart = false;
+  int cartCount = 0;
+  bool updateCount = true;
   @override
   void initState() {
     super.initState();
-    context.read<CartCubit>().getProductInCart(productId: widget.productEntity.pId);();
+    context
+        .read<CartCubit>()
+        .getProductInCart(productId: widget.productEntity.pId);
+    ();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CartCubit, CartState>(
       listener: (context, state) {
         if (state is CartFailure) {
           Warning.showWarning(context, message: state.errMessage);
+        }
+        if (state is ProductAddedToCart) {
+          context
+              .read<CartCubit>()
+              .getProductInCart(productId: widget.productEntity.pId);
+          cartCount = 1;
         }
       },
       builder: (context, state) {
@@ -45,18 +54,16 @@ bool updateCount=true;
           );
         }
         if (state is CartUpdated) {
-          print(cartCount);
           isProductInCart =
               state.cartProduct.contains(widget.productEntity.pId);
- if (isProductInCart && updateCount) {
-          cartCount =
-              context.read<CartCubit>().cartEntity?.productQuantity ?? 0;
-          updateCount = false; // ✅ prevent future updates
-        // ✅ prevent future updates
+          if (isProductInCart && updateCount) {
+            cartCount =
+                context.read<CartCubit>().cartEntity?.productQuantity ?? 0;
+            updateCount = false; // ✅ prevent future updates
+            // ✅ prevent future updates
+          }
         }
-         
-        }
-       
+
         return Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -72,13 +79,15 @@ bool updateCount=true;
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      onPressed: ()async {
+                      onPressed: () async {
                         if (cartCount == 0) return;
-                                                cartCount--;
+                        cartCount--;
 
-                         await context.read<CartCubit>().updateCartQuantityWithCount(
-                    productId: widget.productEntity.pId, count: cartCount);
-                        
+                        await context
+                            .read<CartCubit>()
+                            .updateCartQuantityWithCount(
+                                productId: widget.productEntity.pId,
+                                count: cartCount);
                       },
                       icon: const Icon(Icons.remove, size: 30),
                     ),
@@ -87,13 +96,14 @@ bool updateCount=true;
                       style: AppStyles.text26BoldBlack,
                     ),
                     IconButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         if (cartCount == 10) return;
                         cartCount++;
-                      await  context.read<CartCubit>().updateCartQuantityWithCount(
-                            productId: widget.productEntity.pId,
-                            count: cartCount);
-                       
+                        await context
+                            .read<CartCubit>()
+                            .updateCartQuantityWithCount(
+                                productId: widget.productEntity.pId,
+                                count: cartCount);
                       },
                       icon: const Icon(Icons.add, size: 30),
                     ),
@@ -102,7 +112,7 @@ bool updateCount=true;
               ),
               Expanded(
                 child: CustomDetailsAddToCartButton(
-                  isProductInCart: isProductInCart ?? false,
+                  isProductInCart: isProductInCart,
                   cartCount: cartCount,
                   productEntity: widget.productEntity,
                 ),

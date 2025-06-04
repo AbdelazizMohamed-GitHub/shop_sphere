@@ -48,81 +48,81 @@ class ExploreScreen extends StatelessWidget {
             ],
           ),
           body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: BlocListener<CartCubit, CartState>(
-                listener: (context, state) {
-                  if (state is ProductAddedToCart) {
-                    Warning.showWarning(
-                      context,
-                      message: 'Product Added To Cart',
-                    );
-                  }
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    Text(
-                      '${FirebaseAuth.instance.currentUser?.displayName}',
-                      style: AppStyles.text18Regular,
-                    ),
-                    const CustomExploreScreenSearch(),
-                    const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Categories',
-                            style: AppStyles.text22SemiBold,
-                            textAlign: TextAlign.start,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 40, child: CustomCategoryList()),
-                    const SizedBox(height: 10),
-                    BlocBuilder<ProductCubit, ProductState>(
-                      builder: (context, state) {
-                        if (state is ProductLoading) {
-                          return const CustomExploreScreenLoading();
-                        } else if (state is ProductFailure) {
-                          return Column(children: [
-                            const SizedBox(height: 20),
-                            Center(
-                              child: Text(
-                                state.errMessage,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: () async {
-                                await context
-                                    .read<ProductCubit>()
-                                    .getProducts(category: 'All');
-                              },
-                              child: const Text('Retry'),
-                            ),
-                          ]);
-                        } else if (state is ProductSuccess) {
-                          if (state.products.isEmpty) {
-                            return const Center(
-                              child: Text('No Products'),
-                            );
-                          }
-
-                          final popularProducts = [...state.products]
-                            ..shuffle();
-                          final sortedProducts = List<ProductEntity>.from(
-                              state.products)
-                            ..sort((a, b) => b.discount.compareTo(a.discount));
-                          return RefreshIndicator(
-                            onRefresh: () async {
+            child: RefreshIndicator(
+               onRefresh: () async {
                               await context
                                   .read<ProductCubit>()
                                   .getProducts(category: 'All');
                             },
-                            child: Column(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: BlocListener<CartCubit, CartState>(
+                  listener: (context, state) {
+                    if (state is ProductAddedToCart) {
+                      Warning.showWarning(
+                        context,
+                        message: 'Product Added To Cart',
+                      );
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 10),
+                      Text(
+                        '${FirebaseAuth.instance.currentUser?.displayName}',
+                        style: AppStyles.text18Regular,
+                      ),
+                      const CustomExploreScreenSearch(),
+                      const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Categories',
+                              style: AppStyles.text22SemiBold,
+                              textAlign: TextAlign.start,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 40, child: CustomCategoryList()),
+                      const SizedBox(height: 10),
+                      BlocBuilder<ProductCubit, ProductState>(
+                        builder: (context, state) {
+                          if (state is ProductLoading) {
+                            return const CustomExploreScreenLoading();
+                          } else if (state is ProductFailure) {
+                            return Column(children: [
+                              const SizedBox(height: 20),
+                              Center(
+                                child: Text(
+                                  state.errMessage,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await context
+                                      .read<ProductCubit>()
+                                      .getProducts(category: 'All');
+                                },
+                                child: const Text('Retry'),
+                              ),
+                            ]);
+                          } else if (state is ProductSuccess) {
+                            if (state.products.isEmpty) {
+                              return const Center(
+                                child: Text('No Products'),
+                              );
+                            }
+              
+                            final popularProducts = [...state.products]
+                              ..shuffle();
+                            final sortedProducts = List<ProductEntity>.from(
+                                state.products)
+                              ..sort((a, b) => b.discount.compareTo(a.discount));
+                            return Column(
                               children: [
                                 CustomAdvertise(
                                   product: sortedProducts,
@@ -165,13 +165,13 @@ class ExploreScreen extends StatelessWidget {
                                   ),
                                 )
                               ],
-                            ),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    )
-                  ],
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

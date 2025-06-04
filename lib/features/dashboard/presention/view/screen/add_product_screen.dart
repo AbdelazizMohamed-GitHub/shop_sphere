@@ -206,7 +206,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                               descriptionController.text,
                                         )
                                       : ProductModel(
-                                          discount: 0,
+                                          discount: discount,
                                           staffName: user.name,
                                           createdAt: DateTime.now(),
                                           name: nameController.text,
