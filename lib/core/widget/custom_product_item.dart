@@ -78,20 +78,47 @@ class _CustomProductItemState extends State<CustomProductItem> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('\$${widget.product.price.toStringAsFixed(1)}',
-                            style: AppStyles.text16Regular),
-                        const Spacer(),
-                        Text(
-                          widget.product.category,
-                          style: AppStyles.text14Regular,
-                        ),
+                        widget.product.discount == 0
+                            ? Text(
+                                '\$ ${widget.product.price.toStringAsFixed(1)} ',
+                                style: AppStyles.text14Regular.copyWith(
+                                  color: AppColors.primaryColor,
+                                ),
+                              )
+                            : Row(
+                                children: [
+                                  Text(
+                                      '${widget.product.price.toStringAsFixed(1)}  ',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        decoration: TextDecoration.lineThrough,
+                                        color: Colors.grey,
+                                      )),
+                                  Text(
+                                    '\$ ${(widget.product.price - (widget.product.price * widget.product.discount / 100)).toStringAsFixed(1)}',
+                                    style: AppStyles.text14Regular.copyWith(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                        // const Spacer(),
+                        // Text(
+                        //   widget.product.category,
+                        //   style: AppStyles.text14Regular,
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
                         widget.product.stock == 0
-                            ? const Text('Out of Stock')
+                            ? const Text('Out of Stock',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 12,
+                                ))
                             : Text(
                                 '${widget.product.stock.toString()} Stock',
                               ),

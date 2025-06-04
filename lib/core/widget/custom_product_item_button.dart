@@ -15,6 +15,14 @@ class CustomProductItemButton extends StatelessWidget {
   });
 
   final ProductEntity productEntity;
+  double get price {
+    if (productEntity.discount == 0.0) {
+      return productEntity.price;
+    } else {
+      return productEntity.price -
+          (productEntity.price * productEntity.discount / 100);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,7 @@ class CustomProductItemButton extends StatelessWidget {
                               id: productEntity.pId,
                               name: productEntity.name,
                               imageUrl: productEntity.imageUrl,
-                              price: productEntity.price,
+                              price:price ,
                               quantity: 1,
                             ),
                           );
@@ -56,7 +64,11 @@ class CustomProductItemButton extends StatelessWidget {
                   ),
                 ),
                 child: Icon(
-                  isProductInCart ? Icons.check : Icons.add,
+                  productEntity.stock == 0
+                      ? Icons.close
+                      : isProductInCart
+                          ? Icons.check
+                          : Icons.add,
                   color: Colors.white,
                   size: 30,
                 ),
