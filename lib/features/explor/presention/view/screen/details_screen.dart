@@ -1,101 +1,120 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:readmore/readmore.dart';
-
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/view/widget/custom_details_buttom.dart';
-import 'package:shop_sphere/features/explor/presention/view/widget/custom_details_header.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
-class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({
-    super.key,
-    required this.product,
-    required this.isFaV,
-  });
+class ProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;
-  final bool isFaV;
 
-  @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
-}
-
-class _DetailsScreenState extends State<DetailsScreen> {
-  double discountedPrice = 0;
-  @override
-  void initState() {
-    discountedPrice = widget.product.price -
-        (widget.product.price * widget.product.discount / 100);
-
-    super.initState();
-  }
+  const ProductDetailsScreen({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
+    final discountedPrice =
+        product.price - (product.price * product.discount / 100);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              CustomDetailsHeader(
-                isFav: widget.isFaV,
-                product: widget.product,
+      appBar: AppBar(title: Text(product.name)),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: CachedNetworkImage(
+                imageUrl: product.imageUrl,
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10, top: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10,
+            ),
+            const SizedBox(height: 16),
+            // Name + Category
+            Text(product.name,
+                style: Theme.of(context).textTheme.headlineSmall),
+            Text("Category: ${product.category}",
+                style: const TextStyle(color: Colors.grey)),
+            const SizedBox(height: 8),
+
+            // Price
+            Row(
+              children: [
+                if (product.discount > 0)
+                  Text(
+                    "${product.price.toStringAsFixed(2)} EGP",
+                    style: const TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Colors.grey,
                     ),
-                    Text(
-                      widget.product.name,
-                      style: AppStyles.text26BoldBlack,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '\$${discountedPrice.toStringAsFixed(2)}', // السعر بعد الخصم
-                          style: AppStyles.text22SemiBold, // أو أي ستايل تحبه
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          '\$${widget.product.price.toStringAsFixed(2)}', // السعر القديم
-                          style: AppStyles.text18Regular.copyWith(
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ReadMoreText(
-                      '${widget.product.description} ',
-                      style: const TextStyle(fontSize: 16),
-                      trimMode: TrimMode.Length,
-                      trimLines: 2,
-                      colorClickableText: Colors.pink,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: 'Show less',
-                      moreStyle: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor),
-                    ),
-                  ],
+                  ),
+                const SizedBox(width: 8),
+                Text(
+                  "${discountedPrice.toStringAsFixed(2)} EGP",
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ]),
-          )),
-      bottomNavigationBar: CustomDetailsButtom(
-        productEntity: widget.product,
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Description
+            Text(product.description, style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 16),
+
+            // Stock & Staff
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("المخزون: ${product.stock}"),
+                Text("بواسطة: ${product.staffName}"),
+              ],
+            ),
+            const SizedBox(height: 24),
+
+            // Button
+            BlocBuilder<CartCubit, CartState>(
+              builder: (context, state) {
+                return CustomButton(
+                    onPressed: () async {
+                      if (state is CartUpdated &&
+                          state.cartProduct.contains(product.pId)) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return const CartScreen();
+                        }));
+                      } else {
+                        await context.read<CartCubit>().addToCart(
+                              cartItemModel: CartItemModel(
+                                id: product.pId,
+                                name: product.name,
+                                imageUrl: product.imageUrl,
+                                price: discountedPrice,
+                                quantity: 1,
+                              ),
+                            );
+                      
+                      }
+                    },
+                    text: state is CartLoading
+                        ? "Loading..."
+                        : state is CartUpdated &&
+                                state.cartProduct.contains(product.pId)
+                            ? "Go to Cart"
+                            : "Add to Cart");
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -38,8 +38,8 @@ class CustomCartItem extends StatelessWidget {
                 // ignore: use_build_context_synchronously
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailsScreen(
-                    isFaV: false,
+                  builder: (context) => ProductDetailsScreen(
+                 
                     product: product as ProductEntity,
                   ),
                 ),

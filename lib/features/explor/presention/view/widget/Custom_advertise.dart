@@ -44,7 +44,7 @@ class CustomAdvertise extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return  DetailsScreen(product: item,isFaV: false,);
+                          return  ProductDetailsScreen(product: item,);
                         }));
                       },
                       child: Container(

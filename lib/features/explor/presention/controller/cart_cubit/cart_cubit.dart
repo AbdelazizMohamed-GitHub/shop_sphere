@@ -59,6 +59,7 @@ class CartCubit extends Cubit<CartState> {
         _loadingItems.remove(cartItemModel.id);
         emit(ProductAddedToCart());
         _emitUpdatedCartState();
+        getProductInCart(productId: cartItemModel.id);
       },
     );
   }
@@ -113,7 +114,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<void> getProductInCart({required String productId}) async {
-    emit(CartLoading());
+   
     final result = await cartRepo.getProductInCart(productId: productId);
     result.fold(
       (failure) => emit(CartFailure(errMessage: failure.message)),

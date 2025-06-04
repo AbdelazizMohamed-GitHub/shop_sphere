@@ -47,8 +47,7 @@ class _CustomProductItemState extends State<CustomProductItem> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DetailsScreen(
-                                isFaV: isFav,
+                              builder: (context) => ProductDetailsScreen(
                                 product: widget.product,
                               ),
                             ));
@@ -80,7 +79,7 @@ class _CustomProductItemState extends State<CustomProductItem> {
                       children: [
                         widget.product.discount == 0
                             ? Text(
-                                '\$ ${widget.product.price.toStringAsFixed(1)} ',
+                                '${widget.product.price.toStringAsFixed(1)} EGP ',
                                 style: AppStyles.text14Regular.copyWith(
                                   color: AppColors.primaryColor,
                                 ),
@@ -95,7 +94,7 @@ class _CustomProductItemState extends State<CustomProductItem> {
                                         color: Colors.grey,
                                       )),
                                   Text(
-                                    '\$ ${(widget.product.price - (widget.product.price * widget.product.discount / 100)).toStringAsFixed(1)}',
+                                    ' ${(widget.product.price - (widget.product.price * widget.product.discount / 100)).toStringAsFixed(1)} EGP',
                                     style: AppStyles.text14Regular.copyWith(
                                       color: AppColors.primaryColor,
                                       fontWeight: FontWeight.bold,
