@@ -75,7 +75,8 @@ class CustomCheckoutButton extends StatelessWidget {
                           items: cartItems,
                           status: "Pending",
                           orderDate: DateTime.now(),
-                          address: address);
+                          address: address,
+                          paymentMethod: "Cash on Delivery");
 
                       await context
                           .read<OrderCubit>()

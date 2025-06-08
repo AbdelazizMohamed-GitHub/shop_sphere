@@ -21,6 +21,7 @@ class OrderModel extends OrderEntity {
   final DateTime orderDate;
   @override
   final AddressModel address;
+  final String paymentMethod;
 
   OrderModel( {required this.uId,required this.address,
     required this.userName,
@@ -29,6 +30,7 @@ class OrderModel extends OrderEntity {
     required this.items,
     required this.status,
     required this.orderDate,
+   required this.paymentMethod ,
   }) : super( uId: uId,userName: userName, orderId: orderId, totalAmount: totalAmount, items: items, status:status , orderDate: orderDate, address: address);
 
   // Convert to Map for Firebase or local storage
@@ -42,6 +44,7 @@ class OrderModel extends OrderEntity {
       'status': status,
       'orderDate': orderDate,
       'address': address.toMap(),
+      'paymentMethod': paymentMethod,
     };
   }
 
@@ -57,6 +60,7 @@ class OrderModel extends OrderEntity {
           map['items']?.map((x) => CartItemModel.fromMap(x)) ?? []),
       status: map['status'],
       orderDate: (map['orderDate']  as Timestamp).toDate(),
+      paymentMethod: map['paymentMethod'] ?? 'Cash on Delivery',
     );
   }
 }

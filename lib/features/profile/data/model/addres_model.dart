@@ -21,6 +21,7 @@ class AddressModel extends AddressEntity {
   final String country;
   @override
   final String postalCode;
+  
 
   AddressModel({
     required this.createdAt,
