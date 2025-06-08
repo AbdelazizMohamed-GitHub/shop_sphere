@@ -35,7 +35,9 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
   TextEditingController streetController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController stateController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
   @override
   void initState() {
     if (widget.isupdate) {
@@ -75,7 +77,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       body: BlocConsumer<AddressCubit, AddressState>(
         listener: (context, state) {
           if (state is AddressSuccess) {
-            Navigator.pop(context);
+            //  Navigator.pop(context);
             Warning.showWarning(context,
                 message: widget.isupdate
                     ? "Address Update Successfully"
@@ -159,13 +161,20 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     ),
                     CustomButton(
                         onPressed: () async {
+                          isLoading = true;
+                          setState(() {
+                            
+                          });
                           Placemark place = await getLocation();
                           // ignore: unnecessary_null_comparison
                           if (place != null) {
-                        
-                            streetController.text = place.subThoroughfare!;
+                            streetController.text = place.street!;
                             cityController.text = place.subAdministrativeArea!;
-                            stateController.text = place.administrativeArea!;
+
+                            stateController.text = getegyptGovernorates[
+                                    place.administrativeArea!] ??
+                                place.administrativeArea!;
+                            isLoading = false;
                             setState(() {});
                           } else {
                             // ignore: use_build_context_synchronously
@@ -173,9 +182,11 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                                 message: "Please Enable Location Service");
                           }
                         },
-                        text: widget.isupdate
-                            ? "Update From Location"
-                            : "Add From Location"),
+                        text: isLoading
+                            ? "Loading....."
+                            : widget.isupdate
+                                ? "Update From Location"
+                                : "Add From Location"),
                     const SizedBox(
                       height: 20,
                     ),

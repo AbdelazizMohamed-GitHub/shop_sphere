@@ -3,6 +3,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 
 class CustomTextForm extends StatelessWidget {
   const CustomTextForm(
+
       {super.key,
        this.pIcon,
       this.lines = 1,
@@ -11,7 +12,8 @@ class CustomTextForm extends StatelessWidget {
       this.textController,
       this.obscureText = false,
       this.onChanged,
-      required this.kType});
+      required this.kType
+      , this.validator});
   final IconData? pIcon;
   final Widget? sIcon;
   final String text;
@@ -20,13 +22,14 @@ class CustomTextForm extends StatelessWidget {
   final TextInputType kType;
   final int lines ;
   final void Function(String)? onChanged;
+   final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return TextFormField(maxLines: lines,
     onChanged:onChanged ,
       obscureText: obscureText,
       keyboardType: kType,
-      validator: (value) {
+      validator:validator ?? (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter your $text';
         }

@@ -16,6 +16,7 @@ import 'package:shop_sphere/features/profile/presention/controller/profile/user_
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_photo.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({
@@ -30,12 +31,16 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nameTextC = TextEditingController();
   TextEditingController phoneTextC = TextEditingController();
-
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  DateTime? selectedDate;
+  String? selectGender;
   @override
   void initState() {
     nameTextC.text = widget.user.name;
     phoneTextC.text = widget.user.phoneNumber;
 
+     selectedDate = widget.user.birthDate ;
+     selectGender = widget.user.gender;
     super.initState();
   }
 
@@ -45,9 +50,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     phoneTextC.dispose();
     super.dispose();
   }
-
-  DateTime? selectedDate;
-  String? selectGender;
 
   @override
   Widget build(BuildContext context) {
@@ -71,17 +73,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               actions: [
                 TextButton(
                   onPressed: () async {
-                    UserModel? userModel;
-             final user =       userModel!.copyWith(
-                     
-                      name: nameTextC.text,
+                    if (formKey.currentState!.validate()) {
+                      if (selectedDate == null) {
+                        Warning.showWarning(context,
+                            message: "Please select a birthdate");
+                        return;
+                      }
+                      if (selectGender == null) {
+                        Warning.showWarning(context,
+                            message: "Please select a gender");
+                        return;
+                      }
 
-                      phoneNumber: phoneTextC.text,
-                      birthDate: selectedDate,
-                      gender: selectGender,                    );
+                      UserModel userModel = widget.user as UserModel;
+                      final user = userModel.copyWith(
+                        name: nameTextC.text,
+                        phoneNumber: phoneTextC.text,
+                        birthDate: selectedDate,
+                        gender: selectGender,
+                      );
 
-                    FocusScope.of(context).unfocus();
-                    context.read<UserCubit>().updateUserData(user);
+                      FocusScope.of(context).unfocus();
+                      context.read<UserCubit>().updateUserData(user);
+                    }
                   },
                   child: Text("Save",
                       style: AppStyles.text18Regular.copyWith(
@@ -100,47 +114,64 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 : SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          const CustomAddPhoto(),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          CustomTextForm(
-                              textController: nameTextC,
-                              pIcon: Icons.person,
-                              text: "User Name",
-                              kType: TextInputType.text),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          CustomTextForm(
-                              textController: phoneTextC,
-                              pIcon: Icons.phone,
-                              text: "Phone Number",
-                              kType: TextInputType.text),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          CustomAddBirthdate(
-                            onChanged: (DateTime date) {
-                              selectedDate = date;
-                            },
-                            dataTime: widget.user.birthDate,
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          CustomDropdown(text:widget.user.gender ?? 'Select Gender', 
-                              categories: const ['Male', 'Female'],
-                              onCategorySelected: (valu) {
-                                selectGender = valu;
-                              }),
-                        ],
+                      child: Form(
+                        key: formKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            const CustomAddPhoto(),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            CustomTextForm(
+                                textController: nameTextC,
+                                pIcon: Icons.person,
+                                text: "User Name",
+                                kType: TextInputType.text),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            CustomTextForm(
+                                textController: phoneTextC,
+                                pIcon: Icons.phone,
+                                text: "Phone Number",
+                                kType: TextInputType.text,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Phone number cannot be empty';
+                                  }
+                                  if (!RegExp(r'^\+?[0-9]{10,13}$')
+                                      .hasMatch(value)) {
+                                    return 'Enter a valid phone number';
+                                  }
+                                  return null;
+                                }),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            CustomAddBirthdate(
+                              onChanged: (DateTime date) {
+                                selectedDate = date;
+                              },
+                              dataTime: widget.user.birthDate,
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            CustomDropdown(
+                                productCategory: widget.user.gender,
+                                isUpdate: true,
+                                text: widget.user.gender ?? 'Select Gender',
+                                categories: const ['Male', 'Female'],
+                                onCategorySelected: (valu) {
+                                  selectGender = valu;
+                                }),
+                          ],
+                        ),
                       ),
                     ),
                   ),

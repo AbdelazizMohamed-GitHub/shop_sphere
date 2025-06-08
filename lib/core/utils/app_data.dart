@@ -103,4 +103,34 @@ Map<String, double> shippingPrices = {
   'Other': 100.0,
   
 };
+Map<String, String> getegyptGovernorates = {
+  'محافظة القاهرة': 'Cairo',
+  'محافظة الجيزة': 'Giza',
+  'محافظة الإسكندرية': 'Alexandria',
+  'محافظة الدقهلية': 'Dakahlia',
+  'محافظة البحر الأحمر': 'Red Sea',
+  'محافظة البحيرة': 'Beheira',
+  'محافظة الفيوم': 'Fayoum',
+  'محافظة الغربية': 'Gharbia',
+  'محافظة الإسماعيلية': 'Ismailia',
+  'محافظة المنوفية': 'Monufia',
+  'محافظة المنيا': 'Minya',
+  'محافظة القليوبية': 'Qalyubia',
+  'محافظة الوادي الجديد': 'New Valley',
+  'محافظة السويس': 'Suez',
+  'محافظة اسوان': 'Aswan',
+  'محافظة اسيوط': 'Assiut',
+  'محافظة بني سويف': 'Beni Suef',
+  'محافظة بورسعيد': 'Port Said',
+  'محافظة دمياط': 'Damietta',
+  'محافظة الشرقية': 'Sharqia',
+  'محافظة جنوب سيناء': 'South Sinai',
+  'محافظة كفر الشيخ': 'Kafr El Sheikh',
+  'محافظة مطروح': 'Matrouh',
+  'محافظة الأقصر': 'Luxor',
+  'محافظة قنا': 'Qena',
+  'محافظة شمال سيناء': 'North Sinai',
+  'محافظة سوهاج': 'Sohag',
+};
+
 
