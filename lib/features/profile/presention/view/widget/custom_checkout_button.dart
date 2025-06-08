@@ -58,92 +58,97 @@ class CustomCheckoutButton extends StatelessWidget {
                   onPressed: () async {
                     if (address.state.isEmpty &&
                         address.city.isEmpty &&
-                      
                         address.street.isEmpty &&
-                        address.phoneNumber.isEmpty 
-                       ) {
+                        address.phoneNumber.isEmpty) {
                       Warning.showWarning(context,
                           message: 'Please add address');
                     } else {
-                             if (currentIndex == 0) {
-                      var oId = const Uuid().v4();
-                      OrderModel order = OrderModel(
-                          userName: userName,
-                          uId: uId,
-                          orderId: oId,
-                          totalAmount: total + shippingCoast,
-                          items: cartItems,
-                          status: "Pending",
-                          orderDate: DateTime.now(),
-                          address: address,
-                          paymentMethod: "Cash on Delivery");
+                      if (currentIndex == 0) {
+                        var oId = const Uuid().v4();
+                        OrderModel order = OrderModel(
+                            userName: userName,
+                            uId: uId,
+                            orderId: oId,
+                            totalAmount: total + shippingCoast,
+                            items: cartItems,
+                            status: "Pending",
+                            orderDate: DateTime.now(),
+                            address: address,
+                            paymentMethod: "Cash on Delivery",
+                            delivaryCoast: shippingCoast);
 
-                      await context
-                          .read<OrderCubit>()
-                          .createOrder(order: order);
-                    } else {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => PaypalCheckoutView(
-                          sandboxMode: true,
-                          clientId: AppKeys.kClientId,
-                          secretKey: AppKeys.kSecret,
-                          transactions: const [
-                            {
-                              "amount": {
-                                "total": '70',
-                                "currency": "USD",
-                                "details": {
-                                  "subtotal": '70',
-                                  "shipping": '0',
-                                  "shipping_discount": 0
-                                }
-                              },
-                              "description":
-                                  "The payment transaction description.",
-                              // "payment_options": {
-                              //   "allowed_payment_method":
-                              //       "INSTANT_FUNDING_SOURCE"
-                              // },
-                              "item_list": {
-                                "items": [
-                                  {
-                                    "name": "Apple",
-                                    "quantity": 4,
-                                    "price": '5',
-                                    "currency": "USD"
+                        await context
+                            .read<OrderCubit>()
+                            .createOrder(order: order);
+                      } else {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PaypalCheckoutView(
+                              sandboxMode: true,
+                              clientId: AppKeys.kClientId,
+                              secretKey: AppKeys.kSecret,
+                              transactions: const [
+                                {
+                                  "amount": {
+                                    "total": '70',
+                                    "currency": "USD",
+                                    "details": {
+                                      "subtotal": '70',
+                                      "shipping": '0',
+                                      "shipping_discount": 0
+                                    }
                                   },
-                                  {
-                                    "name": "Pineapple",
-                                    "quantity": 5,
-                                    "price": '10',
-                                    "currency": "USD"
+                                  "description":
+                                      "The payment transaction description.",
+                                  // "payment_options": {
+                                  //   "allowed_payment_method":
+                                  //       "INSTANT_FUNDING_SOURCE"
+                                  // },
+                                  "item_list": {
+                                    "items": [
+                                      {
+                                        "name": "Apple",
+                                        "quantity": 4,
+                                        "price": '5',
+                                        "currency": "USD"
+                                      },
+                                      {
+                                        "name": "Pineapple",
+                                        "quantity": 5,
+                                        "price": '10',
+                                        "currency": "USD"
+                                      }
+                                    ],
                                   }
-                                ],
-                              }
-                            }
-                          ],
-                          note: "Contact us for any questions on your order.",
-                          onSuccess: (Map params) async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const OrderDoneScreen(),
-                              ),
-                            );
-                          },
-                          onError: (error) {
-                            Warning.showWarning(
-                              context,
-                              message: error.toString(),
-                            );
-                          },
-                          onCancel: () {
-                            Warning.showWarning(context,
-                                message: "The transaction has been cancelled");
-                          },
-                        ),
-                      ));
-                    }
+                                }
+                              ],
+                              note:
+                                  "Contact us for any questions on your order.",
+                              onSuccess: (Map params) async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const OrderDoneScreen(),
+                                  ),
+                                );
+                              },
+                              onError: (error) {
+                                Warning.showWarning(
+                                  context,
+                                  message: error.toString(),
+                                );
+                              },
+                              onCancel: () {
+                                Warning.showWarning(context,
+                                    message:
+                                        "The transaction has been cancelled");
+                              },
+                            ),
+                          ),
+                        );
+                      }
                     }
                   },
                   text: currentIndex == 0 ? "Check Out" : "Pay ${50}");

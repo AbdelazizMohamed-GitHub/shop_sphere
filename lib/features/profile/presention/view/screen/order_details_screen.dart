@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
+import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_header.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_item.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_information.dart';
@@ -55,30 +59,32 @@ class OrderDetailsScreen extends StatelessWidget {
               height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                MaterialButton(
-                  onPressed: () {},
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.black)),
-                  child: const Text(
-                    'Reorder',
-                    style: AppStyles.text16Bold,
-                  ),
+                Spacer(
+                  flex: 4,
                 ),
                 MaterialButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+                  onPressed: ()async {
+                    // Handle reorder or cancel action
+                    if (order.status == orderStauts[3]) {
+                      OrderModel orderModel=OrderModel.fromEntity(order);
+
+                    await  context.read<OrderCubit>().createOrder(order: orderModel );
+                    } else {
+                     await context.read<OrderCubit>().deletOrder(orderId: order.orderId);
+                    }
                   },
                   color: AppColors.primaryColor,
                   shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.black)),
                   child: Text(
-                    'cancel',
+                    order.status == orderStauts[3] ? 'Reorder' : 'Cancel',
                     style: AppStyles.text16Bold.copyWith(color: Colors.white),
                   ),
+                ),
+                const Spacer(
+                  flex: 1,
                 ),
               ],
             )

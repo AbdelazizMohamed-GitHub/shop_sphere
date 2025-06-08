@@ -22,7 +22,11 @@ class CustomOrderDetailsItem extends StatelessWidget {
           : AppColors.secondaryDarkColor,
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        leading:CachedNetworkImage(imageUrl: item.productImage,fit: BoxFit.cover,width: 50,height: 50,
+        leading: CachedNetworkImage(
+          imageUrl: item.productImage,
+          fit: BoxFit.cover,
+          width: 50,
+          height: 50,
           placeholder: (context, url) => const CustomImageLoading(),
           errorWidget: (context, url, error) => const Icon(Icons.error),
           imageBuilder: (context, imageProvider) => Container(
@@ -42,8 +46,7 @@ class CustomOrderDetailsItem extends StatelessWidget {
           'Quantity: ${item.productQuantity}',
           style: AppStyles.text14Regular,
         ),
-        trailing: Text('\$${item.productPrice}',
-            style: AppStyles.text16Bold),
+        trailing: Text('${item.productPrice} EGP', style: AppStyles.text16Bold),
       ),
     );
   }

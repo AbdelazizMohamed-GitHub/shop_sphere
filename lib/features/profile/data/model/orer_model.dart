@@ -16,42 +16,57 @@ class OrderModel extends OrderEntity {
   final List<CartItemModel> items;
   @override
   final String status;
-  
+
   @override
   final DateTime orderDate;
   @override
   final AddressModel address;
+  @override
   final String paymentMethod;
+  final int delivaryCoast ; // Default value, can be modified later
 
-  OrderModel( {required this.uId,required this.address,
+  OrderModel({
+    required this.uId,
+    required this.address,
     required this.userName,
     required this.orderId,
     required this.totalAmount,
     required this.items,
     required this.status,
     required this.orderDate,
-   required this.paymentMethod ,
-  }) : super( uId: uId,userName: userName, orderId: orderId, totalAmount: totalAmount, items: items, status:status , orderDate: orderDate, address: address);
+    required this.paymentMethod,
+    required this.delivaryCoast,
+    
+  }) : super(
+            uId: uId,
+            userName: userName,
+            orderId: orderId,
+            totalAmount: totalAmount,
+            items: items,
+            status: status,
+            orderDate: orderDate,
+            address: address,
+            paymentMethod: paymentMethod,delivaryCoast: delivaryCoast);
+            factory OrderModel.fromEntity(OrderEntity entity) {
+  return OrderModel(
+    uId: entity.uId,
+    userName: entity.userName,
+    orderId: entity.orderId,
+    totalAmount: entity.totalAmount,
+    items: entity.items,
+    status: entity.status,
+    orderDate: entity.orderDate,
+    address: entity.address as AddressModel,
+    paymentMethod: entity.paymentMethod,
+    delivaryCoast: entity.delivaryCoast,
+  );
+}
 
-  // Convert to Map for Firebase or local storage
-  Map<String, dynamic> toMap() {
-    return {
-      'uId': uId,
-      'userName': userName,
-      'orderId': orderId,
-      'totalAmount': totalAmount,
-    'items': items.map((x) => x.toMap()).toList(),
-      'status': status,
-      'orderDate': orderDate,
-      'address': address.toMap(),
-      'paymentMethod': paymentMethod,
-    };
-  }
 
   // Convert from Map
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
-      userName: map['userName']??'',
+      userName: map['userName'] ?? '',
       address: AddressModel.fromMap(map['address']),
       uId: map['uId'],
       orderId: map['orderId'],
@@ -59,8 +74,24 @@ class OrderModel extends OrderEntity {
       items: List<CartItemModel>.from(
           map['items']?.map((x) => CartItemModel.fromMap(x)) ?? []),
       status: map['status'],
-      orderDate: (map['orderDate']  as Timestamp).toDate(),
+      orderDate: (map['orderDate'] as Timestamp).toDate(),
       paymentMethod: map['paymentMethod'] ?? 'Cash on Delivery',
+      delivaryCoast: map['delivaryCoast'] ?? 0, // Default value if not provided
     );
+  }
+  // Convert to Map for Firebase or local storage
+  Map<String, dynamic> toMap() {
+    return {
+      'userName': userName,
+      'uId': uId,
+      'orderId': orderId,
+      'totalAmount': totalAmount,
+      'items': items.map((x) => x.toMap()).toList(),
+      'status': status,
+      'orderDate': orderDate.toIso8601String(),
+      'address': address.toMap(),
+      'paymentMethod': paymentMethod,
+      'delivaryCoast': delivaryCoast,
+    };
   }
 }

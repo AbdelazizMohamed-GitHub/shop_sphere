@@ -1,13 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shop_sphere/core/funcation/funcations.dart';
-
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
-import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
@@ -94,36 +90,17 @@ class CustomOrderItem extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  order.status == orderStauts[1]
-                      ? TextButton(
-                          onPressed: () async {
-                            await context
-                                .read<OrderCubit>()
-                                .deletOrder(orderId: order.orderId);
-                          },
-                          child: const Text(
-                            'Pending',
-                            style: TextStyle(color: Colors.red, fontSize: 14),
-                          ),
-                        )
-                      : order.status == orderStauts[2]
-                          ? TextButton(
-                              onPressed: () async {
-                                await context
-                                    .read<OrderCubit>()
-                                    .changeOrdeStatus(
-                                        orderId: order.orderId,
-                                        status: orderStauts[3]);
-                              },
-                              child: Text(
-                                orderStauts[2],
-                                style: TextStyle(
-                                    color: AppFuncations.getStatusColor(
-                                        orderStauts[2]),
-                                    fontSize: 14),
-                              ),
-                            )
-                          : Text(orderStauts[3],style: TextStyle(color: AppFuncations.getStatusColor(orderStauts[3]),fontSize: 14))
+                 Text(
+                    ' ${order.status}',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: order.status == 'Delivered'
+                            ? Colors.green
+                            : order.status == 'Processing'
+                                ? Colors.orange
+                                : Colors.red),
+                 )
                 ])
               ],
             ),

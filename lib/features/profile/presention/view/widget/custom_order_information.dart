@@ -55,19 +55,19 @@ class CustomOrderInformation extends StatelessWidget {
             )
           ],
         ),
-        const Row(
+         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Delivery Cost",
               style: AppStyles.text16Regular,
             ),
-            SizedBox(
+            const SizedBox(
               width: 40,
             ),
             Expanded(
               child: Text(
-                "30 \$",
+                "${order.delivaryCoast} \$",
                 style: AppStyles.text16Regular,
               ),
             )

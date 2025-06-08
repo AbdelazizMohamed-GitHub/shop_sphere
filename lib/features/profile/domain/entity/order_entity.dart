@@ -10,6 +10,8 @@ class OrderEntity {
   final String status;
   final DateTime orderDate;
   final AddressEntity address;
+  final String paymentMethod;
+  final int delivaryCoast;
 
   OrderEntity(
       {required this.uId,
@@ -19,5 +21,8 @@ class OrderEntity {
       required this.totalAmount,
       required this.items,
       required this.status,
-      required this.orderDate});
+      required this.orderDate,
+      required this.paymentMethod,
+      required this.delivaryCoast});
+      
 }
