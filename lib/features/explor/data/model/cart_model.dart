@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 
 class CartItemModel extends CartEntity {
@@ -6,6 +7,7 @@ class CartItemModel extends CartEntity {
   final String imageUrl;
   final double price;
   final int quantity;
+  final Timestamp? createdAt;
 
   CartItemModel({
     required this.id,
@@ -13,6 +15,7 @@ class CartItemModel extends CartEntity {
     required this.imageUrl,
     required this.price,
     required this.quantity,
+     this.createdAt,
   }) : super(
             productId: id,
             productImage: imageUrl,
@@ -27,7 +30,8 @@ class CartItemModel extends CartEntity {
       'name': name,
       'imageUrl': imageUrl,
       'price': price,
-      'quantity': quantity, // Default quantity to 1 if not provided
+      'quantity': quantity,
+      'createdAt': Timestamp.now(), // Default quantity to 1 if not provided
     };
   }
   Map<String, dynamic> toJson() {
@@ -47,7 +51,8 @@ class CartItemModel extends CartEntity {
       name: map['name'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
       price: map['price'] ?? 0.0,
-      quantity: map['quantity'] ?? 1, // Default quantity to 1 if not provided
+      quantity: map['quantity'] ?? 1,
+      createdAt: map['createdAt']?? Timestamp.now(), // Default quantity to 1 if not provided
     );
   }
    

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
@@ -32,12 +33,13 @@ class CartScreen extends StatelessWidget {
               .collection("users")
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .collection("cart")
+              .orderBy('createdAt', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return const Center(child: Text('Error'));
+              return  Center(child: Text("${FirebaseFailure.fromCode(snapshot.error.toString()).message}"));
             } else if (snapshot.hasData) {
               List<CartItemModel> cartItems = snapshot.data!.docs.map((doc) {
                 return CartItemModel.fromMap(doc.data());
@@ -65,13 +67,13 @@ class CartScreen extends StatelessWidget {
                       )),
                       padding: const EdgeInsets.all(12.0),
                       child: Column(children: [
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
                               "Total Quntity : ",
                               style: AppStyles.text18Regular,
                             ),
-
                             Text(
                               totalQuantity.toString(),
                               style: AppStyles.text22SemiBold,
