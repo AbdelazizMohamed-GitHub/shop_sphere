@@ -102,7 +102,7 @@ class CustomOrderItem extends StatelessWidget {
                                 .deletOrder(orderId: order.orderId);
                           },
                           child: const Text(
-                            'Cancel',
+                            'Pending',
                             style: TextStyle(color: Colors.red, fontSize: 14),
                           ),
                         )

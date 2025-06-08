@@ -394,7 +394,7 @@ class FirestoreService {
     if (userId == null) return [];
 
     if (status == "All") {
-      querySnapshot = await firestore.collection("orders").get();
+      querySnapshot = await firestore.collection("orders").where("uId", isEqualTo: userId).get();
     } else {
       querySnapshot = await firestore
           .collection("orders")

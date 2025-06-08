@@ -77,7 +77,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       body: BlocConsumer<AddressCubit, AddressState>(
         listener: (context, state) {
           if (state is AddressSuccess) {
-            //  Navigator.pop(context);
+              Navigator.pop(context);
             Warning.showWarning(context,
                 message: widget.isupdate
                     ? "Address Update Successfully"
@@ -97,6 +97,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   bottom: (MediaQuery.of(context).viewInsets.bottom) + 20),
               child: Form(
                 key: formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -113,6 +114,14 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                       pIcon: Icons.phone,
                       textController: phoneController,
                       text: "Contact Number",
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please Enter Your Phone Number";
+                        } else if (!RegExp(r'^\+?[0-9]{11}$').hasMatch(value)) {
+                          return "Please Enter Valid Phone Number";
+                        }
+                        return null;
+                      },
                       kType: TextInputType.phone,
                     ),
                     const SizedBox(

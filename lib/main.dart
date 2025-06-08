@@ -140,7 +140,9 @@ class _ShopSphereState extends State<ShopSphere> {
                     ? const GetStartedScreen()
                     : !(user?.isStaff ?? false)
                         ? const ProductScreen()
-                        : const AddNewAddressScreen(isupdate: false),
+                        : const MainScreen(
+                          
+                          ),
           );
         },
       ),

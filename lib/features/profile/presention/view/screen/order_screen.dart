@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/loading/order_screen_loading.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
@@ -16,7 +17,7 @@ class OrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())
-        ..getUserOrders(status: 'All'),
+        ..getUserOrders(status: orderStauts[0]),
       child: Scaffold(
         appBar: AppBar(
           leading: AppTheme.isLightTheme(context)
