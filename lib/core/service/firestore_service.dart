@@ -444,4 +444,10 @@ class FirestoreService {
         .get();
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
+  Future<int> getTrackinNumber() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection("orders")
+        .get();
+    return querySnapshot.docs.length;
+  }
 }

@@ -63,4 +63,20 @@ class OrderCubit extends Cubit<OrderState> {
       (orders) => emit(OrderSuccess(orders: orders)),
     );
   }
+  Future<void> getTrackinNumber()async{
+    emit(GetOrderLoading());
+    final result = await orderRepo.getTrackinNumber();
+    result.fold(
+      (l) {
+        emit(OrderError(error: l.message));
+        return 0;
+      },
+      (r) {
+        emit(GetTrackingNumber(trackingNumber: r));
+         
+        return r;
+      },
+    );
+  }
+
 }

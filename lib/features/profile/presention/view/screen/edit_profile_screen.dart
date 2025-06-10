@@ -16,7 +16,6 @@ import 'package:shop_sphere/features/profile/presention/controller/profile/user_
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_photo.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({

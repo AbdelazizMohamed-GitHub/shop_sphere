@@ -23,8 +23,9 @@ class OrderModel extends OrderEntity {
   final AddressModel address;
   @override
   final String paymentMethod;
-  final int delivaryCoast ; // Default value, can be modified later
-
+  @override
+  final int delivaryCoast; // Default value, can be modified later
+  final int trackingNumber;
   OrderModel({
     required this.uId,
     required this.address,
@@ -36,7 +37,7 @@ class OrderModel extends OrderEntity {
     required this.orderDate,
     required this.paymentMethod,
     required this.delivaryCoast,
-    
+    required this.trackingNumber,
   }) : super(
             uId: uId,
             userName: userName,
@@ -46,22 +47,24 @@ class OrderModel extends OrderEntity {
             status: status,
             orderDate: orderDate,
             address: address,
-            paymentMethod: paymentMethod,delivaryCoast: delivaryCoast);
-            factory OrderModel.fromEntity(OrderEntity entity) {
-  return OrderModel(
-    uId: entity.uId,
-    userName: entity.userName,
-    orderId: entity.orderId,
-    totalAmount: entity.totalAmount,
-    items: entity.items,
-    status: entity.status,
-    orderDate: entity.orderDate,
-    address: entity.address as AddressModel,
-    paymentMethod: entity.paymentMethod,
-    delivaryCoast: entity.delivaryCoast,
-  );
-}
-
+            paymentMethod: paymentMethod,
+            delivaryCoast: delivaryCoast,
+            trackingNumber: trackingNumber);
+  factory OrderModel.fromEntity(OrderEntity entity) {
+    return OrderModel(
+      uId: entity.uId,
+      userName: entity.userName,
+      orderId: entity.orderId,
+      totalAmount: entity.totalAmount,
+      items: entity.items,
+      status: entity.status,
+      orderDate: entity.orderDate,
+      address: entity.address as AddressModel,
+      paymentMethod: entity.paymentMethod,
+      delivaryCoast: entity.delivaryCoast,
+      trackingNumber: entity.trackingNumber, // Assuming trackingNumber is part of OrderEntity
+    );
+  }
 
   // Convert from Map
   factory OrderModel.fromMap(Map<String, dynamic> map) {
@@ -77,6 +80,7 @@ class OrderModel extends OrderEntity {
       orderDate: (map['orderDate'] as Timestamp).toDate(),
       paymentMethod: map['paymentMethod'] ?? 'Cash on Delivery',
       delivaryCoast: map['delivaryCoast'] ?? 0, // Default value if not provided
+      trackingNumber: map['trackingNumber'] ?? 0, // Default value if not provided
     );
   }
   // Convert to Map for Firebase or local storage
@@ -92,6 +96,7 @@ class OrderModel extends OrderEntity {
       'address': address.toMap(),
       'paymentMethod': paymentMethod,
       'delivaryCoast': delivaryCoast,
+      'trackingNumber': trackingNumber, // Assuming trackingNumber is part of OrderEntity
     };
   }
 }

@@ -72,4 +72,16 @@ class OrderRepoImpl extends OrderRepo {
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
+  
+  @override
+  Future<Either<FirebaseFailure, int>> getTrackinNumber() async{
+    try {
+int data= await firestoreService.getTrackinNumber();
+      return right(data);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
 }

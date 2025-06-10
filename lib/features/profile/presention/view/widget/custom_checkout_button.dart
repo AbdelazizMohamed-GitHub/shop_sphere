@@ -64,6 +64,7 @@ class CustomCheckoutButton extends StatelessWidget {
                           message: 'Please add address');
                     } else {
                       if (currentIndex == 0) {
+                        await context.read<OrderCubit>().getTrackinNumber();
                         var oId = const Uuid().v4();
                         OrderModel order = OrderModel(
                             userName: userName,
@@ -75,7 +76,11 @@ class CustomCheckoutButton extends StatelessWidget {
                             orderDate: DateTime.now(),
                             address: address,
                             paymentMethod: "Cash on Delivery",
-                            delivaryCoast: shippingCoast);
+                            delivaryCoast: shippingCoast,
+                            trackingNumber:state is GetTrackingNumber
+                                ? state.trackingNumber+5000
+                                : 0 
+                            );
 
                         await context
                             .read<OrderCubit>()

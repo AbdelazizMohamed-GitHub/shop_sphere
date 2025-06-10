@@ -67,7 +67,7 @@ class CustomOrderInformation extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                "${order.delivaryCoast} \$",
+                "${order.delivaryCoast} Egp",
                 style: AppStyles.text16Regular,
               ),
             )
@@ -83,7 +83,7 @@ class CustomOrderInformation extends StatelessWidget {
               width: 50,
             ),
             Text(
-              "${order.totalAmount} \$",
+              "${order.totalAmount} Egp",
               style: AppStyles.text16Bold,
             )
           ],

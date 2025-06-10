@@ -12,6 +12,7 @@ class OrderEntity {
   final AddressEntity address;
   final String paymentMethod;
   final int delivaryCoast;
+  final int trackingNumber;
 
   OrderEntity(
       {required this.uId,
@@ -23,6 +24,7 @@ class OrderEntity {
       required this.status,
       required this.orderDate,
       required this.paymentMethod,
-      required this.delivaryCoast});
+      required this.delivaryCoast,
+      required this.trackingNumber});
       
 }
