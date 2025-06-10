@@ -103,6 +103,7 @@ class ProductModel extends ProductEntity {
     bool? isFeatured,
     DateTime? createdAt,
     String? staffName,
+    int? discount,
   }) {
     return ProductModel(
       pId: pId ?? this.pId,
@@ -116,7 +117,7 @@ class ProductModel extends ProductEntity {
       isFeatured: isFeatured ?? this.isFeatured,
       createdAt: createdAt ?? this.createdAt,
       staffName: staffName ?? this.staffName,
-      discount: discount,
+      discount: discount?? this.discount ,
     );
   }
 }

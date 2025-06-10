@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 
@@ -30,7 +32,8 @@ class _CustomAddImageState extends State<CustomAddImage> {
       child: widget.imageUrl != ""
           ? ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(widget.imageUrl!, fit: BoxFit.contain),
+              child:CachedNetworkImage(imageUrl: widget.imageUrl!, fit: BoxFit.cover,
+              placeholder: (context, url) => const CustomImageLoading(),),
             )
           : imageFile == null
               ? GestureDetector(

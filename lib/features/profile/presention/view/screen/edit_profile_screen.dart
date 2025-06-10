@@ -143,7 +143,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   if (value == null || value.isEmpty) {
                                     return 'Phone number cannot be empty';
                                   }
-                                  if (!RegExp(r'^\+?[0-9]{10,13}$')
+                                  if (!RegExp(r'^\+?[0-9]{11}$')
                                       .hasMatch(value)) {
                                     return 'Enter a valid phone number';
                                   }

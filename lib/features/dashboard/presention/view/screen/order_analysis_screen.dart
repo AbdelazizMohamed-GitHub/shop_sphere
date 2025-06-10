@@ -122,7 +122,7 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                                       Text('${e.orderId.substring(0, 9)}..')),
                                   DataCell(Text(e.userName)),
                                   DataCell(Text(DateFormat.yMMMEd()
-                                      .format(e.orderDate))),
+                                      .format(e.orderDate).toString())),
                                   DataCell(
                                     Container(
                                       padding: const EdgeInsets.symmetric(

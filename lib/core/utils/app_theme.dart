@@ -24,6 +24,7 @@ class AppTheme {
         centerTitle: true,
         titleTextStyle: AppStyles.text26BoldWhite),
   );
+
   static bool isLightTheme(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light;
 }

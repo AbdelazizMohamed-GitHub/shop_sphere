@@ -1,53 +1,113 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_details_header.dart';
+import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
+import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
+import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
-class DashBoardDetailsScreen extends StatelessWidget {
-  const DashBoardDetailsScreen({super.key, required this.product});
+class DashboardProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;
+
+  const DashboardProductDetailsScreen({super.key, required this.product});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomDetailsHeader(product: product),
+    final discountedPrice =
+        product.price - (product.price * product.discount / 100);
 
-              Text(
-                product.description,
-                style: AppStyles.text16Regular,
-              ),
-            ],
-          ),  
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          CustomCircleButton(
+              icon: const Icon(Icons.edit, size: 25),
+              funcation: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return AddProductScreen(
+                        isUpdate: true,
+                        productEntity: product,
+                      );
+                    },
+                  ),
+                );
+              }),
+          SizedBox(
+            width: 20,
+          )
+        ],
+        title: Text(
+          'Details',
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<DashboardCubit, DashboardState>(
-          builder: (context, state) {
-            return state is DashboardLoading
-                ?const Center(child: CircularProgressIndicator())
-                : CustomButton(
-                  onPressed: () async {
-                    await context.read<DashboardCubit>().deleteProduct(
-                      dId: product.pId,
-                      imageUrl: product.imageUrl,
-                    );
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
-                  },
-                  text: "Delete",
-                );
-          },
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: CachedNetworkImage(
+                imageUrl: product.imageUrl,
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                height: 300,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Name + Category
+            Text(product.name,
+                style: Theme.of(context).textTheme.headlineSmall),
+            Text("Category: ${product.category}",
+                style: const TextStyle(color: Colors.grey)),
+            const SizedBox(height: 8),
+
+            // Price
+            Row(
+              children: [
+                if (product.discount > 0)
+                  Text(
+                    "${product.price.toStringAsFixed(2)} EGP",
+                    style: const TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: Colors.grey,
+                    ),
+                  ),
+                const SizedBox(width: 8),
+                Text(
+                  "${discountedPrice.toStringAsFixed(2)} EGP",
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Description
+            Text(product.description, style: const TextStyle(fontSize: 16)),
+            const SizedBox(height: 16),
+
+            // Stock & Staff
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Stock: ${product.stock}"),
+                Text("Staff: ${product.staffName}"),
+              ],
+            ),
+            const SizedBox(height: 24),
+          ],
         ),
       ),
     );

@@ -110,8 +110,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     Expanded(
                       flex: 1,
                       child: CustomDropdown(
-                        
-                          isUpdate: widget.isUpdate,
+                        isUpdate: widget.isUpdate,
                         categories: const [
                           '0',
                           '5',
@@ -130,7 +129,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           discount = int.parse(value);
                         },
                         text: "Discount",
-                       
                         productCategory: discount.toString(),
                       ),
                     ),
@@ -138,6 +136,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
                 const SizedBox(height: 10),
                 CustomDropdown(
+                  text: "Product Category",
                   productCategory: selectedCategory,
                   isUpdate: widget.isUpdate,
                   categories: appCategory.map((e) => e.toString()).toList(),
@@ -196,6 +195,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   final baseProduct = widget.isUpdate
                                       ? (widget.productEntity! as ProductModel)
                                           .copyWith(
+                                          discount: discount,
                                           name: nameController.text,
                                           price: double.parse(
                                               priceController.text),

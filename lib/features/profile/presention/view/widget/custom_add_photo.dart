@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 
 class CustomAddPhoto extends StatefulWidget {
   const CustomAddPhoto({super.key});
@@ -35,8 +36,12 @@ class _CustomAddPhotoState extends State<CustomAddPhoto> {
               ),
               child: IconButton(
                 onPressed: () async {
-                  image = await AppFuncations.pickImageFromGallery();
-                  setState(() {});
+                  Warning.showWarning(
+                    context,
+                    message: 'This feature Will be available soon',
+                  );
+                  // image = await AppFuncations.pickImageFromGallery();
+                  // setState(() {});
                 },
                 icon: const Icon(
                   Icons.add_a_photo,

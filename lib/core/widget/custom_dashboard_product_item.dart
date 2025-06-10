@@ -16,7 +16,7 @@ class CustomDashboardProductItem extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return DashBoardDetailsScreen(product: product);
+              return DashboardProductDetailsScreen(product: product);
             },
           ),
         );

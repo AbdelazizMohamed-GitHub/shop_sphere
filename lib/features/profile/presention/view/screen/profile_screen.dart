@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
+import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -24,14 +25,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-    bool active = false;
-
   @override
   Widget build(BuildContext context) {
+    final bool isLightTheme = AppTheme.isLightTheme(context);
+
     return Scaffold(
-      backgroundColor: AppTheme.isLightTheme(context)
-          ? AppColors.primaryColor
-          : AppColors.backgroundDarkColor,
+      backgroundColor:
+          isLightTheme ? AppColors.primaryColor : AppColors.backgroundDarkColor,
       appBar: AppBar(
         leadingWidth: 100,
         leading: IconButton(
@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: AppTheme.isLightTheme(context)
+        backgroundColor: isLightTheme
             ? AppColors.primaryColor
             : AppColors.secondaryDarkColor,
       ),
@@ -60,7 +60,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
               );
             }
             if (snapshot.hasError) {
@@ -70,10 +72,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }
             if (snapshot.hasData || snapshot.data != null) {
               UserModel user = UserModel.fromMap(snapshot.data!.data()!);
-    
+
               return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -114,31 +116,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       funcation: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return  AddressScreen(
-                            selectAddressIndex:user.addressIndex ,
+                          return AddressScreen(
+                            selectAddressIndex: user.addressIndex,
                           );
                         }));
                       },
                     ),
-                    
-                  CustomProfileListTile(
-      icon: Icons.dark_mode_outlined,
-      title: 'Dark Mode',
-      trailing: Switch(
-          activeColor: Colors.white,
-          value: active,
-          onChanged: (val) {
-           setState(() {
-             active = val;
-           });
-            context.read<AppCubit>().changeTheme(context);
-            setState(() {
-              
-            });
-          },
-          inactiveTrackColor: Colors.white),
-      funcation: () {},
-    ),
+                    BlocBuilder<AppCubit, AppState>(
+                      builder: (context, state) {
+                        final bool isLoading = state is AppChangeThemeLoading;
+                        return CustomProfileListTile(
+                          icon: Icons.dark_mode_outlined,
+                          title: 'Dark Mode',
+                          trailing: isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : Switch(
+                                  activeColor: Colors.white,
+                                  value: !isLightTheme,
+                                  onChanged: (val) {
+                                    setState(() {});
+                                   
+                                    context
+                                        .read<AppCubit>()
+                                        .changeTheme(context);
+                                  },
+                                  inactiveTrackColor: Colors.white),
+                          funcation: () {},
+                        );
+                      },
+                    ),
+                   
                     const Divider(
                       color: Colors.white,
                     ),
@@ -161,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: Text('No Data'));
           }),
     );
   }

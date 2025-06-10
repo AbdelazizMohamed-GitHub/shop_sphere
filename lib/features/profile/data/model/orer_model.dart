@@ -78,7 +78,7 @@ class OrderModel extends OrderEntity {
       items: List<CartItemModel>.from(
           map['items']?.map((x) => CartItemModel.fromMap(x)) ?? []),
       status: map['status'],
-      orderDate: (map['orderDate'] as Timestamp).toDate(),
+      orderDate: (map['orderDate']  as Timestamp).toDate() ,
       paymentMethod: map['paymentMethod'] ?? 'Cash on Delivery',
       delivaryCoast: map['delivaryCoast'] ?? 0, // Default value if not provided
       trackingNumber: map['trackingNumber'] ?? 0, // Default value if not provided
@@ -93,7 +93,7 @@ class OrderModel extends OrderEntity {
       'totalAmount': totalAmount,
       'items': items.map((x) => x.toMap()).toList(),
       'status': status,
-      'orderDate': orderDate.toIso8601String(),
+      'orderDate': orderDate,
       'address': address.toMap(),
       'paymentMethod': paymentMethod,
       'delivaryCoast': delivaryCoast,
