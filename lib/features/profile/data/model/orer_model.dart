@@ -25,6 +25,7 @@ class OrderModel extends OrderEntity {
   final String paymentMethod;
   @override
   final int delivaryCoast; // Default value, can be modified later
+  @override
   final int trackingNumber;
   OrderModel({
     required this.uId,

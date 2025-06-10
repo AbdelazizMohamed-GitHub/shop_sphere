@@ -37,7 +37,7 @@ class CustomCheckoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
+      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())..getTrackinNumber(),
       child: BlocConsumer<OrderCubit, OrderState>(
         listener: (context, state) {
           if (state is OrderError) {
@@ -64,7 +64,7 @@ class CustomCheckoutButton extends StatelessWidget {
                           message: 'Please add address');
                     } else {
                       if (currentIndex == 0) {
-                        await context.read<OrderCubit>().getTrackinNumber();
+                          
                         var oId = const Uuid().v4();
                         OrderModel order = OrderModel(
                             userName: userName,
@@ -77,9 +77,7 @@ class CustomCheckoutButton extends StatelessWidget {
                             address: address,
                             paymentMethod: "Cash on Delivery",
                             delivaryCoast: shippingCoast,
-                            trackingNumber:state is GetTrackingNumber
-                                ? state.trackingNumber+5000
-                                : 0 
+                            trackingNumber:context.read<OrderCubit>().currentTrackingNumber + 5000  
                             );
 
                         await context

@@ -11,6 +11,7 @@ class OrderCubit extends Cubit<OrderState> {
   OrderCubit({required this.orderRepo}) : super(OrderInitial());
   final OrderRepo orderRepo;
   int currentStatus = 0;
+  int currentTrackingNumber = 0;
   PageController pageController = PageController(initialPage: 0);
   void changeOrderStatus(int index) {
     currentStatus = index;
@@ -55,6 +56,7 @@ class OrderCubit extends Cubit<OrderState> {
       getUserOrders(status: status);
     });
   }
+
   Future<void> getAllOrders() async {
     emit(GetOrderLoading());
     final result = await orderRepo.getAllOrders();
@@ -63,20 +65,20 @@ class OrderCubit extends Cubit<OrderState> {
       (orders) => emit(OrderSuccess(orders: orders)),
     );
   }
-  Future<void> getTrackinNumber()async{
+
+  Future<void> getTrackinNumber() async {
     emit(GetOrderLoading());
     final result = await orderRepo.getTrackinNumber();
     result.fold(
       (l) {
         emit(OrderError(error: l.message));
-        return 0;
       },
       (r) {
         emit(GetTrackingNumber(trackingNumber: r));
-         
-        return r;
+        currentTrackingNumber = r;
+        print("Tracking Number: $currentTrackingNumber");
+      
       },
     );
   }
-
 }
