@@ -10,5 +10,6 @@ abstract class OrderRepo {
   Future<Either<FirebaseFailure, void>> changeOrdeStatus({required String status,required String orderId});
 Future<Either<FirebaseFailure, List<OrderEntity>>> getAllOrders();
 Future<Either<FirebaseFailure, int>> getTrackinNumber();
+Future<Either<FirebaseFailure, int>> getOrderLength();
 
 }

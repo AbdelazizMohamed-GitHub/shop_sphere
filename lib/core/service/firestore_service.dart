@@ -450,4 +450,10 @@ class FirestoreService {
         .get();
     return querySnapshot.docs.length;
   }
+  Future <int> getOrdersLength() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection("orders")
+        .get();
+    return querySnapshot.docs.length;
+  }
 }

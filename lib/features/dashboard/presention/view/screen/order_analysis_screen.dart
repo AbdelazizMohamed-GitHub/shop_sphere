@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
@@ -9,6 +10,7 @@ import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
+import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';
 
 class OrderAnalycisScreen extends StatefulWidget {
@@ -146,12 +148,18 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                                   DataCell(Text(order.paymentMethod)),
                                   DataCell(Text('\$${order.totalAmount}')),
                                   DataCell(
-                                    TextButton(
-                                      onPressed: () {
-                                        // Handle view details button press
-                                      },
-                                      child: const Text('Process'),
-                                    ),
+                                    order.status == 'Pending'
+                                        ? TextButton(
+                                            onPressed: () async {
+                                              await context
+                                                  .read<OrderCubit>()
+                                                  .changeOrdeStatus(
+                                                      status: orderStauts[2],
+                                                      orderId: order.orderId);
+                                            },
+                                            child: const Text('Process'),
+                                          )
+                                        : const Text('Processed'),
                                   ),
                                   DataCell(
                                     TextButton(
@@ -160,7 +168,8 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                OrdersDetailsScreen(order: order),
+                                                OrdersDetailsScreen(
+                                                    order: order),
                                           ),
                                         );
                                       },

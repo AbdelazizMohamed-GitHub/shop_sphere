@@ -65,6 +65,7 @@ class OrderCubit extends Cubit<OrderState> {
       (orders) => emit(OrderSuccess(orders: orders)),
     );
   }
+  
 
   Future<void> getTrackinNumber() async {
     emit(GetOrderLoading());
@@ -76,7 +77,7 @@ class OrderCubit extends Cubit<OrderState> {
       (r) {
         emit(GetTrackingNumber(trackingNumber: r));
         currentTrackingNumber = r;
-        print("Tracking Number: $currentTrackingNumber");
+       
       
       },
     );

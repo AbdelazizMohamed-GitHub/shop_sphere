@@ -84,4 +84,15 @@ int data= await firestoreService.getTrackinNumber();
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
+  @override
+  Future<Either<FirebaseFailure, int>> getOrderLength() async {
+    try {
+      int data = await firestoreService.getOrdersLength();
+      return right(data);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
 }
