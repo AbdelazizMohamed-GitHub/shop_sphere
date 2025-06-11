@@ -12,6 +12,7 @@ class OrderCubit extends Cubit<OrderState> {
   final OrderRepo orderRepo;
   int currentStatus = 0;
   int currentTrackingNumber = 0;
+  int currentOrderLength = 0;
   PageController pageController = PageController(initialPage: 0);
   void changeOrderStatus(int index) {
     currentStatus = index;
@@ -65,7 +66,7 @@ class OrderCubit extends Cubit<OrderState> {
       (orders) => emit(OrderSuccess(orders: orders)),
     );
   }
-  
+
 
   Future<void> getTrackinNumber() async {
     emit(GetOrderLoading());
@@ -79,6 +80,17 @@ class OrderCubit extends Cubit<OrderState> {
         currentTrackingNumber = r;
        
       
+      },
+    );
+  }
+  Future<void> getOrderLength() async {
+    emit(GetOrderLoading());
+    final result = await orderRepo.getOrderLength();
+    result.fold(
+      (l) => emit(OrderError(error: l.message)),
+      (length)  {
+        emit(GetOrderLength(orderLength: length));
+        currentOrderLength = length;
       },
     );
   }

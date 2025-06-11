@@ -30,3 +30,8 @@ final class GetTrackingNumber extends OrderState {
   GetTrackingNumber({required this.trackingNumber});
 
 }
+final class GetOrderLength extends OrderState {
+  final int orderLength;
+
+  GetOrderLength({required this.orderLength});
+}

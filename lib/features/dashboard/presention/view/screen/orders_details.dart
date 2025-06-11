@@ -9,7 +9,6 @@ import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_pro
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_item.dart';
 
 class OrdersDetailsScreen extends StatelessWidget {
   const OrdersDetailsScreen({super.key, required this.order});
@@ -68,57 +67,69 @@ class OrdersDetailsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-            BlocConsumer<OrderCubit, OrderState>(
-              listener: (context, state) {
-                if (state is OrderSuccess) {
-                  Navigator.pop(context);
-                }
-              },
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    state is DeletOrderLoading
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : CustomButton(
-                            onPressed: () async {
-                              await context
-                                  .read<OrderCubit>()
-                                  .deletOrder(orderId: order.orderId);
-                            },
-                            text: "Cancel Order",
-                            color: Colors.white,
-                            textColor: Colors.black,
-                          ),
-                    const SizedBox(height: 20),
-                    order.status == orderStauts[1]
-                        ? state is UpdateOrderLoading
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : CustomButton(
-                                onPressed: () async {
-                                  context.read<OrderCubit>().changeOrdeStatus(
-                                      status: orderStauts[2],
-                                      orderId: order.orderId);
-                                },
-                                text: "Process Order")
-                        : state is UpdateOrderLoading
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : CustomButton(
-                                onPressed: () async {
-                                  context.read<OrderCubit>().changeOrdeStatus(
-                                      status: orderStauts[3],
-                                      orderId: order.orderId);
-                                },
-                                text: "Deliver Order")
-                  ],
-                );
-              },
-            )
+            order.status == orderStauts[3]
+                ? Text(
+                    "Order Delivered",
+                    style: AppStyles.text18Regular.copyWith(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                : BlocConsumer<OrderCubit, OrderState>(
+                    listener: (context, state) {
+                      if (state is OrderSuccess) {
+                        Navigator.pop(context);
+                      }
+                    },
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          state is DeletOrderLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : CustomButton(
+                                  onPressed: () async {
+                                    await context
+                                        .read<OrderCubit>()
+                                        .deletOrder(orderId: order.orderId);
+                                  },
+                                  text: "Cancel Order",
+                                  color: Colors.white,
+                                  textColor: Colors.black,
+                                ),
+                          const SizedBox(height: 20),
+                          order.status == orderStauts[1]
+                              ? state is UpdateOrderLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : CustomButton(
+                                      onPressed: () async {
+                                        context
+                                            .read<OrderCubit>()
+                                            .changeOrdeStatus(
+                                                status: orderStauts[2],
+                                                orderId: order.orderId);
+                                      },
+                                      text: "Process Order")
+                              : state is UpdateOrderLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : CustomButton(
+                                      onPressed: () async {
+                                        context
+                                            .read<OrderCubit>()
+                                            .changeOrdeStatus(
+                                                status: orderStauts[3],
+                                                orderId: order.orderId);
+                                      },
+                                      text: "Deliver Order")
+                        ],
+                      );
+                    },
+                  )
           ],
         ),
       ),

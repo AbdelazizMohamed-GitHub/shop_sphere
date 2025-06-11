@@ -11,7 +11,8 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_det
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';
+import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class OrderAnalycisScreen extends StatefulWidget {
   const OrderAnalycisScreen({super.key});
@@ -21,13 +22,34 @@ class OrderAnalycisScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<OrderAnalycisScreen> {
+  @override
+  void initState() {
+    BlocProvider.of<OrderCubit>(context).getOrderLength();
+    super.initState();
+  }
+
   List<OrderEntity> orders = [];
   List<OrderEntity> filteredOrders = [];
   String searchText = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Main Screen')),
+      appBar: AppBar(
+        title: const Text('Main Screen'),
+        actions: [
+          BlocBuilder<OrderCubit, OrderState>(
+            builder: (context, state) {
+              return state is GetOrderLoading
+                  ? const Skeletonizer(enabled: true, child: Text("Loading"))
+                  : Text(
+                      "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
+                      style: AppStyles.text22SemiBold,
+                    );
+            },
+          ),
+          SizedBox(width: 10)
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -42,7 +64,9 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                     return e.userName
                             .toLowerCase()
                             .contains(value.toLowerCase()) ||
-                        e.orderId.toLowerCase().contains(value.toLowerCase());
+                        e.trackingNumber
+                            .toString()
+                            .contains(value.toLowerCase());
                   }).toList();
                 });
               },
@@ -55,7 +79,7 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: CustomDropdown(
                     text: 'Select Status',
                     isUpdate: false,
@@ -74,11 +98,34 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                 ),
                 const SizedBox(width: 20),
                 Expanded(
-                    flex: 1,
-                    child: Text(
-                      "${searchText.isEmpty ? orders.length : filteredOrders.length} Orders",
-                      style: AppStyles.text22SemiBold,
-                    )),
+                    flex: 2,
+                    child: CustomDropdown(
+                        categories: ["All", "0-100", "100-1000", "1000-more"],
+                        onCategorySelected: (value) {
+                          setState(() {});
+                          if (value == "0-100") {
+                            filteredOrders = orders
+                                .where((e) => e.totalAmount < 100)
+                                .toList();
+                            searchText = value;
+                          }
+                          if (value == "100-1000") {
+                            filteredOrders = orders
+                                .where((e) =>
+                                    e.totalAmount >= 100 &&
+                                    e.totalAmount < 1000)
+                                .toList();
+                            searchText = value;
+                          }
+                          if (value == "1000-more") {
+                            filteredOrders = orders
+                                .where((e) => e.totalAmount >= 1000)
+                                .toList();
+                            searchText = value;
+                          }
+                        },
+                        isUpdate: false,
+                        text: "Select Price")),
               ],
             ),
             const SizedBox(height: 20),
@@ -146,7 +193,7 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                                     ),
                                   ),
                                   DataCell(Text(order.paymentMethod)),
-                                  DataCell(Text('\$${order.totalAmount}')),
+                                  DataCell(Text('${order.totalAmount} EGP')),
                                   DataCell(
                                     order.status == 'Pending'
                                         ? TextButton(

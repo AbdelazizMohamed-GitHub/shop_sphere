@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -83,6 +84,11 @@ class DashboardProductDetailsScreen extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+                if (product.discount > 0)
+                  Text(
+                    " (${product.discount}%)",
+                    style: const TextStyle(color: Colors.red),
+                  ),
               ],
             ),
             const SizedBox(height: 16),
@@ -93,10 +99,11 @@ class DashboardProductDetailsScreen extends StatelessWidget {
 
             // Stock & Staff
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("Stock: ${product.stock}"),
-                Text("Staff: ${product.staffName}"),
+                Text("Stock: ${product.stock}", style: AppStyles.text18Regular),
+                Text("Staff: ${product.staffName}",
+                    style: AppStyles.text18Regular),
               ],
             ),
             const SizedBox(height: 24),
