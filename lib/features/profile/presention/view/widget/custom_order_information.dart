@@ -36,20 +36,20 @@ class CustomOrderInformation extends StatelessWidget {
             )
           ],
         ),
-        const Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Payment Method",
               style: AppStyles.text16Regular,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Expanded(
               child: Text(
                 maxLines: 2,
-                "Pay on Delivery",
+                order.paymentMethod,
                 overflow: TextOverflow.ellipsis,
               ),
             )

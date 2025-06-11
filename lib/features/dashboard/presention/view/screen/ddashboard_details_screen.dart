@@ -1,15 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
-import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
-import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class DashboardProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;
@@ -39,11 +32,11 @@ class DashboardProductDetailsScreen extends StatelessWidget {
                   ),
                 );
               }),
-          SizedBox(
+          const SizedBox(
             width: 20,
           )
         ],
-        title: Text(
+        title: const Text(
           'Details',
         ),
       ),

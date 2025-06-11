@@ -59,19 +59,32 @@ class OrderDetailsScreen extends StatelessWidget {
               height: 20,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Spacer(
-                  flex: 4,
+                MaterialButton(
+                  onPressed: () async {
+                    OrderModel orderModel = OrderModel.fromEntity(order);
+
+                    await context
+                        .read<OrderCubit>()
+                        .createOrder(order: orderModel);
+                  },
+                  color: Colors.white,
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.black)),
+                  child: Text(
+                    'Reorder',
+                  ),
                 ),
                 MaterialButton(
-                  onPressed: ()async {
-                    // Handle reorder or cancel action
+                  onPressed: () async {
                     if (order.status == orderStauts[3]) {
-                      OrderModel orderModel=OrderModel.fromEntity(order);
-
-                    await  context.read<OrderCubit>().createOrder(order: orderModel );
+                      Navigator.pop(context);
                     } else {
-                     await context.read<OrderCubit>().deletOrder(orderId: order.orderId);
+                      await context
+                          .read<OrderCubit>()
+                          .deletOrder(orderId: order.orderId);
                     }
                   },
                   color: AppColors.primaryColor,
@@ -79,13 +92,11 @@ class OrderDetailsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.black)),
                   child: Text(
-                    order.status == orderStauts[3] ? 'Reorder' : 'Cancel',
+                    order.status == orderStauts[3]?'Cancel': 'Cancel Order',
                     style: AppStyles.text16Bold.copyWith(color: Colors.white),
                   ),
                 ),
-                const Spacer(
-                  flex: 1,
-                ),
+                
               ],
             )
           ],
