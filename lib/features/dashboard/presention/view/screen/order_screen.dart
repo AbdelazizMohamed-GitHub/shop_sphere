@@ -57,7 +57,7 @@ class _OrderScreenState extends State<OrderScreen> {
             child: ListView.builder(
               itemCount: displayOrder.length,
               itemBuilder: (BuildContext context, int index) {
-                return CustomOrderItem(orderEntity: displayOrder[index]);
+                return CustomOrderItemDashboard(orderEntity: displayOrder[index]);
               },
             ),
           );

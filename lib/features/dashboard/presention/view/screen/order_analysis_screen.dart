@@ -6,8 +6,10 @@ import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
+import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';
 
 class OrderAnalycisScreen extends StatefulWidget {
   const OrderAnalycisScreen({super.key});
@@ -78,7 +80,7 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
               ],
             ),
             const SizedBox(height: 20),
-    
+
             StreamBuilder(
               stream:
                   FirebaseFirestore.instance.collection("orders").snapshots(),
@@ -95,10 +97,10 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                   orders = snap.data!.docs
                       .map((e) => OrderModel.fromMap(e.data()))
                       .toList();
-    
+
                   final displayOrders =
                       searchText.isEmpty ? orders : filteredOrders;
-    
+
                   if (displayOrders.isEmpty) {
                     return const Center(
                       child: Text("No Orders Found"),
@@ -108,21 +110,25 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
                         columns: const [
-                          DataColumn(label: Text('Order ID')),
+                          DataColumn(label: Text('Tracking Number')),
                           DataColumn(label: Text('Customer Name')),
                           DataColumn(label: Text('Date')),
                           DataColumn(label: Text('Status')),
+                          DataColumn(label: Text('Payment Method')),
                           DataColumn(label: Text('Total Amount')),
+                          DataColumn(label: Text('Actions')),
+                          DataColumn(label: Text('Details')),
                         ],
                         rows: displayOrders
                             .map(
-                              (e) => DataRow(
+                              (order) => DataRow(
                                 cells: [
                                   DataCell(
-                                      Text('${e.orderId.substring(0, 9)}..')),
-                                  DataCell(Text(e.userName)),
+                                      Text(order.trackingNumber.toString())),
+                                  DataCell(Text(order.userName)),
                                   DataCell(Text(DateFormat.yMMMEd()
-                                      .format(e.orderDate).toString())),
+                                      .format(order.orderDate)
+                                      .toString())),
                                   DataCell(
                                     Container(
                                       padding: const EdgeInsets.symmetric(
@@ -131,14 +137,36 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                                       ),
                                       decoration: BoxDecoration(
                                         color: AppFuncations.getStatusColor(
-                                            e.status),
-                                        borderRadius:
-                                            BorderRadius.circular(12),
+                                            order.status),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      child: Text(e.status),
+                                      child: Text(order.status),
                                     ),
                                   ),
-                                  DataCell(Text('\$${e.totalAmount}')),
+                                  DataCell(Text(order.paymentMethod)),
+                                  DataCell(Text('\$${order.totalAmount}')),
+                                  DataCell(
+                                    TextButton(
+                                      onPressed: () {
+                                        // Handle view details button press
+                                      },
+                                      child: const Text('Process'),
+                                    ),
+                                  ),
+                                  DataCell(
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                OrdersDetailsScreen(order: order),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text('View Details'),
+                                    ),
+                                  ),
                                 ],
                               ),
                               // Add more rows as needed
