@@ -94,4 +94,14 @@ class OrderCubit extends Cubit<OrderState> {
       },
     );
   }
+
+  Future<void> getCustomerOrder({required String uId}) async {
+    emit(GetOrderLoading());
+    final result = await orderRepo.getCustomerOrder(uId: uId);
+    result.fold(
+      (l) => emit(OrderError(error: l.message)),
+      (orders) => emit(OrderSuccess(orders: orders)),
+    );
+  }
+  
 }

@@ -394,12 +394,18 @@ class FirestoreService {
     if (userId == null) return [];
 
     if (status == "All") {
-      querySnapshot = await firestore.collection("orders").where("uId", isEqualTo: userId).get();
+      querySnapshot = await firestore
+          .collection("orders")
+          .where("uId", isEqualTo: userId)
+          .get();
     } else {
       querySnapshot = await firestore
           .collection("orders")
-          .where("status", isEqualTo: status,
-              ).where("uId", isEqualTo: userId)
+          .where(
+            "status",
+            isEqualTo: status,
+          )
+          .where("uId", isEqualTo: userId)
           .get();
     }
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
@@ -438,22 +444,28 @@ class FirestoreService {
         .map((e) => ProductModel.fromMap(e.data()))
         .toList();
   }
-  Future <List<OrderEntity>> getAllOrders() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection("orders")
-        .get();
+
+  Future<List<OrderEntity>> getAllOrders() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await firestore.collection("orders").get();
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
+
   Future<int> getTrackinNumber() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection("orders")
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await firestore.collection("orders").get();
     return querySnapshot.docs.length;
   }
-  Future <int> getOrdersLength() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection("orders")
-        .get();
+
+  Future<int> getOrdersLength() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await firestore.collection("orders").get();
     return querySnapshot.docs.length;
+  }
+
+  Future<List<OrderEntity>> getCustomerOrder({required String uId}) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await firestore.collection('orders').where("uId", isEqualTo: uId).get();
+    return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
 }

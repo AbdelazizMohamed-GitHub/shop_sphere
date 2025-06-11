@@ -81,7 +81,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            CustomerOrderScreen(userId:state.users[index].uid, userNane: state.users[index].name ,  ))); 
+                                            CustomerOrderScreen(userId:state.users[index].uid, userName: state.users[index].name ,  ))); 
                               },
                               child: Card(
                                 color: Colors.white,

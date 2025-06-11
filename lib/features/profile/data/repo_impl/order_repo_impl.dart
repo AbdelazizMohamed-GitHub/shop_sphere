@@ -95,4 +95,18 @@ int data= await firestoreService.getTrackinNumber();
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
+  
+  @override
+  Future<Either<FirebaseFailure, List<OrderEntity>>> getCustomerOrder({required String uId}) async{
+    try {
+      var data = await firestoreService.getCustomerOrder(uId: uId);
+      return right(data);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
+
+  
 }
