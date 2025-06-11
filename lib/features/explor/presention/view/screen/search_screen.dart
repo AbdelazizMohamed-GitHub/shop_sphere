@@ -39,7 +39,8 @@ class SearchScreen extends StatelessWidget {
             final results = products
                 .where((product) =>
                     product.name.toLowerCase().contains(query) ||
-                    product.category.toLowerCase().contains(query))
+                    product.category.toLowerCase().contains(query) ||
+                    product.description.toLowerCase().contains(query))
                 .toList();
 
             return results.map((product) {

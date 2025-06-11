@@ -5,9 +5,11 @@ import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_header.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_item.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_information.dart';
@@ -58,46 +60,60 @@ class OrderDetailsScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                MaterialButton(
-                  onPressed: () async {
-                    OrderModel orderModel = OrderModel.fromEntity(order);
+            BlocConsumer<OrderCubit, OrderState>(
+              listener: (context, state) {
+                if (state is AddOrderSuccess) {
+                  Warning.showWarning(context, message: "Order Add Success");
+                } else if (state is OrderError) {
+                  Warning.showWarning(context, message: "${state.error}");
+                }
+              },
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    MaterialButton(
+                      onPressed: () async {
+                        OrderModel orderModel = OrderModel.fromEntity(order);
 
-                    await context
-                        .read<OrderCubit>()
-                        .createOrder(order: orderModel);
-                  },
-                  color: Colors.white,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.black)),
-                  child: Text(
-                    'Reorder',
-                  ),
-                ),
-                MaterialButton(
-                  onPressed: () async {
-                    if (order.status == orderStauts[3]) {
-                      Navigator.pop(context);
-                    } else {
-                      await context
-                          .read<OrderCubit>()
-                          .deletOrder(orderId: order.orderId);
-                    }
-                  },
-                  color: AppColors.primaryColor,
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.black)),
-                  child: Text(
-                    order.status == orderStauts[3]?'Cancel': 'Cancel Order',
-                    style: AppStyles.text16Bold.copyWith(color: Colors.white),
-                  ),
-                ),
-                
-              ],
+                        await context
+                            .read<OrderCubit>()
+                            .createOrder(order: orderModel);
+                      },
+                      color: Colors.white,
+                      shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.black)),
+                    child:state is GetOrderLoading? const CircularProgressIndicator():  Text(
+                        'Reorder',
+                      ),
+                    ),  
+                    MaterialButton(
+                      onPressed: () async {
+                        if (order.status == orderStauts[3]) {
+                          Navigator.pop(context);
+                        } else {
+                          await context
+                              .read<OrderCubit>()
+                              .deletOrder(orderId: order.orderId);
+                          Navigator.pop(context);
+                        }
+                      },
+                      color: AppColors.primaryColor,
+                      shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.black)),
+                      child: state is DeletOrderLoading? const CircularProgressIndicator(): Text(
+                        order.status == orderStauts[3]
+                            ? 'Cancel'
+                            : 'Cancel Order',
+                        style:
+                            AppStyles.text16Bold.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                );
+              },
             )
           ],
         ),

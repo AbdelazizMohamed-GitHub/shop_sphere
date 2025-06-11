@@ -30,7 +30,7 @@ class NotificationScreen extends StatelessWidget {
         builder:
             (BuildContext context, Box<NotificationModel> box, Widget? child) {
           if (box.values.isEmpty) {
-            return const Center(child: Text('لا توجد إشعارات بعد 📭'));
+            return const Center(child: Text('No notifications found'));
           }
 
           return ListView.builder(
