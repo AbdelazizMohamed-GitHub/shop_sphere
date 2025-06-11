@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -9,10 +11,12 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/add_no
 
 class AddNotificationScreen extends StatefulWidget {
   const AddNotificationScreen({
-    super.key,
+    Key? key,
     required this.fCM,
-  });
+    required this.userName,
+  }) : super(key: key);
   final String fCM;
+  final String userName;
 
   @override
   State<AddNotificationScreen> createState() => _NotificationScreenState();
@@ -43,9 +47,7 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text(
-                widget.fCM,
-              ),
+              const SizedBox(height: 50),
               CustomTextForm(
                 text: "Title",
                 textController: _titleController,
@@ -72,7 +74,7 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
                   return state is AddNotificationLoading
                       ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
-                          text: 'Send',
+                          text: 'Send To ${widget.userName}',
                           onPressed: () async {
                             if (_titleController.text.isNotEmpty &&
                                 _bodyController.text.isNotEmpty) {

@@ -71,17 +71,25 @@ class _UsersScreenState extends State<UsersScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                              currentIndex == 0 ?  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            StaffProductScreen(
-                                              staffId: state.users[index].uid,
-                                            ))):Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CustomerOrderScreen(userId:state.users[index].uid, userName: state.users[index].name ,  ))); 
+                                currentIndex == 0
+                                    ? Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StaffProductScreen(
+                                                  staffId:
+                                                      state.users[index].uid,
+                                                )))
+                                    : Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CustomerOrderScreen(
+                                                  userId:
+                                                      state.users[index].uid,
+                                                  userName:
+                                                      state.users[index].name,
+                                                )));
                               },
                               child: Card(
                                 color: Colors.white,
@@ -97,6 +105,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 AddNotificationScreen(
+                                              userName: state.users[index].name,
                                               fCM: state.users[index].fcmToken,
                                             ),
                                           ),
