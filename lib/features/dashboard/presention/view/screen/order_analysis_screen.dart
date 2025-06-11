@@ -14,14 +14,14 @@ import 'package:shop_sphere/features/profile/presention/controller/order/order_c
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class OrderAnalycisScreen extends StatefulWidget {
-  const OrderAnalycisScreen({super.key});
+class OrdersScreen extends StatefulWidget {
+  const OrdersScreen({super.key});
 
   @override
-  State<OrderAnalycisScreen> createState() => _DashboardScreenState();
+  State<OrdersScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<OrderAnalycisScreen> {
+class _DashboardScreenState extends State<OrdersScreen> {
   @override
   void initState() {
     BlocProvider.of<OrderCubit>(context).getOrderLength();
@@ -100,7 +100,7 @@ class _DashboardScreenState extends State<OrderAnalycisScreen> {
                 Expanded(
                     flex: 2,
                     child: CustomDropdown(
-                        categories: ["All", "0-100", "100-1000", "1000-more"],
+                        categories: const ["All", "0-100", "100-1000", "1000-more"],
                         onCategorySelected: (value) {
                           setState(() {});
                           if (value == "0-100") {

@@ -7,7 +7,6 @@ import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
@@ -57,26 +56,13 @@ class ProductScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const OrderScreen();
+                                return const OrdersScreen();
                               },
                             ),
                           );
                         },
                       ),
-                      ListTile(
-                        leading: const Icon(Icons.inventory),
-                        title: const Text('Products'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const ProductScreen();
-                              },
-                            ),
-                          );
-                        },
-                      ),
+                     
                       ListTile(
                         leading: const Icon(Icons.people),
                         title: const Text('Users'),
@@ -91,20 +77,7 @@ class ProductScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      ListTile(
-                        leading: const Icon(Icons.analytics),
-                        title: const Text('Order Analytics'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const OrderAnalycisScreen();
-                              },
-                            ),
-                          );
-                        },
-                      ),
+                     
                       ListTile(
                         leading: const Icon(Icons.logout),
                         title: const Text('Sign Out'),

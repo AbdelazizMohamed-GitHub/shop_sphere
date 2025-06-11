@@ -6,11 +6,18 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/mange_users_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/mange_users/mange_users_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_notification_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/customer_order.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/staff_product_screen.dart';
 
-class UsersScreen extends StatelessWidget {
+class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
 
+  @override
+  State<UsersScreen> createState() => _UsersScreenState();
+}
+
+class _UsersScreenState extends State<UsersScreen> {
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -26,6 +33,9 @@ class UsersScreen extends StatelessWidget {
                 title: const Text("Users"),
                 bottom: TabBar(
                   onTap: (value) async {
+                    setState(() {
+                      currentIndex = value;
+                    });
                     if (value == 0) {
                       await context
                           .read<MangeUsersCubit>()
@@ -61,13 +71,17 @@ class UsersScreen extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                                Navigator.push(
+                              currentIndex == 0 ?  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             StaffProductScreen(
                                               staffId: state.users[index].uid,
-                                            )));
+                                            ))):Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            CustomerOrderScreen(userId:state.users[index].uid, userNane: state.users[index].name ,  ))); 
                               },
                               child: Card(
                                 color: Colors.white,
