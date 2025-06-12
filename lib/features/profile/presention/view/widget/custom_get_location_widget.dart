@@ -36,6 +36,11 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
   String phoneNumber = "Phone Number";
   bool isInisialzed = false;
   bool loading = false;
+  @override
+  void initState() {
+    context.read<AddressCubit>().getAddress();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

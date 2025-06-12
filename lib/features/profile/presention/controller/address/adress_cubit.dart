@@ -10,6 +10,7 @@ class AddressCubit extends Cubit<AddressState> {
     required this.addressRepo,
   }) : super(AdressInitial());
   final AddressRepo addressRepo;
+  final String governorate = '';
   Future<void> addAddress(
       {required String addressId, required AddressModel addressModel}) async {
     emit(AddressLoading());
@@ -26,7 +27,7 @@ class AddressCubit extends Cubit<AddressState> {
       {required String addressId, required AddressModel addressModel}) async {
     emit(AddressLoading());
     final result = await addressRepo.updateAddress(addressId, addressModel);
-   
+
     result.fold((failure) => emit(AddressError(errMessage: failure.message)),
         (user) async {
       await getAddress();
@@ -52,6 +53,7 @@ class AddressCubit extends Cubit<AddressState> {
       (address) => emit(AddressSuccess(addresses: address)),
     );
   }
+
   Future<void> updateAddressIndex({required int sellectAddress}) async {
     emit(AddressLoading());
     final result = await addressRepo.updateAddressIndex(

@@ -1,18 +1,35 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_order_items.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_process_screen_item.dart';
+import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 
-class OrdersDetailsScreen extends StatelessWidget {
-  const OrdersDetailsScreen({super.key, required this.order});
+class OrdersDetailsScreen extends StatefulWidget {
+  const OrdersDetailsScreen({
+    Key? key,
+    required this.order,
+  }) : super(key: key);
   final OrderEntity order;
+
+  @override
+  State<OrdersDetailsScreen> createState() => _OrdersDetailsScreenState();
+}
+
+class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
+  @override
+  void initState() {
+    context.read<OrderCubit>().getTrackinNumber();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +47,23 @@ class OrdersDetailsScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomOrderItemDashboard(
-              orderEntity: order,
+              orderEntity: widget.order,
             ),
             const Divider(height: 20),
             CustomProcessScreenItem(
                 title: "Order Date",
-                subTitle: DateFormat.yMMMEd().format(order.orderDate)),
+                subTitle: DateFormat.yMMMEd().format(widget.order.orderDate)),
             const Divider(height: 20),
             CustomProcessScreenItem(
                 title: "Tracking Number",
-                subTitle: order.trackingNumber.toString()),
+                subTitle: widget.order.trackingNumber.toString()),
             const Divider(height: 20),
             CustomProcessScreenItem(
-                title: "Order Status", subTitle: order.status),
+                title: "Order Status", subTitle: widget.order.status),
             const Divider(height: 20),
             CustomProcessScreenItem(
               title: "Customer Name",
-              subTitle: order.userName,
+              subTitle: widget.order.userName,
             ),
             const Divider(height: 20),
             Row(
@@ -58,7 +75,7 @@ class OrdersDetailsScreen extends StatelessWidget {
                   child: Text(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    "${order.address.street} , ${order.address.city} , ${order.address.state}  , ${order.address.phoneNumber}",
+                    "${widget.order.address.street} , ${widget.order.address.city} , ${widget.order.address.state}  , ${widget.order.address.phoneNumber}",
                     style: AppStyles.text14Regular.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -67,7 +84,7 @@ class OrdersDetailsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-            order.status == orderStauts[3]
+            widget.order.status == orderStauts[3]
                 ? Text(
                     "Order Delivered",
                     style: AppStyles.text18Regular.copyWith(
@@ -90,16 +107,18 @@ class OrdersDetailsScreen extends StatelessWidget {
                                 )
                               : CustomButton(
                                   onPressed: () async {
+                                    OrderModel orderModel =
+                                        OrderModel.fromEntity(widget.order);
                                     await context
                                         .read<OrderCubit>()
-                                        .deletOrder(orderId: order.orderId);
+                                        .deletOrder(order: orderModel);
                                   },
                                   text: "Cancel Order",
                                   color: Colors.white,
                                   textColor: Colors.black,
                                 ),
                           const SizedBox(height: 20),
-                          order.status == orderStauts[1]
+                          widget.order.status == orderStauts[1]
                               ? state is UpdateOrderLoading
                                   ? const Center(
                                       child: CircularProgressIndicator(),
@@ -110,7 +129,7 @@ class OrdersDetailsScreen extends StatelessWidget {
                                             .read<OrderCubit>()
                                             .changeOrdeStatus(
                                                 status: orderStauts[2],
-                                                orderId: order.orderId);
+                                                orderId: widget.order.orderId, trackingNumber:context.read<OrderCubit>().currentTrackingNumber );
                                       },
                                       text: "Process Order")
                               : state is UpdateOrderLoading
@@ -123,7 +142,7 @@ class OrdersDetailsScreen extends StatelessWidget {
                                             .read<OrderCubit>()
                                             .changeOrdeStatus(
                                                 status: orderStauts[3],
-                                                orderId: order.orderId);
+                                                orderId: widget.order.orderId, trackingNumber: widget.order.trackingNumber);
                                       },
                                       text: "Deliver Order")
                         ],

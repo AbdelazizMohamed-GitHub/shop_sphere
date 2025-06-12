@@ -37,12 +37,12 @@ class CustomCheckoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())..getTrackinNumber(),
+      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
       child: BlocConsumer<OrderCubit, OrderState>(
         listener: (context, state) {
           if (state is OrderError) {
             Warning.showWarning(context, message: state.error);
-          } else if (state is AddOrderSuccess) {
+          } else if (state is OrderSuccess) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -52,7 +52,7 @@ class CustomCheckoutButton extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return state is GetOrderLoading
+          return state is CreateOrderLoading
               ? const Center(child: CircularProgressIndicator())
               : CustomButton(
                   onPressed: () async {
@@ -77,7 +77,7 @@ class CustomCheckoutButton extends StatelessWidget {
                             address: address,
                             paymentMethod: "Cash on Delivery",
                             delivaryCoast: shippingCoast,
-                            trackingNumber:context.read<OrderCubit>().currentTrackingNumber + 5000  
+                            trackingNumber:  0
                             );
 
                         await context

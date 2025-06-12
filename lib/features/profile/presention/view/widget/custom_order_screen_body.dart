@@ -18,12 +18,12 @@ class CustomOrderScreenBody extends StatelessWidget {
     return Expanded(
       child: PageView(
           controller: context.read<OrderCubit>().pageController,
-          onPageChanged: (index) {
-            context.read<OrderCubit>().changeOrderStatus(index);
-            context.read<OrderCubit>().pageController.animateToPage(index,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOut);
-          },
+          // onPageChanged: (index) {
+          //   context.read<OrderCubit>().changeOrderStatus(index);
+          //   context.read<OrderCubit>().pageController.animateToPage(index,
+          //       duration: const Duration(milliseconds: 500),
+          //       curve: Curves.easeOut);
+          // },
           children: [
              ListView.builder(
               shrinkWrap: true,

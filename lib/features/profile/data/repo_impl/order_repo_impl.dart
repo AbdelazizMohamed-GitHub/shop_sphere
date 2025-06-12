@@ -37,9 +37,9 @@ class OrderRepoImpl extends OrderRepo {
 
   @override
   Future<Either<FirebaseFailure, void>> deletOrder(
-      {required String orderId}) async {
+      {required OrderModel order}) async {
     try {
-      await firestoreService.deleteOrder(orderId: orderId);
+      await firestoreService.deleteOrder(order:order);
       return right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
@@ -50,9 +50,9 @@ class OrderRepoImpl extends OrderRepo {
 
   @override
   Future<Either<FirebaseFailure, void>> changeOrdeStatus(
-      {required String status, required String orderId}) async {
+      {required String status, required String orderId,required int trackingNumber}) async {
     try {
-      await firestoreService.changeOrdeStatus(status: status, orderId: orderId);
+      await firestoreService.changeOrdeStatus(status: status, orderId: orderId, trackingNumber: trackingNumber);
       return right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/search_screen.dart';
 
 class CustomExploreScreenSearch extends StatelessWidget {
@@ -41,18 +42,22 @@ class CustomExploreScreenSearch extends StatelessWidget {
             width: 10,
           ),
           Container(
-            height: 55,
-            width: 55,
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
+              height: 55,
+              width: 55,
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: IconButton(
+                  onPressed: () {
+                    Warning.showWarning(context,
+                        message: "This Feature Will be available soon");
+                  },
+                  icon:  const Icon(
               Icons.support_agent,
               size: 30,
               color: Colors.white,
-            ),
-          ),
+            ),)),
         ],
       ),
     );

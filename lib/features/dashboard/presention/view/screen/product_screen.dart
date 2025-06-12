@@ -7,6 +7,7 @@ import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
@@ -15,7 +16,7 @@ import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
 
-  @override
+  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -36,6 +37,7 @@ class ProductScreen extends StatelessWidget {
                 .map((doc) => ProductModel.fromMap(doc.data()))
                 .toList();
 
+List<ProductEntity> outOfStock   = products.where((product) => product.stock == 0).toList();
             return Scaffold(
               drawer: Drawer(
                 child: ListView(
@@ -73,6 +75,19 @@ class ProductScreen extends StatelessWidget {
                           ),
                         );
                       },
+                    ),  ListTile(
+                      leading: const Icon(Icons.people),
+                      title: const Text('out of stock'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return  OutOfStockScreen(products: outOfStock,);
+                            },
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       leading: const Icon(Icons.logout),
@@ -94,18 +109,8 @@ class ProductScreen extends StatelessWidget {
                 ),
               ),
               appBar: AppBar(
-                title: Row(
-                  children: [
-                    Text(' Welcome ',
-                        style: AppStyles.text18Regular.copyWith(
-                          color: AppColors.primaryColor,
-                        )),
-                    Text(overflow: TextOverflow.ellipsis,
-                      '${FirebaseAuth.instance.currentUser?.displayName}',
-                      style: AppStyles.text18Regular,
-                    ),
-                  ],
-                ),
+                title: Text("Products ${products.length}",
+                    style: AppStyles.text18Regular),
                 actions: [
                   IconButton(
                     onPressed: () {
@@ -120,20 +125,44 @@ class ProductScreen extends StatelessWidget {
                   const SizedBox(width: 10),
                 ],
               ),
-              body: GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 10),
+                      child: Row(children: [
+                        Text(
+                          "Welcome ",
+                          style: AppStyles.text18Regular
+                              .copyWith(color: AppColors.primaryColor),
+                        ),
+                        Text(
+                          '${FirebaseAuth.instance.currentUser!.displayName}',
+                          style: AppStyles.text18Regular,
+                        )
+                      ]),
+                    ),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 5 / 6,
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CustomDashboardProductItem(
+                            product: products[index]);
+                      },
+                    ),
+                  ],
                 ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 5 / 6,
-                ),
-                itemCount: products.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return CustomDashboardProductItem(product: products[index]);
-                },
               ),
               floatingActionButton: FloatingActionButton(
                 backgroundColor: AppColors.primaryColor,

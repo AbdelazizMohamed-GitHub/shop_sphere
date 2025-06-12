@@ -35,3 +35,4 @@ final class GetOrderLength extends OrderState {
 
   GetOrderLength({required this.orderLength});
 }
+final class CreateOrderLoading extends OrderState {}

@@ -100,4 +100,32 @@ class OrderModel extends OrderEntity {
       'trackingNumber': trackingNumber, // Assuming trackingNumber is part of OrderEntity
     };
   }
+  OrderModel copyWith({
+    String? orderId,
+    String? userName,
+    String? uId,
+    double? totalAmount,
+    List<CartItemModel>? items,
+    String? status,
+    DateTime? orderDate,
+    AddressModel? address,
+    String? paymentMethod,
+    int? delivaryCoast,
+    int? trackingNumber,
+  }) {
+    return OrderModel(
+      orderId: orderId ?? this.orderId,
+      userName: userName ?? this.userName,
+      uId: uId ?? this.uId,
+      totalAmount: totalAmount ?? this.totalAmount,
+      items: items ?? this.items,
+      status: status ?? this.status,
+      orderDate: orderDate ?? this.orderDate,
+      address: address ?? this.address,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      delivaryCoast: delivaryCoast ?? this.delivaryCoast,
+      trackingNumber: trackingNumber ?? this.trackingNumber, // Assuming trackingNumber is part of OrderEntity
+    );
+  }
+  
 }

@@ -13,6 +13,8 @@ import 'package:shop_sphere/features/profile/presention/controller/order/order_s
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_header.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_item.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_information.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/v4.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderEntity order;
@@ -63,9 +65,12 @@ class OrderDetailsScreen extends StatelessWidget {
             BlocConsumer<OrderCubit, OrderState>(
               listener: (context, state) {
                 if (state is AddOrderSuccess) {
-                  Warning.showWarning(context, message: "Order Add Success");
+                  Warning.showWarning(context, message: "Order Added Success");
+               
                 } else if (state is OrderError) {
-                  Warning.showWarning(context, message: "${state.error}");
+                  Warning.showWarning(context, message: state.error);
+                }else if(state is OrderSuccess){
+                  Navigator.pop(context);
                 }
               },
               builder: (context, state) {
@@ -74,42 +79,56 @@ class OrderDetailsScreen extends StatelessWidget {
                   children: [
                     MaterialButton(
                       onPressed: () async {
+                        String orderId = const Uuid().v4() ;// Generate a new order ID
                         OrderModel orderModel = OrderModel.fromEntity(order);
+                     
 
                         await context
                             .read<OrderCubit>()
-                            .createOrder(order: orderModel);
+                            .createOrder(order: orderModel.copyWith(orderId:orderId,
+                                status: orderStauts[1], // Set status to 'Pending'
+                                orderDate: DateTime.now(),trackingNumber: 0));
+                            
                       },
                       color: Colors.white,
                       shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.black)),
-                    child:state is GetOrderLoading? const CircularProgressIndicator():  Text(
-                        'Reorder',
-                      ),
-                    ),  
+                      child: state is CreateOrderLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator())
+                          : const Text(
+                              'Reorder',
+                            ),
+                    ),
                     MaterialButton(
                       onPressed: () async {
                         if (order.status == orderStauts[3]) {
                           Navigator.pop(context);
                         } else {
+                           OrderModel orderModel = OrderModel.fromEntity(order);
                           await context
                               .read<OrderCubit>()
-                              .deletOrder(orderId: order.orderId);
-                          Navigator.pop(context);
+                              .deletOrder(order: orderModel);
+                     
                         }
                       },
                       color: AppColors.primaryColor,
                       shape: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.black)),
-                      child: state is DeletOrderLoading? const CircularProgressIndicator(): Text(
-                        order.status == orderStauts[3]
-                            ? 'Cancel'
-                            : 'Cancel Order',
-                        style:
-                            AppStyles.text16Bold.copyWith(color: Colors.white),
-                      ),
+                      child: state is DeletOrderLoading
+                          ? const SizedBox(width: 20,height: 20,
+                            child: CircularProgressIndicator(color: Colors.white,))
+                          : Text(
+                              order.status == orderStauts[3]
+                                  ? 'Cancel'
+                                  : 'Cancel Order',
+                              style: AppStyles.text16Bold
+                                  .copyWith(color: Colors.white),
+                            ),
                     ),
                   ],
                 );

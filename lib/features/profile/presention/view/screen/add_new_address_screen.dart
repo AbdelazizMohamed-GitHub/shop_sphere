@@ -6,6 +6,7 @@ import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
+import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -224,10 +225,14 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                                       .updateAddress(
                                           addressId: widget.addressEntity!.id,
                                           addressModel: addressModel);
+                                                                context.read<UserCubit>().getUserData(); 
+
                                 } else {
                                   await context.read<AddressCubit>().addAddress(
                                       addressId: addressId,
                                       addressModel: addressModel);
+                                                            context.read<UserCubit>().getUserData(); 
+
                                 }
                               }
                             },

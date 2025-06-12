@@ -106,7 +106,7 @@ class _ShopSphereState extends State<ShopSphere> {
         ),
         BlocProvider(
           create: (context) =>
-              AddressCubit(addressRepo: getIt<AddressRepoImpl>())..getAddress(),
+              AddressCubit(addressRepo: getIt<AddressRepoImpl>()),
         ),
         BlocProvider(
             create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>())),
@@ -137,7 +137,7 @@ class _ShopSphereState extends State<ShopSphere> {
                     body: Center(child: CircularProgressIndicator()))
                 : FirebaseAuth.instance.currentUser == null
                     ? const GetStartedScreen()
-                    : !(user?.isStaff ?? false)
+                    : (user?.isStaff ?? false)
                         ? const ProductScreen()
                         : const MainScreen(),
           );

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/loading/custom_item_loading.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -10,6 +11,8 @@ import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
+import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
+import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
@@ -165,7 +168,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           CustomCartPrice(
                               title: 'Total:', price: widget.total.toDouble()),
-                          CustomCartPrice(
+                         CustomCartPrice(
                               title: 'Shipping:', price: shippingPrice),
                           const Divider(),
                           CustomCartPrice(
@@ -176,7 +179,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             height: 20,
                           ),
                           CustomCheckoutButton(
-                            shippingCoast: 50,
+                            shippingCoast: shippingPrice.toInt(),
                             currentIndex: paymentIndex,
                             total: widget.total,
                             cartItems: widget.cartItems,

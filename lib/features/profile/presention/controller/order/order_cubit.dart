@@ -20,11 +20,15 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   Future<void> createOrder({required OrderModel order}) async {
-    emit(GetOrderLoading());
+    emit(CreateOrderLoading());
     final result = await orderRepo.craeteOrders(orderModel: order);
     result.fold(
       (l) => emit(OrderError(error: l.message)),
-      (r) => emit(AddOrderSuccess()),
+      (r) async{
+       
+       await getUserOrders(status: orderStauts[0]);
+      },
+
     );
   }
 
@@ -37,22 +41,22 @@ class OrderCubit extends Cubit<OrderState> {
     );
   }
 
-  Future<void> deletOrder({required String orderId}) async {
+  Future<void> deletOrder({required OrderModel order}) async {
     emit(DeletOrderLoading());
-    final result = await orderRepo.deletOrder(orderId: orderId);
+    final result = await orderRepo.deletOrder(order: order);
     result.fold(
       (l) => emit(OrderError(error: l.message)),
-      (r) {
-        getUserOrders(status: orderStauts[currentStatus]);
+      (r) async{
+       await getUserOrders(status: orderStauts[0]);
       },
     );
   }
 
   Future<void> changeOrdeStatus(
-      {required String status, required String orderId}) async {
+      {required String status, required String orderId,required int trackingNumber}) async {
     emit(UpdateOrderLoading());
     final result =
-        await orderRepo.changeOrdeStatus(status: status, orderId: orderId);
+        await orderRepo.changeOrdeStatus(status: status, orderId: orderId, trackingNumber: trackingNumber);
     result.fold((l) => emit(OrderError(error: l.message)), (r) {
       getUserOrders(status: status);
     });

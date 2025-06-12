@@ -357,12 +357,12 @@ class FirestoreService {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
-    await updateStockAfterOrder(order.items);
+    await updateStockAfterOrder(items: order.items, isCreateOrder: true);
     await firestore.collection("orders").doc(order.orderId).set(order.toMap());
     await clearCart();
   }
 
-  Future<void> updateStockAfterOrder(List<CartItemModel> items) async {
+  Future<void> updateStockAfterOrder({required bool isCreateOrder,required List<CartItemModel> items}) async {
     final firestore = FirebaseFirestore.instance;
 
     for (final item in items) {
@@ -376,7 +376,9 @@ class FirestoreService {
         final currentStock = snapshot.get('stock') as int;
         final orderedQuantity = item.quantity;
 
-        final newStock = currentStock - orderedQuantity;
+        int newStock = isCreateOrder
+            ? currentStock - orderedQuantity
+            : currentStock + orderedQuantity;
 
         if (newStock >= 0) {
           transaction.update(productRef, {'stock': newStock});
@@ -396,7 +398,7 @@ class FirestoreService {
     if (status == "All") {
       querySnapshot = await firestore
           .collection("orders")
-          .where("uId", isEqualTo: userId)
+          .where("uId", isEqualTo: userId).orderBy("orderDate", descending: true)
           .get();
     } else {
       querySnapshot = await firestore
@@ -405,22 +407,25 @@ class FirestoreService {
             "status",
             isEqualTo: status,
           )
-          .where("uId", isEqualTo: userId)
+          .where("uId", isEqualTo: userId).orderBy("orderDate", descending: true)
           .get();
     }
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
 
-  Future<void> deleteOrder({required String orderId}) async {
-    await firestore.collection("orders").doc(orderId).delete();
+  Future<void> deleteOrder({required OrderModel order}) async {
+    await firestore.collection("orders").doc(order.orderId).delete();
+    await updateStockAfterOrder(isCreateOrder: false, items: order.items);
   }
 
   Future<void> changeOrdeStatus(
-      {required String status, required String orderId}) async {
+      {required String status, required String orderId,required int trackingNumber}) async {
     await firestore
         .collection('orders')
         .doc(orderId)
-        .update({"status": status});
+        .update({"status": status,
+                 "trackingNumber": trackingNumber});
+        
   }
 
   Future<List<UserEntity>> getUsers({required bool isStaff}) async {
@@ -454,7 +459,7 @@ class FirestoreService {
   Future<int> getTrackinNumber() async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await firestore.collection("orders").get();
-    return querySnapshot.docs.length;
+    return querySnapshot.docs.length+5000;
   }
 
   Future<int> getOrdersLength() async {

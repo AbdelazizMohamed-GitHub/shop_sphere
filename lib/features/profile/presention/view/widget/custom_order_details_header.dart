@@ -31,7 +31,7 @@ class CustomOrderDetailsHeader extends StatelessWidget {
         const SizedBox(height: 10),
         Row(
           children: [
-            const Text('Tracking Number: 1234567890'),
+             Text('Tracking Number: ${order.status=='Delivered'?order.trackingNumber.toString():"******"}',style: AppStyles.text16Regular,),
             const Spacer(),
             Text(
               ' ${order.status}',

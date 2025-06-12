@@ -25,6 +25,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
   @override
   void initState() {
     BlocProvider.of<OrderCubit>(context).getOrderLength();
+
     super.initState();
   }
 
@@ -64,6 +65,12 @@ class _DashboardScreenState extends State<OrdersScreen> {
                     return e.userName
                             .toLowerCase()
                             .contains(value.toLowerCase()) ||
+                        e.items.any((element) => element.name
+                            .toLowerCase()
+                            .contains(value.toLowerCase())) ||
+                        e.address.state
+                            .toLowerCase()
+                            .contains(value.toLowerCase()) ||
                         e.trackingNumber
                             .toString()
                             .contains(value.toLowerCase());
@@ -100,7 +107,12 @@ class _DashboardScreenState extends State<OrdersScreen> {
                 Expanded(
                     flex: 2,
                     child: CustomDropdown(
-                        categories: const ["All", "0-100", "100-1000", "1000-more"],
+                        categories: const [
+                          "All",
+                          "0-100",
+                          "100-1000",
+                          "1000-more"
+                        ],
                         onCategorySelected: (value) {
                           setState(() {});
                           if (value == "0-100") {
@@ -132,7 +144,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
 
             StreamBuilder(
               stream:
-                  FirebaseFirestore.instance.collection("orders").snapshots(),
+                  FirebaseFirestore.instance.collection("orders").orderBy("orderDate", descending: true).snapshots(),
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -198,11 +210,17 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                     order.status == 'Pending'
                                         ? TextButton(
                                             onPressed: () async {
+                                              await BlocProvider.of<OrderCubit>(
+                                                      context)
+                                                  .getTrackinNumber();
                                               await context
                                                   .read<OrderCubit>()
                                                   .changeOrdeStatus(
                                                       status: orderStauts[2],
-                                                      orderId: order.orderId);
+                                                      orderId: order.orderId,
+                                                      trackingNumber: context
+                                                          .read<OrderCubit>()
+                                                          .currentTrackingNumber);
                                             },
                                             child: const Text('Process'),
                                           )

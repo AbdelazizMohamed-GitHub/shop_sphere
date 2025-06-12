@@ -1,9 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 
 class DashboardProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;
@@ -108,6 +114,29 @@ class DashboardProductDetailsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+        ),
+        child: BlocConsumer<DashboardCubit, DashboardState>(
+          listener: (context, state) {
+            if (state is DashboardSuccess) {
+              Navigator.pop(context);
+            } else if (state is DashboardFailer) {
+              Warning.showWarning(context,
+                  message: state.errMessage, isErorr: true);
+            }
+          },
+          builder: (context, state) {
+            return CustomButton(
+                onPressed: () async {
+                  await context.read<DashboardCubit>().deleteProduct(
+                      dId: product.pId, imageUrl: product.imageUrl);
+                },
+                text: state is DashboardLoading ? 'Deleting...' : 'Delete');
+          },
         ),
       ),
     );

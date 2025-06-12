@@ -29,8 +29,8 @@ class CustomOrderItem extends StatelessWidget {
             child: Column(
               children: [
                 Row(children: [
-                  const Text(
-                    'Order # 19470',
+                  Text(
+                    'Order ID: ${order.orderId.substring(0, 6)}',
                     style: AppStyles.text16Bold,
                   ),
                   const Spacer(),
@@ -43,12 +43,12 @@ class CustomOrderItem extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                const Row(
+                Row(
                   children: [
                     Text(
-                      'Tracking Number: 1234567890',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      'Tracking Number:  ${order.status == 'Delivered' ? order.trackingNumber : '******'}',
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -90,7 +90,7 @@ class CustomOrderItem extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                 Text(
+                  Text(
                     ' ${order.status}',
                     style: TextStyle(
                         fontSize: 14,
@@ -100,7 +100,7 @@ class CustomOrderItem extends StatelessWidget {
                             : order.status == 'Processing'
                                 ? Colors.orange
                                 : Colors.red),
-                 )
+                  )
                 ])
               ],
             ),

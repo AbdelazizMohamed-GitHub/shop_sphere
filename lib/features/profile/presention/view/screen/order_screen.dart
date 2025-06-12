@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/loading/order_screen_loading.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
-import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
-import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_screen_body.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_stuts_list.dart';
 
-class OrderScreen extends StatelessWidget {
+class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
+
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<OrderCubit>(context).getUserOrders(status: 'All');
+  }
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>())
-        ..getUserOrders(status: orderStauts[0]),
-      child: Scaffold(
+    return 
+     Scaffold(
         appBar: AppBar(
           leading: AppTheme.isLightTheme(context)
               ? const CustomBackButton()
@@ -64,7 +70,7 @@ class OrderScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

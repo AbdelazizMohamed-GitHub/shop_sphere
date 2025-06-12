@@ -72,13 +72,7 @@ class ProductDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Stock & Staff
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("المخزون: ${product.stock}"),
-                Text("بواسطة: ${product.staffName}"),
-              ],
-            ),
+            Text(" Stock: ${product.stock}"),
             const SizedBox(height: 24),
 
             // Button
@@ -102,7 +96,6 @@ class ProductDetailsScreen extends StatelessWidget {
                                 quantity: 1,
                               ),
                             );
-                      
                       }
                     },
                     text: state is CartLoading
