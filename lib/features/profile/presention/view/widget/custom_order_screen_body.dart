@@ -16,7 +16,7 @@ class CustomOrderScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: PageView(
+      child: PageView(physics: const NeverScrollableScrollPhysics(),
           controller: context.read<OrderCubit>().pageController,
           // onPageChanged: (index) {
           //   context.read<OrderCubit>().changeOrderStatus(index);
