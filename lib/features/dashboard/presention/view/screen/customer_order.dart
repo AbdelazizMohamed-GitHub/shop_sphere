@@ -10,10 +10,10 @@ import 'package:shop_sphere/features/profile/presention/controller/order/order_s
 
 class CustomerOrderScreen extends StatefulWidget {
   const CustomerOrderScreen({
-    Key? key,
+    super.key,
     required this.userId,
     required this.userName,
-  }) : super(key: key);
+  });
   final String userId;
   final String userName;
 

@@ -46,6 +46,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                     );
                     
 
+                // ignore: use_build_context_synchronously
                 await context
                     .read<CartCubit>()
                     .getProductInCart(productId: productEntity.pId);

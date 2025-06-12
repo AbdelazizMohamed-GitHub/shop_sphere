@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard_details_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_state.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class CustomOrderItemDashboard extends StatelessWidget {
@@ -28,6 +26,7 @@ class CustomOrderItemDashboard extends StatelessWidget {
                   .doc(orderEntity.items[index].productId)
                   .get().then((value) => ProductModel.fromMap(value.data()!)) as ProductEntity;
               Navigator.push(
+                // ignore: use_build_context_synchronously
                 context,
                 MaterialPageRoute(
                   builder: (context) => DashboardProductDetailsScreen( product: product,),

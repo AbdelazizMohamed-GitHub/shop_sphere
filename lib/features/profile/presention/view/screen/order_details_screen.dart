@@ -14,7 +14,6 @@ import 'package:shop_sphere/features/profile/presention/view/widget/custom_order
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_details_item.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_information.dart';
 import 'package:uuid/uuid.dart';
-import 'package:uuid/v4.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderEntity order;

@@ -9,7 +9,6 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/produc
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 
 class DashboardProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;

@@ -6,9 +6,9 @@ import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class DashboardSearchResult extends StatelessWidget {
   const DashboardSearchResult({
-    Key? key,
+    super.key,
     required this.products,
-  }) : super(key: key);
+  });
   final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {

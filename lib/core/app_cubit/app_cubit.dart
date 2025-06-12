@@ -8,8 +8,7 @@ class AppCubit extends Cubit<AppState> {
 
   void changeTheme(context) {
     emit(AppChangeThemeLoading());
-    Future.delayed(Duration(seconds: 10));
-    print("change theme");
+   
     if (AppTheme.isLightTheme(context)) {
       emit(AppChangeThemeDark());
     } else {

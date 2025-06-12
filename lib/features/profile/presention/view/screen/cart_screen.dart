@@ -39,7 +39,7 @@ class CartScreen extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return  Center(child: Text("${FirebaseFailure.fromCode(snapshot.error.toString()).message}"));
+              return  Center(child: Text(FirebaseFailure.fromCode(snapshot.error.toString()).message));
             } else if (snapshot.hasData) {
               List<CartItemModel> cartItems = snapshot.data!.docs.map((doc) {
                 return CartItemModel.fromMap(doc.data());

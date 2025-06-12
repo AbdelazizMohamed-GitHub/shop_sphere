@@ -48,7 +48,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                     );
             },
           ),
-          SizedBox(width: 10)
+          const SizedBox(width: 10)
         ],
       ),
       body: SingleChildScrollView(
@@ -213,11 +213,13 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                               await BlocProvider.of<OrderCubit>(
                                                       context)
                                                   .getTrackinNumber();
+                                              // ignore: use_build_context_synchronously
                                               await context
                                                   .read<OrderCubit>()
                                                   .changeOrdeStatus(
                                                       status: orderStauts[2],
                                                       orderId: order.orderId,
+                                                      // ignore: use_build_context_synchronously
                                                       trackingNumber: context
                                                           .read<OrderCubit>()
                                                           .currentTrackingNumber);

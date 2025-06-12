@@ -225,12 +225,14 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                                       .updateAddress(
                                           addressId: widget.addressEntity!.id,
                                           addressModel: addressModel);
+                                                                // ignore: use_build_context_synchronously
                                                                 context.read<UserCubit>().getUserData(); 
 
                                 } else {
                                   await context.read<AddressCubit>().addAddress(
                                       addressId: addressId,
                                       addressModel: addressModel);
+                                                            // ignore: use_build_context_synchronously
                                                             context.read<UserCubit>().getUserData(); 
 
                                 }

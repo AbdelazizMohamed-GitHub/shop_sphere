@@ -15,9 +15,9 @@ import 'package:shop_sphere/features/profile/presention/controller/order/order_s
 
 class OrdersDetailsScreen extends StatefulWidget {
   const OrdersDetailsScreen({
-    Key? key,
+    super.key,
     required this.order,
-  }) : super(key: key);
+  });
   final OrderEntity order;
 
   @override

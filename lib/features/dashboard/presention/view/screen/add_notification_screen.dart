@@ -11,10 +11,10 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/add_no
 
 class AddNotificationScreen extends StatefulWidget {
   const AddNotificationScreen({
-    Key? key,
+    super.key,
     required this.fCM,
     required this.userName,
-  }) : super(key: key);
+  });
   final String fCM;
   final String userName;
 
