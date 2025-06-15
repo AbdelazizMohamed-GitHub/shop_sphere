@@ -60,7 +60,24 @@ class _UsersScreenState extends State<UsersScreen> {
                   );
                 } else if (state is MangeUsersFailure) {
                   return Center(
-                    child: Text(state.errMessage),
+                    child: Column(
+                      children: [
+                        Text(state.errMessage),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () async{
+                            currentIndex == 0
+                                ?await context
+                                    .read<MangeUsersCubit>()
+                                    .getUsers(isStaff: true)
+                                :await context
+                                    .read<MangeUsersCubit>()
+                                    .getUsers(isStaff: false);
+                          },
+                          child: const Text("Retry"),
+                        ),
+                      ],
+                    ),
                   );
                 } else if (state is MangeUsersSuccess) {
                   return state.users.isEmpty

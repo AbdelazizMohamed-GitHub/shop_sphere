@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
@@ -46,34 +47,33 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                       itemCount: state.orders.length,
                       itemBuilder: (context, index) {
                         OrderEntity order = state.orders[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OrdersDetailsScreen(
-                                  order: order,
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OrdersDetailsScreen(
+                                    order: order,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                              );
+                            },
                             child: ListTile(
                               leading: const Icon(Icons.shopping_bag),
-                              title: Text('Tracking #${order.trackingNumber}'),
+                              title: Text(
+                                  'Tracking Number: ${order.trackingNumber}'),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Date: ${order.orderDate.toLocal()}'),
+                                  Text(
+                                      'Date: ${DateFormat.yMMMEd().format(order.orderDate)}'),
                                   Text('Status: ${order.status}'),
                                 ],
                               ),
                               trailing: Text('\$${order.totalAmount}'),
-                              onTap: () {
-                                // Navigate to order details if needed
-                              },
                             ),
                           ),
                         );
@@ -82,7 +82,21 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
               : state is GetOrderLoading
                   ? const Center(child: CircularProgressIndicator())
                   : state is OrderError
-                      ? Center(child: Text(state.error))
+                      ? Center(
+                          child: Column(
+                          children: [
+                            Text(state.error),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () async {
+                                await context
+                                    .read<OrderCubit>()
+                                    .getCustomerOrder(uId: widget.userId);
+                              },
+                              child: const Text('Retry'),
+                            )
+                          ],
+                        ))
                       : const Center(child: Text('No orders found'));
         },
       ),

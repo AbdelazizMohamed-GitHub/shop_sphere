@@ -52,6 +52,7 @@ class NotificationScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(10),
                   color: Colors.white,
                   child: ListTile(
+                    leading: Icon(Icons.notifications, color: Colors.blue),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     title: Text(notification?.title ?? ''),
                     subtitle: Text(notification?.description ?? ''),

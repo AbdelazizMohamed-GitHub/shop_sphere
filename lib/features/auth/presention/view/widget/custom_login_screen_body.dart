@@ -85,7 +85,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
                   (route) => false);
             }
             if (state is AuthError) {
-              Warning.showWarning(context, message: state.errMessage);
+              Warning.showWarning(context, isError: true,message: state.errMessage);
             }
           },
           builder: (context, state) {

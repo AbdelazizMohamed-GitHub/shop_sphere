@@ -125,7 +125,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
               Navigator.pop(context);
             } else if (state is DashboardFailer) {
               Warning.showWarning(context,
-                  message: state.errMessage, isErorr: true);
+                  message: state.errMessage, isError: true);
             }
           },
           builder: (context, state) {

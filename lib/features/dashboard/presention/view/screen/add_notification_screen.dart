@@ -66,8 +66,8 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
                   if (state is AddNotificationSuccess) {
                     Navigator.pop(context);
                   } else if (state is AddNotificationFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.errMessage)));
+                    Warning.showWarning(context,
+                        message: state.errMessage, isError: true);
                   }
                 },
                 builder: (context, state) {

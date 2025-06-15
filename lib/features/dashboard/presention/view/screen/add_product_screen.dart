@@ -164,7 +164,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 BlocConsumer<DashboardCubit, DashboardState>(
                   listener: (context, state) {
                     if (state is DashboardFailer) {
-                      Warning.showWarning(context, message: state.errMessage);
+                      Warning.showWarning(context, message: state.errMessage,isError: true);
                     }
                     if (state is DashboardSuccess) {
                       Warning.showWarning(context,

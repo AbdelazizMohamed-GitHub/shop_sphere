@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -457,9 +458,10 @@ class FirestoreService {
   }
 
   Future<int> getTrackinNumber() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await firestore.collection("orders").get();
-    return querySnapshot.docs.length+5000;
+    Random random = Random();
+    int randomNumber = random.nextInt(10000000); // Generate a random number between 0 and 999999
+     
+    return randomNumber;
   }
 
   Future<int> getOrdersLength() async {

@@ -114,7 +114,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                           "1000-more"
                         ],
                         onCategorySelected: (value) {
-                          setState(() {});
+                         
                           if (value == "0-100") {
                             filteredOrders = orders
                                 .where((e) => e.totalAmount < 100)
@@ -135,6 +135,9 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                 .toList();
                             searchText = value;
                           }
+                          setState(() {
+                            
+                          });
                         },
                         isUpdate: false,
                         text: "Select Price")),
@@ -171,6 +174,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
                         columns: const [
+                          DataColumn(label: Text('Number')),
                           DataColumn(label: Text('Tracking Number')),
                           DataColumn(label: Text('Customer Name')),
                           DataColumn(label: Text('Date')),
@@ -180,74 +184,62 @@ class _DashboardScreenState extends State<OrdersScreen> {
                           DataColumn(label: Text('Actions')),
                           DataColumn(label: Text('Details')),
                         ],
-                        rows: displayOrders
-                            .map(
-                              (order) => DataRow(
-                                cells: [
-                                  DataCell(
-                                      Text(order.trackingNumber.toString())),
-                                  DataCell(Text(order.userName)),
-                                  DataCell(Text(DateFormat.yMMMEd()
-                                      .format(order.orderDate)
-                                      .toString())),
-                                  DataCell(
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppFuncations.getStatusColor(
-                                            order.status),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Text(order.status),
-                                    ),
-                                  ),
-                                  DataCell(Text(order.paymentMethod)),
-                                  DataCell(Text('${order.totalAmount} EGP')),
-                                  DataCell(
-                                    order.status == 'Pending'
-                                        ? TextButton(
-                                            onPressed: () async {
-                                              await BlocProvider.of<OrderCubit>(
-                                                      context)
-                                                  .getTrackinNumber();
-                                              // ignore: use_build_context_synchronously
-                                              await context
-                                                  .read<OrderCubit>()
-                                                  .changeOrdeStatus(
-                                                      status: orderStauts[2],
-                                                      orderId: order.orderId,
-                                                      // ignore: use_build_context_synchronously
-                                                      trackingNumber: context
-                                                          .read<OrderCubit>()
-                                                          .currentTrackingNumber);
-                                            },
-                                            child: const Text('Process'),
-                                          )
-                                        : const Text('Processed'),
-                                  ),
-                                  DataCell(
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                OrdersDetailsScreen(
-                                                    order: order),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text('View Details'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // Add more rows as needed
-                            )
-                            .toList(),
+                       rows: displayOrders.asMap().entries.map(
+  (entry) {
+    final index = entry.key + 1; // علشان تبدأ من 1 مش من 0
+    final order = entry.value;
+    return DataRow(
+      cells: [
+        DataCell(Text(index.toString())), // 👈 هنا الرقم التسلسلي
+        DataCell(Text(order.trackingNumber.toString())),
+        DataCell(Text(order.userName)),
+        DataCell(Text(DateFormat.yMMMEd().format(order.orderDate))),
+        DataCell(
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppFuncations.getStatusColor(order.status),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(order.status),
+          ),
+        ),
+        DataCell(Text(order.paymentMethod)),
+        DataCell(Text('${order.totalAmount} EGP')),
+        DataCell(
+          order.status == 'Pending'
+              ? TextButton(
+                  onPressed: () async {
+                    await BlocProvider.of<OrderCubit>(context).getTrackinNumber();
+                    await context.read<OrderCubit>().changeOrdeStatus(
+                          status: orderStauts[2],
+                          orderId: order.orderId,
+                          trackingNumber:
+                              context.read<OrderCubit>().currentTrackingNumber,
+                        );
+                  },
+                  child: const Text('Process'),
+                )
+              : const Text('Processed'),
+        ),
+        DataCell(
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrdersDetailsScreen(order: order),
+                ),
+              );
+            },
+            child: const Text('View Details'),
+          ),
+        ),
+      ],
+    );
+  },
+).toList(),
+
                       ),
                     );
                   }

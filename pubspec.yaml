@@ -44,6 +44,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.0.0
+  flutter_launcher_icons: ^0.14.4
   flutter_local_notifications: ^19.1.0
   flutter_paypal_payment: ^1.0.8
   flutter_rating_bar: ^4.0.1
@@ -72,6 +73,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_launcher_icons:
+  background_color: "#ffffff"
+  color: "#000000"
+  image: "assets/images/logo.png"
+  android: true
+ 
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.

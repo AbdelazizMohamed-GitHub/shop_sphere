@@ -73,7 +73,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               child: BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthError) {
-                    Warning.showWarning(context, message: state.errMessage);
+                    Warning.showWarning(context, message: state.errMessage,isError:  true);
                   }
                 },
                 builder: (context, state) {
