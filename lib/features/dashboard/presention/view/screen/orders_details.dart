@@ -92,10 +92,10 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   )
                 : BlocConsumer<OrderCubit, OrderState>(
                     listener: (context, state) {
-                      if (state is OrderSuccess) { context
-                                            .read<OrderCubit>()
-                                            .getCustomerOrder(uId: widget.order.uId);
-                         Navigator.pop(context);
+                      if (state is OrderSuccess) {
+                        context
+                            .read<OrderCubit>()
+                            .getCustomerOrder(uId: widget.order.uId);
                       }
                     },
                     builder: (context, state) {
@@ -136,9 +136,6 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                                 trackingNumber: context
                                                     .read<OrderCubit>()
                                                     .currentTrackingNumber);
-                                                    
-                                                  
-                                                    
                                       },
                                       text: "Process Order")
                               : state is UpdateOrderLoading

@@ -22,7 +22,7 @@ class _CustomThemeWidgetState extends State<CustomThemeWidget> {
           value: active,
           onChanged: (val) {
            
-            context.read<AppCubit>().changeTheme(context);
+            context.read<AppCubit>().toggleTheme();
             setState(() {
               active = val;
             });

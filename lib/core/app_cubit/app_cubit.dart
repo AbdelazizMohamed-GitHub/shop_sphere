@@ -1,18 +1,18 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-import 'package:shop_sphere/core/app_cubit/app_state.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
 
-class AppCubit extends Cubit<AppState> {
-  AppCubit() : super(AppInitial());
+class AppCubit extends HydratedCubit<bool> {
+  AppCubit() : super(true); // true = light, false = dark
 
-  void changeTheme(context) {
-    emit(AppChangeThemeLoading());
-   
-    if (AppTheme.isLightTheme(context)) {
-      emit(AppChangeThemeDark());
-    } else {
-      emit(AppChangeThemeLight());
-    }
+  void toggleTheme() => emit(!state);
+
+  @override
+  bool? fromJson(Map<String, dynamic> json) {
+    return json['isLight'] as bool?;
+  }
+
+  @override
+  Map<String, dynamic>? toJson(bool state) {
+    return {'isLight': state};
   }
 }

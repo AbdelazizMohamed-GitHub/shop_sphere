@@ -20,8 +20,8 @@ class CustomAppBarCart extends StatelessWidget {
                 children: [
                   CustomCircleButton(
                       icon: const Icon(
-                        Icons.shopping_cart,
-                        color: Colors.black,
+                        Icons.shopping_cart,size: 25,
+                       
                       ),
                       funcation: () {
                         Navigator.push(

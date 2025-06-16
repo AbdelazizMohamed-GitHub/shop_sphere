@@ -122,35 +122,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         }));
                       },
                     ),
-                    BlocBuilder<AppCubit, AppState>(
-                      builder: (context, state) {
-                        final bool isLoading = state is AppChangeThemeLoading;
+                    BlocBuilder<AppCubit, bool>(
+                      builder: (context, isLightTheme) {
                         return CustomProfileListTile(
                           icon: Icons.dark_mode_outlined,
                           title: 'Dark Mode',
-                          trailing: isLoading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : Switch(
-                                  activeColor: Colors.white,
-                                  value: !isLightTheme,
-                                  onChanged: (val) {
-                                    setState(() {});
-                                   
-                                    context
-                                        .read<AppCubit>()
-                                        .changeTheme(context);
-                                  },
-                                  inactiveTrackColor: Colors.white),
+                          trailing: Switch(
+                              activeColor: Colors.white,
+                              value: !isLightTheme,
+                              onChanged: (val) {
+                                setState(() {});
+
+                                context.read<AppCubit>().toggleTheme();
+                              },
+                              inactiveTrackColor: Colors.white),
                           funcation: () {},
                         );
                       },
                     ),
-                   
                     const Divider(
                       color: Colors.white,
                     ),

@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/service/bloc_observer.dart';
@@ -34,6 +37,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+   HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
   setupLocator();
 
   await Firebase.initializeApp(
@@ -121,17 +129,13 @@ class _ShopSphereState extends State<ShopSphere> {
           create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
         ),
       ],
-      child: BlocBuilder<AppCubit, AppState>(
-        builder: (context, state) {
+      child: BlocBuilder<AppCubit, bool>(
+        builder: (context, isLightTheme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'ShopSphere',
             themeMode: ThemeMode.system,
-            theme: state is AppInitial
-                ? AppTheme.lightTheme
-                : state is AppChangeThemeLight
-                    ? AppTheme.lightTheme
-                    : AppTheme.darkTheme,
+            theme:isLightTheme? AppTheme.lightTheme : AppTheme.darkTheme,
             home: isLoading
                 ? const Scaffold(
                     body: Center(child: CircularProgressIndicator()))
