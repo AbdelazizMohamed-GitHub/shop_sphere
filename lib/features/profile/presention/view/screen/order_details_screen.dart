@@ -65,10 +65,9 @@ class OrderDetailsScreen extends StatelessWidget {
               listener: (context, state) {
                 if (state is AddOrderSuccess) {
                   Warning.showWarning(context, message: "Order Added Success");
-               
                 } else if (state is OrderError) {
                   Warning.showWarning(context, message: state.error);
-                }else if(state is OrderSuccess){
+                } else if (state is OrderSuccess) {
                   Navigator.pop(context);
                 }
               },
@@ -78,16 +77,17 @@ class OrderDetailsScreen extends StatelessWidget {
                   children: [
                     MaterialButton(
                       onPressed: () async {
-                        String orderId = const Uuid().v4() ;// Generate a new order ID
+                        String orderId =
+                            const Uuid().v4(); // Generate a new order ID
                         OrderModel orderModel = OrderModel.fromEntity(order);
-                     
 
-                        await context
-                            .read<OrderCubit>()
-                            .createOrder(order: orderModel.copyWith(orderId:orderId,
-                                status: orderStauts[1], // Set status to 'Pending'
-                                orderDate: DateTime.now(),trackingNumber: 0));
-                            
+                        await context.read<OrderCubit>().createOrder(
+                            order: orderModel.copyWith(
+                                orderId: orderId,
+                                status:
+                                    orderStauts[1], // Set status to 'Pending'
+                                orderDate: DateTime.now(),
+                                trackingNumber: 0));
                       },
                       color: Colors.white,
                       shape: OutlineInputBorder(
@@ -98,8 +98,10 @@ class OrderDetailsScreen extends StatelessWidget {
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator())
-                          : const Text(
+                          : Text(
                               'Reorder',
+                              style: AppStyles.text16Bold
+                                  .copyWith(color: Colors.black),
                             ),
                     ),
                     MaterialButton(
@@ -107,11 +109,10 @@ class OrderDetailsScreen extends StatelessWidget {
                         if (order.status == orderStauts[3]) {
                           Navigator.pop(context);
                         } else {
-                           OrderModel orderModel = OrderModel.fromEntity(order);
+                          OrderModel orderModel = OrderModel.fromEntity(order);
                           await context
                               .read<OrderCubit>()
                               .deletOrder(order: orderModel);
-                     
                         }
                       },
                       color: AppColors.primaryColor,
@@ -119,8 +120,12 @@ class OrderDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: Colors.black)),
                       child: state is DeletOrderLoading
-                          ? const SizedBox(width: 20,height: 20,
-                            child: CircularProgressIndicator(color: Colors.white,))
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ))
                           : Text(
                               order.status == orderStauts[3]
                                   ? 'Cancel'

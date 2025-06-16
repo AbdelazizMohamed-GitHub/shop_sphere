@@ -60,11 +60,12 @@ class _TestScreenState extends State<TestScreen> {
             children: [
               Text(
                 "تم تحديث: $updatedCount منتج",
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 24),
               ElevatedButton.icon(
-                onPressed: isLoading ? null : handleChangeStaff,
+                onPressed: handleChangeStaff,
                 icon: const Icon(Icons.sync),
                 label: const Text("تحديث بيانات المنتجات"),
               ),
@@ -82,13 +83,13 @@ Future<int> changeStaff() async {
   final productsRef = FirebaseFirestore.instance.collection('products');
 
   final productsSnapshot = await productsRef
-      .where('sId', isEqualTo: 'p5O7DN4R6WOPl8dvfWlHI6iaHFv1')
+      .where('sId', isEqualTo: '4OPsIIhK9SSKshkXGAfECFT9fQC3')
       .get();
 
   int updatedCount = 0;
 
   for (final doc in productsSnapshot.docs) {
-    await doc.reference.update({'sId': '4OPsIIhK9SSKshkXGAfECFT9fQC3'});
+    await doc.reference.update({'sId': '4cZvO5N8fqg06XDfVvPXEpTNanG3', 'staffName': 'ShopSphere Staff'});
     updatedCount++;
     print("✅ Updated product ${doc.id}");
   }
@@ -96,3 +97,4 @@ Future<int> changeStaff() async {
   print("🎉 Total updated: $updatedCount");
   return updatedCount;
 }
+

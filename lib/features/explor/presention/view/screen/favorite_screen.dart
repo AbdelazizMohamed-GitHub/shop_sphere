@@ -37,8 +37,13 @@ class FavoriteScreen extends StatelessWidget {
                     style: AppStyles.text22SemiBold,
                   ));
                 }
-                return CustomVerticalProductList(
-                  products: snapshot.data as List<ProductEntity>,
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomVerticalProductList(
+                      products: snapshot.data as List<ProductEntity>,
+                    ),
+                  ),
                 );
               }
               return const Center(child: Text('No Data'));

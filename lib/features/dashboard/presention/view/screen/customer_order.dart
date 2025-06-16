@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
@@ -64,23 +65,31 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                             child: ListTile(
                               leading: const Icon(Icons.shopping_bag),
                               title: Text(
-                                  'Tracking Number: ${order.trackingNumber}'),
+                                  'Tracking Number: ${order.status == 'Pending' ? '******' : order.trackingNumber}'),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                       'Date: ${DateFormat.yMMMEd().format(order.orderDate)}'),
-                                  Text('Status: ${order.status}'),
+                                  Text(
+                                    ' ${order.status}',
+                                    style: TextStyle(
+                                        color: AppFuncations.getStatusColor(
+                                            order.status)),
+                                  ),
                                 ],
                               ),
-                              trailing: Text('\$${order.totalAmount}'),
+                              trailing: Text(
+                                '\$${order.totalAmount}',
+                                style: AppStyles.text16Bold,
+                              ),
                             ),
                           ),
                         );
                       },
                     )
               : state is GetOrderLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ?  const Center(child: CircularProgressIndicator())
                   : state is OrderError
                       ? Center(
                           child: Column(

@@ -21,56 +21,55 @@ class _OrderScreenState extends State<OrderScreen> {
     super.initState();
     BlocProvider.of<OrderCubit>(context).getUserOrders(status: 'All');
   }
+
   @override
   Widget build(BuildContext context) {
-    return 
-     Scaffold(
-        appBar: AppBar(
-          leading: AppTheme.isLightTheme(context)
-              ? const CustomBackButton()
-              : IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 30,
-                  )),
-          title: const Text('My Order'),
-          leadingWidth: 100,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 10, top: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 40, child: CustomOrderStutsList()),
-              BlocBuilder<OrderCubit, OrderState>(
-                builder: (context, state) {
-                  if (state is GetOrderLoading) {
-                    return const OrderScreenLoading();
-                  } else if (state is OrderError) {
-                    return Center(child: Text(state.error));
-                  } else if (state is OrderSuccess) {
-                    if (state.orders.isEmpty) {
-                      return const Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Center(child: Text('No Orders')),
-                          ],
-                        ),
-                      );
-                    }
-                    return CustomOrderScreenBody(
-                      orders: state.orders,
+    return Scaffold(
+      appBar: AppBar(
+        leading: AppTheme.isLightTheme(context)
+            ? const CustomBackButton()
+            : IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 30,
+                )),
+        title: const Text('My Order'),
+        leadingWidth: 100,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 10, top: 20),
+        child: Column(
+          children: [
+            const SizedBox(height: 40, child: CustomOrderStutsList()),
+            BlocBuilder<OrderCubit, OrderState>(
+              builder: (context, state) {
+                if (state is GetOrderLoading) {
+                  return const OrderScreenLoading();
+                } else if (state is GetOrderError) {
+                  return Center(child: Text(state.error));
+                } else if (state is GetCustomerOrder) {
+                  if (state.orders.isEmpty) {
+                    return const Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Center(child: Text('No Orders')),
+                        ],
+                      ),
                     );
                   }
-                  return const Center(child: Text('No Data'));
-                },
-              ),
-            ],
-          ),
+                  return CustomOrderScreenBody(
+                    orders: state.orders,
+                  );
+                }
+                return const Center(child: Text('No Data'));
+              },
+            ),
+          ],
         ),
-      
+      ),
     );
   }
 }

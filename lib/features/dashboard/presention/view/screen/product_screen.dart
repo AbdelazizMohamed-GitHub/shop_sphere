@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
@@ -13,10 +14,15 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/users_scre
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
 
-  
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  String selectedCategory = "All";
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -29,15 +35,31 @@ class ProductScreen extends StatelessWidget {
             return const Scaffold(
                 body: Center(child: CircularProgressIndicator()));
           } else if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
+            return Scaffold(body: Column(
+              children: [
+                Center(child: Text(snapshot.error.toString())),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: const Text("Retry")),
+              ],
+            ));
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No Products Found"));
+            return Scaffold(body: const Center(child: Text("No Products Found")));
           } else {
             final List<ProductEntity> products = snapshot.data!.docs
                 .map((doc) => ProductModel.fromMap(doc.data()))
                 .toList();
+            if (selectedCategory != "All") {
+              products.retainWhere((product) =>
+                  product.category.toLowerCase() ==
+                  selectedCategory.toLowerCase());
+            }
 
-List<ProductEntity> outOfStock   = products.where((product) => product.stock == 0).toList();
+            List<ProductEntity> outOfStock =
+                products.where((product) => product.stock == 0).toList();
             return Scaffold(
               drawer: Drawer(
                 child: ListView(
@@ -75,7 +97,8 @@ List<ProductEntity> outOfStock   = products.where((product) => product.stock == 
                           ),
                         );
                       },
-                    ),  ListTile(
+                    ),
+                    ListTile(
                       leading: const Icon(Icons.people),
                       title: const Text('out of stock'),
                       onTap: () {
@@ -83,7 +106,9 @@ List<ProductEntity> outOfStock   = products.where((product) => product.stock == 
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return  OutOfStockScreen(products: outOfStock,);
+                              return OutOfStockScreen(
+                                products: outOfStock,
+                              );
                             },
                           ),
                         );
@@ -139,7 +164,21 @@ List<ProductEntity> outOfStock   = products.where((product) => product.stock == 
                         Text(
                           '${FirebaseAuth.instance.currentUser!.displayName}',
                           style: AppStyles.text18Regular,
-                        )
+                        ),
+                        Spacer(),
+                        PopupMenuButton(child: const Icon(Icons.filter_list),
+                            itemBuilder: (context) =>
+                                appCategory.map((category) {
+                                  return PopupMenuItem(
+                                    onTap: () {
+selectedCategory = category;
+                                      setState(() {});
+                                    },
+                                    value: category,
+                                    child: Text(category),
+                                  );
+                                }).toList()),SizedBox(width: 10,)
+                      
                       ]),
                     ),
                     GridView.builder(

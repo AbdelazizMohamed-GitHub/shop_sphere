@@ -26,7 +26,6 @@ class OrdersDetailsScreen extends StatefulWidget {
 class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
   @override
   void initState() {
-    context.read<OrderCubit>().getTrackinNumber();
     super.initState();
   }
 
@@ -93,8 +92,10 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   )
                 : BlocConsumer<OrderCubit, OrderState>(
                     listener: (context, state) {
-                      if (state is OrderSuccess) {
-                        Navigator.pop(context);
+                      if (state is OrderSuccess) { context
+                                            .read<OrderCubit>()
+                                            .getCustomerOrder(uId: widget.order.uId);
+                         Navigator.pop(context);
                       }
                     },
                     builder: (context, state) {
@@ -124,7 +125,10 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                     )
                                   : CustomButton(
                                       onPressed: () async {
-                                        context
+                                        await context
+                                            .read<OrderCubit>()
+                                            .getTrackinNumber();
+                                        await context
                                             .read<OrderCubit>()
                                             .changeOrdeStatus(
                                                 status: orderStauts[2],
@@ -132,6 +136,9 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                                 trackingNumber: context
                                                     .read<OrderCubit>()
                                                     .currentTrackingNumber);
+                                                    
+                                                  
+                                                    
                                       },
                                       text: "Process Order")
                               : state is UpdateOrderLoading
@@ -140,7 +147,7 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                     )
                                   : CustomButton(
                                       onPressed: () async {
-                                        context
+                                        await context
                                             .read<OrderCubit>()
                                             .changeOrdeStatus(
                                                 status: orderStauts[3],

@@ -56,7 +56,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Search and Filter Row
+          
             CustomTextForm(
               onChanged: (value) {
                 searchText = value;
@@ -229,18 +229,23 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                           },
                                           child: const Text('Process'),
                                         )
-                                      : TextButton(
-                                          onPressed: () async {
-                                            await context
-                                                .read<OrderCubit>()
-                                                .changeOrdeStatus(
-                                                    status: orderStauts[3],
-                                                    orderId: order.orderId,
-                                                    trackingNumber:
-                                                        order.trackingNumber);
-                                          },
-                                          child: const Text('Complete'),
-                                        ),
+                                      : order.status == 'Processing'
+                                          ? TextButton(
+                                              onPressed: () async {
+                                                await context
+                                                    .read<OrderCubit>()
+                                                    .changeOrdeStatus(
+                                                        status: orderStauts[3],
+                                                        orderId: order.orderId,
+                                                        trackingNumber: order
+                                                            .trackingNumber);
+                                              },
+                                              child: const Text('Complete'),
+                                            )
+                                          : const Icon(
+                                              Icons.check_circle,
+                                              color: Colors.green,
+                                            ),
                                 ),
                                 DataCell(
                                   TextButton(

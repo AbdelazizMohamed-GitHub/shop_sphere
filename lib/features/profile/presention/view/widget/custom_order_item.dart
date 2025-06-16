@@ -46,7 +46,7 @@ class CustomOrderItem extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Tracking Number:  ${order.status == 'Delivered' ? order.trackingNumber : '******'}',
+                      'Tracking Number:  ${order.status == 'Pending' ?   '*******':order.trackingNumber}',
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
@@ -75,7 +75,7 @@ class CustomOrderItem extends StatelessWidget {
                     color: AppColors.primaryColor,
                     shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                    ),
+                    ), 
                     onPressed: () {
                       Navigator.push(
                           context,

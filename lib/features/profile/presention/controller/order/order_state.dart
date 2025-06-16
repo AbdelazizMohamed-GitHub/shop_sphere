@@ -1,6 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
-sealed class OrderState {}
+sealed class OrderState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
 
 final class OrderInitial extends OrderState {}
 
@@ -15,6 +19,10 @@ final class GetOrderLoading extends OrderState {}
 final class OrderError extends OrderState {
   final String error;
   OrderError({required this.error});
+}
+final class GetOrderError extends OrderState {
+  final String error;
+  GetOrderError({required this.error});
 }
 
 final class AddOrderSuccess extends OrderState {}
@@ -36,3 +44,8 @@ final class GetOrderLength extends OrderState {
   GetOrderLength({required this.orderLength});
 }
 final class CreateOrderLoading extends OrderState {}
+final class GetCustomerOrder extends OrderState {
+  final List<OrderEntity> orders;
+
+  GetCustomerOrder({required this.orders});
+}
