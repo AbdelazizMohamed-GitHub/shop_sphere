@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -129,7 +128,10 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                             .read<OrderCubit>()
                                             .changeOrdeStatus(
                                                 status: orderStauts[2],
-                                                orderId: widget.order.orderId, trackingNumber:context.read<OrderCubit>().currentTrackingNumber );
+                                                orderId: widget.order.orderId,
+                                                trackingNumber: context
+                                                    .read<OrderCubit>()
+                                                    .currentTrackingNumber);
                                       },
                                       text: "Process Order")
                               : state is UpdateOrderLoading
@@ -142,7 +144,9 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                                             .read<OrderCubit>()
                                             .changeOrdeStatus(
                                                 status: orderStauts[3],
-                                                orderId: widget.order.orderId, trackingNumber: widget.order.trackingNumber);
+                                                orderId: widget.order.orderId,
+                                                trackingNumber: widget
+                                                    .order.trackingNumber);
                                       },
                                       text: "Deliver Order")
                         ],
