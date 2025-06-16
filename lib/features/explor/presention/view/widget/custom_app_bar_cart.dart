@@ -20,8 +20,8 @@ class CustomAppBarCart extends StatelessWidget {
                 children: [
                   CustomCircleButton(
                       icon: const Icon(
-                        Icons.shopping_cart,size: 25,
-                       
+                        Icons.shopping_cart,
+                        size: 25,
                       ),
                       funcation: () {
                         Navigator.push(
@@ -34,16 +34,17 @@ class CustomAppBarCart extends StatelessWidget {
                     top: 0,
                     right: 0,
                     child: CircleAvatar(
-                        backgroundColor: AppColors.primaryColor,
-                        radius: 9,
-                        child: Text(
-                          state.cartProduct.length
-                              .toString(), // This should be replaced with the actual cart item count
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        )),
+                      backgroundColor: AppColors.primaryColor,
+                      radius: 9,
+                      child: Text(
+                        state.cartProduct.length
+                            .toString(), // This should be replaced with the actual cart item count
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               )
