@@ -48,7 +48,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   return const OrderScreenLoading();
                 } else if (state is GetOrderError) {
                   return Center(child: Text(state.error));
-                } else if (state is GetCustomerOrder) {
+                } else if (state is OrderSuccess) {
                   if (state.orders.isEmpty) {
                     return const Expanded(
                       child: Column(
@@ -64,7 +64,24 @@ class _OrderScreenState extends State<OrderScreen> {
                     orders: state.orders,
                   );
                 }
-                return const Center(child: Text('No Data'));
+                return Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Center(child: Text('No Data')),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            await context
+                                .read<OrderCubit>()
+                                .getUserOrders(status: 'All');
+                          },
+                          child: const Text('Retry'))
+                    ],
+                  ),
+                );
               },
             ),
           ],

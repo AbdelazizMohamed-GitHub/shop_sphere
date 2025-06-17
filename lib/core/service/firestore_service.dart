@@ -411,7 +411,12 @@ class FirestoreService {
           .where("uId", isEqualTo: userId).orderBy("orderDate", descending: true)
           .get();
     }
+    if (querySnapshot.docs.isEmpty) {
+      return []; // Return empty list if no orders found
+    }
+
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
+    
   }
 
   Future<void> deleteOrder({required OrderModel order}) async {

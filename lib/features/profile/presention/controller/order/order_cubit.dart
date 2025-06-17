@@ -16,7 +16,7 @@ class OrderCubit extends Cubit<OrderState> {
   PageController pageController = PageController(initialPage: 0);
   void changeOrderStatus(int index) async {
     currentStatus = index;
-    getUserOrders(status: orderStauts[index]);
+    await getUserOrders(status: orderStauts[index]);
   }
 
   Future<void> createOrder({required OrderModel order}) async {
@@ -38,7 +38,10 @@ class OrderCubit extends Cubit<OrderState> {
     final result = await orderRepo.getUserOrders(status: status);
     result.fold(
       (l) => emit(GetOrderError(error: l.message)),
-      (orders) => emit(OrderSuccess(orders: orders)),
+      (orders) {
+        print("OrderLength ${orders.length}");
+        emit(OrderSuccess(orders: orders));
+      },
     );
   }
 
