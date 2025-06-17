@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/mange_users_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/mange_users/mange_users_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_notification_screen.dart';
@@ -59,25 +60,17 @@ class _UsersScreenState extends State<UsersScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is MangeUsersFailure) {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Text(state.errMessage),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () async{
-                            currentIndex == 0
-                                ?await context
-                                    .read<MangeUsersCubit>()
-                                    .getUsers(isStaff: true)
-                                :await context
-                                    .read<MangeUsersCubit>()
-                                    .getUsers(isStaff: false);
-                          },
-                          child: const Text("Retry"),
-                        ),
-                      ],
-                    ),
+                  return CustomErrorWidget(
+                    errorMessage: state.errMessage,
+                    onpressed: () async {
+                      currentIndex == 0
+                          ? await context
+                              .read<MangeUsersCubit>()
+                              .getUsers(isStaff: true)
+                          : await context
+                              .read<MangeUsersCubit>()
+                              .getUsers(isStaff: false);
+                    },
                   );
                 } else if (state is MangeUsersSuccess) {
                   return state.users.isEmpty

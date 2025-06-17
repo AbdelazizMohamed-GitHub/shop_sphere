@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:shop_sphere/core/loading/order_screen_loading.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_order_screen_body.dart';
@@ -47,7 +50,13 @@ class _OrderScreenState extends State<OrderScreen> {
                 if (state is GetOrderLoading) {
                   return const OrderScreenLoading();
                 } else if (state is GetOrderError) {
-                  return Center(child: Text(state.error));
+                  return CustomErrorWidget(
+                    errorMessage: state.error,
+                    onpressed: () {
+                      context.read<OrderCubit>()
+                          .getUserOrders(status: orderStauts[context.read<OrderCubit>().currentStatus]);
+                    },
+                  );
                 } else if (state is OrderSuccess) {
                   if (state.orders.isEmpty) {
                     return const Expanded(

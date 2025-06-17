@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
@@ -28,42 +29,50 @@ class ExploreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProductCubit(productRepo: getIt<ProductRepoImpl>())
-        ..getProducts(category: 'All'),
-      child: BlocProvider(
-        create: (context) => FavouriteCubit(
-          favouriteRepo: getIt<FavouriteRepoImpl>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              ProductCubit(productRepo: getIt<ProductRepoImpl>())
+                ..getProducts(category: 'All'),
         ),
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            centerTitle: false,
-            title: Row(
-              children: [
-                Text(' Welcome ',
-                    style: AppStyles.text18Regular.copyWith(
-                      color: AppColors.primaryColor,
-                    )),
-                Text(
-                  '${FirebaseAuth.instance.currentUser?.displayName?.split(' ').first}',
-                  style: AppStyles.text18Regular,
-                ),
-              ],
-            ),
-            actions: const [
-              CustomAppBarCart(),
-              SizedBox(
-                width: 20,
-              )
+        BlocProvider(
+          create: (context) =>
+              FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>()),
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: false,
+          title: Row(
+            children: [
+              Text(' Welcome ',
+                  style: AppStyles.text18Regular.copyWith(
+                    color: AppColors.primaryColor,
+                  )),
+              Text(
+                '${FirebaseAuth.instance.currentUser?.displayName?.split(' ').first}',
+                style: AppStyles.text18Regular,
+              ),
             ],
           ),
-          body: SingleChildScrollView(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await context.read<ProductCubit>().getProducts(category: 'All');
-              },
-              child: Padding(
+          actions: const [
+            CustomAppBarCart(),
+            SizedBox(
+              width: 20,
+            )
+          ],
+        ),
+        body: Builder(builder: (context) {
+          return RefreshIndicator(
+            onRefresh: () async {
+            
+              await BlocProvider.of<ProductCubit>(context)
+                  .getProducts(category: 'All');
+            },
+            child: ListView(children: <Widget>[
+              Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: BlocListener<CartCubit, CartState>(
                   listener: (context, state) {
@@ -97,23 +106,14 @@ class ExploreScreen extends StatelessWidget {
                           if (state is ProductLoading) {
                             return const CustomExploreScreenLoading();
                           } else if (state is ProductFailure) {
-                            return Column(children: [
-                              const SizedBox(height: 20),
-                              Center(
-                                child: Text(
-                                  state.errMessage,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await context
-                                      .read<ProductCubit>()
-                                      .getProducts(category: 'All');
-                                },
-                                child: const Text('Retry'),
-                              ),
-                            ]);
+                            return CustomErrorWidget(
+                              errorMessage: state.errMessage,
+                              onpressed: () async {
+                                await context
+                                    .read<ProductCubit>()
+                                    .getProducts(category: 'All');
+                              },
+                            );
                           } else if (state is ProductSuccess) {
                             if (state.products.isEmpty) {
                               return const Center(
@@ -179,9 +179,9 @@ class ExploreScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
+            ]),
+          );
+        }),
       ),
     );
   }

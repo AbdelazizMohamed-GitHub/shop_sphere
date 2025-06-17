@@ -6,14 +6,20 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/checkout_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_item_list.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +45,14 @@ class CartScreen extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return  Center(child: Text(FirebaseFailure.fromCode(snapshot.error.toString()).message));
+              return  CustomErrorWidget(
+                errorMessage: snapshot.error.toString(),
+                onpressed: () {
+                  setState(() {
+                    
+                  });
+                },
+              );
             } else if (snapshot.hasData) {
               List<CartItemModel> cartItems = snapshot.data!.docs.map((doc) {
                 return CartItemModel.fromMap(doc.data());

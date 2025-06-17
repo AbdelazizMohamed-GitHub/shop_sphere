@@ -4,6 +4,7 @@ import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
@@ -28,7 +29,12 @@ class FavoriteScreen extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return const Center(child: Text('Error'));
+                return CustomErrorWidget(
+                  errorMessage: snapshot.error.toString(),
+                  onpressed: () async{
+                    getIt<FirestoreService>().getAllFavoriteProducts();
+                  },
+                );
               } else if (snapshot.hasData) {
                 if ((snapshot.data as List<ProductEntity>).isEmpty) {
                   return const Center(

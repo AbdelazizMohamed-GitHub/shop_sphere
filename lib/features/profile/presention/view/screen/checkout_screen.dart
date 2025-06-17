@@ -8,6 +8,7 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
@@ -72,7 +73,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           if (state is UserLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is UserFailure) {
-            return Center(child: Text(state.errMessage));
+            return CustomErrorWidget(
+              errorMessage: state.errMessage,
+              onpressed: () async {
+                await context.read<UserCubit>().getUserData();
+              },
+            );
           } else if (state is UserSuccess) {
             return SingleChildScrollView(
               child: Column(
@@ -165,7 +171,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                           CustomCartPrice(
                               title: 'Total:', price: widget.total.toDouble()),
-                         CustomCartPrice(
+                          CustomCartPrice(
                               title: 'Shipping:', price: shippingPrice),
                           const Divider(),
                           CustomCartPrice(

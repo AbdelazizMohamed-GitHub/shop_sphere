@@ -5,6 +5,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
@@ -35,19 +36,16 @@ class _ProductScreenState extends State<ProductScreen> {
             return const Scaffold(
                 body: Center(child: CircularProgressIndicator()));
           } else if (snapshot.hasError) {
-            return Scaffold(body: Column(
-              children: [
-                Center(child: Text(snapshot.error.toString())),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    child: const Text("Retry")),
-              ],
+            return Scaffold(
+                body: CustomErrorWidget(
+              errorMessage: snapshot.error.toString(),
+              onpressed: () {
+                setState(() {});
+              },
             ));
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Scaffold(body: const Center(child: Text("No Products Found")));
+            return const Scaffold(
+                body: Center(child: Text("No Products Found")));
           } else {
             final List<ProductEntity> products = snapshot.data!.docs
                 .map((doc) => ProductModel.fromMap(doc.data()))
@@ -165,20 +163,23 @@ class _ProductScreenState extends State<ProductScreen> {
                           '${FirebaseAuth.instance.currentUser!.displayName}',
                           style: AppStyles.text18Regular,
                         ),
-                        Spacer(),
-                        PopupMenuButton(child: const Icon(Icons.filter_list),
+                        const Spacer(),
+                        PopupMenuButton(
+                            child: const Icon(Icons.filter_list),
                             itemBuilder: (context) =>
                                 appCategory.map((category) {
                                   return PopupMenuItem(
                                     onTap: () {
-selectedCategory = category;
+                                      selectedCategory = category;
                                       setState(() {});
                                     },
                                     value: category,
                                     child: Text(category),
                                   );
-                                }).toList()),SizedBox(width: 10,)
-                      
+                                }).toList()),
+                        const SizedBox(
+                          width: 10,
+                        )
                       ]),
                     ),
                     GridView.builder(

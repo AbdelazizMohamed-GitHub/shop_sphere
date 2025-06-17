@@ -7,6 +7,7 @@ import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
@@ -66,9 +67,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
             }
             if (snapshot.hasError) {
-              return Center(
-                  child: Text(
-                      "Error: ${FirebaseFailure.fromCode(snapshot.error.toString()).message}"));
+              return CustomErrorWidget(
+                errorMessage: snapshot.error.toString(),
+                onpressed: () {
+                  setState(() {});
+                },
+              );
             }
             if (snapshot.hasData || snapshot.data != null) {
               UserModel user = UserModel.fromMap(snapshot.data!.data()!);

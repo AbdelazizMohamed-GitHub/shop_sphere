@@ -7,6 +7,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
@@ -58,14 +59,14 @@ class _AddressScreenState extends State<AddressScreen> {
             indeX == null
                 ? const Text('')
                 : TextButton(
-                    onPressed: ()async {
-                   await   context.read<AddressCubit>().updateAddressIndex(
+                    onPressed: () async {
+                      await context.read<AddressCubit>().updateAddressIndex(
                           sellectAddress: selectAddressIndex);
-                      // ignore: use_build_context_synchronously
-                      context.read<UserCubit>().getUserData(); 
+
+                      context.read<UserCubit>().getUserData();
                     },
                     child: const Text('Save', style: AppStyles.text16Bold)),
-          const  SizedBox(
+            const SizedBox(
               width: 20,
             )
           ],
@@ -86,11 +87,11 @@ class _AddressScreenState extends State<AddressScreen> {
               return const Center(child: AddressScreenLoading());
             }
             if (state is AddressError) {
-              return Center(
-                child: Text(
-                  state.errMessage,
-                  style: AppStyles.text16Bold,
-                ),
+              return CustomErrorWidget(
+                errorMessage: state.errMessage.toString(),
+                onpressed: () async {
+                  await context.read<AddressCubit>().getAddress();
+                },
               );
             }
             if (state is AddressSuccess) {

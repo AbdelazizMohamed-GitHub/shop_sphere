@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/main/data/notification_model.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
@@ -30,7 +31,11 @@ class NotificationScreen extends StatelessWidget {
         builder:
             (BuildContext context, Box<NotificationModel> box, Widget? child) {
           if (box.values.isEmpty) {
-            return const Center(child: Text('No notifications found'));
+            return Center(
+                child: Text(
+              'No notifications found',
+              style: AppStyles.text18Regular,
+            ));
           }
 
           return ListView.builder(
@@ -52,7 +57,8 @@ class NotificationScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(10),
                   color: Colors.white,
                   child: ListTile(
-                    leading: const Icon(Icons.notifications, color: Colors.blue),
+                    leading:
+                        const Icon(Icons.notifications, color: Colors.blue),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     title: Text(notification?.title ?? ''),
                     subtitle: Text(notification?.description ?? ''),

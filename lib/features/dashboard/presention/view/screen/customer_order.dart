@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
@@ -91,21 +92,9 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
               : state is GetOrderLoading
                   ?  const Center(child: CircularProgressIndicator())
                   : state is OrderError
-                      ? Center(
-                          child: Column(
-                          children: [
-                            Text(state.error),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: () async {
-                                await context
-                                    .read<OrderCubit>()
-                                    .getCustomerOrder(uId: widget.userId);
-                              },
-                              child: const Text('Retry'),
-                            )
-                          ],
-                        ))
+                      ? CustomErrorWidget(errorMessage: state.error, onpressed: () async{ 
+await context.read<OrderCubit>().getCustomerOrder(uId: widget.userId);
+                       },)
                       : const Center(child: Text('No orders found'));
         },
       ),
