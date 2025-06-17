@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
@@ -78,7 +79,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       body: BlocConsumer<AddressCubit, AddressState>(
         listener: (context, state) {
           if (state is AddressSuccess) {
-              Navigator.pop(context);
+            Navigator.pop(context);
             Warning.showWarning(context,
                 message: widget.isupdate
                     ? "Address Update Successfully"
@@ -157,11 +158,9 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    CustomDropdown(
+                    CustomDropdown(productCategory:stateController.text ,
                         categories: egyptGovernorates,
-                        text: stateController.text == ''
-                            ? "Select Governorate"
-                            : stateController.text,
+                        text: "Select Governorate",
                         isUpdate: widget.isupdate,
                         onCategorySelected: (val) {
                           stateController.text = val;
@@ -172,9 +171,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     CustomButton(
                         onPressed: () async {
                           isLoading = true;
-                          setState(() {
-                            
-                          });
+                          setState(() {});
                           Placemark place = await getLocation();
                           // ignore: unnecessary_null_comparison
                           if (place != null) {
@@ -204,7 +201,18 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                         ? const Center(child: CircularProgressIndicator())
                         : CustomButton(
                             onPressed: () async {
+                          
+ if (!await AppFuncations.isOnline()) {
+      Warning.showWarning(
+        context,
+        message: "No Internet Connection",
+        isError: true,
+      );
+      return;
+    }
+
                               if (formKey.currentState!.validate()) {
+                                FocusScope.of(context).unfocus();
                                 var addressId = const Uuid().v4();
                                 AddressModel addressModel = AddressModel(
                                   createdAt: Timestamp.now(),
@@ -225,16 +233,14 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                                       .updateAddress(
                                           addressId: widget.addressEntity!.id,
                                           addressModel: addressModel);
-                                                                // ignore: use_build_context_synchronously
-                                                                context.read<UserCubit>().getUserData(); 
-
+                                  // ignore: use_build_context_synchronously
+                                  context.read<UserCubit>().getUserData();
                                 } else {
                                   await context.read<AddressCubit>().addAddress(
                                       addressId: addressId,
                                       addressModel: addressModel);
-                                                            // ignore: use_build_context_synchronously
-                                                            context.read<UserCubit>().getUserData(); 
-
+                                  // ignore: use_build_context_synchronously
+                                  context.read<UserCubit>().getUserData();
                                 }
                               }
                             },

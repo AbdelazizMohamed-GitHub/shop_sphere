@@ -132,9 +132,7 @@ class _CustomProductItemState extends State<CustomProductItem> {
           ),
           CustomFavouriteIcon(
             productId: widget.product.pId,
-            onChanged: (bool value) {
-              isFav = value;
-            },
+          
           )
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_keys.dart';
@@ -56,6 +57,15 @@ class CustomCheckoutButton extends StatelessWidget {
               ? const Center(child: CircularProgressIndicator())
               : CustomButton(
                   onPressed: () async {
+                     if (!await AppFuncations.isOnline()) {
+      Warning.showWarning(
+        context,
+        message: "No Internet Connection",
+        isError: true,
+      );
+      return;
+    }
+
                     if (address.state.isEmpty &&
                         address.city.isEmpty &&
                         address.street.isEmpty &&

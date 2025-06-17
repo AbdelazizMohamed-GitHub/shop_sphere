@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
@@ -39,8 +40,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     nameTextC.text = widget.user.name;
     phoneTextC.text = widget.user.phoneNumber;
 
-     selectedDate = widget.user.birthDate ;
-     selectGender = widget.user.gender;
+    selectedDate = widget.user.birthDate;
+    selectGender = widget.user.gender;
     super.initState();
   }
 
@@ -84,6 +85,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             message: "Please select a gender");
                         return;
                       }
+                      if (await AppFuncations.isOnline()) {
+                        Warning.showWarning(context,
+                            message: "No Internet");
+                        return;
+                      }
 
                       UserModel userModel = widget.user as UserModel;
                       final user = userModel.copyWith(
@@ -92,9 +98,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         birthDate: selectedDate,
                         gender: selectGender,
                       );
-FirebaseAuth.instance.currentUser?.updateDisplayName(nameTextC.text);
                       FocusScope.of(context).unfocus();
-                    await  context.read<UserCubit>().updateUserData(user);
+                      await context.read<UserCubit>().updateUserData(user);
+                      FirebaseAuth.instance.currentUser
+                          ?.updateDisplayName(nameTextC.text);
                     }
                   },
                   child: Text("Save",

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
@@ -17,7 +18,21 @@ class AppFuncations {
       default:
         return Colors.black;
     }
+    
   }
+ static Future<bool> isOnline() async {
+  // final result = await Connectivity().checkConnectivity();
+  // // ignore: unrelated_type_equality_checks
+  // return result != ConnectivityResult.none;
+  
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } catch (_) {
+      return false;
+    
+  }
+}
 
  
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -66,9 +67,9 @@ class OrderDetailsScreen extends StatelessWidget {
                 if (state is AddOrderSuccess) {
                   Warning.showWarning(context, message: "Order Added Success");
                 } else if (state is OrderError) {
-                  Warning.showWarning(context, message: state.error);
+                  Warning.showWarning(context, message: state.error,isError: true);
                 } else if (state is OrderSuccess) {
-                  Navigator.pop(context);
+      
                 }
               },
               builder: (context, state) {
@@ -109,6 +110,15 @@ class OrderDetailsScreen extends StatelessWidget {
                         if (order.status == orderStauts[3]) {
                           Navigator.pop(context);
                         } else {
+                          if (!await AppFuncations.isOnline()) {
+                            Warning.showWarning(
+                              context,
+                              message: "No Internet Connection",
+                              isError: true,
+                            );
+                            return;
+                          }
+
                           OrderModel orderModel = OrderModel.fromEntity(order);
                           await context
                               .read<OrderCubit>()

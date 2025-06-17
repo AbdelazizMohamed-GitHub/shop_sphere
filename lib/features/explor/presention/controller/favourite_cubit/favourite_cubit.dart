@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/features/explor/domain/repo/favourite_repo.dart';
 import 'favourite_state.dart';
 
@@ -42,6 +43,11 @@ class FavouriteCubit extends Cubit<FavouriteState> {
   }
 
   Future<void> toggleFavourite({required String productId}) async {
+    if (!await AppFuncations.isOnline()) {
+      
+      return emit(FavouriteFailure(errMessage: "No Internet Connection"));
+    }
+
     _loadingItems.add(productId);
     _emitUpdated();
 
@@ -56,7 +62,6 @@ class FavouriteCubit extends Cubit<FavouriteState> {
       (_) async {
         _loadingItems.remove(productId);
         _emitUpdated();
-        
       },
     );
   }

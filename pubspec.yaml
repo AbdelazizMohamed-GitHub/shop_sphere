@@ -33,6 +33,7 @@ dependencies:
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cloud_firestore: ^5.6.5
+  connectivity_plus: ^6.1.4
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   easy_stepper: ^0.8.5+1

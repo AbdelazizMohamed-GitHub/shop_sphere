@@ -2,7 +2,7 @@ import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 
 sealed class UserState {}
 
-final class ProfileInitial extends UserState {}
+final class UserInitial extends UserState {}
 
 final class UserLoading extends UserState {}
 

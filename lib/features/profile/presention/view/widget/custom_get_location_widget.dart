@@ -8,6 +8,7 @@ import 'package:shop_sphere/core/loading/custom_item_loading.dart';
 
 import 'package:shop_sphere/core/service/location_service.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
@@ -33,6 +34,7 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
   String title = "Title";
   String city = "City";
   String street = "Street";
+  String governorate='Governorate';
   String phoneNumber = "Phone Number";
   bool isInisialzed = false;
   bool loading = false;
@@ -62,6 +64,7 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
           city = state.addresses[widget.currentIndex].city;
           street = state.addresses[widget.currentIndex].street;
           phoneNumber = state.addresses[widget.currentIndex].phoneNumber;
+          governorate = state.addresses[widget.currentIndex].state;
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
             AddressModel addressModel = AddressModel(
@@ -92,7 +95,7 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
             style: AppStyles.text16Regular,
           ),
           Text(
-            "$city, $street",
+            " $street, $city, $governorate",
             style: AppStyles.text16Regular,
           ),
           const SizedBox(
@@ -132,13 +135,18 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
                             title = "My Location";
                             city = place.locality!;
                             street = place.street!;
+                            governorate = getegyptGovernorates[
+                                  place.administrativeArea!] ??
+                              place.administrativeArea!;
                           });
                           widget.onLocationSelected(AddressModel(
                               createdAt: Timestamp.now(),
                               title: title,
                               city: city,
                               street: street,
-                              state: place.administrativeArea!,
+                              state:  getegyptGovernorates[
+                                    place.administrativeArea!] ??
+                                place.administrativeArea!,
                               country: place.country!,
                               phoneNumber: phoneNumber,
                               id: '',

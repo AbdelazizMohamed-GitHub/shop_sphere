@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
@@ -28,6 +29,9 @@ class UserRepoImpl extends UserRepo {
   @override
   Future<Either<FirebaseFailure, void>> updateUserData(
       UserModel userModel) async {
+    if (!await AppFuncations.isOnline() ) {
+      return Left(FirebaseFailure(message: "No Internet Connection"));
+    }
     try {
       await firestoreService.updateData(
           collection: "users",

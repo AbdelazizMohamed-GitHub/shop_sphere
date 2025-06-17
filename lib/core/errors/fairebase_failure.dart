@@ -4,7 +4,9 @@ class FirebaseFailure {
   FirebaseFailure({required this.message});
 
   factory FirebaseFailure.fromCode(String code) {
+
     switch (code) {
+      
       case 'invalid-email':
         return FirebaseFailure(message: 'Email address is not valid.');
       case 'user-disabled':

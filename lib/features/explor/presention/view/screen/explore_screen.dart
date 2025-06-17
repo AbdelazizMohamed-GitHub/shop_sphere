@@ -67,7 +67,6 @@ class ExploreScreen extends StatelessWidget {
         body: Builder(builder: (context) {
           return RefreshIndicator(
             onRefresh: () async {
-            
               await BlocProvider.of<ProductCubit>(context)
                   .getProducts(category: 'All');
             },
@@ -80,6 +79,13 @@ class ExploreScreen extends StatelessWidget {
                       Warning.showWarning(
                         context,
                         message: 'Product Added To Cart',
+                      );
+                    }
+                    if (state is CartFailure) {
+                      Warning.showWarning(
+                        context,
+                        message: state.errMessage,
+                        isError: true,
                       );
                     }
                   },
@@ -116,8 +122,14 @@ class ExploreScreen extends StatelessWidget {
                             );
                           } else if (state is ProductSuccess) {
                             if (state.products.isEmpty) {
-                              return const Center(
-                                child: Text('No Products'),
+                              return const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 100),
+                                  Center(
+                                    child: Text('No Products'),
+                                  ),
+                                ],
                               );
                             }
 

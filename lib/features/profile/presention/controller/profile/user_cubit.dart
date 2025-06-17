@@ -4,7 +4,7 @@ import 'package:shop_sphere/features/profile/domain/repo/user_repo.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit({required this.userRepo}) : super(ProfileInitial());
+  UserCubit({required this.userRepo}) : super(UserInitial());
   final UserRepo userRepo;
   Future<void> getUserData() async {
     emit(UserLoading());
@@ -22,9 +22,9 @@ class UserCubit extends Cubit<UserState> {
     result.fold(
       (failure) =>
           emit(UserFailure(errMessage: failure.message)),
-      (user) {
+      (user)async {
        
-        getUserData();
+     await   getUserData();
  
       },
     );
