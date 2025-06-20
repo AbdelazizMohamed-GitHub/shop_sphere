@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
@@ -39,7 +41,6 @@ class CustomCartItem extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProductDetailsScreen(
-                 
                     product: product as ProductEntity,
                   ),
                 ),
@@ -75,7 +76,7 @@ class CustomCartItem extends StatelessWidget {
                 ),
                 title: Text(
                   item.productName,
-                  style: AppStyles.text18Regular.copyWith(
+                  style: AppStyles.text16Regular.copyWith(
                       color: AppTheme.isLightTheme(context)
                           ? Colors.black
                           : Colors.white),
@@ -88,6 +89,14 @@ class CustomCartItem extends StatelessWidget {
                     CustomCircleButton(
                         icon: const Icon(Icons.remove),
                         funcation: () async {
+                          if (!await AppFuncations.isOnline()) {
+                            Warning.showWarning(
+                              context,
+                              message: 'No Internet Connection',
+                              isError: true,
+                            );
+                            return;
+                          }
                           await context.read<CartCubit>().updateCartQuantity(
                               productId: item.productId, isIncrement: false);
                         }),
@@ -104,6 +113,14 @@ class CustomCartItem extends StatelessWidget {
                     CustomCircleButton(
                         icon: const Icon(Icons.add),
                         funcation: () async {
+                          if (!await AppFuncations.isOnline()) {
+                            Warning.showWarning(
+                              context,
+                              message: 'No Internet Connection',
+                              isError: true,
+                            );
+                            return;
+                          }
                           await context.read<CartCubit>().updateCartQuantity(
                               productId: item.productId, isIncrement: true);
                         }),
@@ -112,6 +129,14 @@ class CustomCartItem extends StatelessWidget {
                     ),
                     IconButton(
                         onPressed: () async {
+                          if (!await AppFuncations.isOnline()) {
+                            Warning.showWarning(
+                              context,
+                              message: 'No Internet Connection',
+                              isError: true,
+                            );
+                            return;
+                          }
                           await context
                               .read<CartCubit>()
                               .removeFromCart(productId: item.productId);

@@ -85,9 +85,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             message: "Please select a gender");
                         return;
                       }
-                      if (await AppFuncations.isOnline()) {
+                      if (!await AppFuncations.isOnline()) {
+                      
                         Warning.showWarning(context,
-                            message: "No Internet");
+                            isError: true, message: "No Internet");
                         return;
                       }
 

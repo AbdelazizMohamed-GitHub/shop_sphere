@@ -53,7 +53,7 @@ class FirebaseFailure {
         return FirebaseFailure(message: 'User is not authenticated.');
       default:
         return FirebaseFailure(
-            message: 'An unknown error occurred: $code');
+            message: ' error : $code');
     }
   }
 }

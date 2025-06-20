@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_order_items.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_process_screen_item.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
@@ -92,10 +93,18 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                   )
                 : BlocConsumer<OrderCubit, OrderState>(
                     listener: (context, state) {
+                      if (state is OrderError) {
+                        Warning.showWarning(
+                          context,
+                          message: state.error,
+                          isError: true,
+                        );
+                      }
                       if (state is OrderSuccess) {
                         context
                             .read<OrderCubit>()
                             .getCustomerOrder(uId: widget.order.uId);
+                        Navigator.pop(context);
                       }
                     },
                     builder: (context, state) {

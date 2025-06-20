@@ -41,7 +41,7 @@ class CustomFavouriteIcon extends StatelessWidget {
                       : const Icon(Icons.favorite_outline),
                   funcation: () async {
                  bool isConnect=   await AppFuncations.isOnline();
-                 print('isConnect: $isConnect');
+               
                     if (isConnect) {
                       await  context
                           .read<FavouriteCubit>()

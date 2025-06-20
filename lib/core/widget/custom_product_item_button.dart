@@ -36,24 +36,28 @@ class CustomProductItemButton extends StatelessWidget {
       return isLoading
           ? const CustomCartButtonLoading()
           : GestureDetector(
-              onTap: isProductInCart
+              onTap: productEntity.stock == 0
                   ? () {
-                      Warning.showWarning(
-                        context,
-                        message: 'Product Already In Cart',
-                      );
+                      Warning.showWarning(context, message: 'Out Of Stock',);
                     }
-                  : () async {
-                      await context.read<CartCubit>().addToCart(
-                            cartItemModel: CartItemModel(
-                              id: productEntity.pId,
-                              name: productEntity.name,
-                              imageUrl: productEntity.imageUrl,
-                              price:price ,
-                              quantity: 1,
-                            ),
+                  : isProductInCart
+                      ? () {
+                          Warning.showWarning(
+                            context,
+                            message: 'Product Already In Cart',
                           );
-                    },
+                        }
+                      : () async {
+                          await context.read<CartCubit>().addToCart(
+                                cartItemModel: CartItemModel(
+                                  id: productEntity.pId,
+                                  name: productEntity.name,
+                                  imageUrl: productEntity.imageUrl,
+                                  price: price,
+                                  quantity: 1,
+                                ),
+                              );
+                        },
               child: Container(
                 padding: const EdgeInsets.all(5),
                 decoration: const BoxDecoration(

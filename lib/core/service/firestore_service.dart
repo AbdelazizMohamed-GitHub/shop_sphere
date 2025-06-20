@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/supabase_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
@@ -23,6 +24,7 @@ class FirestoreService {
 
   Future<void> addProduct(
       {required ProductModel data, required File image}) async {
+    await checkInternet();
     String? imageUrl;
 
     imageUrl = await SupabaseService().uploadImage(file: image);
@@ -52,12 +54,14 @@ class FirestoreService {
 
   Future<void> deleteProduct(
       {required String dId, required String imageUrl}) async {
+    await checkInternet();
     await SupabaseService().deleteImageFromUrl(imageUrl: imageUrl);
     await firestore.collection('products').doc(dId).delete();
   }
 
   Future<void> updateProduct(
       {required String dId, required ProductModel data}) async {
+    await checkInternet();
     await firestore.collection('products').doc(dId).update(data.toMap());
   }
 
@@ -133,6 +137,7 @@ class FirestoreService {
   }
 
   Future<List<AddressEntity>> getAddress() async {
+    await checkInternet();
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -363,7 +368,8 @@ class FirestoreService {
     await clearCart();
   }
 
-  Future<void> updateStockAfterOrder({required bool isCreateOrder,required List<CartItemModel> items}) async {
+  Future<void> updateStockAfterOrder(
+      {required bool isCreateOrder, required List<CartItemModel> items}) async {
     final firestore = FirebaseFirestore.instance;
 
     for (final item in items) {
@@ -395,11 +401,13 @@ class FirestoreService {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
     if (userId == null) return [];
+    await checkInternet();
 
     if (status == "All") {
       querySnapshot = await firestore
           .collection("orders")
-          .where("uId", isEqualTo: userId).orderBy("orderDate", descending: true)
+          .where("uId", isEqualTo: userId)
+          .orderBy("orderDate", descending: true)
           .get();
     } else {
       querySnapshot = await firestore
@@ -408,7 +416,8 @@ class FirestoreService {
             "status",
             isEqualTo: status,
           )
-          .where("uId", isEqualTo: userId).orderBy("orderDate", descending: true)
+          .where("uId", isEqualTo: userId)
+          .orderBy("orderDate", descending: true)
           .get();
     }
     if (querySnapshot.docs.isEmpty) {
@@ -416,34 +425,48 @@ class FirestoreService {
     }
 
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
-    
+  }
+
+  Future<void> checkInternet() async {
+    bool isOnline = await AppFuncations.isOnline();
+    if (!isOnline) {
+      throw ("No Internet Connection");
+    }
   }
 
   Future<void> deleteOrder({required OrderModel order}) async {
+    await checkInternet();
     await firestore.collection("orders").doc(order.orderId).delete();
     await updateStockAfterOrder(isCreateOrder: false, items: order.items);
   }
 
   Future<void> changeOrdeStatus(
-      {required String status, required String orderId,required int trackingNumber}) async {
+      {required String status,
+      required String orderId,
+      required int trackingNumber}) async {
+    await checkInternet();
     await firestore
         .collection('orders')
         .doc(orderId)
-        .update({"status": status,
-                 "trackingNumber": trackingNumber});
-        
+        .update({"status": status, "trackingNumber": trackingNumber});
   }
 
   Future<List<UserEntity>> getUsers({required bool isStaff}) async {
+    await checkInternet();
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection("users")
         .where("isStaff", isEqualTo: isStaff)
         .get();
+    for (var doc in querySnapshot.docs) {
+      print(
+          "Customer: ${doc.data()['name']} - isStaff: ${doc.data()['isStaff']}");
+    }
     return querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
 
   Future<List<ProductEntity>> getStaffProducts(
       {required String staffId}) async {
+    await checkInternet();
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection("products")
         .where(
@@ -464,8 +487,9 @@ class FirestoreService {
 
   Future<int> getTrackinNumber() async {
     Random random = Random();
-    int randomNumber = random.nextInt(10000000); // Generate a random number between 0 and 999999
-     
+    int randomNumber = random
+        .nextInt(10000000); // Generate a random number between 0 and 999999
+
     return randomNumber;
   }
 
@@ -476,6 +500,7 @@ class FirestoreService {
   }
 
   Future<List<OrderEntity>> getCustomerOrder({required String uId}) async {
+    await checkInternet();
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await firestore.collection('orders').where("uId", isEqualTo: uId).get();
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();

@@ -8,9 +8,9 @@ class CustomImageLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer(
       enabled: true,
-      child: Container(
+      child: Container(height: double.infinity, width: double.infinity,
         alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,

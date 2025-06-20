@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/service/internet.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
@@ -45,9 +46,11 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ],
             ),
-            body: IndexedStack(
-              index: context.read<MainCubit>().intialIndex,
-              children: screens,
+            body: InternetBannerWrapper(
+              child: IndexedStack(
+                index: context.read<MainCubit>().intialIndex,
+                children: screens,
+              ),
             ),
           );
         },

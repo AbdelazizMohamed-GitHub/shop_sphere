@@ -12,6 +12,7 @@ import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
@@ -51,10 +52,12 @@ class _CustomGetLocationWidgetState extends State<CustomGetLocationWidget> {
         return const CustomItemLoading();
       }
       if (state is AddressError) {
-        return Center(
-          child: Text(
-            state.errMessage,
-            style: AppStyles.text16Regular,
+        return SizedBox(height: 100,
+          child: CustomErrorWidget(
+            errorMessage: state.errMessage,
+            onpressed: () async{
+            await  context.read<AddressCubit>().getAddress();
+            },
           ),
         );
       }
