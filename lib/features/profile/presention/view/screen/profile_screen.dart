@@ -152,10 +152,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CustomProfileListTile(
                       icon: Icons.logout,
                       title: 'Log Out',
-                      funcation: ()async {
-                    try {
-                          await FirebaseAuth.instance.signOut();
+                      funcation: () async {
+                        try {
                           await GoogleSignIn().signOut();
+                          await FirebaseAuth.instance.signOut();
+
                           context.read<MainCubit>().changeScreenIndex(0);
                           Navigator.pushAndRemoveUntil(
                             context,
@@ -165,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             (route) => false,
                           );
                         } catch (e) {
-                        Warning.showWarning(
+                          Warning.showWarning(
                             context,
                             message: 'Error logging out: ${e.toString()}',
                             isError: true,

@@ -6,6 +6,8 @@ import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/verify_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 
@@ -43,6 +45,7 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
           CustomTextForm(
@@ -53,6 +56,18 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
           ),
           const SizedBox(height: 15),
           CustomTextForm(
+          
+              validator:
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Phone number cannot be empty';
+                }
+                if (!RegExp(r'^\+?[0-9]{11}$').hasMatch(value)) {
+                  return 'Enter a valid phone number';
+                }
+                return null;
+              
+            },
             textController: phoneTextC,
             pIcon: Icons.phone,
             text: 'Phone',
@@ -112,6 +127,7 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
             height: 15,
           ),
           CustomDropdown(
+              text: 'Select Gender',
               categories: const ['Male', 'Female'],
               onCategorySelected: (valu) {
                 gender = valu;
@@ -120,12 +136,15 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MainScreen();
-                }));
+             Navigator.push(context, MaterialPageRoute(
+                 builder: (context) =>  VerifyScreen(
+                  email:emailTextC.text.trim(), 
+                 ),
+               ));
               }
               if (state is AuthError) {
-                Warning.showWarning(context, message: state.errMessage, isError: true);
+                Warning.showWarning(context,
+                    message: state.errMessage, isError: true);
               }
             },
             builder: (context, state) {

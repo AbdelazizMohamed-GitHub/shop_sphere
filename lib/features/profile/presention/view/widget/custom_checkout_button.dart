@@ -96,139 +96,88 @@ class CustomCheckoutButton extends StatelessWidget {
                           0,
                           (sum, item) => sum + (item.price * item.quantity),
                         );
-                        Navigator.of(context).push(
-  MaterialPageRoute(
-    builder: (BuildContext context) => PaypalCheckoutView(
-      sandboxMode: true,
-      clientId: 'AQLWEHMAbbCCchMuDuCNqnZJouaDToK_D28Bs7rCGyLuuahtwWjOPt4cBCuqhnce7_yfsz0EiWIbhNWG', // من موقع PayPal Developer
-      secretKey: 'ED_Tzi9zEY_K5tFAY983Zw7AU4t-Sd0tV6qZ889ayMUyrIYPclbl7exG9Ht7g7vJANHxhjkmykpmJ4M4',   // من موقع PayPal Developer
-      transactions: [
-        {
-          "amount": {
-            "total": "10.00",
-            "currency": "USD",
-            "details": {
-              "subtotal": "10.00",
-              "shipping": "0",
-              "shipping_discount": 0
-            }
-          },
-          "description": "Test transaction for ShopSphere.",
-          "item_list": {
-            "items": [
-              {
-                "name": "T-Shirt",
-                "quantity": 1,
-                "price": "10.00",
-                "currency": "USD"
-              }
-            ],
-          }
-        }
-      ],
-      note: "Thank you for testing with ShopSphere!",
-      onSuccess: (Map params) {
-        print("✅ Payment Success: $params");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Payment Success")),
-        );
-      },
-      onError: (error) {
-        print("❌ Payment Error: $error");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: $error")),
-        );
-      },
-      onCancel: () {
-        print("⚠️ Payment Cancelled");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Payment Cancelled")),
-        );
-      },
-    ),
-  ),
-);
 
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (BuildContext context) =>
-                        //         PaypalCheckoutView(
-                        //       sandboxMode: true,
-                        //       clientId: AppKeys.kClientId,
-                        //       secretKey: AppKeys.kSecret,
-                        //       transactions: [
-                        //         {
-                        //           "amount": {
-                        //             "total": (subtotal + shippingCoast)
-                        //                 .toStringAsFixed(2),
-                        //             "currency": "USD",
-                        //             "details": {
-                        //               "subtotal": subtotal.toStringAsFixed(2),
-                        //               "shipping":
-                        //                   shippingCoast.toStringAsFixed(2),
-                        //               "shipping_discount": "0"
-                        //             }
-                        //           },
-                        //           "description":
-                        //               "The payment transaction description.",
-                        //           // "payment_options": {
-                        //           //   "allowed_payment_method":
-                        //           //       "INSTANT_FUNDING_SOURCE"
-                        //           // },
-                        //           "item_list": {
-                        //             "items": cartItems.map((item) {
-                        //               return {
-                        //                 "name": item.name,
-                        //                 "quantity": item.quantity,
-                        //                 "price": item.price.toStringAsFixed(2),
-                        //                 "currency": "USD"
-                        //               };
-                        //             }).toList(),
-                        //           }
-                        //         }
-                        //       ],
-                        //       note:
-                        //           "Contact us for any questions on your order.",
-                        //       onSuccess: (Map params) async {
-                        //         var oId = const Uuid().v4();
-                        //         OrderModel order = OrderModel(
-                        //             userName: userName,
-                        //             uId: uId,
-                        //             orderId: oId,
-                        //             totalAmount: total + shippingCoast,
-                        //             items: cartItems,
-                        //             status: "Pending",
-                        //             orderDate: DateTime.now(),
-                        //             address: address,
-                        //             paymentMethod: "Paypal",
-                        //             delivaryCoast: shippingCoast,
-                        //             trackingNumber: 0);
-                        //         await context
-                        //             .read<OrderCubit>()
-                        //             .createOrder(order: order);
-                        //         Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 const OrderDoneScreen(),
-                        //           ),
-                        //         );
-                        //       },
-                        //       onError: (error) {
-                        //         print("Error: $error");
-                        //         Warning.showWarning(
-                        //           context,
-                        //           message: error.toString(),
-                        //         );
-                        //       },
-                        //       onCancel: () {
-                        //         Warning.showWarning(context,
-                        //             message:
-                        //                 "The transaction has been cancelled");
-                        //       },
-                        //     ),
-                        //   ),
-                        // );
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PaypalCheckoutView(
+                              sandboxMode: true,
+                              clientId: AppKeys.kClientId,
+                              secretKey: AppKeys.kSecret,
+                              transactions: [
+                                {
+                                  "amount": {
+                                    "total": (subtotal + shippingCoast)
+                                        .toStringAsFixed(2),
+                                    "currency": "USD",
+                                    "details": {
+                                      "subtotal": subtotal.toStringAsFixed(2),
+                                      "shipping":
+                                          shippingCoast.toStringAsFixed(2),
+                                      "shipping_discount": "0"
+                                    }
+                                  },
+                                  "description":
+                                      "The payment transaction description.",
+                                  // "payment_options": {
+                                  //   "allowed_payment_method":
+                                  //       "INSTANT_FUNDING_SOURCE"
+                                  // },
+                                  "item_list": {
+                                    "items": cartItems.map((item) {
+                                      return {
+                                        "name": item.name,
+                                        "quantity": item.quantity,
+                                        "price": item.price.toStringAsFixed(2),
+                                        "currency": "USD"
+                                      };
+                                    }).toList(),
+                                  }
+                                }
+                              ],
+                              note:
+                                  "Contact us for any questions on your order.",
+                              onSuccess: (Map params) async {
+                                var oId = const Uuid().v4();
+                                OrderModel order = OrderModel(
+                                    userName: userName,
+                                    uId: uId,
+                                    orderId: oId,
+                                    totalAmount: total + shippingCoast,
+                                    items: cartItems,
+                                    status: "Pending",
+                                    orderDate: DateTime.now(),
+                                    address: address,
+                                    paymentMethod: "Paypal",
+                                    delivaryCoast: shippingCoast,
+                                    trackingNumber: 0);
+                                await context
+                                    .read<OrderCubit>()
+                                    .createOrder(order: order);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const OrderDoneScreen(),
+                                  ),
+                                );
+                              },
+                              onError: (error) {
+                                print("Error: $error");
+                                Warning.showWarning(
+                                  context,
+                                  message: error.toString(),
+                                );
+                              },
+                              onCancel: () {
+                                Warning.showWarning(context,
+                                    message:
+                                        "The transaction has been cancelled");
+                              },
+                            ),
+                          ),
+                        );
                       }
                     }
                   },

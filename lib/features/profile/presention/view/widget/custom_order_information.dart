@@ -30,7 +30,7 @@ class CustomOrderInformation extends StatelessWidget {
             Expanded(
               child: Text(
                 maxLines: 2,
-                "${order.address.city}, ${order.address.street}, ${order.address.state}",
+                "${order.address.street}, ${order.address.city}, ${order.address.state}",
                 overflow: TextOverflow.ellipsis,
               ),
             )

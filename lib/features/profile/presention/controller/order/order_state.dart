@@ -25,7 +25,6 @@ final class GetOrderError extends OrderState {
   GetOrderError({required this.error});
 }
 
-final class AddOrderSuccess extends OrderState {}
 
 final class OrderSuccess extends OrderState {
   final List<OrderEntity> orders;

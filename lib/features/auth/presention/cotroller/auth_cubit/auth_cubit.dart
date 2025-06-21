@@ -53,12 +53,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void resetPassword({required String email}) async {
-    emit(ResetPassword());
+    emit(AuthLoading());
     final result = await authRepo.resetPassword(email);
     result.fold(
       (firebaseFailure) => emit(AuthError(firebaseFailure.message)),
-      (_) => emit(AuthSuccess(
-        uid: ''
+      (_) => emit(ResetPassword(
+       
       )),
     );
   }

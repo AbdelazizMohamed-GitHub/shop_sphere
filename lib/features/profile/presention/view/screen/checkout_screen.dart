@@ -176,7 +176,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           const Divider(),
                           CustomCartPrice(
                               title: 'Total Cost:',
-                              price: widget.total + 50,
+                              price: widget.total + shippingPrice,
                               isTotalcoast: true),
                           const SizedBox(
                             height: 20,

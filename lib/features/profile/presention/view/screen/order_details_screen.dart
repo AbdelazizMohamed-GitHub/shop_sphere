@@ -64,11 +64,10 @@ class OrderDetailsScreen extends StatelessWidget {
             ),
             BlocConsumer<OrderCubit, OrderState>(
               listener: (context, state) {
-                if (state is AddOrderSuccess) {
-                  Warning.showWarning(context, message: "Order Added Success");
-                } else if (state is OrderError) {
+                 if (state is OrderError) {
                   Warning.showWarning(context, message: state.error,isError: true);
                 } else if (state is OrderSuccess) {
+                  Navigator.pop(context);
       
                 }
               },
@@ -89,6 +88,12 @@ class OrderDetailsScreen extends StatelessWidget {
                                     orderStauts[1], // Set status to 'Pending'
                                 orderDate: DateTime.now(),
                                 trackingNumber: 0));
+                                Warning.showWarning(
+                          context,
+                          message: "Order Reordered Successfully",
+                          isError: false,
+                        );
+                                
                       },
                       color: Colors.white,
                       shape: OutlineInputBorder(
@@ -123,6 +128,11 @@ class OrderDetailsScreen extends StatelessWidget {
                           await context
                               .read<OrderCubit>()
                               .deletOrder(order: orderModel);
+                          Warning.showWarning(
+                            context,
+                            message: "Order Cancelled Successfully",
+                            isError: false,
+                          );
                         }
                       },
                       color: AppColors.primaryColor,
@@ -138,7 +148,7 @@ class OrderDetailsScreen extends StatelessWidget {
                               ))
                           : Text(
                               order.status == orderStauts[3]
-                                  ? 'Cancel'
+                                  ? 'Back'
                                   : 'Cancel Order',
                               style: AppStyles.text16Bold
                                   .copyWith(color: Colors.white),

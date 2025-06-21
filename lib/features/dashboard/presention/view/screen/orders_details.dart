@@ -101,10 +101,11 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                         );
                       }
                       if (state is OrderSuccess) {
+                         Navigator.pop(context);
                         context
                             .read<OrderCubit>()
                             .getCustomerOrder(uId: widget.order.uId);
-                        Navigator.pop(context);
+                       
                       }
                     },
                     builder: (context, state) {

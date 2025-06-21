@@ -32,7 +32,8 @@ class AuthRepoImpl extends AuthRepo {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       String? token = await NotificationService.getToken();
-      await firestoreService.addData(
+ FirebaseAuth.instance.currentUser
+                          ?.updateDisplayName(name);      await firestoreService.addData(
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
@@ -49,8 +50,12 @@ class AuthRepoImpl extends AuthRepo {
             uid: userCredential.user!.uid,
             profileImage: '',
           ));
+          FirebaseAuth.instance.currentUser?.updateProfile(
+            displayName: name,
+        
+          );
       await userCredential.user?.sendEmailVerification();
-
+     
       return Right(userCredential.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
       if (userCredential!.user != null) {
@@ -80,6 +85,11 @@ class AuthRepoImpl extends AuthRepo {
         return Left(FirebaseFailure(
           message: "Email not verified",
         ));
+      }
+      final data = await firestoreService.getUserData();
+
+      if (data.isStaff) {
+        return const Right('Staff');
       }
       return Right(user.user?.uid ?? "");
     } on FirebaseAuthException catch (e) {
@@ -131,9 +141,10 @@ class AuthRepoImpl extends AuthRepo {
             ),
           );
         } else {
-          FirebaseFirestore.instance.collection('users').doc(uid).update({
-            'fcmToken':token
-          });
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .update({'fcmToken': token});
         }
 
         final data = await firestoreService.getUserData();
