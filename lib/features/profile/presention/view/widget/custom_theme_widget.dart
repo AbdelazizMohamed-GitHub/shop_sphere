@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
+import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
 
 class CustomThemeWidget extends StatefulWidget {

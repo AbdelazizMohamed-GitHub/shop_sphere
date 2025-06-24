@@ -3,10 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
-import 'package:shop_sphere/core/app_cubit/app_state.dart';
+import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
+import 'package:shop_sphere/core/cubits/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/cubits/sign_out_cubit/sign_out_cubit.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
@@ -151,16 +152,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const Divider(
                       color: Colors.white,
                     ),
-                    CustomProfileListTile(
-                      icon: Icons.logout,
-                      title: 'Log Out',
-                      funcation: () async {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (_) => const ShopSphere()),
-                          (route) => false,
-                        );
-                      },
+                    BlocProvider(
+                      create: (context) => SignOutCubit(),
+                      child: BlocConsumer<SignOutCubit, SignOutState>(
+                        listener: (context, state) {
+                          if (state is SignOutSuccess) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (_) => const ShopSphere()),
+                              (route) => false,
+                            );
+                          }
+                          if (state is SignOutError) {
+                          Warning.showWarning(
+                              context,
+                              message: state.message,
+                              isError: true,
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          return state is SignOutLoading? const SizedBox(): CustomProfileListTile(
+                            icon: Icons.logout,
+                            title: 'Log Out',
+                            funcation: () async {
+                              await context.read<SignOutCubit>().signOut();
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
