@@ -22,25 +22,25 @@ class CustomMainChart extends StatelessWidget {
                   String weekDay;
                   switch (group.x.toInt()) {
                     case 0:
-                      weekDay = 'Monday';
+                      weekDay = 'Sunday';
                       break;
                     case 1:
-                      weekDay = 'Tuesday';
-                      break;
-                    case 2:
-                      weekDay = 'Wednesday';
-                      break;
-                    case 3:
-                      weekDay = 'Thursday';
-                      break;
-                    case 4:
-                      weekDay = 'Friday';
-                      break;
-                    case 5:
                       weekDay = 'Saturday';
                       break;
+                    case 2:
+                      weekDay = 'Monday';
+                      break;
+                    case 3:
+                      weekDay = 'Tuesday';
+                      break;
+                    case 4:
+                      weekDay = 'Wednesday';
+                      break;
+                    case 5:
+                      weekDay = 'Thursday';
+                      break;
                     case 6:
-                      weekDay = 'Sunday';
+                      weekDay = 'Friday';
                       break;
                     default:
                       weekDay = '';
@@ -66,25 +66,25 @@ class CustomMainChart extends StatelessWidget {
                     String text;
                     switch (value.toInt()) {
                       case 0:
-                        text = 'M';
+                        text = 'S';
                         break;
                       case 1:
-                        text = 'T';
+                        text = 'S';
                         break;
                       case 2:
-                        text = 'W';
+                        text = 'M';
                         break;
                       case 3:
                         text = 'T';
                         break;
                       case 4:
-                        text = 'F';
+                        text = 'W';
                         break;
                       case 5:
-                        text = 'S';
+                        text = 'T';
                         break;
                       case 6:
-                        text = 'S';
+                        text = 'F';
                         break;
                       default:
                         text = '';
