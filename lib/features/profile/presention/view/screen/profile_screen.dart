@@ -155,31 +155,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       icon: Icons.logout,
                       title: 'Log Out',
                       funcation: () async {
-                        try {
-                          if (!await AppFuncations.isOnline()) {
-                            Warning.showWarning(context,
-                                isError: true,
-                                message: "No internet connection");
-                            return;
-                          }
-                          await GoogleSignIn().signOut();
-                          await FirebaseAuth.instance.signOut();
-                          await Future.delayed(const Duration(seconds: 5));
-                          // Clear user data from Firestore if needed
-
-                          // Navigate to the login screen or home screen
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (_) => const ShopSphere()),
-                            (route) => false,
-                          );
-                        } catch (e) {
-                          Warning.showWarning(
-                            context,
-                            message: 'Error logging out: ${e.toString()}',
-                            isError: true,
-                          );
-                        }
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (_) => const ShopSphere()),
+                          (route) => false,
+                        );
                       },
                     ),
                   ],

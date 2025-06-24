@@ -200,18 +200,7 @@ class AuthRepoImpl extends AuthRepo {
     }
   }
 
-  @override
-  Future<Either<FirebaseFailure, void>> signOut() async {
-    try {
-      await _firebaseAuth.signOut();
-      await _googleSignIn.signOut();
-      return const Right(null);
-    } on FirebaseAuthException catch (e) {
-      return Left(FirebaseFailure.fromCode(e.code));
-    } catch (e) {
-      return Left(FirebaseFailure(message: e.toString()));
-    }
-  }
+
 
   @override
   Future<bool> isSignedIn() async {

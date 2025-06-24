@@ -15,6 +15,6 @@ abstract class AuthRepo {
   Future<Either<FirebaseFailure, String>> logInWithGoogle();
   Future<Either<FirebaseFailure, String>> verifiyEmaill();
   Future<Either<FirebaseFailure, void>> resetPassword(String email);
-  Future<Either<FirebaseFailure, void>> signOut();
+  
   Future<bool> isSignedIn();
 }
