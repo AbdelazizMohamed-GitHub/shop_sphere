@@ -35,6 +35,7 @@ class FirestoreService {
 
   Future<List<ProductEntity>> gettProducts({required String category}) async {
     QuerySnapshot<Map<String, dynamic>> snapshot;
+    await checkInternet();
     if (category == "All") {
       snapshot = await firestore
           .collection('products')
@@ -69,6 +70,7 @@ class FirestoreService {
       {required String collection,
       required String did,
       required UserModel data}) async {
+    await checkInternet();
     await firestore.collection(collection).doc(did).set(data.toMap());
   }
 
@@ -76,10 +78,12 @@ class FirestoreService {
       {required String collection,
       required String did,
       required UserModel data}) async {
+    await checkInternet();
     await firestore.collection(collection).doc(did).update(data.toMap());
   }
 
   Future<UserEntity> getUserData() async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) {
       throw Exception("User is not logged in"); // Ensure user is logged in
@@ -96,6 +100,7 @@ class FirestoreService {
 
   Future<void> addAddress(
       {required String addressId, required AddressModel adress}) async {
+    await checkInternet();
     await firestore
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -106,6 +111,7 @@ class FirestoreService {
 
   Future<void> updateAddress(
       {required String addressId, required AddressModel adress}) async {
+    await checkInternet();
     await firestore
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -115,6 +121,7 @@ class FirestoreService {
   }
 
   Future<void> deleteAddress({required String addressId}) async {
+    await checkInternet();
     await firestore
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -124,6 +131,7 @@ class FirestoreService {
   }
 
   Future<void> updateAddressIndex({required int sellectAddressIndex}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
@@ -150,6 +158,7 @@ class FirestoreService {
   }
 
   Future<void> addToFavorite({required String productId}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
@@ -225,6 +234,7 @@ class FirestoreService {
   }
 
   Future<void> addToCart({required CartItemModel cartItemModel}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
@@ -242,6 +252,7 @@ class FirestoreService {
   }
 
   Future<void> removeFromCart({required String productId}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
     await firestore
@@ -253,6 +264,7 @@ class FirestoreService {
   }
 
   Future<List<CartEntity>> getAllProductsInCart() async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return []; // Ensure user is logged in
 
@@ -275,6 +287,7 @@ class FirestoreService {
   }
 
   Future<CartEntity?> getProductInCart({required String productId}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return null;
 
@@ -294,6 +307,7 @@ class FirestoreService {
   }
 
   Future<void> clearCart() async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
@@ -313,6 +327,7 @@ class FirestoreService {
     required String productId,
     required bool isIncrement,
   }) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return;
 
@@ -343,6 +358,7 @@ class FirestoreService {
 
   Future<void> updateCartQuantityWithCount(
       {required String productId, required int count}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return;
 
@@ -360,6 +376,7 @@ class FirestoreService {
   }
 
   Future<void> createOrder({required OrderModel order}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 
@@ -370,6 +387,7 @@ class FirestoreService {
 
   Future<void> updateStockAfterOrder(
       {required bool isCreateOrder, required List<CartItemModel> items}) async {
+    await checkInternet();
     final firestore = FirebaseFirestore.instance;
 
     for (final item in items) {
@@ -398,10 +416,10 @@ class FirestoreService {
   }
 
   Future<List<OrderEntity>> getUserOrders({required String status}) async {
+    await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     QuerySnapshot<Map<String, dynamic>> querySnapshot;
     if (userId == null) return [];
-    await checkInternet();
 
     if (status == "All") {
       querySnapshot = await firestore
@@ -480,6 +498,7 @@ class FirestoreService {
   }
 
   Future<List<OrderEntity>> getAllOrders() async {
+    await checkInternet();
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await firestore.collection("orders").get();
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
@@ -494,6 +513,7 @@ class FirestoreService {
   }
 
   Future<int> getOrdersLength() async {
+    await checkInternet();
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await firestore.collection("orders").get();
     return querySnapshot.docs.length;

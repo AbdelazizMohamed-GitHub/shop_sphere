@@ -81,7 +81,7 @@ class CustomCartItem extends StatelessWidget {
                           ? Colors.black
                           : Colors.white),
                 ),
-                subtitle: Text('\$${item.productPrice.toStringAsFixed(1)}',
+                subtitle: Text(item.productPrice.toStringAsFixed(1),
                     style: AppStyles.text14Regular),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
