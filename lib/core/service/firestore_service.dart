@@ -548,73 +548,83 @@ class FirestoreService {
     return total;
   }
 
-  Future<int> getTodayTotal() {
-    final now = DateTime.now();
-    final start = DateTime(now.year, now.month, now.day);
-    final end = start.add(const Duration(days: 1));
-    return getOrdersTotalPrice(start: start, end: end);
+  Future<int> getOrdersTotalPriceTimeRange({required int timeRangeIndex}) async {
+    await checkInternet();
+int total = 0;
+    if (timeRangeIndex == 0) {
+      final now = DateTime.now();
+      final start = DateTime(now.year, now.month, now.day);
+      final end = start.add(const Duration(days: 1));
+      total=await getOrdersTotalPrice(start: start, end: end);
+    }
+
+    if (timeRangeIndex == 1) {
+      final now = DateTime.now();
+      final start = now.subtract(Duration(days: now.weekday % 7));
+      final startOfDay = DateTime(start.year, start.month, start.day);
+      final endOfWeek = startOfDay.add(const Duration(days: 7));
+
+      total=await getOrdersTotalPrice(start: startOfDay, end: endOfWeek);
+    }
+
+    if (timeRangeIndex == 2)
+      {
+        final now = DateTime.now();
+        final start = DateTime(now.year, now.month, 1);
+        final end = DateTime(now.year, now.month + 1, 1); // بداية الشهر القادم
+       total=await getOrdersTotalPrice(start: start, end: end);
+      }
+
+    if (timeRangeIndex == 3) {
+      final now = DateTime.now();
+      final start = DateTime(now.year, 1, 1);
+      final end = DateTime(now.year + 1, 1, 1); // بداية السنة القادمة
+      total=await getOrdersTotalPrice(start: start, end: end);
+    }
+
+    return total;
   }
 
-  Future<int> getWeekTotal() {
-    final now = DateTime.now();
-    final start = now.subtract(Duration(days: now.weekday % 7));
-    final startOfDay = DateTime(start.year, start.month, start.day);
-    final endOfWeek = startOfDay.add(const Duration(days: 7));
-
-    return getOrdersTotalPrice(start: startOfDay, end: endOfWeek);
-  }
-
-  Future<int> getMonthTotal() {
-    final now = DateTime.now();
-    final start = DateTime(now.year, now.month, 1);
-    final end = DateTime(now.year, now.month + 1, 1); // بداية الشهر القادم
-    return getOrdersTotalPrice(start: start, end: end);
-  }
-
-  Future<int> getYearTotal() {
-    final now = DateTime.now();
-    final start = DateTime(now.year, 1, 1);
-    final end = DateTime(now.year + 1, 1, 1); // بداية السنة القادمة
-    return getOrdersTotalPrice(start: start, end: end);
-  }
   Future<Map<String, int>> getTotalCostByDay({
-  required DateTime start,
-  required DateTime end,
-}) async {
-  await checkInternet();
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    await checkInternet();
 
-  final snapshot = await FirebaseFirestore.instance
-      .collection('orders').where("status", isEqualTo: "Delivered")
-      .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-      .where("orderDate", isLessThan: Timestamp.fromDate(end))
-      .get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('orders')
+        .where("status", isEqualTo: "Delivered")
+        .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where("orderDate", isLessThan: Timestamp.fromDate(end))
+        .get();
 
-  Map<String, int> dailyTotals = {};
+    Map<String, int> dailyTotals = {};
 
-  for (var doc in snapshot.docs) {
-    final data = doc.data();
-    final date = (data['orderDate'] as Timestamp).toDate();
-    final dayKey = DateFormat('yyyy-MM-dd').format(date);
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final date = (data['orderDate'] as Timestamp).toDate();
+      final dayKey = DateFormat('yyyy-MM-dd').format(date);
 
-    final totalPrice = (data['totalPrice'] ?? 0) as int;
-    dailyTotals[dayKey] = (dailyTotals[dayKey] ?? 0) + totalPrice;
+      final totalPrice = (data['totalPrice'] ?? 0) as int;
+      dailyTotals[dayKey] = (dailyTotals[dayKey] ?? 0) + totalPrice;
+    }
+
+    return dailyTotals;
   }
 
-  return dailyTotals;
-}Future<List<int>> getDayTotal() async {
-  final now = DateTime.now();
-  final startOfWeek = now.subtract(Duration(days: now.weekday % 7));
-  final start = DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
-  final end = start.add(const Duration(days: 7));
+  Future<List<int>> getDayTotal() async {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday % 7));
+    final start =
+        DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
+    final end = start.add(const Duration(days: 7));
 
-  final dailyCosts = await getTotalCostByDay(start: start, end: end);
-List <int> totalCosts = [];
-  dailyCosts.forEach((day, total) {
-  totalCosts.add(total);
-  });
+    final dailyCosts = await getTotalCostByDay(start: start, end: end);
+    List<int> totalCosts = [];
+    dailyCosts.forEach((day, total) {
+      totalCosts.add(total);
+    });
 
-  return totalCosts;
-}
-
-
+    return totalCosts;
+  }
 }
