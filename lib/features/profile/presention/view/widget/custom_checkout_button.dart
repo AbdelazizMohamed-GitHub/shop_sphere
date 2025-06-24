@@ -164,10 +164,10 @@ class CustomCheckoutButton extends StatelessWidget {
                                 );
                               },
                               onError: (error) {
-                                print("Error: $error");
+                              
                                 Warning.showWarning(
                                   context,
-                                  message: error.toString(),
+                                  message: 'Not Available in your Loction',
                                 );
                               },
                               onCancel: () {

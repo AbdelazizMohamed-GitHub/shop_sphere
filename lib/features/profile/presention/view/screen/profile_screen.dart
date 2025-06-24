@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shop_sphere/core/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/app_cubit/app_state.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
@@ -19,6 +20,7 @@ import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile
 import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_screen_header.dart';
+import 'package:shop_sphere/shopsphere_app.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -154,15 +156,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: 'Log Out',
                       funcation: () async {
                         try {
+                          if (!await AppFuncations.isOnline()) {
+                            Warning.showWarning(context,
+                                isError: true,
+                                message: "No internet connection");
+                            return;
+                          }
                           await GoogleSignIn().signOut();
                           await FirebaseAuth.instance.signOut();
+                          await Future.delayed(const Duration(seconds: 5));
+                          // Clear user data from Firestore if needed
 
-                          context.read<MainCubit>().changeScreenIndex(0);
-                          Navigator.pushAndRemoveUntil(
-                            context,
+                          // Navigate to the login screen or home screen
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
+                                builder: (_) => const ShopSphere()),
                             (route) => false,
                           );
                         } catch (e) {

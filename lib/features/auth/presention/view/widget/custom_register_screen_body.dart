@@ -136,11 +136,14 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
-             Navigator.push(context, MaterialPageRoute(
-                 builder: (context) =>  VerifyScreen(
-                  email:emailTextC.text.trim(), 
-                 ),
-               ));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => state.uid == 'Staff'
+                    ? const ProductScreen()
+                    : const MainScreen(),
+              ),
+              (route) => false);
               }
               if (state is AuthError) {
                 Warning.showWarning(context,

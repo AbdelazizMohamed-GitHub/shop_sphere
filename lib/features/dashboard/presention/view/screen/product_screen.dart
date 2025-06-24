@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/service/internet.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
-import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
@@ -15,6 +17,7 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/search_scr
 import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/shopsphere_app.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -117,17 +120,28 @@ class _ProductScreenState extends State<ProductScreen> {
                       leading: const Icon(Icons.logout),
                       title: const Text('Sign Out'),
                       onTap: () async {
-                        await GoogleSignIn().signOut();
-                        await FirebaseAuth.instance.signOut();
-                        Navigator.pushReplacement(
-                          // ignore: use_build_context_synchronously
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const LoginScreen();
-                            },
-                          ),
-                        );
+                        try {
+                          if (!await AppFuncations.isOnline()) {
+                            Warning.showWarning(context,
+                                isError: true,
+                                message: "No internet connection");
+                            return;
+                            
+                          }
+                          await GoogleSignIn().signOut();
+                          await FirebaseAuth.instance.signOut();
+                          // Clear user data from Firestore if needed
+     await Future.delayed(const Duration(seconds: 5));
+                          // Navigate to the login screen or home screen
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (_) => const ShopSphere()),
+                            (route) => false,
+                          );
+                        } catch (e) {
+                          Warning.showWarning(context,isError: true,
+                              message: '${e.toString()}');
+                        }
                       },
                     ),
                   ],
@@ -150,60 +164,62 @@ class _ProductScreenState extends State<ProductScreen> {
                   const SizedBox(width: 10),
                 ],
               ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, bottom: 10),
-                      child: Row(children: [
-                        Text(
-                          "Welcome ",
-                          style: AppStyles.text18Regular
-                              .copyWith(color: AppColors.primaryColor),
-                        ),
-                        Text(
-                          '${FirebaseAuth.instance.currentUser!.displayName}',
-                          style: AppStyles.text18Regular,
-                        ),
-                        const Spacer(),
-                        PopupMenuButton(
-                            child: const Icon(Icons.filter_list),
-                            itemBuilder: (context) =>
-                                appCategory.map((category) {
-                                  return PopupMenuItem(
-                                    onTap: () {
-                                      selectedCategory = category;
-                                      setState(() {});
-                                    },
-                                    value: category,
-                                    child: Text(category),
-                                  );
-                                }).toList()),
-                        const SizedBox(
-                          width: 10,
-                        )
-                      ]),
-                    ),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
+              body: InternetBannerWrapper(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 10),
+                        child: Row(children: [
+                          Text(
+                            "Welcome ",
+                            style: AppStyles.text18Regular
+                                .copyWith(color: AppColors.primaryColor),
+                          ),
+                          Text(
+                            '${FirebaseAuth.instance.currentUser!.displayName}',
+                            style: AppStyles.text18Regular,
+                          ),
+                          const Spacer(),
+                          PopupMenuButton(
+                              child: const Icon(Icons.filter_list),
+                              itemBuilder: (context) =>
+                                  appCategory.map((category) {
+                                    return PopupMenuItem(
+                                      onTap: () {
+                                        selectedCategory = category;
+                                        setState(() {});
+                                      },
+                                      value: category,
+                                      child: Text(category),
+                                    );
+                                  }).toList()),
+                          const SizedBox(
+                            width: 10,
+                          )
+                        ]),
                       ),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 5 / 6,
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 5 / 6,
+                        ),
+                        itemCount: products.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CustomDashboardProductItem(
+                              product: products[index]);
+                        },
                       ),
-                      itemCount: products.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CustomDashboardProductItem(
-                            product: products[index]);
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               floatingActionButton: FloatingActionButton(

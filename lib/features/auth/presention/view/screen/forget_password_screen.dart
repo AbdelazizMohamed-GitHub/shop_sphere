@@ -86,7 +86,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       : CustomButton(
                           onPressed: () {
                             if (emailController.text.isNotEmpty) {
-                              print('Resetting password for: ${emailController.text}');
+                              
                               FocusScope.of(context).unfocus();
                               BlocProvider.of<AuthCubit>(context)
                                   .resetPassword(email: emailController.text);

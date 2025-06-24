@@ -19,15 +19,16 @@ class CustomCartPrice extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title,
-            style: AppStyles.text22SemiBold),
-        Text('\$${price.toStringAsFixed(2)}',
-            style: isTotalcoast
-                ? AppStyles.text18Regular.copyWith(color: Colors.green)
-                : AppStyles.text18Regular.copyWith(
-                    color: AppTheme.isLightTheme(context)
-                        ? Colors.black
-                        : Colors.white)),
+        Text(title, style: AppStyles.text22SemiBold),
+        Text(
+          '${price.toStringAsFixed(1)} EGP',
+          style: isTotalcoast
+              ? AppStyles.text18Regular.copyWith(color: Colors.green)
+              : AppStyles.text18Regular.copyWith(
+                  color: AppTheme.isLightTheme(context)
+                      ? Colors.black
+                      : Colors.white),
+        ),
       ],
     );
   }

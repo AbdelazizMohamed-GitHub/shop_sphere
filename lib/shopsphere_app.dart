@@ -21,45 +21,8 @@ import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart'
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
-
-class ShopSphere extends StatefulWidget {
+class ShopSphere extends StatelessWidget {
   const ShopSphere({super.key});
-
-  @override
-  State<ShopSphere> createState() => _ShopSphereState();
-}
-
-class _ShopSphereState extends State<ShopSphere> {
-  UserEntity? user;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUser();
-  }
-
-  Future<void> _loadUser() async {
-    if (FirebaseAuth.instance.currentUser != null) {
-      try {
-        final doc = await getIt<FirestoreService>().getUserData();
-
-        setState(() {
-          user = doc;
-          isLoading = false;
-        });
-      } on Exception catch (e) {
-        setState(() {
-          isLoading = false;
-        });
-        throw Exception("Error loading user data: $e");
-      }
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +43,7 @@ class _ShopSphereState extends State<ShopSphere> {
             create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())),
         BlocProvider(
           create: (context) => DashboardCubit(
-              dashboardRepo: getIt<DashboardRepoImpl>()
-                ),
+              dashboardRepo: getIt<DashboardRepoImpl>()),
         ),
         BlocProvider(
           create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
@@ -93,18 +55,47 @@ class _ShopSphereState extends State<ShopSphere> {
             debugShowCheckedModeBanner: false,
             title: 'ShopSphere',
             themeMode: ThemeMode.system,
-            theme:isLightTheme? AppTheme.lightTheme : AppTheme.darkTheme,
-            home: isLoading
-                ? const Scaffold(
-                    body: Center(child: CircularProgressIndicator()))
-                : FirebaseAuth.instance.currentUser == null
-                    ? const GetStartedScreen()
-                    : (user?.isStaff ?? false)
+            theme: isLightTheme
+                ? AppTheme.lightTheme
+                : AppTheme.darkTheme,
+            home: StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                if (!snapshot.hasData) {
+                  return const GetStartedScreen();
+                }
+
+                return FutureBuilder<UserEntity>(
+                  future: getIt<FirestoreService>().getUserData(),
+                  builder: (context, userSnapshot) {
+                    if (userSnapshot.connectionState == ConnectionState.waiting) {
+                      return const Scaffold(
+                        body: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+
+                    if (userSnapshot.hasError || !userSnapshot.hasData) {
+                      return const GetStartedScreen(); // أو اعرض رسالة خطأ
+                    }
+
+                    final user = userSnapshot.data!;
+                    return user.isStaff
                         ? const ProductScreen()
-                        : const MainScreen(),
+                        : const MainScreen();
+                  },
+                );
+              },
+            ),
           );
         },
       ),
     );
   }
 }
+
