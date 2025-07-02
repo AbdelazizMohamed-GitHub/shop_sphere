@@ -527,7 +527,7 @@ class FirestoreService {
     return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
   }
 
-  Future<int> getOrdersTotalPrice({
+  Future<double> getOrdersTotalPrice({
     required DateTime start,
     required DateTime end,
   }) async {
@@ -540,22 +540,23 @@ class FirestoreService {
         .where("orderDate", isLessThan: Timestamp.fromDate(end))
         .get();
 
-    int total = 0;
+    double total = 0;
     for (var doc in snapshot.docs) {
-      total += (doc.data()['totalPrice'] ?? 0) as int;
+      total += (doc.data()['totalAmount'] ?? 0) as double ;
     }
 
     return total;
   }
 
-  Future<int> getOrdersTotalPriceTimeRange({required int timeRangeIndex}) async {
+  Future<double> getOrdersTotalPriceTimeRange(
+      {required int timeRangeIndex}) async {
     await checkInternet();
-int total = 0;
+
     if (timeRangeIndex == 0) {
       final now = DateTime.now();
       final start = DateTime(now.year, now.month, now.day);
       final end = start.add(const Duration(days: 1));
-      total=await getOrdersTotalPrice(start: start, end: end);
+      return await getOrdersTotalPrice(start: start, end: end);
     }
 
     if (timeRangeIndex == 1) {
@@ -564,25 +565,23 @@ int total = 0;
       final startOfDay = DateTime(start.year, start.month, start.day);
       final endOfWeek = startOfDay.add(const Duration(days: 7));
 
-      total=await getOrdersTotalPrice(start: startOfDay, end: endOfWeek);
+      return await getOrdersTotalPrice(start: startOfDay, end: endOfWeek);
     }
 
-    if (timeRangeIndex == 2)
-      {
-        final now = DateTime.now();
-        final start = DateTime(now.year, now.month, 1);
-        final end = DateTime(now.year, now.month + 1, 1); // بداية الشهر القادم
-       total=await getOrdersTotalPrice(start: start, end: end);
-      }
+    if (timeRangeIndex == 2) {
+      final now = DateTime.now();
+      final start = DateTime(now.year, now.month, 1);
+      final end = DateTime(now.year, now.month + 1, 1); // بداية الشهر القادم
+      return await getOrdersTotalPrice(start: start, end: end);
+    }
 
     if (timeRangeIndex == 3) {
       final now = DateTime.now();
       final start = DateTime(now.year, 1, 1);
       final end = DateTime(now.year + 1, 1, 1); // بداية السنة القادمة
-      total=await getOrdersTotalPrice(start: start, end: end);
+      return await getOrdersTotalPrice(start: start, end: end);
     }
-
-    return total;
+    throw Exception("Invalid timeRangeIndex: $timeRangeIndex");
   }
 
   Future<Map<String, int>> getTotalCostByDay({
@@ -605,7 +604,7 @@ int total = 0;
       final date = (data['orderDate'] as Timestamp).toDate();
       final dayKey = DateFormat('yyyy-MM-dd').format(date);
 
-      final totalPrice = (data['totalPrice'] ?? 0) as int;
+      final totalPrice = (data['totalAmount'] ?? 0) as int;
       dailyTotals[dayKey] = (dailyTotals[dayKey] ?? 0) + totalPrice;
     }
 

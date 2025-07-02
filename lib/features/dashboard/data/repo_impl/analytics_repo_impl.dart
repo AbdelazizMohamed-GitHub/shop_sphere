@@ -21,10 +21,10 @@ try {
   }
 
   @override
-  Future<Either<FirebaseFailure, int>> getOrdersTotalPriceTimeRange(
+  Future<Either<FirebaseFailure, double>> getOrdersTotalPriceTimeRange(
       {required int timeRangeIndex})async {
     try {
-      int data=await firestoreService.getOrdersTotalPriceTimeRange(timeRangeIndex: timeRangeIndex);
+      double data=await firestoreService.getOrdersTotalPriceTimeRange(timeRangeIndex: timeRangeIndex);
       return Right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));

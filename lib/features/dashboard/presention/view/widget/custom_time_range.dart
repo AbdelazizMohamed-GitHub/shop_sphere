@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_state.dart';
 
 class CustomTimeRange extends StatefulWidget {
   const CustomTimeRange({super.key});
@@ -28,24 +31,24 @@ class _CustomTimeRangeState extends State<CustomTimeRange> {
             setState(() {
               selectedIndex = index;
             });
+            context
+                .read<AnalyticsCubit>()
+                .getAllAnalyticsData(timeRangeIndex: index);
           },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color:
-                  selectedIndex == index
-                      ? AppColors.primaryColor
-                      : Colors.white,
+              color: selectedIndex == index
+                  ? AppColors.primaryColor
+                  : Colors.white,
             ),
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-
             child: Text(
               "${timeRange[index]}",
-              style:
-                  selectedIndex == index
-                      ? AppStyles.text16Regular.copyWith(color: Colors.white)
-                      : AppStyles.text16Regular,
+              style: selectedIndex == index
+                  ? AppStyles.text16Regular.copyWith(color: Colors.white)
+                  : AppStyles.text16Regular,
             ),
           ),
         );
