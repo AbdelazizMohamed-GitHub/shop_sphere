@@ -10,7 +10,7 @@ class AnalyticsRepoImpl extends AnalyticsRepo {
   @override
   Future<Either<FirebaseFailure, List<int>>> getDayOrdersTotalPrice() async{
 try {
- List<int> days= await firestoreService.getDayTotal();
+ List<int> days= await firestoreService.getDaysTotal();
 
   return Right(days);
 } on FirebaseException catch (e) {

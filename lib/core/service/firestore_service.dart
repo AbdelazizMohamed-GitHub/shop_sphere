@@ -604,14 +604,14 @@ class FirestoreService {
       final date = (data['orderDate'] as Timestamp).toDate();
       final dayKey = DateFormat('yyyy-MM-dd').format(date);
 
-      final totalPrice = (data['totalAmount'] ?? 0) as int;
+      final totalPrice = ((data['totalAmount'] ?? 0) as double).toInt();
       dailyTotals[dayKey] = (dailyTotals[dayKey] ?? 0) + totalPrice;
     }
 
     return dailyTotals;
   }
 
-  Future<List<int>> getDayTotal() async {
+  Future<List<int>> getDaysTotal() async {
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday % 7));
     final start =

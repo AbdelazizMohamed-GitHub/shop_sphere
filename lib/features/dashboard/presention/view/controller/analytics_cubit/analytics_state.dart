@@ -6,7 +6,7 @@ class AnalyticsLoading extends AnalyticsState {}
 
 class AnalyticsLoaded extends AnalyticsState {
   final double rangeTotal;
-  final List days;
+  final List<int> days;
 
   AnalyticsLoaded({
     required this.rangeTotal,

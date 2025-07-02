@@ -28,12 +28,12 @@ class _CustomTimeRangeState extends State<CustomTimeRange> {
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
           onTap: () {
-            setState(() {
-              selectedIndex = index;
-            });
             context
                 .read<AnalyticsCubit>()
                 .getAllAnalyticsData(timeRangeIndex: index);
+            setState(() {
+              selectedIndex = index;
+            });
           },
           child: Container(
             decoration: BoxDecoration(
