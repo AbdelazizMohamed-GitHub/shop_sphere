@@ -4,17 +4,10 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_cubit.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_state.dart';
 
-class CustomTimeRange extends StatefulWidget {
+class CustomTimeRange extends StatelessWidget {
   const CustomTimeRange({super.key});
 
-  @override
-  State<CustomTimeRange> createState() => _CustomTimeRangeState();
-}
-
-class _CustomTimeRangeState extends State<CustomTimeRange> {
-  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -30,15 +23,13 @@ class _CustomTimeRangeState extends State<CustomTimeRange> {
           onTap: () {
             context
                 .read<AnalyticsCubit>()
-                .getAllAnalyticsData(timeRangeIndex: index);
-            setState(() {
-              selectedIndex = index;
-            });
+                .getTimeRangeData(timeRangeIndex: index);
+          
           },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: selectedIndex == index
+              color: context.read<AnalyticsCubit>().timeRangeIndex == index
                   ? AppColors.primaryColor
                   : Colors.white,
             ),
@@ -46,7 +37,7 @@ class _CustomTimeRangeState extends State<CustomTimeRange> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               "${timeRange[index]}",
-              style: selectedIndex == index
+              style: context.read<AnalyticsCubit>().timeRangeIndex == index
                   ? AppStyles.text16Regular.copyWith(color: Colors.white)
                   : AppStyles.text16Regular,
             ),

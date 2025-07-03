@@ -6,7 +6,6 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/analytics_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_data_table.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_time_range.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_total_card.dart';
 
@@ -17,8 +16,7 @@ class AnalyticsScreen extends StatefulWidget {
 }
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
-
-
+ 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -37,43 +35,35 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             if (state is AnalyticsError) {
               Warning.showWarning(context, message: state.errMessage);
             }
+          
           },
           builder: (context, state) {
-            return state is AnalyticsLoading
-                ? const Center(child: CircularProgressIndicator())
-                : state is AnalyticsLoaded
-                    ? SingleChildScrollView(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Time range selector
-                            const SizedBox(
-                                height: 40, child: CustomTimeRange()),
-                            const SizedBox(height: 20),
+         
+            if (state is AnalyticsLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is AnalyticsLoaded|| state is AnalyticsTimeRangeLoaded) {
+            
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Time range selector
+                    const SizedBox(height: 40, child: CustomTimeRange()),
+                    const SizedBox(height: 20),
 
-                            // Metric selector
-
-                            // Summary cards
-                            CustomTotalCard(
-                              range: state.rangeTotal,
-                            ),
-
-                            const SizedBox(height: 20),
-
-                            // Main chart
-
-                            // Data table
-                            const CustomDataTable(),
-                          ],
-                        ),
-                      )
-                    : state is AnalyticsError
-                        ? CustomErrorWidget(
-                            errorMessage: state.errMessage,
-                            onpressed: () {},
-                          )
-                        : const Center(child: Text('No data available'));
+                    CustomTotalCard(
+                    
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              );
+            }
+            return const Center(
+              child: Text('No data available'),
+            );
+            //   return  CustomErrorWidget(errorMessage: '', onpressed: () {  },);
           },
         ),
       ),

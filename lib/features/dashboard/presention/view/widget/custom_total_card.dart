@@ -1,31 +1,43 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_state.dart';
 
 import 'package:shop_sphere/features/dashboard/presention/view/widget/summary_card.dart';
 
 class CustomTotalCard extends StatelessWidget {
   const CustomTotalCard({
     super.key,
-    required this.range,
   });
-  final double range;
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        SummaryCard(
-            title: 'Total',
-            value: range.toString(),
-            subtitle: range.toString()),
-        const SizedBox(
-          width: 20,
-        ),
-        SummaryCard(
-            title: 'average',
-            value: range.toString(),
-            subtitle: range.toString()),
-      ],
+    return BlocSelector<AnalyticsCubit, AnalyticsState, double>(
+      selector: (state) {
+        return state is AnalyticsTimeRangeLoaded
+            ? state.rangeTotal
+            : state is AnalyticsLoaded
+                ? state.rangeTotal
+                : 0.0;
+      },
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SummaryCard(
+                title: 'Total',
+                value: state.toString(),
+                subtitle: state.toString()),
+            const SizedBox(
+              width: 20,
+            ),
+            SummaryCard(
+                title: 'average',
+                value: state.toString(),
+                subtitle: state.toString()),
+          ],
+        );
+      },
     );
   }
 }

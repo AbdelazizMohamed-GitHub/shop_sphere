@@ -19,3 +19,10 @@ class AnalyticsError extends AnalyticsState {
 
   AnalyticsError({required this.errMessage});
 }
+
+class AnalyticsTimeRangeLoading extends AnalyticsState {}
+class AnalyticsTimeRangeLoaded extends AnalyticsState {
+  final double rangeTotal;
+
+  AnalyticsTimeRangeLoaded({required this.rangeTotal});
+}
