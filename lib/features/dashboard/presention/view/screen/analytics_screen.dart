@@ -19,13 +19,14 @@ class AnalyticsScreen extends StatefulWidget {
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   List<int> days = [];
+  List<String> products = [];
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           AnalyticsCubit(analyticsRepo: getIt<AnalyticsRepoImpl>())
-            ..getAllAnalyticsData(timeRangeIndex: 0),
+            ..getAllAnalyticsData(timeRangeIndex: 2),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Analytics Dashboard'),
@@ -40,6 +41,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             }
             if (state is AnalyticsLoaded) {
               days = state.days;
+              products = state.products;
+              print(products[2]);
             }
           },
           builder: (context, state) {
@@ -47,8 +50,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is AnalyticsLoaded ||
                 state is AnalyticsTimeRangeLoaded) {
-  
-           
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -60,48 +61,65 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
                     const CustomTotalCard(),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      height: 300,
-                      child: BarChart(
-      BarChartData(
-        alignment: BarChartAlignment.spaceAround,
-        maxY: 100,
-        minY: 0,
-        gridData: const FlGridData(show: true),
-        titlesData: FlTitlesData(
-          show: true,
-          bottomTitles: AxisTitles(
-            axisNameWidget: const Text(''),
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-                return Text(
-                  days[value.toInt()],
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                );
-              },
-              reservedSize: 28,
-            ),
-          ),
-          leftTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: true, reservedSize: 40),
-          ),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        ),
-        borderData: FlBorderData(show: false),
-        barGroups: [
-          BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 20, color: Colors.blue)]),
-          BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 50, color: Colors.blue)]),
-          BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 80, color: Colors.blue)]),
-          BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 65, color: Colors.blue)]),
-          BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 90, color: Colors.blue)]),
-          BarChartGroupData(x: 5, barRods: [BarChartRodData(toY: 40, color: Colors.blue)]),
-          BarChartGroupData(x: 6, barRods: [BarChartRodData(toY: 30, color: Colors.blue)]),
-        ],
-      ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SizedBox(
+                        height: 300,
+                        width: products.length * 60, //
+                        child: BarChart(
+                          BarChartData(
+                            alignment: BarChartAlignment.spaceAround,
+                            maxY: 100,
+                            minY: 0,
+                            gridData: const FlGridData(show: true),
+                            titlesData: FlTitlesData(
+                              show: true,
+                              bottomTitles: AxisTitles(
+                                axisNameWidget: const Text(''),
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: (value, meta) {
+                                    if (value.toInt() < products.length) {
+                                      return Text(
+                                        products[value.toInt()].toString(),
+                                        style: const TextStyle(
+                                            fontSize: 12, color: Colors.black),
+                                      );
+                                    } else {
+                                      return const Text('');
+                                    }
+                                  },
+                                  reservedSize: 28,
+                                ),
+                              ),
+                              leftTitles: const AxisTitles(
+                                sideTitles: SideTitles(
+                                    showTitles: true, reservedSize: 40),
+                              ),
+                              topTitles: const AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false)),
+                              rightTitles: const AxisTitles(
+                                  sideTitles: SideTitles(showTitles: false)),
+                            ),
+                            borderData: FlBorderData(show: false),
+                            barGroups: products.asMap().entries.map((entry) {
+                              int index = entry.key;
+                              String product = entry.value;
+                              return BarChartGroupData(
+                                x: index,
+                                barRods: [
+                                  BarChartRodData(
+                                    toY: 100,
+                                    color: Colors.blue,
+                                    width: 16,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
                         ),
+                      ),
                     ),
                   ],
                 ),

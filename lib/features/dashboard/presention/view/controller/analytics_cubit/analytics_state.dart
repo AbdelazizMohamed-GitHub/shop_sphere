@@ -7,8 +7,10 @@ class AnalyticsLoading extends AnalyticsState {}
 class AnalyticsLoaded extends AnalyticsState {
   final double rangeTotal;
   final List<int> days;
+  final List<String> products; 
 
   AnalyticsLoaded({
+    required this.products,
     required this.rangeTotal,
     required this.days,
   });

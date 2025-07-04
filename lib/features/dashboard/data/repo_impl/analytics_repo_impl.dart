@@ -8,27 +8,40 @@ class AnalyticsRepoImpl extends AnalyticsRepo {
   FirestoreService firestoreService;
   AnalyticsRepoImpl({required this.firestoreService});
   @override
-  Future<Either<FirebaseFailure, List<int>>> getDayOrdersTotalPrice() async{
-try {
- List<int> days= await firestoreService.getDaysTotal();
+  Future<Either<FirebaseFailure, List<int>>> getDayOrdersTotalPrice() async {
+    try {
+      List<int> days = await firestoreService.getDaysTotal();
 
-  return Right(days);
-} on FirebaseException catch (e) {
-  return Left(FirebaseFailure.fromCode(e.code));
-}on Exception catch (e) {
-  return Left(FirebaseFailure(message: e.toString()));
-}
+      return Right(days);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } on Exception catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
   }
 
   @override
   Future<Either<FirebaseFailure, double>> getOrdersTotalPriceTimeRange(
-      {required int timeRangeIndex})async {
+      {required int timeRangeIndex}) async {
     try {
-      double data=await firestoreService.getOrdersTotalPriceTimeRange(timeRangeIndex: timeRangeIndex);
+      double data = await firestoreService.getOrdersTotalPriceTimeRange(
+          timeRangeIndex: timeRangeIndex);
       return Right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
-    }on Exception catch (e) {
+    } on Exception catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseFailure, List<String>>> getProductMostSeller({required int limit,required int timeRangeIndex})async {
+    try {
+      List<String> data = await firestoreService.getProductsMostSellerTimeRange(limit: limit, timeRangeIndex:timeRangeIndex );
+      return Right(data);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));
     }
   }

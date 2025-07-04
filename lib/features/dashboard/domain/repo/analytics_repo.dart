@@ -5,4 +5,7 @@ abstract class AnalyticsRepo {
   Future<Either<FirebaseFailure, double>> getOrdersTotalPriceTimeRange(
       {required int timeRangeIndex});
   Future<Either<FirebaseFailure, List<int>>> getDayOrdersTotalPrice();
+  Future<Either<FirebaseFailure, List<String>>> getProductMostSeller({
+    required int limit,required int timeRangeIndex,
+  });
 }

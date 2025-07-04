@@ -626,6 +626,7 @@ class FirestoreService {
 
     return totalCosts;
   }
+  
 
  Future<List<String>> getProductsMostSeller(
     {required DateTime start, required DateTime end, required int limit}) async {
@@ -651,6 +652,39 @@ class FirestoreService {
   mostSoldProducts = productCount.entries.map((entry) => entry.key).toList();
   return mostSoldProducts;
 }
+Future<List<String>> getProductsMostSellerTimeRange({
+    required int limit,required int timeRangeIndex
+  }) async {
+   if (timeRangeIndex == 0) {
+      final now = DateTime.now();
+      final start = DateTime(now.year, now.month, now.day);
+      final end = start.add(const Duration(days: 1));
+      return await getProductsMostSeller(start: start, end: end, limit: limit);
+    }
 
+    if (timeRangeIndex == 1) {
+      final now = DateTime.now();
+      final start = now.subtract(Duration(days: now.weekday % 7));
+      final startOfDay = DateTime(start.year, start.month, start.day);
+      final endOfWeek = startOfDay.add(const Duration(days: 7));
+
+      return await getProductsMostSeller(
+          start: startOfDay, end: endOfWeek, limit: limit);
+    
+    }
+    if (timeRangeIndex == 2) {
+      final now = DateTime.now();
+      final start = DateTime(now.year, now.month, 1);
+      final end = DateTime(now.year, now.month + 1, 1); // بداية الشهر القادم
+      return await getProductsMostSeller(start: start, end: end, limit: limit);
+    }
+    if (timeRangeIndex == 3) {
+      final now = DateTime.now();
+      final start = DateTime(now.year, 1, 1);
+      final end = DateTime(now.year + 1, 1, 1); // بداية السنة القادمة
+      return await getProductsMostSeller(start: start, end: end, limit: limit);
+    }
+    return [];
+  }
 
 }

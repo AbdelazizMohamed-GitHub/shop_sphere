@@ -18,6 +18,8 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
     final rangeResult = await analyticsRepo.getOrdersTotalPriceTimeRange(
         timeRangeIndex: timeRangeIndex);
     final dayResult = await analyticsRepo.getDayOrdersTotalPrice();
+    final productResult = await analyticsRepo.getProductMostSeller(
+        limit: 5, timeRangeIndex: timeRangeIndex);
 
     if (rangeResult.isLeft()) {
       emit(AnalyticsError(
@@ -30,12 +32,20 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
           errMessage: rangeResult.fold((l) => l.message, (r) => "Unknown")));
       return;
     }
+    if (productResult.isLeft()) {
+      emit(AnalyticsError(
+          errMessage: productResult.fold((l) => l.message, (r) => "Unknown")));
+      return;
+    }
 
     final rangeTotal = rangeResult.getOrElse(() => 0);
     final days = dayResult.getOrElse(() => []);
+    final products = productResult.getOrElse(() => []);
 
-    emit(AnalyticsLoaded(rangeTotal: rangeTotal, days: days));
+    emit(AnalyticsLoaded(
+        rangeTotal: rangeTotal, days: days, products: products));
   }
+
   Future<void> getTimeRangeData({required int timeRangeIndex}) async {
     emit(AnalyticsLoading());
     changeTimeRange(timeRangeIndex);
@@ -48,11 +58,8 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
         emit(AnalyticsError(errMessage: l.message));
       },
       (r) {
-emit(AnalyticsTimeRangeLoaded(rangeTotal: r));
+        emit(AnalyticsTimeRangeLoaded(rangeTotal: r));
       },
     );
-    
   }
-
-
 }
