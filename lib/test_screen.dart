@@ -1,10 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_data.dart';
-import 'package:shop_sphere/core/widget/warning.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -14,40 +11,6 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  bool isLoading = false;
-  int updatedCount = 0;
-
-  Future<void> handleChangeStaff() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      final count = await changeStaff();
-      setState(() {
-        updatedCount = count;
-      });
-
-      // Show success message
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("✅ تم تحديث $count منتج بنجاح!"),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        Warning.showWarning(context, message: e.toString());
-      }
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,38 +18,43 @@ class _TestScreenState extends State<TestScreen> {
         title: const Text("Test Screen"),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: handleChangeStaff,
-            child: isLoading
-                ? const CircularProgressIndicator()
-                : const Text("Change Staff"),
+            onPressed: () async {await getProductsMostSeller( limit: 10,
+                start: DateTime.now().subtract(const Duration(days: 7)),
+                end: DateTime.now());
+            },
+            child: const Text("Change Staff"),
           ),
-          Text("Updated Count: $updatedCount"),
         ],
       ),
     );
   }
 }
 
-Future<int> changeStaff() async {
-  final productsRef = FirebaseFirestore.instance.collection('products');
-
-  final productsSnapshot = await productsRef
-      .where('sId', isEqualTo: '4OPsIIhK9SSKshkXGAfECFT9fQC3')
+Future<List<String>> getProductsMostSeller(
+    {required DateTime start, required DateTime end, required int limit}) async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection('orders')
+      .where("status", isEqualTo: "Delivered")
+      .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+      .where("orderDate", isLessThan: Timestamp.fromDate(end)).limit(limit)
       .get();
-
-  int updatedCount = 0;
-
-  for (final doc in productsSnapshot.docs) {
-    await doc.reference.update({
-      'sId': '4cZvO5N8fqg06XDfVvPXEpTNanG3',
-      'staffName': 'ShopSphere Staff'
-    });
-    updatedCount++;
-    print("✅ Updated product ${doc.id}");
+  Map<String, int> productCount = {};
+  for (var doc in snapshot.docs) {
+    final data = doc.data();
+    final products = data['items'];
+    for (var item in products) {
+      final productId = item['name'] as String;
+      productCount[productId] = (productCount[productId] ?? 0) + 1;
+    }
   }
-
-  print("🎉 Total updated: $updatedCount");
-  return updatedCount;
+  List<String> mostSoldProducts = [];
+  productCount.entries
+      .toList()
+      .sort((a, b) => b.value.compareTo(a.value)); // Sort by count descending
+  mostSoldProducts = productCount.entries.map((entry) => entry.key).toList();
+  return mostSoldProducts;
 }

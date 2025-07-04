@@ -626,4 +626,31 @@ class FirestoreService {
 
     return totalCosts;
   }
+
+ Future<List<String>> getProductsMostSeller(
+    {required DateTime start, required DateTime end, required int limit}) async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection('orders')
+      .where("status", isEqualTo: "Delivered")
+      .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+      .where("orderDate", isLessThan: Timestamp.fromDate(end)).limit(limit)
+      .get();
+  Map<String, int> productCount = {};
+  for (var doc in snapshot.docs) {
+    final data = doc.data();
+    final products = data['items'];
+    for (var item in products) {
+      final productName = item['name'] as String;
+      productCount[productName] = (productCount[productName] ?? 0) + 1;
+    }
+  }
+  List<String> mostSoldProducts = [];
+  productCount.entries
+      .toList()
+      .sort((a, b) => b.value.compareTo(a.value)); // Sort by count descending
+  mostSoldProducts = productCount.entries.map((entry) => entry.key).toList();
+  return mostSoldProducts;
+}
+
+
 }
