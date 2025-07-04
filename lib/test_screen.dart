@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 
 class TestScreen extends StatefulWidget {
@@ -52,28 +54,16 @@ class _TestScreenState extends State<TestScreen> {
       appBar: AppBar(
         title: const Text("Test Screen"),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "تم تحديث: $updatedCount منتج",
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton.icon(
-                onPressed: handleChangeStaff,
-                icon: const Icon(Icons.sync),
-                label: const Text("تحديث بيانات المنتجات"),
-              ),
-              const SizedBox(height: 24),
-              if (isLoading) const CircularProgressIndicator(),
-            ],
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: handleChangeStaff,
+            child: isLoading
+                ? const CircularProgressIndicator()
+                : const Text("Change Staff"),
           ),
-        ),
+          Text("Updated Count: $updatedCount"),
+        ],
       ),
     );
   }
@@ -89,7 +79,10 @@ Future<int> changeStaff() async {
   int updatedCount = 0;
 
   for (final doc in productsSnapshot.docs) {
-    await doc.reference.update({'sId': '4cZvO5N8fqg06XDfVvPXEpTNanG3', 'staffName': 'ShopSphere Staff'});
+    await doc.reference.update({
+      'sId': '4cZvO5N8fqg06XDfVvPXEpTNanG3',
+      'staffName': 'ShopSphere Staff'
+    });
     updatedCount++;
     print("✅ Updated product ${doc.id}");
   }
@@ -97,4 +90,3 @@ Future<int> changeStaff() async {
   print("🎉 Total updated: $updatedCount");
   return updatedCount;
 }
-

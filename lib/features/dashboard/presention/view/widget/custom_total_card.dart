@@ -33,7 +33,8 @@ class CustomTotalCard extends StatelessWidget {
             ),
             SummaryCard(
                 title: 'average',
-                value: state.toString(),
+                value: (state.toInt() / 7).toStringAsFixed(2)
+                  ,
                 subtitle: state.toString()),
           ],
         );

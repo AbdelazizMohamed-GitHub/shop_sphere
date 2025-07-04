@@ -43,6 +43,15 @@ List appCategory = [
   'Health	',
 ];
 List timeRange = ["Daily", "Weekly", "Monthly", "Yearly"];
+List weekDays = [
+  'Satur',
+  'Sun',
+  'Mon',
+  'Tues',
+  'Wednes',
+  'Thurs',
+  'Fri'
+];
 List<String> egyptGovernorates = [
   'Cairo',
   'Giza',
@@ -101,7 +110,6 @@ Map<String, double> shippingPrices = {
   'North Sinai': 120.0,
   'Sohag': 100.0,
   'Other': 100.0,
-  
 };
 Map<String, String> getegyptGovernorates = {
   'محافظة القاهرة': 'Cairo',
@@ -132,5 +140,4 @@ Map<String, String> getegyptGovernorates = {
   'محافظة شمال سيناء': 'North Sinai',
   'محافظة سوهاج': 'Sohag',
 };
-
-
+List<int> testDays = [100, 200, 100, 300, 250, 400, 350];

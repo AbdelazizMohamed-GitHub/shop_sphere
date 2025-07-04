@@ -1,6 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/analytics_repo_impl.dart';
@@ -16,7 +18,8 @@ class AnalyticsScreen extends StatefulWidget {
 }
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
- 
+  List<int> days = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -35,14 +38,17 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             if (state is AnalyticsError) {
               Warning.showWarning(context, message: state.errMessage);
             }
-          
+            if (state is AnalyticsLoaded) {
+              days = state.days;
+            }
           },
           builder: (context, state) {
-         
             if (state is AnalyticsLoading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state is AnalyticsLoaded|| state is AnalyticsTimeRangeLoaded) {
-            
+            } else if (state is AnalyticsLoaded ||
+                state is AnalyticsTimeRangeLoaded) {
+  
+           
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -52,10 +58,51 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     const SizedBox(height: 40, child: CustomTimeRange()),
                     const SizedBox(height: 20),
 
-                    CustomTotalCard(
-                    
-                    ),
+                    const CustomTotalCard(),
                     const SizedBox(height: 20),
+                    SizedBox(
+                      height: 300,
+                      child: BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceAround,
+        maxY: 100,
+        minY: 0,
+        gridData: const FlGridData(show: true),
+        titlesData: FlTitlesData(
+          show: true,
+          bottomTitles: AxisTitles(
+            axisNameWidget: const Text(''),
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, meta) {
+                const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+                return Text(
+                  days[value.toInt()],
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                );
+              },
+              reservedSize: 28,
+            ),
+          ),
+          leftTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: true, reservedSize: 40),
+          ),
+          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        ),
+        borderData: FlBorderData(show: false),
+        barGroups: [
+          BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 20, color: Colors.blue)]),
+          BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 50, color: Colors.blue)]),
+          BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 80, color: Colors.blue)]),
+          BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 65, color: Colors.blue)]),
+          BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 90, color: Colors.blue)]),
+          BarChartGroupData(x: 5, barRods: [BarChartRodData(toY: 40, color: Colors.blue)]),
+          BarChartGroupData(x: 6, barRods: [BarChartRodData(toY: 30, color: Colors.blue)]),
+        ],
+      ),
+                        ),
+                    ),
                   ],
                 ),
               );
