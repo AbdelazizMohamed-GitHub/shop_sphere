@@ -1,13 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 
-import 'package:shop_sphere/core/widget/warning.dart';
+import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_time_range.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_total_card.dart';
+import 'package:shop_sphere/test_data.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({super.key});
@@ -18,6 +17,7 @@ class AnalyticsScreen extends StatefulWidget {
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   @override
   Widget build(BuildContext context) {
+    List<ProductMostSellerModel> products = AppTestData.dummyMostSoldProducts;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Analytics Dashboard'),
@@ -34,13 +34,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               const SizedBox(height: 40, child: CustomTimeRange()),
               const SizedBox(height: 20),
 
-              CustomTotalCard(
+              const CustomTotalCard(
                 totalOrder: 5,
-                totalPrice: state.rangeTotal,
+                totalPrice: 1500.0,
               ),
               const SizedBox(height: 20),
               Row(children: [
-                Text(
+                const Text(
                   'Products Most Seller',
                   style: AppStyles.text18Regular,
                 ),
@@ -48,17 +48,17 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 TextButton.icon(
                   iconAlignment: IconAlignment.end,
                   onPressed: () {},
-                  label: Text("View All"),
-                  icon: Icon(Icons.arrow_forward_ios, size: 16),
+                  label: const Text("View All"),
+                  icon: const Icon(Icons.arrow_forward_ios, size: 16),
                 )
               ]),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: SizedBox(
                   height: 300,
-                  width: state.products.length < 8
+                  width: products.length < 8
                       ? MediaQuery.of(context).size.width - 30
-                      : state.products.length * 50.0,
+                      : products.length * 50.0,
                   child: Card(
                     color: AppColors.backgroundColor,
                     margin: const EdgeInsets.all(8.0),
@@ -67,8 +67,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       child: BarChart(
                         BarChartData(
                           minY: 0,
-                          maxY: state.products.isNotEmpty
-                              ? state.products.length + 10
+                          maxY: products.isNotEmpty
+                              ? products
+                                      .map((e) => e.productCount)
+                                      .reduce((a, b) => a > b ? a : b) +
+                                  20
                               : 0,
                           alignment: BarChartAlignment.spaceAround,
                           barTouchData: BarTouchData(enabled: true),
@@ -78,16 +81,15 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                                 showTitles: true,
                                 getTitlesWidget: (value, meta) {
                                   final index = value.toInt();
-                                  if (index >= state.products.length) {
+                                  if (index >= products.length) {
                                     return const SizedBox();
                                   }
                                   return Padding(
                                     padding: const EdgeInsets.only(top: 8),
                                     child: Text(
-                                      state.products[index].productName.length >
-                                              10
-                                          ? '${state.products[index].productName.substring(0, 10)}...'
-                                          : state.products[index].productName,
+                                      products[index].productName.length > 10
+                                          ? '${products[index].productName.substring(0, 10)}...'
+                                          : products[index].productName,
                                       style: const TextStyle(fontSize: 10),
                                     ),
                                   );
@@ -97,6 +99,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                             leftTitles: AxisTitles(
                               sideTitles: SideTitles(
                                   showTitles: true,
+                                  interval: 20,
                                   getTitlesWidget: (value, meta) {
                                     return Text(
                                       value.toInt().toString(),
@@ -115,14 +118,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                                 color: Colors.grey,
                                 width: 1,
                               )),
-                          barGroups:
-                              List.generate(state.products.length, (index) {
+                          barGroups: List.generate(products.length, (index) {
                             return BarChartGroupData(
                               x: index,
                               barRods: [
                                 BarChartRodData(
-                                  toY: state.products[index].productCount
-                                      .toDouble(),
+                                  toY: products[index].productCount.toDouble(),
                                   color: Colors.blueAccent,
                                   width: 16,
                                   borderRadius: BorderRadius.circular(4),
@@ -135,8 +136,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     ),
                   ),
                 ),
-
-               
               ),
             ],
           ),
