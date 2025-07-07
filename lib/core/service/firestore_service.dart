@@ -8,6 +8,7 @@ import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/supabase_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/features/dashboard/data/model/product_most_seller_model.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
@@ -542,7 +543,7 @@ class FirestoreService {
 
     double total = 0;
     for (var doc in snapshot.docs) {
-      total += (doc.data()['totalAmount'] ?? 0) as double ;
+      total += (doc.data()['totalAmount'] ?? 0) as double;
     }
 
     return total;
@@ -626,36 +627,54 @@ class FirestoreService {
 
     return totalCosts;
   }
-  
 
- Future<List<String>> getProductsMostSeller(
-    {required DateTime start, required DateTime end, required int limit}) async {
+  Future<List<ProductMostSellerModel>> getProductsMostSeller({
+  required DateTime start,
+  required DateTime end,
+  required int limit,
+}) async {
   final snapshot = await FirebaseFirestore.instance
       .collection('orders')
       .where("status", isEqualTo: "Delivered")
       .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-      .where("orderDate", isLessThan: Timestamp.fromDate(end)).limit(limit)
+      .where("orderDate", isLessThan: Timestamp.fromDate(end))
+     
       .get();
-  Map<String, int> productCount = {};
+
+  // عداد لتجميع كمية كل منتج
+  final Map<String, int> productCount = {};
+
   for (var doc in snapshot.docs) {
     final data = doc.data();
-    final products = data['items'];
+    final products = data['items'] as List<dynamic>;
+
     for (var item in products) {
       final productName = item['name'] as String;
-      productCount[productName] = (productCount[productName] ?? 0) + 1;
+      final quantity = item['quantity'] as int;
+
+      if (productCount.containsKey(productName)) {
+        productCount[productName] = productCount[productName]! + quantity;
+      } else {
+        productCount[productName] = quantity;
+      }
     }
   }
-  List<String> mostSoldProducts = [];
-  productCount.entries
-      .toList()
-      .sort((a, b) => b.value.compareTo(a.value)); // Sort by count descending
-  mostSoldProducts = productCount.entries.map((entry) => entry.key).toList();
-  return mostSoldProducts;
+
+  // تحويل النتائج إلى كائنات موديل
+  List<ProductMostSellerModel> mostSoldProducts = [];
+  for (var entry in productCount.entries) {
+    mostSoldProducts.add(ProductMostSellerModel(productName: entry.key, productCount: entry.value));
+  }
+  // الترتيب تنازليًا حسب الكمية
+  mostSoldProducts.sort((a, b) => b.productCount.compareTo(a.productCount));
+
+  return mostSoldProducts.take(limit).toList();
 }
-Future<List<String>> getProductsMostSellerTimeRange({
-    required int limit,required int timeRangeIndex
-  }) async {
-   if (timeRangeIndex == 0) {
+
+
+  Future<List<ProductMostSellerModel>> getProductsMostSellerTimeRange(
+      {required int limit, required int timeRangeIndex}) async {
+    if (timeRangeIndex == 0) {
       final now = DateTime.now();
       final start = DateTime(now.year, now.month, now.day);
       final end = start.add(const Duration(days: 1));
@@ -670,7 +689,6 @@ Future<List<String>> getProductsMostSellerTimeRange({
 
       return await getProductsMostSeller(
           start: startOfDay, end: endOfWeek, limit: limit);
-    
     }
     if (timeRangeIndex == 2) {
       final now = DateTime.now();
@@ -686,5 +704,4 @@ Future<List<String>> getProductsMostSellerTimeRange({
     }
     return [];
   }
-
 }

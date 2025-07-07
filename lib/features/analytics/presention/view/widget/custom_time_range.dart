@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/analytics_cubit/analytics_cubit.dart';
 
 class CustomTimeRange extends StatelessWidget {
   const CustomTimeRange({super.key});
@@ -21,15 +20,13 @@ class CustomTimeRange extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
           onTap: () {
-            context
-                .read<AnalyticsCubit>()
-                .getTimeRangeData(timeRangeIndex: index);
+           
           
           },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: context.read<AnalyticsCubit>().timeRangeIndex == index
+              color:index == 1
                   ? AppColors.primaryColor
                   : Colors.white,
             ),
@@ -37,7 +34,7 @@ class CustomTimeRange extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               "${timeRange[index]}",
-              style: context.read<AnalyticsCubit>().timeRangeIndex == index
+              style: 1 == index
                   ? AppStyles.text16Regular.copyWith(color: Colors.white)
                   : AppStyles.text16Regular,
             ),
