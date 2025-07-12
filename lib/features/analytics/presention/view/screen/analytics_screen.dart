@@ -1,12 +1,17 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/features/analytics/data/model/order_deliverd_data.dart';
 
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
+import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sell_prouducts_chart.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_time_range.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_total_card.dart';
 import 'package:shop_sphere/test_data.dart';
+import 'package:shop_sphere/test_screen.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({super.key});
@@ -53,87 +58,41 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 )
               ]),
               SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                  height: 300,
-                  width: products.length < 8
-                      ? MediaQuery.of(context).size.width - 30
-                      : products.length * 50.0,
-                  child: Card(
-                    color: AppColors.backgroundColor,
-                    margin: const EdgeInsets.all(8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: BarChart(
-                        BarChartData(
-                          minY: 0,
-                          maxY: products.isNotEmpty
-                              ? products
-                                      .map((e) => e.productCount)
-                                      .reduce((a, b) => a > b ? a : b) +
-                                  20
-                              : 0,
-                          alignment: BarChartAlignment.spaceAround,
-                          barTouchData: BarTouchData(enabled: true),
-                          titlesData: FlTitlesData(
-                            bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                getTitlesWidget: (value, meta) {
-                                  final index = value.toInt();
-                                  if (index >= products.length) {
-                                    return const SizedBox();
-                                  }
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Text(
-                                      products[index].productName.length > 10
-                                          ? '${products[index].productName.substring(0, 10)}...'
-                                          : products[index].productName,
-                                      style: const TextStyle(fontSize: 10),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            leftTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                  showTitles: true,
-                                  interval: 20,
-                                  getTitlesWidget: (value, meta) {
-                                    return Text(
-                                      value.toInt().toString(),
-                                      style: const TextStyle(fontSize: 12),
-                                    );
-                                  }),
-                            ),
-                            topTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                            rightTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                          ),
-                          borderData: FlBorderData(
-                              show: true,
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 1,
-                              )),
-                          barGroups: List.generate(products.length, (index) {
-                            return BarChartGroupData(
-                              x: index,
-                              barRods: [
-                                BarChartRodData(
-                                  toY: products[index].productCount.toDouble(),
-                                  color: Colors.blueAccent,
-                                  width: 16,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ],
-                            );
-                          }),
+                  scrollDirection: Axis.horizontal,
+                  child: CustomMostSoldProuductsChart(products: products)),
+              SizedBox(
+                height: 400,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      // 🔘 فلتر زمني
+
+                      const SizedBox(height: 20),
+
+                      // 📈 رسم بياني Spline Area
+                      SfCartesianChart(
+                        title: ChartTitle(text: "Orders Over"),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        primaryXAxis: const CategoryAxis(
+                          title: AxisTitle(text: "Time"),
                         ),
+                        primaryYAxis: const NumericAxis(
+                          title: AxisTitle(text: "Orders"),
+                        ),
+                        series: <CartesianSeries>[
+                          LineSeries<OrderDeliverdData, String>(
+                            dataSource: AppTestData.dummyOrderData,
+                            xValueMapper: (e, _) => formatLabel(e.time),
+                            yValueMapper: (e, _) => e.count,
+                            markerSettings:
+                                const MarkerSettings(isVisible: true),
+                            dataLabelSettings:
+                                const DataLabelSettings(isVisible: true),
+                          )
+                        ],
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
@@ -141,4 +100,6 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           ),
         ));
   }
+
+  // 📊 رسم بياني Bar Chart
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/explore_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/favorite_screen.dart';
@@ -43,15 +44,7 @@ List appCategory = [
   'Health	',
 ];
 List timeRange = ["Daily", "Weekly", "Monthly", "Yearly"];
-List weekDays = [
-  'Satur',
-  'Sun',
-  'Mon',
-  'Tues',
-  'Wednes',
-  'Thurs',
-  'Fri'
-];
+List weekDays = ['Satur', 'Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri'];
 List<String> egyptGovernorates = [
   'Cairo',
   'Giza',
@@ -140,4 +133,17 @@ Map<String, String> getegyptGovernorates = {
   'محافظة شمال سيناء': 'North Sinai',
   'محافظة سوهاج': 'Sohag',
 };
-List<int> testDays = [100, 200, 100, 300, 250, 400, 350];
+String formatLabel(DateTime date) {
+  switch ('week') {
+    case 'day':
+      return DateFormat.Hm().format(date); // الساعة
+    case 'week':
+      return DateFormat.E().format(date); // Mon, Tue...
+    case 'month':
+      return DateFormat.Md().format(date); // 7/5
+    case 'year':
+      return DateFormat.MMM().format(date); // Jan, Feb...
+    default:
+      return '';
+  }
+}
