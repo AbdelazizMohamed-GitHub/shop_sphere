@@ -11,9 +11,13 @@ part 'analytics_state.dart';
 class AnalyticsCubit extends Cubit<AnalyticsState> {
   AnalyticsCubit({required this.analyticsRepo}) : super(AnalyticsInitial());
   final AnalyticsRepo analyticsRepo;
-
+int timeRangeIndex = 0;
+Future<void> setTimeRangeIndex(int index)async {
+    timeRangeIndex = index;
+   await getAnalyticsData(limit: 10);
+  }
  
-  Future<void> getAnalyticsData(int timeRangeIndex, {int limit = 5}) async {
+  Future<void> getAnalyticsData({ required int limit}) async {
     emit(AnalyticsLoading());
 
     final productsResult = await analyticsRepo.getMostSoldProducts(
@@ -25,7 +29,17 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
       timeRangeIndex: timeRangeIndex,
     );
 
-    // ✅ تحقق من الفشل
+
+
+    // ✅ البيانات موجودة
+    final mostSoldProducts = productsResult.getOrElse(() => []);
+    final ordersOver = ordersResult.getOrElse(() => []);
+
+    emit(AnalyticsLoaded(
+      mostSoldProducts: mostSoldProducts,
+      ordersOver: ordersOver,
+    ));
+        // ✅ تحقق من الفشل
     if (productsResult.isLeft() || ordersResult.isLeft()) {
       final message = productsResult.fold(
         (l) => l.message,
@@ -39,14 +53,5 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
       emit(AnalyticsError(message: message ?? 'Unexpected error'));
       return;
     }
-
-    // ✅ البيانات موجودة
-    final mostSoldProducts = productsResult.getOrElse(() => []);
-    final ordersOver = ordersResult.getOrElse(() => []);
-
-    emit(AnalyticsLoaded(
-      mostSoldProducts: mostSoldProducts,
-      ordersOver: ordersOver,
-    ));
   }
 }
