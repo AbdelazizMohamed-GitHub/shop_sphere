@@ -1,12 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_data.dart';
-import 'package:shop_sphere/features/analytics/data/model/order_deliverd_data.dart';
-import 'package:shop_sphere/test_data.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
+import 'package:shop_sphere/test_data.dart';
+
 class CustomOrderOver extends StatelessWidget {
-  const CustomOrderOver({super.key});
+  const CustomOrderOver({
+    Key? key,
+    required this.ordersOver,
+    required this.timeRangeIndex,
+  }) : super(key: key);
+  final List<OrderOverModel> ordersOver;
+  final int timeRangeIndex; // Default to 'day'
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +38,10 @@ class CustomOrderOver extends StatelessWidget {
                 title: AxisTitle(text: "Orders"),
               ),
               series: <CartesianSeries>[
-                LineSeries<OrderDeliverdData, String>(
-                  dataSource: AppTestData.dummyOrderData,
-                  xValueMapper: (e, _) => formatLabel(date: e.time, period: 1),
+                LineSeries<OrderOverModel, String>(
+                  dataSource: ordersOver.where((e) => e.count != 0).toList(),
+                  xValueMapper: (e, _) =>
+                      formatLabel(date: e.time, period: timeRangeIndex),
                   yValueMapper: (e, _) => e.count,
                   markerSettings: const MarkerSettings(isVisible: true),
                   dataLabelSettings: const DataLabelSettings(isVisible: true),

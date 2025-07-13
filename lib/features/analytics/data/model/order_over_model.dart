@@ -1,9 +1,9 @@
-class OrderDeliverdData {
+class OrderOverModel {
   final int count;
   final double totalCost;
   final DateTime time;
 
-  OrderDeliverdData( {
+  OrderOverModel( {
     required this.time,
     required this.totalCost,
     required this.count,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/features/analytics/data/model/order_deliverd_data.dart';
+import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
 
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_chart_title.dart';
@@ -60,7 +60,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 // Handle view all action
               },
             ),
-          CustomOrderOver(),
+          const CustomOrderOver(ordersOver: [], timeRangeIndex: 0,),
           ],
         ),
       ),

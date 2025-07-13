@@ -1,44 +1,62 @@
 // // // // ignore_for_file: avoid_print, use_build_context_synchronously
 
-// // // import 'package:cloud_firestore/cloud_firestore.dart';
-// // // import 'package:flutter/material.dart';
-// // // import 'package:shop_sphere/core/service/firestore_service.dart';
-// // // import 'package:shop_sphere/features/dashboard/data/model/product_most_seller_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
+import 'package:shop_sphere/features/analytics/presention/view/widget/custom_order_over.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-// // // class TestScreen extends StatefulWidget {
-// // //   const TestScreen({super.key});
+class TestScreen extends StatefulWidget {
+  const TestScreen({super.key});
 
-// // //   @override
-// // //   State<TestScreen> createState() => _TestScreenState();
-// // // }
+  @override
+  State<TestScreen> createState() => _TestScreenState();
+}
 
-// // // class _TestScreenState extends State<TestScreen> {
-// // //   String label = '';
-// // //   @override
-// // //   Widget build(BuildContext context) {
-// // //     return Scaffold(
-// // //       appBar: AppBar(
-// // //         title: const Text("Test Screen"),
-// // //       ),
-// // //       body: Column(
-// // //         mainAxisAlignment: MainAxisAlignment.center,
-// // //         crossAxisAlignment: CrossAxisAlignment.center,
-// // //         children: [
-// // //           ElevatedButton(
-// // //             onPressed: () async {
-// // //               List<ProductMostSellerModel> data = await FirestoreService(
-// // //                       firestore: FirebaseFirestore.instance)
-// // //                   .getProductsMostSellerTimeRange(limit: 10, timeRangeIndex: 3);
-// // //               print(data.length);
-// // //               setState(() {});
-// // //             },
-// // //             child: const Text("Process"),
-// // //           ),
-// // //         ],
-// // //       ),
-// // //     );
-// // //   }
-// // // }
+class _TestScreenState extends State<TestScreen> {
+  List<OrderOverModel> data = [];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Test Screen"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                data = await FirestoreService(
+                        firestore: FirebaseFirestore.instance)
+                    .getOrdersOverTimeRange(timeRangeIndex: 2);
+                if (data.isEmpty) {
+                  print("No orders found for today.");
+                  return;
+                }
+                setState(() {});
+
+                for (var i = 0; i < data.length; i++) {
+                  print(
+                      "${DateFormat.yMd().format(data[i].time)}: ${data[i].count} orders, Total Cost: ${data[i].totalCost}");
+                }
+              },
+              child: const Text("Process"),
+            ),
+          ),
+          const SizedBox(height: 20),
+          CustomOrderOver(
+            timeRangeIndex: 2,
+            ordersOver: data,
+          ),
+        ],
+      ),
+    );
+  }
+}
 // // import 'package:cloud_firestore/cloud_firestore.dart';
 // // import 'package:flutter/material.dart';
 // // import 'package:fl_chart/fl_chart.dart';
@@ -407,10 +425,11 @@
 //     );
 //   }
 // }
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:intl/intl.dart';
+// import 'package:flutter/material.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:intl/intl.dart';
 
 class OrderTrendData {
   final DateTime date;

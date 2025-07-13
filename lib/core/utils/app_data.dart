@@ -133,10 +133,10 @@ Map<String, String> getegyptGovernorates = {
   'محافظة شمال سيناء': 'North Sinai',
   'محافظة سوهاج': 'Sohag',
 };
-String formatLabel({required DateTime date, required int period}) {
+String formatLabel({required date, required int period}) {
   switch (period) {
     case 0:
-      return DateFormat.Hm().format(date); // الساعة
+      return DateFormat.H().format(date); // الساعة
     case 1:
       return DateFormat.E().format(date); // Mon, Tue...
     case 2:

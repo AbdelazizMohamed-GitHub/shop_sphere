@@ -1,4 +1,4 @@
-import 'package:shop_sphere/features/analytics/data/model/order_deliverd_data.dart';
+import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
 
 class AppTestData{
@@ -14,12 +14,12 @@ static List<ProductMostSellerModel> dummyMostSoldProducts = [
   ProductMostSellerModel(productName: 'Gaming Mouse Razer', productCount: 35),
   ProductMostSellerModel(productName: 'Mechanical Keyboard', productCount: 30),
 ];
-static  List<OrderDeliverdData> dummyOrderData = List.generate(7, (index) {
+static  List<OrderOverModel> dummyOrderData = List.generate(7, (index) {
   final date = DateTime.now().subtract(Duration(days: 6 - index)); // آخر 7 أيام
   final count = [10, 15, 7, 12, 20, 5, 18][index];
   final totalCost = [1500.0, 2300.0, 800.0, 1600.0, 3200.0, 600.0, 2700.0][index];
 
-  return OrderDeliverdData(
+  return OrderOverModel(
     time: date,
     totalCost: totalCost,
     count: count,

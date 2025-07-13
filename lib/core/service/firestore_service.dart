@@ -3,9 +3,11 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/supabase_service.dart';
+import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
@@ -549,48 +551,11 @@ class FirestoreService {
     return total;
   }
 
-  Future<double> getOrdersTotalPriceTimeRange(
-      {required int timeRangeIndex}) async {
-    await checkInternet();
-
-    if (timeRangeIndex == 0) {
-      final now = DateTime.now();
-      final start = DateTime(now.year, now.month, now.day);
-      final end = start.add(const Duration(days: 1));
-      return await getOrdersTotalPrice(start: start, end: end);
-    }
-
-    if (timeRangeIndex == 1) {
-      final now = DateTime.now();
-      final start = now.subtract(Duration(days: now.weekday % 7));
-      final startOfDay = DateTime(start.year, start.month, start.day);
-      final endOfWeek = startOfDay.add(const Duration(days: 7));
-
-      return await getOrdersTotalPrice(start: startOfDay, end: endOfWeek);
-    }
-
-    if (timeRangeIndex == 2) {
-      final now = DateTime.now();
-      final start = DateTime(now.year, now.month, 1);
-      final end = DateTime(now.year, now.month + 1, 1); // بداية الشهر القادم
-      return await getOrdersTotalPrice(start: start, end: end);
-    }
-
-    if (timeRangeIndex == 3) {
-      final now = DateTime.now();
-      final start = DateTime(now.year, 1, 1);
-      final end = DateTime(now.year + 1, 1, 1); // بداية السنة القادمة
-      return await getOrdersTotalPrice(start: start, end: end);
-    }
-    throw Exception("Invalid timeRangeIndex: $timeRangeIndex");
-  }
-
-  Future<Map<String, int>> getTotalCostByDay({
+  Future<List<ProductMostSellerModel>> getProductsMostSeller({
     required DateTime start,
     required DateTime end,
+    required int limit,
   }) async {
-    await checkInternet();
-
     final snapshot = await FirebaseFirestore.instance
         .collection('orders')
         .where("status", isEqualTo: "Delivered")
@@ -598,112 +563,244 @@ class FirestoreService {
         .where("orderDate", isLessThan: Timestamp.fromDate(end))
         .get();
 
-    Map<String, int> dailyTotals = {};
+    // عداد لتجميع كمية كل منتج
+    final Map<String, int> productCount = {};
 
     for (var doc in snapshot.docs) {
       final data = doc.data();
-      final date = (data['orderDate'] as Timestamp).toDate();
-      final dayKey = DateFormat('yyyy-MM-dd').format(date);
+      final products = data['items'] as List<dynamic>;
 
-      final totalPrice = ((data['totalAmount'] ?? 0) as double).toInt();
-      dailyTotals[dayKey] = (dailyTotals[dayKey] ?? 0) + totalPrice;
-    }
+      for (var item in products) {
+        final productName = item['name'] as String;
+        final quantity = item['quantity'] as int;
 
-    return dailyTotals;
-  }
-
-  Future<List<int>> getDaysTotal() async {
-    final now = DateTime.now();
-    final startOfWeek = now.subtract(Duration(days: now.weekday % 7));
-    final start =
-        DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
-    final end = start.add(const Duration(days: 7));
-
-    final dailyCosts = await getTotalCostByDay(start: start, end: end);
-    List<int> totalCosts = [];
-    dailyCosts.forEach((day, total) {
-      totalCosts.add(total);
-    });
-
-    return totalCosts;
-  }
-
-  Future<List<ProductMostSellerModel>> getProductsMostSeller({
-  required DateTime start,
-  required DateTime end,
-  required int limit,
-}) async {
-  final snapshot = await FirebaseFirestore.instance
-      .collection('orders')
-      .where("status", isEqualTo: "Delivered")
-      .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-      .where("orderDate", isLessThan: Timestamp.fromDate(end))
-     
-      .get();
-
-  // عداد لتجميع كمية كل منتج
-  final Map<String, int> productCount = {};
-
-  for (var doc in snapshot.docs) {
-    final data = doc.data();
-    final products = data['items'] as List<dynamic>;
-
-    for (var item in products) {
-      final productName = item['name'] as String;
-      final quantity = item['quantity'] as int;
-
-      if (productCount.containsKey(productName)) {
-        productCount[productName] = productCount[productName]! + quantity;
-      } else {
-        productCount[productName] = quantity;
+        if (productCount.containsKey(productName)) {
+          productCount[productName] = productCount[productName]! + quantity;
+        } else {
+          productCount[productName] = quantity;
+        }
       }
     }
+
+    // تحويل النتائج إلى كائنات موديل
+    List<ProductMostSellerModel> mostSoldProducts = [];
+    for (var entry in productCount.entries) {
+      mostSoldProducts.add(ProductMostSellerModel(
+          productName: entry.key, productCount: entry.value));
+    }
+    // الترتيب تنازليًا حسب الكمية
+    mostSoldProducts.sort((a, b) => b.productCount.compareTo(a.productCount));
+
+    return mostSoldProducts.take(limit).toList();
   }
-
-  // تحويل النتائج إلى كائنات موديل
-  List<ProductMostSellerModel> mostSoldProducts = [];
-  for (var entry in productCount.entries) {
-    mostSoldProducts.add(ProductMostSellerModel(productName: entry.key, productCount: entry.value));
-  }
-  // الترتيب تنازليًا حسب الكمية
-  mostSoldProducts.sort((a, b) => b.productCount.compareTo(a.productCount));
-
-  return mostSoldProducts.take(limit).toList();
-}
-
 
   Future<List<ProductMostSellerModel>> getProductsMostSellerTimeRange(
       {required int limit, required int timeRangeIndex}) async {
+    DateTime now = DateTime.now();
+    DateTime start;
+    DateTime end;
     if (timeRangeIndex == 0) {
-      final now = DateTime.now();
-      final start = DateTime(now.year, now.month, now.day);
-      final end = start.add(const Duration(days: 1));
-      return await getProductsMostSeller(start: start, end: end, limit: limit);
+      start = DateTime(now.year, now.month, now.day);
+      end = start.add(const Duration(days: 1));
+    } else if (timeRangeIndex == 1) {
+      start = now.subtract(const Duration(days: 6));
+      start = DateTime(start.year, start.month, start.day);
+      end = start.add(const Duration(days: 7));
+    } else if (timeRangeIndex == 2) {
+      start = DateTime(now.year, now.month, 1);
+      end = DateTime(now.year, now.month, now.day + 1);
+    } else if (timeRangeIndex == 3) {
+      start = DateTime(now.year, 1, 1);
+      end = DateTime(now.year + 1, 1, 1);
+    } else {
+      return [];
     }
 
-    if (timeRangeIndex == 1) {
-      final now = DateTime.now();
-      final start = now.subtract(Duration(days: now.weekday % 7));
-      final startOfDay = DateTime(start.year, start.month, start.day);
-      final endOfWeek = startOfDay.add(const Duration(days: 7));
-
-      return await getProductsMostSeller(
-          start: startOfDay, end: endOfWeek, limit: limit);
-    }
-    if (timeRangeIndex == 2) {
-      final now = DateTime.now();
-      final start = DateTime(now.year, now.month, 1);
-      final end = DateTime(now.year, now.month + 1, 1); // بداية الشهر القادم
-      return await getProductsMostSeller(start: start, end: end, limit: limit);
-    }
-    if (timeRangeIndex == 3) {
-      final now = DateTime.now();
-      final start = DateTime(now.year, 1, 1);
-      final end = DateTime(now.year + 1, 1, 1); // بداية السنة القادمة
-      return await getProductsMostSeller(start: start, end: end, limit: limit);
-    }
-    return [];
+    return getProductsMostSeller(start: start, end: end, limit: limit);
   }
 
+  Future<List<OrderOverModel>> getOrdersOver({
+    required DateTime start,
+    required DateTime end,
+    required int timeRangeIndex,
+  }) async {
+    await checkInternet();
 
+    final snapshot = await FirebaseFirestore.instance
+        .collection("orders")
+        .where("status", isEqualTo: "Delivered")
+        .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where("orderDate", isLessThan: Timestamp.fromDate(end))
+        .get();
+
+    // تجميع حسب كل ساعة
+    Map<DateTime, OrderOverModel> grouped = {};
+
+    if (timeRangeIndex == 0) {
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final orderDate = (data['orderDate'] as Timestamp).toDate();
+
+        // تعيين بداية الساعة (مثلاً: 13:00:00)
+        final hourKey = DateTime(
+          orderDate.year,
+          orderDate.month,
+          orderDate.day,
+          orderDate.hour,
+        );
+
+        // التعامل الآمن مع totalAmount
+        final amountRaw = data['totalAmount'] ?? 0;
+        final totalAmount =
+            amountRaw is int ? amountRaw.toDouble() : (amountRaw as double);
+
+        if (grouped.containsKey(hourKey)) {
+          final existing = grouped[hourKey]!;
+          grouped[hourKey] = OrderOverModel(
+            time: hourKey,
+            count: existing.count + 1,
+            totalCost: existing.totalCost + totalAmount,
+          );
+        } else {
+          grouped[hourKey] = OrderOverModel(
+            time: hourKey,
+            count: 1,
+            totalCost: totalAmount,
+          );
+        }
+      }
+    } else if (timeRangeIndex == 1) {
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final orderDate = (data['orderDate'] as Timestamp).toDate();
+
+        // تعيين بداية اليوم
+        final dayKey = DateTime(
+          orderDate.year,
+          orderDate.month,
+          orderDate.day,
+        );
+
+        // التعامل الآمن مع totalAmount
+        final totalAmount = data['totalAmount'] ?? 0;
+
+        if (grouped.containsKey(dayKey)) {
+          final existing = grouped[dayKey]!;
+          grouped[dayKey] = OrderOverModel(
+            time: dayKey,
+            count: existing.count + 1,
+            totalCost: existing.totalCost + totalAmount,
+          );
+        } else {
+          grouped[dayKey] = OrderOverModel(
+            time: dayKey,
+            count: 1,
+            totalCost: totalAmount,
+          );
+        }
+      }
+    } else if (timeRangeIndex == 2) {
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final orderDate = (data['orderDate'] as Timestamp).toDate();
+
+        final dayKey = DateTime(orderDate.year, orderDate.month, orderDate.day);
+
+        final amountRaw = data['totalAmount'] ?? 0;
+        final totalAmount =
+            amountRaw is int ? amountRaw.toDouble() : (amountRaw as double);
+
+        if (grouped.containsKey(dayKey)) {
+          final existing = grouped[dayKey]!;
+          grouped[dayKey] = OrderOverModel(
+            time: dayKey,
+            count: existing.count + 1,
+            totalCost: existing.totalCost + totalAmount,
+          );
+        } else {
+          grouped[dayKey] = OrderOverModel(
+            time: dayKey,
+            count: 1,
+            totalCost: totalAmount,
+          );
+        }
+      }
+
+      // ➕ إكمال أيام الشهر اللي مفيهاش طلبات
+
+      DateTime current = start;
+      while (!current.isAfter(end)) {
+        grouped.putIfAbsent(
+          current,
+          () => OrderOverModel(
+            time: current,
+            count: 0,
+            totalCost: 0.0,
+          ),
+        );
+        current = current.add(const Duration(days: 1));
+      }
+    } else if (timeRangeIndex == 3) {
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        final orderDate = (data['orderDate'] as Timestamp).toDate();
+
+        // تعيين بداية السنة
+        final yearKey = DateTime(orderDate.year);
+
+        // التعامل الآمن مع totalAmount
+        final amountRaw = data['totalAmount'] ?? 0;
+        final totalAmount =
+            amountRaw is int ? amountRaw.toDouble() : (amountRaw as double);
+
+        if (grouped.containsKey(yearKey)) {
+          final existing = grouped[yearKey]!;
+          grouped[yearKey] = OrderOverModel(
+            time: yearKey,
+            count: existing.count + 1,
+            totalCost: existing.totalCost + totalAmount,
+          );
+        } else {
+          grouped[yearKey] = OrderOverModel(
+            time: yearKey,
+            count: 1,
+            totalCost: totalAmount,
+          );
+        }
+      }
+    }
+
+    // ترتيب النتائج حسب الساعة
+    final sorted = grouped.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
+    return sorted.map((e) => e.value).toList();
+  }
+
+  Future<List<OrderOverModel>> getOrdersOverTimeRange(
+      {required int timeRangeIndex}) async {
+    DateTime now = DateTime.now();
+    DateTime start;
+    DateTime end;
+
+    if (timeRangeIndex == 0) {
+      start = DateTime(now.year, now.month, now.day);
+      end = start.add(const Duration(days: 1));
+    } else if (timeRangeIndex == 1) {
+      start = now.subtract(const Duration(days: 6));
+      start = DateTime(start.year, start.month, start.day);
+      end = start.add(const Duration(days: 7));
+    } else if (timeRangeIndex == 2) {
+      start = DateTime(now.year, now.month, 1);
+      end = DateTime(now.year, now.month, now.day + 1);
+    } else if (timeRangeIndex == 3) {
+      start = DateTime(now.year, 1, 1);
+      end = DateTime(now.year + 1, 1, 1);
+    } else {
+      return [];
+    }
+
+    return await getOrdersOver(
+        start: start, end: end, timeRangeIndex: timeRangeIndex);
+  }
 }
