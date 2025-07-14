@@ -10,6 +10,7 @@ import 'package:shop_sphere/features/analytics/presention/view/widget/custom_mos
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_order_over.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_time_range.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_total_card.dart';
+import 'package:shop_sphere/features/analytics/presention/view/widget/product_salse_chart_switcher.dart';
 
 class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({super.key});
@@ -70,21 +71,15 @@ class AnalyticsScreen extends StatelessWidget {
                                               .read<AnalyticsCubit>()
                                               .timeRangeIndex,
                                         ),
-                                        const SizedBox(height: 20),
-                                        CustomMostSoldPieChart(
-                                          products: state.mostSoldProducts,
-                                        ),
+                                       
                                         CustomChartTitle(
                                           title: "Most Sold Products",
                                           onViewAll: () {
                                             // Handle view all action
                                           },
                                         ),
-                                        SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: CustomMostSoldProuductsChart(
-                                              products: state.mostSoldProducts),
-                                        ),
+                                    
+                                        ProductSalesChartSwitcher(products: state.mostSoldProducts,)
                                       ],
                                     )
                               : const Center(

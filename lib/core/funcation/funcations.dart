@@ -33,7 +33,12 @@ class AppFuncations {
   }
 }
 
- 
+ static Color getColorForProduct(String name) {
+    if (name == "أخرى") return Colors.grey.shade700;
+    const colors = Colors.primaries;
+    final index = name.hashCode % colors.length;
+    return colors[index];
+  }
 
 
  static Future<File?> pickImageFromGallery() async {
