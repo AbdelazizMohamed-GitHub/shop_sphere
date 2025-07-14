@@ -5,7 +5,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
 
-class CustomMostSoldPieChart extends StatelessWidget {
+class CustomMostSoldPieChart extends StatefulWidget {
   const CustomMostSoldPieChart({
     super.key,
     required this.products,
@@ -14,8 +14,15 @@ class CustomMostSoldPieChart extends StatelessWidget {
   final List<ProductMostSellerModel> products;
 
   @override
+  State<CustomMostSoldPieChart> createState() => _CustomMostSoldPieChartState();
+}
+
+class _CustomMostSoldPieChartState extends State<CustomMostSoldPieChart> {
+  int touchedIndex = -1;
+
+  @override
   Widget build(BuildContext context) {
-    final displayedProducts = products.take(6).toList();
+    final displayedProducts = widget.products.take(6).toList();
     final totalCount =
         displayedProducts.fold<int>(0, (sum, p) => sum + p.productCount);
 
@@ -34,19 +41,32 @@ class CustomMostSoldPieChart extends StatelessWidget {
           height: 250,
           child: PieChart(
             PieChartData(
+              pieTouchData: PieTouchData(
+                touchCallback: (event, response) {
+                  setState(() {
+                    touchedIndex =
+                        response?.touchedSection?.touchedSectionIndex ?? -1;
+                  });
+                },
+              ),
               sections: List.generate(displayedProducts.length, (index) {
                 final product = displayedProducts[index];
-                final percentage = ((product.productCount / totalCount) * 100)
-                    .toStringAsFixed(1);
+                final isTouched = index == touchedIndex;
+                final percentage =
+                    ((product.productCount / totalCount) * 100)
+                        .toStringAsFixed(1);
                 final color = AppFuncations.getColorForProduct(product.productName);
-    
+
                 return PieChartSectionData(
                   value: product.productCount.toDouble(),
-                  title: '$percentage%',
+                  title: isTouched ? product.productName : '$percentage%',
                   color: color,
-                  radius: 60,
-                  titleStyle:
-                      const TextStyle(fontSize: 12, color: Colors.white),
+                  radius: isTouched ? 70 : 60,
+                  titleStyle: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 );
               }),
               sectionsSpace: 2,
@@ -54,13 +74,10 @@ class CustomMostSoldPieChart extends StatelessWidget {
             ),
           ),
         ),
+        
+
        
-       
-    
-        // 🎨 Legend
       ],
     );
   }
-
-  /// 🎯 يرجع أول 5 منتجات ويجمع الباقي في "أخرى"
 }
