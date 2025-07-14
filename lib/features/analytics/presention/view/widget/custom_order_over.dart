@@ -5,14 +5,13 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
-import 'package:shop_sphere/test_data.dart';
 
 class CustomOrderOver extends StatelessWidget {
   const CustomOrderOver({
-    Key? key,
+    super.key,
     required this.ordersOver,
     required this.timeRangeIndex,
-  }) : super(key: key);
+  });
   final List<OrderOverModel> ordersOver;
   final int timeRangeIndex; // Default to 'day'
 

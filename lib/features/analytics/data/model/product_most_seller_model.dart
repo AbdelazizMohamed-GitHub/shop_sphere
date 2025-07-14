@@ -50,10 +50,10 @@ class ProductMostSellerModel {
 
   // factory ProductMostSellerModel.fromJson(String source) => ProductMostSellerModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  // @override
-  // String toString() {
-  //   return 'ProductMostSellerModel(productName: $productName, productCount: $productCount, productPrice: $productPrice, productImageUrl: $productImageUrl)';
-  // }
+  @override
+  String toString() {
+    return 'ProductMostSellerModel(productName: $productName, productCount: $productCount, productPrice: $productPrice, productImageUrl: $productImageUrl)';
+  }
 
   // @override
   // bool operator ==(covariant ProductMostSellerModel other) {

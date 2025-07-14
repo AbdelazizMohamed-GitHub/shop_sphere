@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
 
 class CustomMostSoldPieChart extends StatelessWidget {
@@ -15,6 +16,7 @@ class CustomMostSoldPieChart extends StatelessWidget {
     final totalCount = products.fold<int>(0, (sum, p) => sum + p.productCount);
 
     return Card(
+      color: AppColors.backgroundColor,
       margin: const EdgeInsets.all(12),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -39,8 +41,8 @@ class CustomMostSoldPieChart extends StatelessWidget {
                       title: '$percentage%',
                       color: Colors.primaries[index % Colors.primaries.length],
                       radius: 60,
-                      titleStyle: const TextStyle(
-                          fontSize: 12, color: Colors.white),
+                      titleStyle:
+                          const TextStyle(fontSize: 12, color: Colors.white),
                       badgeWidget: Tooltip(
                         message: product.productName,
                         child: const SizedBox(width: 10, height: 10),

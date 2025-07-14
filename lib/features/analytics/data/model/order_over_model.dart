@@ -8,4 +8,8 @@ class OrderOverModel {
     required this.totalCost,
     required this.count,
   });
+  @override
+  String toString() {
+    return 'OrderOverModel(count: $count, totalCost: $totalCost, time: $time)';
+  }
 }
