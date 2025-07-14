@@ -42,51 +42,57 @@ class AnalyticsScreen extends StatelessWidget {
                       : state is AnalyticsError
                           ? Center(child: Text(state.message))
                           : state is AnalyticsLoaded
-                              ? Column(
-                                  children: [
-                                    CustomTotalCard(
-                                      totalOrder: state.ordersOver.fold(
-                                          0, (sum, order) => sum + order.count),
-                                      totalPrice: state.ordersOver.fold(
-                                          0,
-                                          (sum, order) =>
-                                              sum + order.totalCost),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    CustomChartTitle(
-                                      title: "Orders Over",
-                                      onViewAll: () {
-                                        // Handle view all action
-                                      },
-                                    ),
-                                    CustomOrderOver(
-                                      ordersOver: state.ordersOver,
-                                      timeRangeIndex: context
-                                          .read<AnalyticsCubit>()
-                                          .timeRangeIndex,
-                                    ),
-                                    const SizedBox(height: 20),
-                                  
-                                     CustomMostSoldPieChart(products: state.mostSoldProducts,),
-                                    CustomChartTitle(
-                                      title: "Most Sold Products",
-                                      onViewAll: () {
-                                        // Handle view all action
-                                      },
-                                    ),
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: CustomMostSoldProuductsChart(
-                                          products: state.mostSoldProducts),
-                                    ),
-                                  ],
-                                )
+                              ? state.ordersOver.isEmpty ||
+                                      state.mostSoldProducts.isEmpty
+                                  ? const Center(child: Text("No Orders Found"))
+                                  : Column(
+                                      children: [
+                                        CustomTotalCard(
+                                          totalOrder: state.ordersOver.fold(
+                                              0,
+                                              (sum, order) =>
+                                                  sum + order.count),
+                                          totalPrice: state.ordersOver.fold(
+                                              0,
+                                              (sum, order) =>
+                                                  sum + order.totalCost),
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomChartTitle(
+                                          title: "Orders Over",
+                                          onViewAll: () {
+                                            // Handle view all action
+                                          },
+                                        ),
+                                        CustomOrderOver(
+                                          ordersOver: state.ordersOver,
+                                          timeRangeIndex: context
+                                              .read<AnalyticsCubit>()
+                                              .timeRangeIndex,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomMostSoldPieChart(
+                                          products: state.mostSoldProducts,
+                                        ),
+                                        CustomChartTitle(
+                                          title: "Most Sold Products",
+                                          onViewAll: () {
+                                            // Handle view all action
+                                          },
+                                        ),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: CustomMostSoldProuductsChart(
+                                              products: state.mostSoldProducts),
+                                        ),
+                                      ],
+                                    )
                               : const Center(
                                   child: Text('No data available'),
                                 );
                 },
               )
-            ],  
+            ],
           ),
         ),
       ),

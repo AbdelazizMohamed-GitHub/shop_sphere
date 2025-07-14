@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
+import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
+import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sell_prouducts_chart.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_order_over.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -16,7 +18,7 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  List<OrderOverModel> data = [];
+  List<ProductMostSellerModel> data = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +34,7 @@ class _TestScreenState extends State<TestScreen> {
               onPressed: () async {
                 data = await FirestoreService(
                         firestore: FirebaseFirestore.instance)
-                    .getOrdersOverTimeRange(timeRangeIndex: 3);
+                    .getProductsMostSellerTimeRange(timeRangeIndex: 3, limit: 10);
                 if (data.isEmpty) {
                   print("No orders found for today.");
                   return;
@@ -41,16 +43,16 @@ class _TestScreenState extends State<TestScreen> {
 
                 for (var i = 0; i < data.length; i++) {
                   print(
-                      "${DateFormat.yMd().format(data[i].time)}: ${data[i].count} orders, Total Cost: ${data[i].totalCost}");
+                      "${data[i].productName} | ${data[i].productPrice}: ${data[i].productCount} orders, Total Cost: ${data[i].productImageUrl}");
                 }
               },
               child: const Text("Process"),
             ),
           ),
           const SizedBox(height: 20),
-          CustomOrderOver(
-            timeRangeIndex: 3,
-            ordersOver: data,
+          CustomMostSoldProuductsChart(
+             products: data,
+          
           ),
         ],
       ),

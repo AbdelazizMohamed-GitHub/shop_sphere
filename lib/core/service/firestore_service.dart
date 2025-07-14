@@ -552,54 +552,54 @@ class FirestoreService {
   }
 
   Future<List<ProductMostSellerModel>> getProductsMostSeller({
-  required DateTime start,
-  required DateTime end,
-  required int limit,
-}) async {
-  final snapshot = await FirebaseFirestore.instance
-      .collection('orders')
-      .where("status", isEqualTo: "Delivered")
-      .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-      .where("orderDate", isLessThan: Timestamp.fromDate(end))
-      .get();
+    required DateTime start,
+    required DateTime end,
+    required int limit,
+  }) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('orders')
+        .where("status", isEqualTo: "Delivered")
+        .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .where("orderDate", isLessThan: Timestamp.fromDate(end))
+        .get();
 
-  // نجمع البيانات كلها (الاسم -> بياناته كاملة)
-  final Map<String, ProductMostSellerModel> productMap = {};
+    // نجمع البيانات كلها (الاسم -> بياناته كاملة)
+    final Map<String, ProductMostSellerModel> productMap = {};
 
-  for (var doc in snapshot.docs) {
-    final data = doc.data();
-    final products = data['items'] as List<dynamic>;
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      final products = data['items'] as List<dynamic>;
 
-    for (var item in products) {
-      final name = item['name'] as String;
-      final quantity = item['quantity'] as int;
-      final price = item['price'];
-      final imageUrl = item['imageUrl'] as String;
+      for (var item in products) {
+        final name = item['name'] as String;
+        final quantity = item['quantity'] as int;
+       final priceRaw = item['price'];
+final price = priceRaw is int ? priceRaw.toDouble() : priceRaw as double;
+        final imageUrl = item['imageUrl'] as String;
 
-      if (productMap.containsKey(name)) {
-        // زوّد الكمية
-        productMap[name] = productMap[name]!.copyWith(
-          productCount: productMap[name]!.productCount + quantity,
-        );
-      } else {
-        // أضف منتج جديد
-        productMap[name] = ProductMostSellerModel(
-          productName: name,
-          productCount: quantity,
-          productPrice: price,
-          productImageUrl: imageUrl,
-        );
+        if (productMap.containsKey(name)) {
+          // زوّد الكمية
+          productMap[name] = productMap[name]!.copyWith(
+            productCount: productMap[name]!.productCount + quantity,
+          );
+        } else {
+          // أضف منتج جديد
+          productMap[name] = ProductMostSellerModel(
+            productName: name,
+            productCount: quantity,
+            productPrice: price,
+            productImageUrl: imageUrl,
+          );
+        }
       }
     }
+
+    // ترتيب النتائج
+    final sorted = productMap.values.toList()
+      ..sort((a, b) => b.productCount.compareTo(a.productCount));
+
+    return sorted.take(limit).toList();
   }
-
-  // ترتيب النتائج
-  final sorted = productMap.values.toList()
-    ..sort((a, b) => b.productCount.compareTo(a.productCount));
-   
-
-  return sorted.take(limit).toList();
-}
 
   Future<List<ProductMostSellerModel>> getProductsMostSellerTimeRange(
       {required int limit, required int timeRangeIndex}) async {
@@ -753,7 +753,7 @@ class FirestoreService {
         final orderDate = (data['orderDate'] as Timestamp).toDate();
 
         // تعيين بداية السنة
-final monthKey = DateTime(orderDate.year, orderDate.month);
+        final monthKey = DateTime(orderDate.year, orderDate.month);
         // التعامل الآمن مع totalAmount
         final amountRaw = data['totalAmount'] ?? 0;
         final totalAmount =
