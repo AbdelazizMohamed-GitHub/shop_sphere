@@ -54,7 +54,7 @@ class _InternetBannerWrapperState extends State<InternetBannerWrapper> {
       setState(() {
         _isOffline = offline;
       });
-      print('Actual isOffline: $_isOffline');
+   
     }
   }
 

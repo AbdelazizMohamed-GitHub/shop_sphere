@@ -31,7 +31,7 @@ class NotificationScreen extends StatelessWidget {
         builder:
             (BuildContext context, Box<NotificationModel> box, Widget? child) {
           if (box.values.isEmpty) {
-            return Center(
+            return const Center(
                 child: Text(
               'No notifications found',
               style: AppStyles.text18Regular,

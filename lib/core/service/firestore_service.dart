@@ -3,8 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/supabase_service.dart';
 import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
@@ -479,10 +478,7 @@ class FirestoreService {
         .collection("users")
         .where("isStaff", isEqualTo: isStaff)
         .get();
-    for (var doc in querySnapshot.docs) {
-      print(
-          "Customer: ${doc.data()['name']} - isStaff: ${doc.data()['isStaff']}");
-    }
+ 
     return querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
 

@@ -1,13 +1,10 @@
-// // // // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
-import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sell_prouducts_chart.dart';
-import 'package:shop_sphere/features/analytics/presention/view/widget/custom_order_over.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TestScreen extends StatefulWidget {
@@ -36,15 +33,11 @@ class _TestScreenState extends State<TestScreen> {
                         firestore: FirebaseFirestore.instance)
                     .getProductsMostSellerTimeRange(timeRangeIndex: 3, limit: 10);
                 if (data.isEmpty) {
-                  print("No orders found for today.");
+                 
                   return;
                 }
                 setState(() {});
 
-                for (var i = 0; i < data.length; i++) {
-                  print(
-                      "${data[i].productName} | ${data[i].productPrice}: ${data[i].productCount} orders, Total Cost: ${data[i].productImageUrl}");
-                }
               },
               child: const Text("Process"),
             ),

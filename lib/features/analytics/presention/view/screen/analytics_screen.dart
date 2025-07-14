@@ -5,8 +5,6 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/features/analytics/data/repo_impl/analytics_repo_impl.dart';
 import 'package:shop_sphere/features/analytics/presention/contoller/cubit/analytics_cubit.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_chart_title.dart';
-import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sell_prouducts_chart.dart';
-import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sold_prouduct_pie_chart.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_order_over.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_time_range.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_total_card.dart';
