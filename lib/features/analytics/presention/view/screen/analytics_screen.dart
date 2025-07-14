@@ -86,7 +86,7 @@ class AnalyticsScreen extends StatelessWidget {
                                 );
                 },
               )
-            ],
+            ],  
           ),
         ),
       ),

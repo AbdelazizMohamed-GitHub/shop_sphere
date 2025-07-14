@@ -11,29 +11,32 @@ class AnalyticsRepoImpl extends AnalyticsRepo {
 
   AnalyticsRepoImpl({required this.firestoreService});
   @override
-  Future<Either<FirebaseFailure, List<ProductMostSellerModel>>> getMostSoldProducts({required int timeRangeIndex, required int limit}) async{
-   try {
-     final result = await firestoreService.getProductsMostSellerTimeRange(limit: limit, timeRangeIndex: timeRangeIndex);
-     return Right(result);
-     
-   } on FirebaseException catch (e) {
-     return Left(FirebaseFailure.fromCode(e.code));
-   } catch (e) {
-     return Left(FirebaseFailure(message: e.toString()));
-   }
-  }
-
-  @override
-  Future<Either<FirebaseFailure, List<OrderOverModel>>> getOrdersOverTimeRange({required int timeRangeIndex}) async {
-    
+  Future<Either<FirebaseFailure, List<ProductMostSellerModel>>>
+      getMostSoldProducts(
+          {required int timeRangeIndex, required int limit}) async {
     try {
-      final result = await firestoreService.getOrdersOverTimeRange(timeRangeIndex: timeRangeIndex);
+      final result = await firestoreService.getProductsMostSellerTimeRange(
+          limit: limit, timeRangeIndex: timeRangeIndex);
       return Right(result);
-    } on FirebaseException catch (e) {
+    } on FirebaseException catch (e) { 
       return Left(FirebaseFailure.fromCode(e.code));
     } catch (e) {
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
-  
+
+  @override
+  Future<Either<FirebaseFailure, List<OrderOverModel>>> getOrdersOverTimeRange(
+      {required int timeRangeIndex}) async {
+    try {
+      final result = await firestoreService.getOrdersOverTimeRange(
+          timeRangeIndex: timeRangeIndex);
+      return Right(result);
+    } on FirebaseException catch (e) {
+     
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
 }

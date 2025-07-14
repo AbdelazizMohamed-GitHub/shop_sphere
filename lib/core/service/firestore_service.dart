@@ -552,47 +552,54 @@ class FirestoreService {
   }
 
   Future<List<ProductMostSellerModel>> getProductsMostSeller({
-    required DateTime start,
-    required DateTime end,
-    required int limit,
-  }) async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('orders')
-        .where("status", isEqualTo: "Delivered")
-        .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
-        .where("orderDate", isLessThan: Timestamp.fromDate(end))
-        .get();
+  required DateTime start,
+  required DateTime end,
+  required int limit,
+}) async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection('orders')
+      .where("status", isEqualTo: "Delivered")
+      .where("orderDate", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+      .where("orderDate", isLessThan: Timestamp.fromDate(end))
+      .get();
 
-    // عداد لتجميع كمية كل منتج
-    final Map<String, int> productCount = {};
+  // نجمع البيانات كلها (الاسم -> بياناته كاملة)
+  final Map<String, ProductMostSellerModel> productMap = {};
 
-    for (var doc in snapshot.docs) {
-      final data = doc.data();
-      final products = data['items'] as List<dynamic>;
+  for (var doc in snapshot.docs) {
+    final data = doc.data();
+    final products = data['items'] as List<dynamic>;
 
-      for (var item in products) {
-        final productName = item['name'] as String;
-        final quantity = item['quantity'] as int;
+    for (var item in products) {
+      final name = item['name'] as String;
+      final quantity = item['quantity'] as int;
+      final price = item['price'];
+      final imageUrl = item['imageUrl'] as String;
 
-        if (productCount.containsKey(productName)) {
-          productCount[productName] = productCount[productName]! + quantity;
-        } else {
-          productCount[productName] = quantity;
-        }
+      if (productMap.containsKey(name)) {
+        // زوّد الكمية
+        productMap[name] = productMap[name]!.copyWith(
+          productCount: productMap[name]!.productCount + quantity,
+        );
+      } else {
+        // أضف منتج جديد
+        productMap[name] = ProductMostSellerModel(
+          productName: name,
+          productCount: quantity,
+          productPrice: price,
+          productImageUrl: imageUrl,
+        );
       }
     }
-
-    // تحويل النتائج إلى كائنات موديل
-    List<ProductMostSellerModel> mostSoldProducts = [];
-    for (var entry in productCount.entries) {
-      mostSoldProducts.add(ProductMostSellerModel(
-          productName: entry.key, productCount: entry.value));
-    }
-    // الترتيب تنازليًا حسب الكمية
-    mostSoldProducts.sort((a, b) => b.productCount.compareTo(a.productCount));
-
-    return mostSoldProducts.take(limit).toList();
   }
+
+  // ترتيب النتائج
+  final sorted = productMap.values.toList()
+    ..sort((a, b) => b.productCount.compareTo(a.productCount));
+   
+
+  return sorted.take(limit).toList();
+}
 
   Future<List<ProductMostSellerModel>> getProductsMostSellerTimeRange(
       {required int limit, required int timeRangeIndex}) async {
@@ -746,23 +753,22 @@ class FirestoreService {
         final orderDate = (data['orderDate'] as Timestamp).toDate();
 
         // تعيين بداية السنة
-        final yearKey = DateTime(orderDate.year);
-
+final monthKey = DateTime(orderDate.year, orderDate.month);
         // التعامل الآمن مع totalAmount
         final amountRaw = data['totalAmount'] ?? 0;
         final totalAmount =
             amountRaw is int ? amountRaw.toDouble() : (amountRaw as double);
 
-        if (grouped.containsKey(yearKey)) {
-          final existing = grouped[yearKey]!;
-          grouped[yearKey] = OrderOverModel(
-            time: yearKey,
+        if (grouped.containsKey(monthKey)) {
+          final existing = grouped[monthKey]!;
+          grouped[monthKey] = OrderOverModel(
+            time: monthKey,
             count: existing.count + 1,
             totalCost: existing.totalCost + totalAmount,
           );
         } else {
-          grouped[yearKey] = OrderOverModel(
-            time: yearKey,
+          grouped[monthKey] = OrderOverModel(
+            time: monthKey,
             count: 1,
             totalCost: totalAmount,
           );

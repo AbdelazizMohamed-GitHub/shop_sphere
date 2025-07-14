@@ -88,7 +88,7 @@ class ShopSphere extends StatelessWidget {
 
                     final user = userSnapshot.data!;
                     return user.isStaff
-                        ? const AnalyticsScreen()
+                        ? const TestScreen()
                         : const MainScreen();
                   },
                 );

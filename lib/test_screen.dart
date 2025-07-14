@@ -32,7 +32,7 @@ class _TestScreenState extends State<TestScreen> {
               onPressed: () async {
                 data = await FirestoreService(
                         firestore: FirebaseFirestore.instance)
-                    .getOrdersOverTimeRange(timeRangeIndex: 2);
+                    .getOrdersOverTimeRange(timeRangeIndex: 3);
                 if (data.isEmpty) {
                   print("No orders found for today.");
                   return;
@@ -49,7 +49,7 @@ class _TestScreenState extends State<TestScreen> {
           ),
           const SizedBox(height: 20),
           CustomOrderOver(
-            timeRangeIndex: 2,
+            timeRangeIndex: 3,
             ordersOver: data,
           ),
         ],
