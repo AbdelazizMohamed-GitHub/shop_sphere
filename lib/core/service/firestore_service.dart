@@ -569,6 +569,7 @@ class FirestoreService {
       for (var item in products) {
         final name = item['name'] as String;
         final quantity = item['quantity'] as int;
+        final id = item['id'] as String;
        final priceRaw = item['price'];
 final price = priceRaw is int ? priceRaw.toDouble() : priceRaw as double;
         final imageUrl = item['imageUrl'] as String;
@@ -581,6 +582,7 @@ final price = priceRaw is int ? priceRaw.toDouble() : priceRaw as double;
         } else {
           // أضف منتج جديد
           productMap[name] = ProductMostSellerModel(
+            productId: id,
             productName: name,
             productCount: quantity,
             productPrice: price,

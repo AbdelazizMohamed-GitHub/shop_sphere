@@ -1,12 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class ProductMostSellerModel {
+  final String productId;
   final String productName;
   final int productCount;
   final double productPrice;
   final String productImageUrl;
 
   ProductMostSellerModel({
+
+    required this.productId,
     required this.productName,
     required this.productCount,
     required this.productPrice,
@@ -14,16 +17,18 @@ class ProductMostSellerModel {
   });
 
   ProductMostSellerModel copyWith({
+    String? productId ,
     String? productName,
     int? productCount,
     double? productPrice,
     String? productImageUrl,
+
   }) {
     return ProductMostSellerModel(
       productName: productName ?? this.productName,
       productCount: productCount ?? this.productCount,
       productPrice: productPrice ?? this.productPrice,
-      productImageUrl: productImageUrl ?? this.productImageUrl,
+      productImageUrl: productImageUrl ?? this.productImageUrl, productId: productId??this.productId,
     );
   }
 

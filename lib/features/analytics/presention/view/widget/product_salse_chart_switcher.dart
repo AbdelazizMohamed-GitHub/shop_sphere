@@ -12,7 +12,8 @@ class ProductSalesChartSwitcher extends StatefulWidget {
   final List<ProductMostSellerModel> products;
 
   @override
-  State<ProductSalesChartSwitcher> createState() => _ProductSalesChartSwitcherState();
+  State<ProductSalesChartSwitcher> createState() =>
+      _ProductSalesChartSwitcherState();
 }
 
 class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
@@ -22,7 +23,8 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
   @override
   Widget build(BuildContext context) {
     final displayedProducts = getTop5WithOthers(widget.products);
-    final totalCount = displayedProducts.fold<int>(0, (sum, p) => sum + p.productCount);
+    final totalCount =
+        displayedProducts.fold<int>(0, (sum, p) => sum + p.productCount);
 
     if (displayedProducts.isEmpty || totalCount == 0) {
       return const Center(
@@ -59,7 +61,7 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
               color: AppColors.backgroundColor,
               margin: const EdgeInsets.all(12),
               child: showPie
-                  ? CustomMostSoldPieChart(products:displayedProducts )
+                  ? CustomMostSoldPieChart(products: displayedProducts)
                   : CustomMostSoldProuductsChart(products: displayedProducts),
             ),
 
@@ -72,7 +74,8 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
               itemCount: displayedProducts.length,
               itemBuilder: (context, index) {
                 final product = displayedProducts[index];
-                final color =AppFuncations.getColorForProduct(product.productName);
+                final color =
+                    AppFuncations.getColorForProduct(product.productName);
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -99,26 +102,27 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
     );
   }
 
-  List<ProductMostSellerModel> getTop5WithOthers(List<ProductMostSellerModel> products) {
+  List<ProductMostSellerModel> getTop5WithOthers(
+      List<ProductMostSellerModel> products) {
     if (products.length <= 5) return products;
 
-    final sorted = [...products]..sort((a, b) => b.productCount.compareTo(a.productCount));
+    final sorted = [...products]
+      ..sort((a, b) => b.productCount.compareTo(a.productCount));
     final top5 = sorted.take(5).toList();
     final others = sorted.skip(5);
 
     final otherCount = others.fold<int>(0, (sum, p) => sum + p.productCount);
-    final otherTotalPrice = others.fold<double>(0, (sum, p) => sum + (p.productPrice * p.productCount));
+    final otherTotalPrice = others.fold<double>(
+        0, (sum, p) => sum + (p.productPrice * p.productCount));
 
     top5.add(ProductMostSellerModel(
       productName: "أخرى",
       productCount: otherCount,
       productPrice: otherCount == 0 ? 0 : otherTotalPrice / otherCount,
       productImageUrl: "",
+      productId: '',
     ));
 
     return top5;
   }
-
- 
 }
-
