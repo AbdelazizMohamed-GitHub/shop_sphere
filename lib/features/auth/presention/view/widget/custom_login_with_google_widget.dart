@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
@@ -16,49 +18,65 @@ class CustomLogInWithGoogle extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
-          Warning.showWarning(context, message: state.errMessage,isError: true);
+          Warning.showWarning(context,
+              message: state.errMessage, isError: true);
         }
         if (state is AuthSuccess) {
-        
-
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => state.uid == 'Staff'
-                    ? const ProductScreen()
-                    : const MainScreen(),
+                builder: (context) =>
+                    state.uid == 'Staff' ? const ProductScreen() : const MainScreen(),
               ),
               (route) => false);
         }
       },
       builder: (context, state) {
-        return state is GoogleAuthLoading
-            ? const Center(child: CircularProgressIndicator())
-            : InkWell(
-                onTap: () {
-                  BlocProvider.of<AuthCubit>(context).loginWithGoogle();
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(AppImages.google),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        'Sign in with Google',
-                        style: AppStyles.text18Regular,
-                      )
-                    ],
-                  ),
-                ),
-              );
+        if (state is GoogleAuthLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        // ✅ لو Web: نعرض رسالة مع زر GSI الرسمي
+        if (kIsWeb) {
+          return const Column(
+            children: [
+              SizedBox(height: 20),
+              Text(
+                "اضغط على زر Google لتسجيل الدخول 👇",
+                style: AppStyles.text16Regular,
+              ),
+              SizedBox(height: 10),
+              // زر GSI المفروض يبقى ظاهر في HTML تلقائيًا
+              SizedBox(height: 60), // مسافة عشان الزر يظهر
+            ],
+          );
+        }
+
+        // ✅ باقي المنصات: نعرض زرنا العادي
+        return InkWell(
+          onTap: () {
+            BlocProvider.of<AuthCubit>(context).loginWithGoogle();
+          },
+          child: Container(
+            width: double.infinity,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(AppImages.google),
+                const SizedBox(width: 10),
+                const Text(
+                  'Sign in with Google',
+                  style: AppStyles.text18Regular,
+                )
+              ],
+            ),
+          ),
+        );
       },
     );
   }

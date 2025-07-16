@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
@@ -97,68 +98,140 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, String>> logInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
 
-        final userCredential =
-            await _firebaseAuth.signInWithCredential(credential);
-        final uid = userCredential.user!.uid;
-
-        // 🔍 Check if user document exists
-        final userDoc =
-            await FirebaseFirestore.instance.collection("users").doc(uid).get();
-        final String token = (await NotificationService.getToken()) ?? '';
-        if (!userDoc.exists) {
-          // 🆕 Create new user document
-          await firestoreService.addData(
-            collection: "users",
-            did: uid,
-            data: UserModel(
-              fcmToken: token,
-              isStaff: false,
-              email: userCredential.user!.email ?? '',
-              name: userCredential.user!.displayName ?? '',
-              phoneNumber: userCredential.user!.phoneNumber ?? '',
-              createdAt: DateTime.now(),
-              addressIndex: 0,
-              uid: uid,
-              profileImage: '',
-              birthDate:
-                  userCredential.user!.metadata.creationTime ?? DateTime.now(),
-              gender: '',
-              favProduct: [],
-            ),
-          );
-        } else {
-          FirebaseFirestore.instance
-              .collection('users')
-              .doc(uid)
-              .update({'fcmToken': token});
-        }
-
-        final data = await firestoreService.getUserData();
-
-        if (data.isStaff) {
-          return const Right('Staff');
-        }
-        return const Right("Logged in successfully");
-      } else {
-        return Left(FirebaseFailure(message: 'Sign in aborted by user.'));
-      }
-    } on FirebaseAuthException catch (e) {
-      return Left(FirebaseFailure.fromCode(e.code));
-    } catch (e) {
-      return Left(FirebaseFailure(message: e.toString()));
+Future<Either<FirebaseFailure, String>> logInWithGoogle() async {
+  try {
+    if (kIsWeb) {
+      return Left(FirebaseFailure(
+        message: 'Use Google Sign-In Button on Web (GSI)',
+      ));
     }
+
+    // موبايل فقط
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) {
+      return Left(FirebaseFailure(message: 'Sign in aborted by user.'));
+    }
+
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final userCredential =
+        await _firebaseAuth.signInWithCredential(credential);
+
+    final user = userCredential.user;
+    if (user == null) {
+      return Left(FirebaseFailure(message: 'User not found after login.'));
+    }
+
+    final uid = user.uid;
+    final token = await NotificationService.getToken() ?? '';
+
+    final userDoc = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get();
+
+    if (!userDoc.exists) {
+      await firestoreService.addData(
+        collection: "users",
+        did: uid,
+        data: UserModel(
+          uid: uid,
+          name: user.displayName ?? '',
+          email: user.email ?? '',
+          phoneNumber: user.phoneNumber ?? '',
+          profileImage: user.photoURL ?? '',
+          birthDate: user.metadata.creationTime ?? DateTime.now(),
+          gender: '',
+          fcmToken: token,
+          isStaff: false,
+          addressIndex: 0,
+          createdAt: DateTime.now(),
+          favProduct: [],
+        ),
+      );
+    } else {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .set({'fcmToken': token}, SetOptions(merge: true));
+    }
+
+    final userData = await firestoreService.getUserData();
+    if (userData.isStaff) {
+      return const Right('Staff');
+    }
+
+    return const Right("Logged in successfully");
+  } on FirebaseAuthException catch (e) {
+    return Left(FirebaseFailure.fromCode(e.code));
+  } catch (e) {
+    return Left(FirebaseFailure(message: e.toString()));
   }
+}
+
+@override
+Future<Either<FirebaseFailure, String>> signInWithIdTokenFromWeb(String idToken) async {
+  try {
+    final credential = GoogleAuthProvider.credential(idToken: idToken);
+    final userCredential = await _firebaseAuth.signInWithCredential(credential);
+
+    final user = userCredential.user;
+    if (user == null) {
+      return Left(FirebaseFailure(message: 'User not found after login.'));
+    }
+
+    final uid = user.uid;
+    final userDoc = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get();
+
+    final token = await NotificationService.getToken() ?? '';
+
+    if (!userDoc.exists) {
+      await firestoreService.addData(
+        collection: "users",
+        did: uid,
+        data: UserModel(
+          uid: uid,
+          name: user.displayName ?? '',
+          email: user.email ?? '',
+          phoneNumber: user.phoneNumber ?? '',
+          profileImage: user.photoURL ?? '',
+          birthDate: user.metadata.creationTime ?? DateTime.now(),
+          gender: '',
+          fcmToken: token,
+          isStaff: false,
+          addressIndex: 0,
+          createdAt: DateTime.now(),
+          favProduct: [],
+        ),
+      );
+    } else {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .set({'fcmToken': token}, SetOptions(merge: true));
+    }
+
+    final userData = await firestoreService.getUserData();
+    if (userData.isStaff) {
+      return const Right('Staff');
+    }
+
+    return const Right("Logged in successfully");
+  } on FirebaseAuthException catch (e) {
+    return Left(FirebaseFailure.fromCode(e.code));
+  } catch (e) {
+    return Left(FirebaseFailure(message: e.toString()));
+  }
+}
+
 
   @override
   Future<Either<FirebaseFailure, String>> verifiyEmaill() async {

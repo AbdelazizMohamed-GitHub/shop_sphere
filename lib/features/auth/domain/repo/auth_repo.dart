@@ -17,4 +17,5 @@ abstract class AuthRepo {
   Future<Either<FirebaseFailure, void>> resetPassword(String email);
   
   Future<bool> isSignedIn();
+  Future<Either<FirebaseFailure, String>> signInWithIdTokenFromWeb(String idToken);
 }

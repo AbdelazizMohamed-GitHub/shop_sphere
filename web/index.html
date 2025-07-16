@@ -1,38 +1,64 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+  <head>
+      <meta name="google-signin-client_id" content="909426718408-xxxxx.apps.googleusercontent.com" />
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="Your Flutter Web App" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    <!-- ✅ Google Sign-In Client -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+    <!-- ✅ GSI Initialization -->
+    <script>
+      function handleCredentialResponse(response) {
+        console.log("Received ID Token:", response.credential);
+        window.dispatchEvent(new CustomEvent('googleSignInSuccess', {
+          detail: response.credential
+        }));
+      }
+    </script>
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    <!-- ✅ Your Web Client ID from Google Console -->
+    <div
+      id="g_id_onload"
+      data-client_id="909426718408-6vo00enp2vqmg2qcrajcksa3igoqo1s9.apps.googleusercontent.com"
+      data-auto_prompt="false"
+      data-callback="handleCredentialResponse">
+    </div>
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="shop_sphere">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <div
+      class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline"
+      data-text="sign_in_with"
+      data-shape="rectangular"
+      data-logo_alignment="left">
+    </div>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    <title>My Flutter Web</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-  <title>shop_sphere</title>
-  <link rel="manifest" href="manifest.json">
-</head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
-</body>
+  <body>
+    <script src="flutter.js" defer></script>
+    <script>
+      window.addEventListener('load', function (ev) {
+        _flutter.loader.loadEntrypoint({
+          serviceWorker: {
+            serviceWorkerVersion: serviceWorkerVersion,
+          },
+          onEntrypointLoaded: function (engineInitializer) {
+            engineInitializer.initializeEngine().then(function (appRunner) {
+              appRunner.runApp();
+            });
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
