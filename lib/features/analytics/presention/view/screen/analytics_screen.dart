@@ -4,6 +4,7 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/features/analytics/data/repo_impl/analytics_repo_impl.dart';
 import 'package:shop_sphere/features/analytics/presention/contoller/cubit/analytics_cubit.dart';
+import 'package:shop_sphere/features/analytics/presention/view/screen/product_list_screen.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_chart_title.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_order_over.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_time_range.dart';
@@ -57,27 +58,36 @@ class AnalyticsScreen extends StatelessWidget {
                                                   sum + order.totalCost),
                                         ),
                                         const SizedBox(height: 20),
-                                        CustomChartTitle(
-                                          title: "Orders Over",
-                                          onViewAll: () {
-                                            // Handle view all action
-                                          },
-                                        ),
+                                        // CustomChartTitle(
+                                        //   title: "Orders Over",
+                                        //   onViewAll: () {
+                                        //     // Handle view all action
+                                        //   },
+                                        // ),
                                         CustomOrderOver(
                                           ordersOver: state.ordersOver,
                                           timeRangeIndex: context
                                               .read<AnalyticsCubit>()
                                               .timeRangeIndex,
                                         ),
-                                       
+
                                         CustomChartTitle(
                                           title: "Most Sold Products",
                                           onViewAll: () {
-                                            // Handle view all action
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ProductListScreen(
+                                                products:
+                                                    state.mostSoldProducts,
+                                              );
+                                            }));
                                           },
                                         ),
-                                    
-                                        ProductSalesChartSwitcher(products: state.mostSoldProducts,)
+
+                                        ProductSalesChartSwitcher(
+                                          products: state.mostSoldProducts,
+                                        )
                                       ],
                                     )
                               : const Center(
