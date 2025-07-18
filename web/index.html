@@ -1,64 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <meta name="google-signin-client_id" content="909426718408-xxxxx.apps.googleusercontent.com" />
 
-    <meta charset="UTF-8">
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="Your Flutter Web App" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
 
-    <!-- ✅ Google Sign-In Client -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
 
-    <!-- ✅ GSI Initialization -->
-    <script>
-      function handleCredentialResponse(response) {
-        console.log("Received ID Token:", response.credential);
-        window.dispatchEvent(new CustomEvent('googleSignInSuccess', {
-          detail: response.credential
-        }));
-      }
-    </script>
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
 
-    <!-- ✅ Your Web Client ID from Google Console -->
-    <div
-      id="g_id_onload"
-      data-client_id="909426718408-6vo00enp2vqmg2qcrajcksa3igoqo1s9.apps.googleusercontent.com"
-      data-auto_prompt="false"
-      data-callback="handleCredentialResponse">
-    </div>
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
 
-    <div
-      class="g_id_signin"
-      data-type="standard"
-      data-size="large"
-      data-theme="outline"
-      data-text="sign_in_with"
-      data-shape="rectangular"
-      data-logo_alignment="left">
-    </div>
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+  <meta name="google-signin-client_id"
+    content="909426718408-eps7q1jfc22bfk0rrjhlonquor6nhgo3.apps.googleusercontent.com">
 
-    <title>My Flutter Web</title>
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
 
-  <body>
-    <script src="flutter.js" defer></script>
-    <script>
-      window.addEventListener('load', function (ev) {
-        _flutter.loader.loadEntrypoint({
-          serviceWorker: {
-            serviceWorkerVersion: serviceWorkerVersion,
-          },
-          onEntrypointLoaded: function (engineInitializer) {
-            engineInitializer.initializeEngine().then(function (appRunner) {
-              appRunner.runApp();
-            });
-          }
-        });
-      });
-    </script>
-  </body>
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="web_test">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>web_test</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+  <script src="flutter_bootstrap.js" async></script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCfKwvZrjO47da3ggzHKTuy3MzSU9fE5rw",
+    authDomain: "shopsphere-b422e.firebaseapp.com",
+    projectId: "shopsphere-b422e",
+    storageBucket: "shopsphere-b422e.firebasestorage.app",
+    messagingSenderId: "909426718408",
+    appId: "1:909426718408:web:ddf3b53857e1d1cd8657fd",
+    measurementId: "G-S3LFCM69NC"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+</body>
+
 </html>

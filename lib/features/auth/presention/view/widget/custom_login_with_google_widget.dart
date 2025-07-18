@@ -37,25 +37,11 @@ class CustomLogInWithGoogle extends StatelessWidget {
         }
 
         // ✅ لو Web: نعرض رسالة مع زر GSI الرسمي
-        if (kIsWeb) {
-          return const Column(
-            children: [
-              SizedBox(height: 20),
-              Text(
-                "اضغط على زر Google لتسجيل الدخول 👇",
-                style: AppStyles.text16Regular,
-              ),
-              SizedBox(height: 10),
-              // زر GSI المفروض يبقى ظاهر في HTML تلقائيًا
-              SizedBox(height: 60), // مسافة عشان الزر يظهر
-            ],
-          );
-        }
-
+       
         // ✅ باقي المنصات: نعرض زرنا العادي
         return InkWell(
-          onTap: () {
-            BlocProvider.of<AuthCubit>(context).loginWithGoogle();
+          onTap: ()async {
+           await BlocProvider.of<AuthCubit>(context).loginWithGoogle();
           },
           child: Container(
             width: double.infinity,

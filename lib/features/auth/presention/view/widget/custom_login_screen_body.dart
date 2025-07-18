@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
@@ -78,31 +79,36 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-             Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => state.uid == 'Staff'
-                    ? const ProductScreen()
-                    : const MainScreen(),
-              ),
-              (route) => false);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => state.uid == 'Staff'
+                        ? const ProductScreen()
+                        : const MainScreen(),
+                  ),
+                  (route) => false);
             }
             if (state is AuthError) {
-              Warning.showWarning(context, isError: true,message: state.errMessage);
+              print('${state.errMessage}');
+              Warning.showWarning(context,
+                  isError: true, message: state.errMessage);
             }
           },
           builder: (context, state) {
             return state is AuthLoading
                 ? const CircularProgressIndicator()
                 : CustomButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (emailTextC.text.isNotEmpty &&
                           passwordTextC.text.isNotEmpty) {
                         FocusScope.of(context).unfocus();
-                        context.read<AuthCubit>().logInWithEmailAndPassword(
-                            context: context,
-                            email: emailTextC.text.trim(),
-                            password: passwordTextC.text.trim());
+                       
+                        await context
+                            .read<AuthCubit>()
+                            .logInWithEmailAndPassword(
+                                context: context,
+                                email: emailTextC.text.trim(),
+                                password: passwordTextC.text.trim());
                       } else {
                         Warning.showWarning(context,
                             message: 'Please fill all fields');
