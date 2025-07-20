@@ -66,37 +66,35 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, String>> logInWithEmailAndPassword(
-      String email, String password, context) async {
-    try {
-      UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      // if (!user.user!.emailVerified) {
-      //   user.user?.sendEmailVerification();
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => VerifyScreen(
-      //           email: user.user!.email!,
-      //         ),
-      //       ));
-      //   return Left(FirebaseFailure(
-      //     message: "Email not verified",
-      //   ));
-      // }
-      final data = await firestoreService.getUserData();
+ Future<Either<FirebaseFailure, String>> logInWithEmailAndPassword(
+    String email, String password, context) async {
+  try {
+    print("🔐 Trying to sign in with: $email");
 
-      if (data.isStaff) {
-        return const Right('Staff');
-      }
-      return Right(user.user?.uid ?? "");
-    } on FirebaseAuthException catch (e) {
-      print('FIREBASE ERROR CODE: ${e.code}');
-      return Left(FirebaseFailure.fromCode(e.code));
-    } catch (e) {
-      return Left(FirebaseFailure(message: e.toString()));
+    UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    print("✅ Firebase login successful, UID: ${user.user?.uid}");
+
+    final data = await firestoreService.getUserData();
+    print("📄 User Data Fetched: ${data.toString()}");
+
+    if (data.isStaff) {
+      print("👔 User is staff");
+      return const Right('Staff');
     }
+
+    return Right(user.user?.uid ?? "");
+  } on FirebaseAuthException catch (e) {
+    print('❌ FirebaseAuthException => Code: ${e.code} | Message: ${e.message}');
+    return Left(FirebaseFailure.fromCode(e.code));
+  } catch (e) {
+    print("🔥 Unknown error during login: $e");
+    return Left(FirebaseFailure(message: e.toString()));
   }
+}
 
   @override
   Future<Either<FirebaseFailure, String>> logInWithGoogle() async {

@@ -1,23 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/internet.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
-import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_body.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_drawer.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/shopsphere_app.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -62,180 +57,80 @@ class _ProductScreenState extends State<ProductScreen> {
 
             List<ProductEntity> outOfStock =
                 products.where((product) => product.stock == 0).toList();
-            return Scaffold(
-              drawer: Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    const DrawerHeader(
-                      decoration: BoxDecoration(color: Colors.blue),
-                      child:
-                          Text('Dashboard', style: AppStyles.text26BoldWhite),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.shopping_cart),
-                      title: const Text('Orders'),
-                      onTap: () {
+            return LayoutBuilder(builder: (context, constraints) {
+              double horizontalPadding =
+                  MediaQuery.of(context).size.width > 600 ? 20 : 10;
+              int crossAxisCount = 2;
+              if (constraints.maxWidth >= 1200) {
+                crossAxisCount = 5;
+              } else if (constraints.maxWidth >= 900) {
+                crossAxisCount = 4;
+              } else if (constraints.maxWidth >= 600) {
+                crossAxisCount = 3;
+              }
+if (MediaQuery.of(context).size.width > 900) {
+  return Row(
+    children: [
+      SizedBox(
+        width: 250,
+        child:CustomProductScreenDrawer(outOfStock: outOfStock,) ,
+      ),
+     Expanded(child: CustomProductScreenBody(products: products,horizontalPadding: horizontalPadding,crossAxisCount: crossAxisCount,onCategoryChanged: (String value) { 
+        setState(() {
+          selectedCategory = value;
+        });
+       },)
+     
+     
+     )
+      
+    ],
+  );
+}
+
+ 
+
+              return Scaffold(
+                drawer: CustomProductScreenDrawer(outOfStock: outOfStock,),
+                appBar: AppBar(
+                  title: Text("Products ${products.length}",
+                      style: AppStyles.text18Regular),
+                  actions: [
+                    IconButton(
+                      onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) {
-                              return const OrdersScreen();
-                            },
-                          ),
+                              builder: (context) => const SearchScreen()),
                         );
                       },
+                      icon: const Icon(Icons.search, size: 30),
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.people),
-                      title: const Text('Users'),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const UsersScreen();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.analytics_outlined),
-                      title: const Text('out of stock'),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return OutOfStockScreen(
-                                products: outOfStock,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.logout),
-                      title: const Text('Sign Out'),
-                      onTap: () async {
-                        try {
-                          if (!await AppFuncations.isOnline()) {
-                            Warning.showWarning(context,
-                                isError: true,
-                                message: "No internet connection");
-                            return;
-                            
-                          }
-                          await GoogleSignIn().signOut();
-                          await FirebaseAuth.instance.signOut();
-                          // Clear user data from Firestore if needed
-     await Future.delayed(const Duration(seconds: 5));
-                          // Navigate to the login screen or home screen
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (_) => const ShopSphere()),
-                            (route) => false,
-                          );
-                        } catch (e) {
-                          Warning.showWarning(context,isError: true,
-                              message: '${e.toString()}');
-                        }
-                      },
-                    ),
+                    const SizedBox(width: 10),
                   ],
                 ),
-              ),
-              appBar: AppBar(
-                title: Text("Products ${products.length}",
-                    style: AppStyles.text18Regular),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SearchScreen()),
-                      );
-                    },
-                    icon: const Icon(Icons.search, size: 30),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              body: InternetBannerWrapper(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, bottom: 10),
-                        child: Row(children: [
-                          Text(
-                            "Welcome ",
-                            style: AppStyles.text18Regular
-                                .copyWith(color: AppColors.primaryColor),
-                          ),
-                          Text(
-                            '${FirebaseAuth.instance.currentUser!.displayName}',
-                            style: AppStyles.text18Regular,
-                          ),
-                          const Spacer(),
-                          PopupMenuButton(
-                              child: const Icon(Icons.filter_list),
-                              itemBuilder: (context) =>
-                                  appCategory.map((category) {
-                                    return PopupMenuItem(
-                                      onTap: () {
-                                        selectedCategory = category;
-                                        setState(() {});
-                                      },
-                                      value: category,
-                                      child: Text(category),
-                                    );
-                                  }).toList()),
-                          const SizedBox(
-                            width: 10,
-                          )
-                        ]),
-                      ),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                        ),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 5 / 6,
-                        ),
-                        itemCount: products.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return CustomDashboardProductItem(
-                              product: products[index]);
-                        },
-                      ),
-                    ],
-                  ),
+                body: InternetBannerWrapper(
+                  child: CustomProductScreenBody(products: products,horizontalPadding: horizontalPadding,crossAxisCount: crossAxisCount, onCategoryChanged: (String value) { 
+                    setState(() {
+                      selectedCategory = value;
+                    });
+                   },)
                 ),
-              ),
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: AppColors.primaryColor,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const AddProductScreen(isUpdate: false),
-                    ),
-                  );
-                },
-                child: const Icon(Icons.add, color: Colors.white),
-              ),
-            );
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: AppColors.primaryColor,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const AddProductScreen(isUpdate: false),
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.add, color: Colors.white),
+                ),
+              );
+            });
           }
         });
   }

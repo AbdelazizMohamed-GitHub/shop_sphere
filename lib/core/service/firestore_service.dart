@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/supabase_service.dart';
@@ -451,7 +452,7 @@ class FirestoreService {
   Future<void> checkInternet() async {
     bool isOnline = await AppFuncations.isOnline();
     if (!isOnline) {
-      throw ("No Internet Connection");
+      FirebaseFailure ( message: '"No Internet Connection"');
     }
   }
 
