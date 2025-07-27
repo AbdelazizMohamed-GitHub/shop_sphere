@@ -21,11 +21,11 @@ class OutOfStockScreen extends StatelessWidget {
         ),
       ),
       body: GridView.builder(
-        padding: const EdgeInsets.symmetric(
+        padding:  const EdgeInsets.symmetric(
           horizontal: 10,
         ),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+        gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount:MediaQuery.of(context).size.width > 600 ? 3 : 2,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
           childAspectRatio: 5 / 6,

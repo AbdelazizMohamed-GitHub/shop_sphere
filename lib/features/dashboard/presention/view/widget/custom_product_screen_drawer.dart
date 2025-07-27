@@ -6,6 +6,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomProductScreenDrawer extends StatelessWidget {
@@ -40,14 +41,25 @@ class CustomProductScreenDrawer extends StatelessWidget {
                     style: AppStyles.text18Regular,
                   ),
                   onTap: () {
-                 MediaQuery.of(context).size.width>700?   context.read<DashboardCubit>().changeScreenIndex(index):
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            dashboardDrawerItems[index].screen,
-                      ),
-                    );
+                    MediaQuery.of(context).size.width > 700
+                        ? context
+                            .read<DashboardCubit>()
+                            .changeScreenIndex(index)
+                        : index <= 3
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      dashboardDrawerItems[index].screen,
+                                ),
+                              )
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      OutOfStockScreen(products: outOfStock),
+                                ),
+                              );
                   });
             },
           ),
