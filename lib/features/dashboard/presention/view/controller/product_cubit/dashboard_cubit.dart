@@ -7,6 +7,11 @@ import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit({required this.dashboardRepo}) : super(DashboardInitial());
+  int currentIndex = 0;
+  void changeScreenIndex(int index) {
+    emit(DashboardState(screenIndex: index));
+  }
+
   final DashboardRepo dashboardRepo;
   Future<void> addProduct({
     required ProductModel product,
@@ -35,7 +40,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       (error) {
         emit(DashboardFailer(errMessage: error.message));
       },
-      (r)  {
+      (r) {
         emit(DashboardSuccess());
       },
     );
@@ -51,7 +56,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       (error) {
         emit(DashboardFailer(errMessage: error.message));
       },
-      (r)  {
+      (r) {
         emit(DashboardSuccess());
       },
     );

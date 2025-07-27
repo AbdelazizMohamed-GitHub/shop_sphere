@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_body.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/explore_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/favorite_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/notifications_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/profile_screen.dart';
+import 'package:shop_sphere/features/users/presention/view/screen/users_screen.dart';
 
 const List<Widget> screens = [
   ExploreScreen(),
@@ -30,6 +35,37 @@ class PaymentMethodModel {
   PaymentMethodModel({required this.title, required this.imagePath});
 }
 
+class DashboardDrawerModel {
+  final String title;
+  final IconData icon;
+  final Widget screen;
+
+  DashboardDrawerModel(
+      {required this.title, required this.icon, required this.screen});
+}
+List<DashboardDrawerModel> dashboardDrawerItems = [
+  DashboardDrawerModel(
+      title: 'Products',
+      icon: Icons.shopping_bag,
+      screen: CustomProductScreenBody(
+        products: [], // Placeholder, will be updated with actual products
+        horizontalPadding: 10,
+        crossAxisCount: 2,
+        onCategoryChanged: (String value) {},
+      )),
+  DashboardDrawerModel(
+      title: 'Orders',
+      icon: Icons.shopping_cart,
+      screen: const OrdersScreen()),
+  DashboardDrawerModel(
+      title: 'Users', icon: Icons.people, screen: const UsersScreen()),
+  DashboardDrawerModel(
+      title: 'Analytics', icon: Icons.analytics, screen: const AnalyticsScreen()),
+  DashboardDrawerModel(
+      title: 'Out of Stock',
+      icon: Icons.warning,
+      screen: const OutOfStockScreen(products: [])), // Placeholder, will be updated with actual products
+];
 List appCategory = [
   "All",
   "Electronics ",
@@ -147,3 +183,17 @@ String formatLabel({required date, required int period}) {
       return '';
   }
 }
+
+List<Widget> dashboardScreens = [
+  CustomProductScreenBody(
+    products:   [], // Placeholder, will be updated with actual products
+    horizontalPadding: 10,
+    crossAxisCount: 2,
+    onCategoryChanged: (String value) {},
+  ),
+  const OrdersScreen(),
+  const UsersScreen(),
+  const AnalyticsScreen(),
+  const OutOfStockScreen(
+      products: []), // Placeholder, will be updated with actual products
+];

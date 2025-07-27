@@ -1,21 +1,25 @@
 import 'package:equatable/equatable.dart';
 
 class DashboardState extends Equatable {
+  final int screenIndex;
+  const DashboardState({this.screenIndex = 0});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [screenIndex];
+  
 }
+class DashboardChangeScreenIndex extends DashboardState {}
 
 class DashboardInitial extends DashboardState {}
 
 class DashboardLoading extends DashboardState {}
 
 class DashboardSuccess extends DashboardState {
-    DashboardSuccess();
+    const DashboardSuccess();
 
 }
 
 class DashboardFailer extends DashboardState {
 final  String errMessage;
-  DashboardFailer({required this.errMessage});
+  const DashboardFailer({required this.errMessage});
 }
 

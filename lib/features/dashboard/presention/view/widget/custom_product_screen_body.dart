@@ -45,7 +45,7 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
               //   '${FirebaseAuth.instance.currentUser!.displayName}',
               //   style: AppStyles.text18Regular,
               // ),
-              // const Spacer(),
+              const Spacer(),
               PopupMenuButton(
                   child: const Icon(Icons.filter_list),
                   itemBuilder: (context) => appCategory.map((category) {
@@ -59,7 +59,7 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
                         );
                       }).toList()),
               const SizedBox(
-                width: 10,
+                width: 16,
               )
             ]),
           ),
