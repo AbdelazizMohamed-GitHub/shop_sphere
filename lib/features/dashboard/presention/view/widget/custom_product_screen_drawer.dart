@@ -8,7 +8,7 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/order_analysis_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/users_screen.dart';
+import 'package:shop_sphere/features/users/presention/view/screen/users_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/shopsphere_app.dart';
 
