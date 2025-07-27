@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/notification_service.dart';
-import 'package:shop_sphere/features/dashboard/domain/repo/notification_repo.dart';
+import 'package:shop_sphere/features/users/domain/repo/notification_repo.dart';
 
 class NotificationRepoImpl extends NotificationRepo {
 

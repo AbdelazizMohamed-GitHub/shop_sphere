@@ -4,8 +4,8 @@ import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/analytics/data/repo_impl/analytics_repo_impl.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
-import 'package:shop_sphere/features/dashboard/data/repo_impl/mange_users_impl.dart';
-import 'package:shop_sphere/features/dashboard/data/repo_impl/notification_repo_impl.dart';
+import 'package:shop_sphere/features/users/data/repo_impl/users_impl.dart';
+import 'package:shop_sphere/features/users/data/repo_impl/notification_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
@@ -32,7 +32,7 @@ void setupLocator() {
   getIt.registerLazySingleton<AddressRepoImpl>(() => AddressRepoImpl(firestoreService: getIt<FirestoreService>()));
   getIt.registerLazySingleton<OrderRepoImpl>(() => OrderRepoImpl(firestoreService: getIt<FirestoreService>()));
   getIt.registerLazySingleton<DashboardRepoImpl>(() => DashboardRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<MangeUsersRepoImpl>(() => MangeUsersRepoImpl(firestoreService: getIt<FirestoreService>()));
+  getIt.registerLazySingleton<UsersRepoImpl>(() => UsersRepoImpl(firestoreService: getIt<FirestoreService>()));
   getIt.registerLazySingleton<NotificationRepoImpl>(() => NotificationRepoImpl());
   getIt.registerLazySingleton<AnalyticsRepoImpl>(() => AnalyticsRepoImpl(firestoreService: getIt<FirestoreService>()));
 

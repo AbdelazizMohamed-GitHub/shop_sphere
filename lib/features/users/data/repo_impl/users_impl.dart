@@ -3,12 +3,12 @@ import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
-import 'package:shop_sphere/features/dashboard/domain/repo/mange_users_repo.dart';
+import 'package:shop_sphere/features/users/domain/repo/users_repo.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class MangeUsersRepoImpl extends MangeUsersRepo {
+class UsersRepoImpl extends UsersRepo {
   final FirestoreService firestoreService;
-  MangeUsersRepoImpl({required this.firestoreService});
+  UsersRepoImpl({required this.firestoreService});
   @override
   Future<Either<FirebaseFailure, List<UserEntity>>> getUsers(
       {required bool isStaff}) async {

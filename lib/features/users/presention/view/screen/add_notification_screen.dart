@@ -6,8 +6,8 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
-import 'package:shop_sphere/features/dashboard/data/repo_impl/notification_repo_impl.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/add_notification_cubit/add_notification_cubit.dart';
+import 'package:shop_sphere/features/users/data/repo_impl/notification_repo_impl.dart';
+import 'package:shop_sphere/features/users/presention/controller/add_notification_cubit/add_notification_cubit.dart';
 
 class AddNotificationScreen extends StatefulWidget {
   const AddNotificationScreen({

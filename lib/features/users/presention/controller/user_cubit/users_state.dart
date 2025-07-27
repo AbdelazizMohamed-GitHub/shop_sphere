@@ -1,4 +1,4 @@
-part of 'mange_users_cubit.dart';
+part of 'users_cubit.dart';
 
 sealed class MangeUsersState extends Equatable {
   const MangeUsersState();

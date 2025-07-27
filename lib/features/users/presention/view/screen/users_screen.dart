@@ -4,8 +4,8 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
-import 'package:shop_sphere/features/dashboard/data/repo_impl/mange_users_impl.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/mange_users/mange_users_cubit.dart';
+import 'package:shop_sphere/features/users/data/repo_impl/users_impl.dart';
+import 'package:shop_sphere/features/users/presention/controller/user_cubit/users_cubit.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/add_notification_screen.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/customer_order.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/staff_product_screen.dart';
@@ -23,7 +23,7 @@ class _UsersScreenState extends State<UsersScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          MangeUsersCubit(mangeUsersRepo: getIt<MangeUsersRepoImpl>())
+          MangeUsersCubit(mangeUsersRepo: getIt<UsersRepoImpl>())
             ..getUsers(isStaff: true),
       child: Builder(
         builder: (context) {
