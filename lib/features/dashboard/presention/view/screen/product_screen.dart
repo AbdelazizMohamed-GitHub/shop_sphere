@@ -63,7 +63,11 @@ class _ProductScreenState extends State<ProductScreen> {
                 products.where((product) => product.stock == 0).toList();
             return LayoutBuilder(builder: (context, constraints) {
               double horizontalPadding = constraints.maxWidth > 600 ? 20 : 10;
-              int crossAxisCount = 2;
+              int crossAxisCount = constraints.maxWidth > 900
+                  ? 5
+                  : constraints.maxWidth > 600
+                      ? 3
+                      : 2;
 
               if (constraints.maxWidth > 700) {
                 List<Widget> dashboardScreens = [
@@ -93,16 +97,16 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                       Expanded(
-                        child:BlocBuilder<DashboardCubit, DashboardState>(
-              builder: (context, state) {
-                return IndexedStack(
-                  index:state.screenIndex,
-                  children: dashboardScreens,
-                );
-              },
-           
-                      ),
-                   ) ],
+                        child: BlocBuilder<DashboardCubit, DashboardState>(
+                          builder: (context, state) {
+                            return IndexedStack(
+                              index: state.screenIndex,
+                              children: dashboardScreens,
+                            );
+                          },
+                        ),
+                      )
+                    ],
                   ),
                 );
               } else {

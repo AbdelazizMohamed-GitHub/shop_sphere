@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/utils/app_color.dart';
 
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -16,6 +17,7 @@ class CustomProductScreenDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: AppColors.backgroundColor,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -38,14 +40,14 @@ class CustomProductScreenDrawer extends StatelessWidget {
                     style: AppStyles.text18Regular,
                   ),
                   onTap: () {
-                    context.read<DashboardCubit>().changeScreenIndex(index);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) =>
-                    //         dashboardDrawerItems[index].screen,
-                    //   ),
-                    // );
+                 MediaQuery.of(context).size.width>700?   context.read<DashboardCubit>().changeScreenIndex(index):
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            dashboardDrawerItems[index].screen,
+                      ),
+                    );
                   });
             },
           ),

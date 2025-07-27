@@ -30,58 +30,60 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
   @override
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 10),
-            child: Row(children: [
-              Text(
-                "Welcome ",
-                style: AppStyles.text18Regular
-                    .copyWith(color: AppColors.primaryColor),
+    return Material(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10, bottom: 10),
+              child: Row(children: [
+                Text(
+                  "Welcome ",
+                  style: AppStyles.text18Regular
+                      .copyWith(color: AppColors.primaryColor),
+                ),
+                // Text(
+                //   '${FirebaseAuth.instance.currentUser!.displayName}',
+                //   style: AppStyles.text18Regular,
+                // ),
+                const Spacer(),
+                PopupMenuButton(
+                    child: const Icon(Icons.filter_list),
+                    itemBuilder: (context) => appCategory.map((category) {
+                          return PopupMenuItem(
+                            onTap: () {
+                              widget.onCategoryChanged(category);
+                              setState(() {});
+                            },
+                            value: category,
+                            child: Text(category),
+                          );
+                        }).toList()),
+                const SizedBox(
+                  width: 16,
+                )
+              ]),
+            ),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                horizontal: widget.horizontalPadding,
               ),
-              // Text(
-              //   '${FirebaseAuth.instance.currentUser!.displayName}',
-              //   style: AppStyles.text18Regular,
-              // ),
-              const Spacer(),
-              PopupMenuButton(
-                  child: const Icon(Icons.filter_list),
-                  itemBuilder: (context) => appCategory.map((category) {
-                        return PopupMenuItem(
-                          onTap: () {
-                            widget.onCategoryChanged(category);
-                            setState(() {});
-                          },
-                          value: category,
-                          child: Text(category),
-                        );
-                      }).toList()),
-              const SizedBox(
-                width: 16,
-              )
-            ]),
-          ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(
-              horizontal: widget.horizontalPadding,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: widget.crossAxisCount,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 5 / 6,
+              ),
+              itemCount: widget.products.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CustomDashboardProductItem(
+                    product: widget.products[index]);
+              },
             ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: widget.crossAxisCount,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 5 / 6,
-            ),
-            itemCount: widget.products.length,
-            itemBuilder: (BuildContext context, int index) {
-              return CustomDashboardProductItem(
-                  product: widget.products[index]);
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
