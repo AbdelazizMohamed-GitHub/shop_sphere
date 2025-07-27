@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
@@ -69,6 +70,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       appBar: AppBar(
         leading: const CustomBackButton(),
@@ -78,7 +80,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         key: formKey,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 20),
             child: Column(
               children: [
                 CustomTextForm(
@@ -164,7 +166,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 BlocConsumer<DashboardCubit, DashboardState>(
                   listener: (context, state) {
                     if (state is DashboardFailer) {
-                      Warning.showWarning(context, message: state.errMessage,isError: true);
+                      Warning.showWarning(context,
+                          message: state.errMessage, isError: true);
                     }
                     if (state is DashboardSuccess) {
                       Warning.showWarning(context,

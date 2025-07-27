@@ -43,4 +43,15 @@ class ResponsiveLayout {
     double padding = getHorizontalPadding(context) * 2;
     return (totalWidth - spacing - padding) / count;
   }
+
+  static double getHorizontalLargePadding(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    if (width >= 1024) {
+      return 250.0;
+    } else if (width >= 600) {
+      return 100.0;
+    } else {
+      return 16.0;
+    }
+  }
 }

@@ -57,7 +57,6 @@ class _DashboardScreenState extends State<OrdersScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-          
             CustomTextForm(
               onChanged: (value) {
                 searchText = value;
@@ -142,7 +141,6 @@ class _DashboardScreenState extends State<OrdersScreen> {
               ],
             ),
             const SizedBox(height: 20),
-      
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("orders")
@@ -161,10 +159,10 @@ class _DashboardScreenState extends State<OrdersScreen> {
                   orders = snap.data!.docs
                       .map((e) => OrderModel.fromMap(e.data()))
                       .toList();
-      
+
                   final displayOrders =
                       searchText.isEmpty ? orders : filteredOrders;
-      
+
                   if (displayOrders.isEmpty) {
                     return const Center(
                       child: Text("No Orders Found"),
@@ -173,6 +171,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
+                        columnSpacing: 12,
                         columns: const [
                           DataColumn(label: Text('Number')),
                           DataColumn(label: Text('Tracking Number')),

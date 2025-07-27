@@ -49,8 +49,7 @@ List<DashboardDrawerModel> dashboardDrawerItems = [
       icon: Icons.shopping_bag,
       screen: CustomProductScreenBody(
         products: [], // Placeholder, will be updated with actual products
-        horizontalPadding: 10,
-        crossAxisCount: 2,
+      
         onCategoryChanged: (String value) {},
       )),
   DashboardDrawerModel(
@@ -184,16 +183,3 @@ String formatLabel({required date, required int period}) {
   }
 }
 
-List<Widget> dashboardScreens = [
-  CustomProductScreenBody(
-    products:   [], // Placeholder, will be updated with actual products
-    horizontalPadding: 10,
-    crossAxisCount: 2,
-    onCategoryChanged: (String value) {},
-  ),
-  const OrdersScreen(),
-  const UsersScreen(),
-  const AnalyticsScreen(),
-  const OutOfStockScreen(
-      products: []), // Placeholder, will be updated with actual products
-];

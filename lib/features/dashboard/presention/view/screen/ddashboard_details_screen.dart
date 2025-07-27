@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -19,6 +20,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final discountedPrice =
         product.price - (product.price * product.discount / 100);
+    double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +39,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
                     },
                   ),
                 );
-              }),
+              },),
           const SizedBox(
             width: 20,
           )
@@ -47,7 +49,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding:  EdgeInsets.symmetric(vertical: 16,horizontal: horizontalPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
