@@ -58,41 +58,41 @@ class ShopSphere extends StatelessWidget {
             themeMode: ThemeMode.system,
             theme: isLightTheme
                 ? AppTheme.lightTheme
-                : AppTheme.darkTheme,
-            home: StreamBuilder<User?>(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                }
+                : AppTheme.darkTheme,home: const ProductScreen(),
+            // home: StreamBuilder<User?>(
+            //   stream: FirebaseAuth.instance.authStateChanges(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Scaffold(
+            //         body: Center(child: CircularProgressIndicator()),
+            //       );
+            //     }
 
-                if (!snapshot.hasData) {
-                  return const GetStartedScreen();
-                }
+            //     if (!snapshot.hasData) {
+            //       return const GetStartedScreen();
+            //     }
 
-                return FutureBuilder<UserEntity>(
-                  future: getIt<FirestoreService>().getUserData(),
-                  builder: (context, userSnapshot) {
-                    if (userSnapshot.connectionState == ConnectionState.waiting) {
-                      return const Scaffold(
-                        body: Center(child: CircularProgressIndicator()),
-                      );
-                    }
+            //     return FutureBuilder<UserEntity>(
+            //       future: getIt<FirestoreService>().getUserData(),
+            //       builder: (context, userSnapshot) {
+            //         if (userSnapshot.connectionState == ConnectionState.waiting) {
+            //           return const Scaffold(
+            //             body: Center(child: CircularProgressIndicator()),
+            //           );
+            //         }
 
-                    if (userSnapshot.hasError || !userSnapshot.hasData) {
-                      return const GetStartedScreen(); // أو اعرض رسالة خطأ
-                    }
+            //         if (userSnapshot.hasError || !userSnapshot.hasData) {
+            //           return const GetStartedScreen(); // أو اعرض رسالة خطأ
+            //         }
 
-                    final user = userSnapshot.data!;
-                    return user.isStaff
-                        ? const ProductScreen()
-                        : const MainScreen();
-                  },
-                );
-              },
-            ),
+            //         final user = userSnapshot.data!;
+            //         return user.isStaff
+            //             ? const ProductScreen()
+            //             : const MainScreen();
+            //       },
+            //     );
+            //   },
+            // ),
           );
         },
       ),

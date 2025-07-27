@@ -12,12 +12,12 @@ class CustomProductScreenBody extends StatefulWidget {
   const CustomProductScreenBody({
     super.key,
     required this.products,
-  
     required this.horizontalPadding,
-    required this.crossAxisCount, required this.onCategoryChanged,
+    required this.crossAxisCount,
+    required this.onCategoryChanged,
   });
   final List<ProductEntity> products;
-final ValueChanged<String> onCategoryChanged;
+  final ValueChanged<String> onCategoryChanged;
   final double horizontalPadding;
   final int crossAxisCount;
 
@@ -28,7 +28,6 @@ final ValueChanged<String> onCategoryChanged;
 
 class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
   @override
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -42,25 +41,23 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
                 style: AppStyles.text18Regular
                     .copyWith(color: AppColors.primaryColor),
               ),
-              Text(
-                '${FirebaseAuth.instance.currentUser!.displayName}',
-                style: AppStyles.text18Regular,
-              ),
-              const Spacer(),
-              Material(
-                child: PopupMenuButton(
-                    child: const Icon(Icons.filter_list),
-                    itemBuilder: (context) => appCategory.map((category) {
-                          return PopupMenuItem(
-                            onTap: () {
-                              widget.onCategoryChanged(category);
-                              setState(() {});
-                            },
-                            value: category,
-                            child: Text(category),
-                          );
-                        }).toList()),
-              ),
+              // Text(
+              //   '${FirebaseAuth.instance.currentUser!.displayName}',
+              //   style: AppStyles.text18Regular,
+              // ),
+              // const Spacer(),
+              PopupMenuButton(
+                  child: const Icon(Icons.filter_list),
+                  itemBuilder: (context) => appCategory.map((category) {
+                        return PopupMenuItem(
+                          onTap: () {
+                            widget.onCategoryChanged(category);
+                            setState(() {});
+                          },
+                          value: category,
+                          child: Text(category),
+                        );
+                      }).toList()),
               const SizedBox(
                 width: 10,
               )

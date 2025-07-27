@@ -68,30 +68,36 @@ class _ProductScreenState extends State<ProductScreen> {
               } else if (constraints.maxWidth >= 600) {
                 crossAxisCount = 3;
               }
-if (MediaQuery.of(context).size.width > 900) {
-  return Row(
-    children: [
-      SizedBox(
-        width: 250,
-        child:CustomProductScreenDrawer(outOfStock: outOfStock,) ,
-      ),
-     Expanded(child: CustomProductScreenBody(products: products,horizontalPadding: horizontalPadding,crossAxisCount: crossAxisCount,onCategoryChanged: (String value) { 
-        setState(() {
-          selectedCategory = value;
-        });
-       },)
-     
-     
-     )
-      
-    ],
-  );
-}
-
- 
+              if (MediaQuery.of(context).size.width > 900) {
+                return Scaffold(
+                  body: Row(
+                    children: [
+                      SizedBox(
+                        width: 250,
+                        child: CustomProductScreenDrawer(
+                          outOfStock: outOfStock,
+                        ),
+                      ),
+                      Expanded(
+                          child: CustomProductScreenBody(
+                        products: products,
+                        horizontalPadding: horizontalPadding,
+                        crossAxisCount: crossAxisCount,
+                        onCategoryChanged: (String value) {
+                          setState(() {
+                            selectedCategory = value;
+                          });
+                        },
+                      ))
+                    ],
+                  ),
+                );
+              }
 
               return Scaffold(
-                drawer: CustomProductScreenDrawer(outOfStock: outOfStock,),
+                drawer: CustomProductScreenDrawer(
+                  outOfStock: outOfStock,
+                ),
                 appBar: AppBar(
                   title: Text("Products ${products.length}",
                       style: AppStyles.text18Regular),
@@ -110,12 +116,16 @@ if (MediaQuery.of(context).size.width > 900) {
                   ],
                 ),
                 body: InternetBannerWrapper(
-                  child: CustomProductScreenBody(products: products,horizontalPadding: horizontalPadding,crossAxisCount: crossAxisCount, onCategoryChanged: (String value) { 
+                    child: CustomProductScreenBody(
+                  products: products,
+                  horizontalPadding: horizontalPadding,
+                  crossAxisCount: crossAxisCount,
+                  onCategoryChanged: (String value) {
                     setState(() {
                       selectedCategory = value;
                     });
-                   },)
-                ),
+                  },
+                )),
                 floatingActionButton: FloatingActionButton(
                   backgroundColor: AppColors.primaryColor,
                   onPressed: () {

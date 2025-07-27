@@ -10,7 +10,7 @@ class CustomDashboardProductItem extends StatelessWidget {
   final ProductEntity product;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return InkWell( 
       onTap: () {
         Navigator.push(
           context,
@@ -39,7 +39,8 @@ class CustomDashboardProductItem extends StatelessWidget {
                   imageUrl: product.imageUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => const CustomImageLoading(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.error),
                 ),
               ),
             ),
@@ -55,7 +56,8 @@ class CustomDashboardProductItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('\$ ${product.price}', style: AppStyles.text16Bold),
+                      Text('\$ ${product.price}',
+                          style: AppStyles.text16Bold),
                       const Spacer(),
                       Text(
                         '${product.stock} Stock',
