@@ -83,7 +83,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar: isDesktop&&context.watch<DashboardCubit>().state.screenIndex != 0
+            appBar: isDesktop
                 ? null
                 : AppBar(
                     title: Text("Products ${products.length}",
@@ -111,8 +111,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 if (isDesktop)
                   SizedBox(
                     width: 250,
-                    child:
-                        CustomProductScreenDrawer(outOfStock: outOfStock),
+                    child: CustomProductScreenDrawer(outOfStock: outOfStock),
                   ),
                 Expanded(
                   child: BlocBuilder<DashboardCubit, DashboardState>(
@@ -151,4 +150,3 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 }
-

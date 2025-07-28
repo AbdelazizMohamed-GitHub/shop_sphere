@@ -59,25 +59,33 @@ class CustomProductScreenDrawer extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          ResponsiveLayout.isDesktop(context)
-                              ? context
-                                  .read<DashboardCubit>()
-                                  .changeScreenIndex(index)
-                              : index <= 3
-                                  ? Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            dashboardDrawerItems[index].screen,
-                                      ),
-                                    )
-                                  : Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => OutOfStockScreen(
-                                            products: outOfStock),
-                                      ),
-                                    );
+                          if (ResponsiveLayout.isDesktop(context)) {
+                            context
+                                .read<DashboardCubit>()
+                                .changeScreenIndex(index);
+                          } else {
+                            // قفل الـ Drawer أولاً
+                            Navigator.pop(context);
+
+                            // ثم التنقل للشاشة المطلوبة
+                            if (index <= 3) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      dashboardDrawerItems[index].screen,
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      OutOfStockScreen(products: outOfStock),
+                                ),
+                              );
+                            }
+                          }
                         }),
                   );
                 },
