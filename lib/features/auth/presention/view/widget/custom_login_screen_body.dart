@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
@@ -89,7 +88,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
                   (route) => false);
             }
             if (state is AuthError) {
-              print('${state.errMessage}');
+         
               Warning.showWarning(context,
                   isError: true, message: state.errMessage);
             }

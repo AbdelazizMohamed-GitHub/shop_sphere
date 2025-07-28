@@ -48,7 +48,7 @@ List<DashboardDrawerModel> dashboardDrawerItems = [
       title: 'Products',
       icon: Icons.shopping_bag,
       screen: CustomProductScreenBody(
-        products: [], // Placeholder, will be updated with actual products
+        products: const [], // Placeholder, will be updated with actual products
       
         onCategoryChanged: (String value) {},
       )),

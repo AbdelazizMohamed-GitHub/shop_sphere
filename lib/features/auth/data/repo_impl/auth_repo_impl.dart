@@ -69,29 +69,23 @@ class AuthRepoImpl extends AuthRepo {
  Future<Either<FirebaseFailure, String>> logInWithEmailAndPassword(
     String email, String password, context) async {
   try {
-    print("🔐 Trying to sign in with: $email");
 
     UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
 
-    print("✅ Firebase login successful, UID: ${user.user?.uid}");
 
     final data = await firestoreService.getUserData();
-    print("📄 User Data Fetched: ${data.toString()}");
 
     if (data.isStaff) {
-      print("👔 User is staff");
       return const Right('Staff');
     }
 
     return Right(user.user?.uid ?? "");
   } on FirebaseAuthException catch (e) {
-    print('❌ FirebaseAuthException => Code: ${e.code} | Message: ${e.message}');
     return Left(FirebaseFailure.fromCode(e.code));
   } catch (e) {
-    print("🔥 Unknown error during login: $e");
     return Left(FirebaseFailure(message: e.toString()));
   }
 }

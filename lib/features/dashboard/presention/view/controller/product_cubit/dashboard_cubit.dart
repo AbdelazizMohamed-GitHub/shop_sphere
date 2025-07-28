@@ -27,7 +27,7 @@ class DashboardCubit extends Cubit<DashboardState> {
         emit(DashboardFailer(errMessage: error.message));
       },
       (r) async {
-        emit(DashboardSuccess());
+        emit(const DashboardSuccess());
       },
     );
   }
@@ -41,7 +41,7 @@ class DashboardCubit extends Cubit<DashboardState> {
         emit(DashboardFailer(errMessage: error.message));
       },
       (r) {
-        emit(DashboardSuccess());
+        emit(const DashboardSuccess());
       },
     );
   }
@@ -57,7 +57,7 @@ class DashboardCubit extends Cubit<DashboardState> {
         emit(DashboardFailer(errMessage: error.message));
       },
       (r) {
-        emit(DashboardSuccess());
+        emit(const DashboardSuccess());
       },
     );
   }
