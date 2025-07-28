@@ -63,7 +63,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
                 errorWidget: (context, url, error) => const Icon(Icons.error),
                 height: 300,
                 width: double.infinity,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
             const SizedBox(height: 16),
@@ -118,8 +118,8 @@ class DashboardProductDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
+        padding:  EdgeInsets.symmetric(
+          horizontal:horizontalPadding ,vertical: 16
         ),
         child: BlocConsumer<DashboardCubit, DashboardState>(
           listener: (context, state) {

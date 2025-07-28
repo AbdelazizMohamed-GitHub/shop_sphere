@@ -11,12 +11,14 @@ class DashboardSearchResult extends StatelessWidget {
   final List<ProductEntity> products;
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Search Results"),
-      ),
-      body: SingleChildScrollView(child: CustomProductGrid(products: products,))
-      
-    );
+        appBar: AppBar(
+          title: const Text("Search Results"),
+        ),
+        body: SingleChildScrollView(
+            child: CustomProductGrid(
+          products: products,
+        )));
   }
 }

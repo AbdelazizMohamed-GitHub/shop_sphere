@@ -173,13 +173,13 @@ class _DashboardScreenState extends State<OrdersScreen> {
                       child: DataTable(
                         columnSpacing: 12,
                         columns: const [
-                          DataColumn(label: Text('Number')),
-                          DataColumn(label: Text('Tracking Number')),
+                          DataColumn(label: Text('Num')),
+                          DataColumn(label: Text('Tracking Num')),
                           DataColumn(label: Text('Customer Name')),
                           DataColumn(label: Text('Date')),
                           DataColumn(label: Text('Status')),
                           DataColumn(label: Text('Payment Method')),
-                          DataColumn(label: Text('Total Amount')),
+                          DataColumn(label: Text('Total Cost')),
                           DataColumn(label: Text('Actions')),
                           DataColumn(label: Text('Details')),
                         ],

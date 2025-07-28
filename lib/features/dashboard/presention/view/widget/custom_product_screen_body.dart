@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_gride.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
@@ -11,12 +13,10 @@ class CustomProductScreenBody extends StatefulWidget {
   const CustomProductScreenBody({
     super.key,
     required this.products,
-  
     required this.onCategoryChanged,
   });
   final List<ProductEntity> products;
   final ValueChanged<String> onCategoryChanged;
- 
 
   @override
   State<CustomProductScreenBody> createState() =>
@@ -44,6 +44,21 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
                 //   style: AppStyles.text18Regular,
                 // ),
                 const Spacer(),
+                ResponsiveLayout.isDesktop(context)
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SearchScreen()),
+                          );
+                        },
+                        icon: const Icon(Icons.search, size: 30),
+                      )
+                    : const SizedBox(),
+                SizedBox(
+                  width: 16,
+                ),
                 PopupMenuButton(
                     child: const Icon(Icons.filter_list),
                     itemBuilder: (context) => appCategory.map((category) {
@@ -61,7 +76,7 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
                 )
               ]),
             ),
-          CustomProductGrid(products:widget.products )
+            CustomProductGrid(products: widget.products)
           ],
         ),
       ),
