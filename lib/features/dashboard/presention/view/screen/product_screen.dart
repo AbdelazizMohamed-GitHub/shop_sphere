@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/internet.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
@@ -28,6 +27,7 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   String selectedCategory = "All";
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -41,113 +41,114 @@ class _ProductScreenState extends State<ProductScreen> {
               body: Center(child: CircularProgressIndicator()));
         } else if (snapshot.hasError) {
           return Scaffold(
-              body: CustomErrorWidget(
-            errorMessage: snapshot.error.toString(),
-            onpressed: () {
-              setState(() {});
-            },
-          ));
+            body: CustomErrorWidget(
+              errorMessage: snapshot.error.toString(),
+              onpressed: () {
+                setState(() {});
+              },
+            ),
+          );
         } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Scaffold(body: Center(child: Text("No Products Found")));
         } else {
           final List<ProductEntity> products = snapshot.data!.docs
               .map((doc) => ProductModel.fromMap(doc.data()))
               .toList();
+
           if (selectedCategory != "All") {
             products.retainWhere((product) =>
                 product.category.toLowerCase() ==
                 selectedCategory.toLowerCase());
           }
 
-          List<ProductEntity> outOfStock =
+          final List<ProductEntity> outOfStock =
               products.where((product) => product.stock == 0).toList();
 
-          if (ResponsiveLayout.isDesktop(context)) {
-            List<Widget> dashboardScreens = [
-              CustomProductScreenBody(
-                products: products,
-                onCategoryChanged: (String value) {
-                  setState(() {
-                    selectedCategory = value;
-                  });
-                },
-              ),
-              const OrdersScreen(),
-              const UsersScreen(),
-              const AnalyticsScreen(),
-              OutOfStockScreen(
-                  products: outOfStock), // Pass the outOfStock list here
-            ];
-            return Scaffold(
-              body: Row(
-                children: [
+          final isDesktop = ResponsiveLayout.isDesktop(context);
+
+          final List<Widget> dashboardScreens = [
+            CustomProductScreenBody(
+              products: products,
+              onCategoryChanged: (String value) {
+                setState(() {
+                  selectedCategory = value;
+                });
+              },
+            ),
+            const OrdersScreen(),
+            const UsersScreen(),
+            const AnalyticsScreen(),
+            OutOfStockScreen(products: outOfStock),
+          ];
+
+          return Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            appBar: isDesktop&&context.watch<DashboardCubit>().state.screenIndex != 0
+                ? null
+                : AppBar(
+                    title: Text("Products ${products.length}",
+                        style: AppStyles.text18Regular),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SearchScreen(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.search, size: 30),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+            drawer: isDesktop
+                ? null
+                : CustomProductScreenDrawer(outOfStock: outOfStock),
+            body: Row(
+              children: [
+                if (isDesktop)
                   SizedBox(
                     width: 250,
-                    child: CustomProductScreenDrawer(
-                      outOfStock: outOfStock,
-                    ),
+                    child:
+                        CustomProductScreenDrawer(outOfStock: outOfStock),
                   ),
-                  Expanded(
-                    child: BlocBuilder<DashboardCubit, DashboardState>(
-                      builder: (context, state) {
-                        return IndexedStack(
-                          index: state.screenIndex,
-                          children: dashboardScreens,
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            );
-          } else {
-            return Scaffold(
-              drawer: CustomProductScreenDrawer(
-                outOfStock: outOfStock,
-              ),
-              appBar: AppBar(
-                title: Text("Products ${products.length}",
-                    style: AppStyles.text18Regular),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SearchScreen()),
+                Expanded(
+                  child: BlocBuilder<DashboardCubit, DashboardState>(
+                    builder: (context, state) {
+                      return IndexedStack(
+                        index: state.screenIndex,
+                        children: dashboardScreens,
                       );
                     },
-                    icon: const Icon(Icons.search, size: 30),
                   ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              body: InternetBannerWrapper(
-                  child: CustomProductScreenBody(
-                products: products,
-                onCategoryChanged: (String value) {
-                  setState(() {
-                    selectedCategory = value;
-                  });
-                },
-              )),
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: AppColors.primaryColor,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const AddProductScreen(isUpdate: false),
-                    ),
-                  );
-                },
-                child: const Icon(Icons.add, color: Colors.white),
-              ),
-            );
-          }
+                ),
+              ],
+            ),
+            floatingActionButton: BlocBuilder<DashboardCubit, DashboardState>(
+              builder: (context, state) {
+                return state.screenIndex != 0
+                    ? const SizedBox()
+                    : FloatingActionButton(
+                        backgroundColor: AppColors.primaryColor,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const AddProductScreen(isUpdate: false),
+                            ),
+                          );
+                        },
+                        child: const Icon(Icons.add, color: Colors.white),
+                      );
+              },
+            ),
+          );
         }
       },
     );
   }
 }
+

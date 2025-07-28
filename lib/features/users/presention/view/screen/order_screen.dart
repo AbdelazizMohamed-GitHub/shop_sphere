@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_order_items.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
@@ -22,6 +23,8 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(
+        context); // 5% of screen width
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -48,16 +51,17 @@ class _OrderScreenState extends State<OrderScreen> {
           }
           final List displayOrder = orders.where(
             (element) {
-             return element.status != orderStauts[3];
+              return element.status != orderStauts[3];
             },
           ).toList();
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 12),
             child: ListView.builder(
               itemCount: displayOrder.length,
               itemBuilder: (BuildContext context, int index) {
-                return CustomOrderItemDashboard(orderEntity: displayOrder[index]);
+                return CustomOrderItemDashboard(
+                    orderEntity: displayOrder[index]);
               },
             ),
           );

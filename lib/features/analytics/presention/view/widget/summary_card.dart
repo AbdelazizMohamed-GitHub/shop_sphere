@@ -16,13 +16,18 @@ class SummaryCard extends StatelessWidget {
             children: [
               Text(title, style: const TextStyle(color: Colors.grey)),
               const SizedBox(height: 4),
-              Text(
-                value,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Text(
+                    value,
+                    style:
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                const  SizedBox(width: 12,), Text(subtitle, style: const TextStyle(color: Colors.green)),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(subtitle, style: const TextStyle(color: Colors.green)),
+             
+             
             ],
           ),
         ),

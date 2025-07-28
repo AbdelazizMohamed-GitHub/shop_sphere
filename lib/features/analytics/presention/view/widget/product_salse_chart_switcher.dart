@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/analytics/data/model/product_most_seller_model.dart';
+import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sell_product_list.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sell_prouducts_chart.dart';
 import 'package:shop_sphere/features/analytics/presention/view/widget/custom_most_sold_prouduct_pie_chart.dart';
 
@@ -22,6 +24,7 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveLayout.isMobile(context);
     final displayedProducts = getTop5WithOthers(widget.products);
     final totalCount =
         displayedProducts.fold<int>(0, (sum, p) => sum + p.productCount);
@@ -39,7 +42,6 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // ✅ عنوان + زر التبديل
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -56,46 +58,37 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
             ),
             const SizedBox(height: 16),
 
-            // ✅ العرض المتغير بين Pie و Bar
-            Card(
-              color: AppColors.backgroundColor,
-              margin: const EdgeInsets.all(12),
-              child: showPie
-                  ? CustomMostSoldPieChart(products: displayedProducts)
-                  : CustomMostSoldProuductsChart(products: displayedProducts),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Card(
+                    color: AppColors.backgroundColor,
+                    margin: const EdgeInsets.all(12),
+                    child: showPie
+                        ? CustomMostSoldPieChart(products: displayedProducts)
+                        : CustomMostSoldProuductsChart(
+                            products: displayedProducts),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                !isMobile
+                    ? Expanded(
+                        flex: 1,
+                        child: SizedBox(
+                            height: 250,
+                            child: CustomMostSellProductList(
+                                products: displayedProducts)),
+                      )
+                    : const SizedBox()
+              ],
             ),
 
             const SizedBox(height: 16),
-
+            isMobile
+                ? CustomMostSellProductList(products: displayedProducts)
+                : const SizedBox()
             // ✅ Legend
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: displayedProducts.length,
-              itemBuilder: (context, index) {
-                final product = displayedProducts[index];
-                final color =
-                    AppFuncations.getColorForProduct(product.productName);
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 15,
-                      height: 15,
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: color,
-                      ),
-                    ),
-                    Text(
-                      '${product.productName} (${product.productCount})',
-                      style: AppStyles.text14Regular,
-                    ),
-                  ],
-                );
-              },
-            ),
           ],
         ),
       ),

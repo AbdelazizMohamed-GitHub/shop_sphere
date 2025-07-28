@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 
 import 'package:shop_sphere/features/analytics/data/repo_impl/analytics_repo_impl.dart';
 import 'package:shop_sphere/features/analytics/presention/contoller/cubit/analytics_cubit.dart';
@@ -23,7 +24,9 @@ class AnalyticsScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Analytics Dashboard'),
           actions: [
-            IconButton(icon: const Icon(Icons.refresh), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.refresh), onPressed: () async{ await context
+                                    .read<AnalyticsCubit>()
+                                    .getAnalyticsData(limit: 10);}),
           ],
         ),
         body: SingleChildScrollView(
@@ -32,15 +35,35 @@ class AnalyticsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Time range selector
-              const SizedBox(height: 40, child: CustomTimeRange()),
+              const SizedBox(
+                  height: 40,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomTimeRange(),
+                    ],
+                  )),
               const SizedBox(height: 20),
 
               BlocBuilder<AnalyticsCubit, AnalyticsState>(
                 builder: (context, state) {
                   return state is AnalyticsLoading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Column(
+                          children: [
+                            SizedBox(
+                              height: 100,
+                            ),
+                            Center(child: CircularProgressIndicator()),
+                          ],
+                        )
                       : state is AnalyticsError
-                          ? Center(child: Text(state.message))
+                          ? CustomErrorWidget(
+                              errorMessage: state.message.toString(),
+                              onpressed: () async{
+                              await  context
+                                    .read<AnalyticsCubit>()
+                                    .getAnalyticsData(limit: 10);
+                              })
                           : state is AnalyticsLoaded
                               ? state.ordersOver.isEmpty ||
                                       state.mostSoldProducts.isEmpty

@@ -452,7 +452,7 @@ class FirestoreService {
   Future<void> checkInternet() async {
     bool isOnline = await AppFuncations.isOnline();
     if (!isOnline) {
-      FirebaseFailure ( message: '"No Internet Connection"');
+      FirebaseFailure(message: '"No Internet Connection"');
     }
   }
 
@@ -479,7 +479,7 @@ class FirestoreService {
         .collection("users")
         .where("isStaff", isEqualTo: isStaff)
         .get();
- 
+
     return querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
 
@@ -571,8 +571,9 @@ class FirestoreService {
         final name = item['name'] as String;
         final quantity = item['quantity'] as int;
         final id = item['id'] as String;
-       final priceRaw = item['price'];
-final price = priceRaw is int ? priceRaw.toDouble() : priceRaw as double;
+        final priceRaw = item['price'];
+        final price =
+            priceRaw is int ? priceRaw.toDouble() : priceRaw as double;
         final imageUrl = item['imageUrl'] as String;
 
         if (productMap.containsKey(name)) {
@@ -807,5 +808,24 @@ final price = priceRaw is int ? priceRaw.toDouble() : priceRaw as double;
 
     return await getOrdersOver(
         start: start, end: end, timeRangeIndex: timeRangeIndex);
+  }
+
+  
+
+  static Future<ProductEntity> getProduct({required String productId}) async {
+  ProductEntity data=await  FirebaseFirestore.instance
+        .collection('products')
+        .doc(productId)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        return ProductModel.fromMap(value.data()!);
+      } else {
+        throw Exception("Product not found");
+      }
+    }).catchError((error) {
+      throw Exception("Error fetching product: $error");
+    });
+  return data;
   }
 }

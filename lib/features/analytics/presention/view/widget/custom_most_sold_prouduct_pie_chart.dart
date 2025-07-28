@@ -38,6 +38,7 @@ class _CustomMostSoldPieChartState extends State<CustomMostSoldPieChart> {
       children: [
         SizedBox(
           height: 250,
+         
           child: PieChart(
             PieChartData(
               pieTouchData: PieTouchData(
@@ -51,10 +52,10 @@ class _CustomMostSoldPieChartState extends State<CustomMostSoldPieChart> {
               sections: List.generate(displayedProducts.length, (index) {
                 final product = displayedProducts[index];
                 final isTouched = index == touchedIndex;
-                final percentage =
-                    ((product.productCount / totalCount) * 100)
-                        .toStringAsFixed(1);
-                final color = AppFuncations.getColorForProduct(product.productName);
+                final percentage = ((product.productCount / totalCount) * 100)
+                    .toStringAsFixed(1);
+                final color =
+                    AppFuncations.getColorForProduct(product.productName);
 
                 return PieChartSectionData(
                   value: product.productCount.toDouble(),
@@ -73,9 +74,6 @@ class _CustomMostSoldPieChartState extends State<CustomMostSoldPieChart> {
             ),
           ),
         ),
-        
-
-       
       ],
     );
   }

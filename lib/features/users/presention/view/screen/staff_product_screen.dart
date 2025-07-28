@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_dashboard_product_item.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_gride.dart';
 import 'package:shop_sphere/features/users/data/repo_impl/users_impl.dart';
 import 'package:shop_sphere/features/users/presention/controller/user_cubit/users_cubit.dart';
 
@@ -29,7 +30,7 @@ class StaffProductScreen extends StatelessWidget {
               actions: [
                 Text(
                     "Total: ${state is MangeStaffProductsSuccess ? state.products.length : 0}"),
-               const SizedBox(
+                const SizedBox(
                   width: 15,
                 )
               ],
@@ -41,17 +42,7 @@ class StaffProductScreen extends StatelessWidget {
                 } else if (state is MangeStaffProductsSuccess) {
                   return state.products.isEmpty
                       ? const Center(child: Text("No Products Found"))
-                      : GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                          ),
-                          itemCount: state.products.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CustomDashboardProductItem(
-                                product: state.products[index]);
-                          },
-                        );
+                      : CustomProductGrid(products: state.products);
                 } else {
                   return state is MangeUsersFailure
                       ? Center(child: Text(state.errMessage))

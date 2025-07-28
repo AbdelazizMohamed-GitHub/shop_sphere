@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/users/data/repo_impl/users_impl.dart';
 import 'package:shop_sphere/features/users/presention/controller/user_cubit/users_cubit.dart';
@@ -21,6 +22,8 @@ class _UsersScreenState extends State<UsersScreen> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    double horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context) + 40;
     return BlocProvider(
       create: (context) =>
           MangeUsersCubit(mangeUsersRepo: getIt<UsersRepoImpl>())
@@ -76,7 +79,8 @@ class _UsersScreenState extends State<UsersScreen> {
                   return state.users.isEmpty
                       ? const Center(child: Text("No Users Found"))
                       : ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding),
                           itemCount: state.users.length,
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
