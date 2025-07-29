@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -35,51 +36,77 @@ class _DashboardScreenState extends State<OrdersScreen> {
   String searchText = '';
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveLayout.isMobile(context);
+    final isDesktop = ResponsiveLayout.isDesktop(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Main Screen'),
-        actions: [
-          BlocBuilder<OrderCubit, OrderState>(
-            builder: (context, state) {
-              return state is GetOrderLoading
-                  ? const Skeletonizer(enabled: true, child: Text("Loading"))
-                  : Text(
-                      "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
-                      style: AppStyles.text22SemiBold,
-                    );
-            },
-          ),
-          const SizedBox(width: 10)
-        ],
-      ),
+      appBar: !isDesktop
+          ? AppBar(
+              title: const Text('Orders'),
+              actions: [
+             isMobile?   BlocBuilder<OrderCubit, OrderState>(
+                  builder: (context, state) {
+                    return state is GetOrderLoading
+                        ? const Skeletonizer(
+                            enabled: true, child: Text("Loading"))
+                        : Text(
+                            "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
+                            style: AppStyles.text22SemiBold,
+                          );
+                  },
+                ):
+                const SizedBox(width: 10)
+              ],
+            )
+          : null,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CustomTextForm(
-              onChanged: (value) {
-                searchText = value;
-                setState(() {
-                  filteredOrders = orders.where((e) {
-                    return e.userName
-                            .toLowerCase()
-                            .contains(value.toLowerCase()) ||
-                        e.items.any((element) => element.name
-                            .toLowerCase()
-                            .contains(value.toLowerCase())) ||
-                        e.address.state
-                            .toLowerCase()
-                            .contains(value.toLowerCase()) ||
-                        e.trackingNumber
-                            .toString()
-                            .contains(value.toLowerCase());
-                  }).toList();
-                });
-              },
-              pIcon: Icons.search_rounded,
-              text: "Search for order & customer",
-              kType: TextInputType.text,
+            Row(
+              children: [
+                Expanded(
+                  child: CustomTextForm(
+                    onChanged: (value) {
+                      searchText = value;
+                      setState(() {
+                        filteredOrders = orders.where((e) {
+                          return e.userName
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase()) ||
+                              e.items.any((element) => element.name
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase())) ||
+                              e.address.state
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase()) ||
+                              e.trackingNumber
+                                  .toString()
+                                  .contains(value.toLowerCase());
+                        }).toList();
+                      });
+                    },
+                    pIcon: Icons.search_rounded,
+                    text: "Search for order & customer",
+                    kType: TextInputType.text,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                !isMobile
+                    ? BlocBuilder<OrderCubit, OrderState>(
+                        builder: (context, state) {
+                          return state is GetOrderLoading
+                              ? const Skeletonizer(
+                                  enabled: true, child: Text("Loading"))
+                              : Text(
+                                  "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
+                                  style: AppStyles.text22SemiBold,
+                                );
+                        },
+                      )
+                    : const SizedBox()
+              ],
             ),
             const SizedBox(height: 10),
             Row(

@@ -65,6 +65,7 @@ class _ProductScreenState extends State<ProductScreen> {
               products.where((product) => product.stock == 0).toList();
 
           final isDesktop = ResponsiveLayout.isDesktop(context);
+          final isTablet = ResponsiveLayout.isTablet(context);
 
           final List<Widget> dashboardScreens = [
             CustomProductScreenBody(
