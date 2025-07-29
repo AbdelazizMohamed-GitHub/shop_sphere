@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
@@ -26,10 +27,15 @@ class CustomProductScreenDrawer extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Text('Dashboard', style: AppStyles.text26BoldWhite),
-              ),
+              const UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(color: AppColors.primaryColor),
+                  accountName: Text("Abdelaziz Mohamed"),
+                  accountEmail: Text("abdelaziz@email.com"),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: AssetImage(
+                      AppImages.logo, // مثال على صورة من الإنترنت
+                    ),
+                  )),
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
