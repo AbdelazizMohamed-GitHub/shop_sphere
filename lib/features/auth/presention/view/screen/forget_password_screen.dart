@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -27,7 +28,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { final horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 70,
@@ -39,7 +41,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             )),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding:  EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Column(
           children: [
             Image.asset(

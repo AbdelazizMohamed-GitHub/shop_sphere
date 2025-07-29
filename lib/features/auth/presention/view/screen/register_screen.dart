@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/view/widget/custom_register_screen_body.dart';
@@ -11,7 +12,8 @@ class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { final horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
@@ -30,7 +32,7 @@ class RegisterScreen extends StatelessWidget {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              margin:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 40),
               padding:
                   const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 40),
               decoration: BoxDecoration(

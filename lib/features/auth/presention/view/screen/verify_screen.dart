@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -36,7 +37,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
   Future<void> _checkEmailVerification() async {}
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { final horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);
     return BlocProvider(
       create: (context) => AuthCubit(authRepo:  getIt<AuthRepoImpl>()),
       child: Scaffold(
@@ -47,7 +49,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
             leadingWidth: 100,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding:  EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Center(
               child: Column(
                 children: [

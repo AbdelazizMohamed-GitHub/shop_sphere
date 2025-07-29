@@ -4,6 +4,7 @@ import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/view/widget/custom_login_screen_body.dart';
@@ -15,8 +16,10 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);
     return BlocProvider(
-      create: (context) => AuthCubit(authRepo:  getIt<AuthRepoImpl>()),
+      create: (context) => AuthCubit(authRepo: getIt<AuthRepoImpl>()),
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
         body: SafeArea(
@@ -37,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               ]),
               Container(
                 margin:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                     EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 30),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                 decoration: BoxDecoration(
