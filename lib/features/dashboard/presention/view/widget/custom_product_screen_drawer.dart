@@ -27,14 +27,24 @@ class CustomProductScreenDrawer extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(color: AppColors.primaryColor),
-                  accountName: Text("Abdelaziz Mohamed"),
-                  accountEmail: Text("abdelaziz@email.com"),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage(
-                      AppImages.logo, // مثال على صورة من الإنترنت
+              UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(
+                      color: AppColors.backgroundColor,
                     ),
+                  accountName: Text(
+                    "Abdelaziz Mohamed",
+                    style: AppStyles.text16Bold.copyWith(color: Colors.black),
+                  ),
+                  accountEmail: Text(
+                    "abdelaziz@email.com",
+                    style:
+                        AppStyles.text14Regular.copyWith(color: Colors.black),
+                  ),
+                  currentAccountPicture: const Image(
+                    image: AssetImage(AppImages.logo),
+                    width: 80,
+                    height: 100,
+                    fit: BoxFit.cover,
                   )),
               ListView.separated(
                 shrinkWrap: true,

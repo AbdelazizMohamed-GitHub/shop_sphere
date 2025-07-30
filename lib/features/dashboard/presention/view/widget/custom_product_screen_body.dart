@@ -27,6 +27,7 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
   @override
   @override
   Widget build(BuildContext context) {
+    final isDesktop = ResponsiveLayout.isDesktop(context);
     return Material(
       child: SingleChildScrollView(
         child: Column(
@@ -34,11 +35,13 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
             Padding(
               padding: const EdgeInsets.only(left: 10, bottom: 10),
               child: Row(children: [
-                Text(
-                  "Welcome ",
-                  style: AppStyles.text18Regular
-                      .copyWith(color: AppColors.primaryColor),
-                ),
+                isDesktop
+                    ? const SizedBox()
+                    : Text(
+                        "Welcome ",
+                        style: AppStyles.text18Regular
+                            .copyWith(color: AppColors.primaryColor),
+                      ),
                 // Text(
                 //   '${FirebaseAuth.instance.currentUser!.displayName}',
                 //   style: AppStyles.text18Regular,
@@ -56,7 +59,7 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
                         icon: const Icon(Icons.search, size: 30),
                       )
                     : const SizedBox(),
-                SizedBox(
+                const SizedBox(
                   width: 16,
                 ),
                 PopupMenuButton(

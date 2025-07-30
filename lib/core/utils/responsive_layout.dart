@@ -17,8 +17,10 @@ class ResponsiveLayout {
     if (width >= 1200) {
       return 5;
     } else if (width >= 1024) {
-      return 4;
+      return 5;
     } else if (width >= 600) {
+      return 4;
+    } else if (width >= 400) {
       return 3;
     } else {
       return 2;

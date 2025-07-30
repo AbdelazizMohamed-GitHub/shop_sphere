@@ -84,26 +84,27 @@ class _ProductScreenState extends State<ProductScreen> {
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar: isDesktop
-                ? null
-                : AppBar(
-                    title: Text("Products ${products.length}",
-                        style: AppStyles.text18Regular),
-                    actions: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SearchScreen(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.search, size: 30),
+            appBar:
+                isDesktop || context.watch<DashboardCubit>().currentIndex != 0
+                    ? null
+                    : AppBar(
+                        title: Text("Products ${products.length}",
+                            style: AppStyles.text18Regular),
+                        actions: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SearchScreen(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.search, size: 30),
+                          ),
+                          const SizedBox(width: 10),
+                        ],
                       ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
             drawer: isDesktop
                 ? null
                 : CustomProductScreenDrawer(outOfStock: outOfStock),

@@ -38,29 +38,32 @@ class _DashboardScreenState extends State<OrdersScreen> {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveLayout.isMobile(context);
     final isDesktop = ResponsiveLayout.isDesktop(context);
+    final horizontalPadding = ResponsiveLayout.getHorizontalPadding(context);
 
     return Scaffold(
       appBar: !isDesktop
           ? AppBar(
               title: const Text('Orders'),
               actions: [
-             isMobile?   BlocBuilder<OrderCubit, OrderState>(
-                  builder: (context, state) {
-                    return state is GetOrderLoading
-                        ? const Skeletonizer(
-                            enabled: true, child: Text("Loading"))
-                        : Text(
-                            "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
-                            style: AppStyles.text22SemiBold,
-                          );
-                  },
-                ):
-                const SizedBox(width: 10)
+                isMobile
+                    ? BlocBuilder<OrderCubit, OrderState>(
+                        builder: (context, state) {
+                          return state is GetOrderLoading
+                              ? const Skeletonizer(
+                                  enabled: true, child: Text("Loading"))
+                              : Text(
+                                  "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
+                                  style: AppStyles.text22SemiBold,
+                                );
+                        },
+                      )
+                    : const SizedBox(width: 10)
               ],
             )
           : null,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding:
+            EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
