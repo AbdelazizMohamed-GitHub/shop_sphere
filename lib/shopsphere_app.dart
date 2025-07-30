@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
@@ -46,13 +47,14 @@ class ShopSphere extends StatelessWidget {
       ],
       child: BlocBuilder<AppCubit, bool>(
         builder: (context, isLightTheme) {
-          return MaterialApp(
+          return MaterialApp.router(
+
             debugShowCheckedModeBanner: false,
             title: 'ShopSphere',
             themeMode: ThemeMode.system,
             theme: isLightTheme
                 ? AppTheme.lightTheme
-                : AppTheme.darkTheme,home: const ProductScreen(),
+                : AppTheme.darkTheme,routerConfig: router,
             // home: StreamBuilder<User?>(
             //   stream: FirebaseAuth.instance.authStateChanges(),
             //   builder: (context, snapshot) {
