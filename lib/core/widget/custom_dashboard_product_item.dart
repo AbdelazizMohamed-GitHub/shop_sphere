@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard_details_screen.dart';
@@ -10,16 +11,9 @@ class CustomDashboardProductItem extends StatelessWidget {
   final ProductEntity product;
   @override
   Widget build(BuildContext context) {
-    return InkWell( 
+    return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return DashboardProductDetailsScreen(product: product);
-            },
-          ),
-        );
+        context.go('/product-details/:${product.name}', extra: product);
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -39,8 +33,7 @@ class CustomDashboardProductItem extends StatelessWidget {
                   imageUrl: product.imageUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => const CustomImageLoading(),
-                  errorWidget: (context, url, error) =>
-                      const Icon(Icons.error),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
             ),
@@ -56,8 +49,7 @@ class CustomDashboardProductItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('\$ ${product.price}',
-                          style: AppStyles.text16Bold),
+                      Text('\$ ${product.price}', style: AppStyles.text16Bold),
                       const Spacer(),
                       Text(
                         '${product.stock} Stock',

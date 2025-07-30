@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:go_router/go_router.dart';
 
+import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -29,8 +32,8 @@ class CustomProductScreenDrawer extends StatelessWidget {
             children: [
               UserAccountsDrawerHeader(
                   decoration: const BoxDecoration(
-                      color: AppColors.backgroundColor,
-                    ),
+                    color: AppColors.backgroundColor,
+                  ),
                   accountName: Text(
                     "Abdelaziz Mohamed",
                     style: AppStyles.text16Bold.copyWith(color: Colors.black),
@@ -62,47 +65,54 @@ class CustomProductScreenDrawer extends StatelessWidget {
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(12)),
                     child: ListTile(
-                        leading: Icon(dashboardDrawerItems[index].icon,
-                            color: state.screenIndex == index
-                                ? Colors.white
-                                : Colors.black),
-                        title: Text(
-                          dashboardDrawerItems[index].title,
-                          style: AppStyles.text18Regular.copyWith(
-                            color: state.screenIndex == index
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                      leading: Icon(dashboardDrawerItems[index].icon,
+                          color: state.screenIndex == index
+                              ? Colors.white
+                              : Colors.black),
+                      title: Text(
+                        dashboardDrawerItems[index].title,
+                        style: AppStyles.text18Regular.copyWith(
+                          color: state.screenIndex == index
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        onTap: () {
-                          if (ResponsiveLayout.isDesktop(context)) {
-                            context
-                                .read<DashboardCubit>()
-                                .changeScreenIndex(index);
-                          } else {
-                            // قفل الـ Drawer أولاً
-                            Navigator.pop(context);
+                      ),
+                      onTap: () {
+                        if (ResponsiveLayout.isDesktop(context)) {
+                          context
+                              .read<DashboardCubit>()
+                              .changeScreenIndex(index);
+                          window.history
+                              .replaceState(null, 'title', tabs[index]);
 
-                            // ثم التنقل للشاشة المطلوبة
-                            if (index <= 3) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      dashboardDrawerItems[index].screen,
-                                ),
-                              );
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      OutOfStockScreen(products: outOfStock),
-                                ),
-                              );
-                            }
+                          // WidgetsBinding.instance.addPostFrameCallback((_) {
+                          //   GoRouter.of(context).replace(tabs[index]);
+                          // });
+                        } else {
+                          // قفل الـ Drawer أولاً
+                          Navigator.pop(context);
+
+                          // ثم التنقل للشاشة المطلوبة
+                          if (index <= 3) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    dashboardDrawerItems[index].screen,
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    OutOfStockScreen(products: outOfStock),
+                              ),
+                            );
                           }
-                        }),
+                        }
+                      },
+                    ),
                   );
                 },
               ),

@@ -65,6 +65,13 @@ List<DashboardDrawerModel> dashboardDrawerItems = [
       icon: Icons.warning,
       screen: const OutOfStockScreen(products: [])), // Placeholder, will be updated with actual products
 ];
+   final List<String> tabs = [
+    '/dashboard',
+    '/dashboard/orders',
+    '/dashboard/users',
+    '/dashboard/analytics',
+    '/dashboard/out-of-stock',
+  ];
 List appCategory = [
   "All",
   "Electronics ",

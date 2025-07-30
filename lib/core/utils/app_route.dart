@@ -1,54 +1,67 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
+import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard_details_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
-import 'package:shop_sphere/features/explor/data/model/product_model.dart';
-import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
+import 'package:shop_sphere/features/users/presention/view/screen/users_screen.dart';
 
 final GoRouter router = GoRouter(
+  initialLocation: '/dashboard',
   routes: [
+    /// 🧱 شيل روت للصفحات اللي فيها drawer
+
     GoRoute(
-      path: '/Products',
-      builder: (context, state) => const ProductScreen(),
-    ),
-    GoRoute(
-      path: '/Orders',
+      path: '/dashboard/orders',
       builder: (context, state) => const OrdersScreen(),
     ),
     GoRoute(
-      path: '/Orders/OrderDetails',
+      path: '/dashboard/users',
+      builder: (context, state) => const UsersScreen(),
+    ),
+    GoRoute(
+      path: '/dashboard/analytics',
+      builder: (context, state) => const AnalyticsScreen(),
+    ),
+    GoRoute(
+      path: '/dashboard/out-of-stock',
       builder: (context, state) {
-        final order = state.extra as OrderModel;
-        return OrdersDetailsScreen(order: order);
+        final products = state.extra;
+        if (products == null || products is! List<ProductEntity>) {
+          return const Scaffold(
+            body: Center(child: Text('No products found!')),
+          );
+        }
+        return OutOfStockScreen(products: products);
       },
     ),
+
+    /// 📄 صفحات ما فيهاش Drawer (برّا ShellRoute)
     GoRoute(
-      path: '/AddProduct',
-      builder: (context, state) => const AddProductScreen(
-        isUpdate: false,
-      ),
+      path: '/dashboard',
+      builder: (context, state) => const ProductScreen(),
     ),
     GoRoute(
-        path: '/details/:name',
-        builder: (context, state) {
-           final nameFromUrl = state.pathParameters['name'];
-          final product = state.extra as ProductModel;
-          return DashboardProductDetailsScreen(product: product);
-        }),
-    GoRoute(
-      path: '/Search',
-      builder: (context, state) => const SearchScreen(),
+      path: '/product-details/:name',
+      builder: (context, state) {
+        final product = state.extra;
+        if (product == null || product is! ProductEntity) {
+          return const Scaffold(
+            body: Center(child: Text('No products found!')),
+          );
+        }
+        return DashboardProductDetailsScreen(product: product);
+      },
     ),
-    // GoRoute(
-    //   path: '/orders',
-    //   builder: (context, state) => const OrdersScreen(),
-    // ),
-    // GoRoute(
-    //   path: '/orders',
-    //   builder: (context, state) => const OrdersScreen(),
-    // ),
+
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    )
   ],
 );
