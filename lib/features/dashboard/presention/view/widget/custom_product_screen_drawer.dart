@@ -85,9 +85,7 @@ class CustomProductScreenDrawer extends StatelessWidget {
                           window.history
                               .replaceState(null, 'title', tabs[index]);
 
-                          // WidgetsBinding.instance.addPostFrameCallback((_) {
-                          //   GoRouter.of(context).replace(tabs[index]);
-                          // });
+                         
                         } else {
                           // قفل الـ Drawer أولاً
                           Navigator.pop(context);

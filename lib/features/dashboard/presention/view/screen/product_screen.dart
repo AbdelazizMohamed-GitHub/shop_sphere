@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
@@ -65,7 +66,7 @@ class _ProductScreenState extends State<ProductScreen> {
               products.where((product) => product.stock == 0).toList();
 
           final isDesktop = ResponsiveLayout.isDesktop(context);
-          final isTablet = ResponsiveLayout.isTablet(context);
+         
 
           final List<Widget> dashboardScreens = [
             CustomProductScreenBody(
@@ -134,13 +135,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     : FloatingActionButton(
                         backgroundColor: AppColors.primaryColor,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const AddProductScreen(isUpdate: false),
-                            ),
-                          );
+                         context.go('/add-product',extra: false);
                         },
                         child: const Icon(Icons.add, color: Colors.white),
                       );

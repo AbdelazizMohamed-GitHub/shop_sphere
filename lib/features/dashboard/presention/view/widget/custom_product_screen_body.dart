@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
@@ -50,11 +51,7 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
                 ResponsiveLayout.isDesktop(context)
                     ? IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SearchScreen()),
-                          );
+                         context.go('/search');
                         },
                         icon: const Icon(Icons.search, size: 30),
                       )

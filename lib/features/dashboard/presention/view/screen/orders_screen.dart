@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
@@ -300,12 +301,9 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                 DataCell(
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              OrdersDetailsScreen(order: order),
-                                        ),
+                                      context.go(
+                                        '/order-details/${order.items[0].productName}',
+                                        extra: order,
                                       );
                                     },
                                     child: const Text('View Details'),
