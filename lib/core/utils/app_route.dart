@@ -78,9 +78,11 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoute.addProduct,
       builder: (context, state) {
-        final bool isUpdate = state.extra as bool;
+       final extra = state.extra as Map<String, dynamic>;
+        final isUpdate = extra['isUpdate'] as bool;
+        final product = extra['product'] as ProductEntity;
         return AddProductScreen(
-          isUpdate: isUpdate,
+          isUpdate: isUpdate,productEntity: product,
         );
       },
     ),

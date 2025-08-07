@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
@@ -302,7 +303,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                   TextButton(
                                     onPressed: () {
                                       context.go(
-                                        '/order-details/${order.items[0].productName}',
+                                        '${AppRoute.orderDetails}/${order.items[0].productName}',
                                         extra: order,
                                       );
                                     },

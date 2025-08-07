@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
@@ -94,12 +94,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         actions: [
                           IconButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SearchScreen(),
-                                ),
-                              );
+                              context.go(AppRoute.search);
                             },
                             icon: const Icon(Icons.search, size: 30),
                           ),
@@ -135,7 +130,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     : FloatingActionButton(
                         backgroundColor: AppColors.primaryColor,
                         onPressed: () {
-                         context.go('/add-product',extra: false);
+                         context.go(AppRoute.addProduct,extra: false);
                         },
                         child: const Icon(Icons.add, color: Colors.white),
                       );

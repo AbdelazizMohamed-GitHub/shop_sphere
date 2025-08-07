@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
@@ -20,26 +22,23 @@ class DashboardProductDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final discountedPrice =
         product.price - (product.price * product.discount / 100);
-    double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(context);
+    double horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
           CustomCircleButton(
-              icon: const Icon(Icons.edit, size: 25),
-              funcation: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return AddProductScreen(
-                        isUpdate: true,
-                        productEntity: product,
-                      );
-                    },
-                  ),
-                );
-              },),
+            icon: const Icon(Icons.edit, size: 25),
+            funcation: () {
+              context.go(AppRoute.addProduct, extra: 
+                {
+                  'isUpdate': true,
+                  'product': product,
+                },
+              );
+            },
+          ),
           const SizedBox(
             width: 20,
           )
@@ -49,7 +48,8 @@ class DashboardProductDetailsScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding:  EdgeInsets.symmetric(vertical: 16,horizontal: horizontalPadding),
+        padding:
+            EdgeInsets.symmetric(vertical: 16, horizontal: horizontalPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -118,9 +118,8 @@ class DashboardProductDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding:  EdgeInsets.symmetric(
-          horizontal:horizontalPadding ,vertical: 16
-        ),
+        padding:
+            EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
         child: BlocConsumer<DashboardCubit, DashboardState>(
           listener: (context, state) {
             if (state is DashboardSuccess) {

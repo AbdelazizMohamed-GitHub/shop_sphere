@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
@@ -92,21 +93,10 @@ class CustomProductScreenDrawer extends StatelessWidget {
 
                           // ثم التنقل للشاشة المطلوبة
                           if (index <= 3) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    dashboardDrawerItems[index].screen,
-                              ),
-                            );
+                            context.go(tabs[index]);
                           } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    OutOfStockScreen(products: outOfStock),
-                              ),
-                            );
+                            context.push(AppRoute.outOfStock,
+                                extra: outOfStock);
                           }
                         }
                       },

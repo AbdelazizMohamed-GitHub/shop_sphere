@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
@@ -28,7 +29,6 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
   @override
   @override
   Widget build(BuildContext context) {
-    final isDesktop = ResponsiveLayout.isDesktop(context);
     return Material(
       child: SingleChildScrollView(
         child: Column(
@@ -36,28 +36,12 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
             Padding(
               padding: const EdgeInsets.only(left: 10, bottom: 10),
               child: Row(children: [
-                isDesktop
-                    ? const SizedBox()
-                    : Text(
-                        "Welcome ",
-                        style: AppStyles.text18Regular
-                            .copyWith(color: AppColors.primaryColor),
-                      ),
-                // Text(
-                //   '${FirebaseAuth.instance.currentUser!.displayName}',
-                //   style: AppStyles.text18Regular,
-                // ),
                 const Spacer(),
-                ResponsiveLayout.isDesktop(context)
-                    ? IconButton(
-                        onPressed: () {
-                         context.go('/search');
-                        },
-                        icon: const Icon(Icons.search, size: 30),
-                      )
-                    : const SizedBox(),
-                const SizedBox(
-                  width: 16,
+                IconButton(
+                  onPressed: () {
+                    context.go(AppRoute.search);
+                  },
+                  icon: const Icon(Icons.search, size: 30),
                 ),
                 PopupMenuButton(
                     child: const Icon(Icons.filter_list),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
@@ -86,24 +88,13 @@ class _UsersScreenState extends State<UsersScreen> {
                             return InkWell(
                               onTap: () {
                                 currentIndex == 0
-                                    ? Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                StaffProductScreen(
-                                                  staffId:
-                                                      state.users[index].uid,
-                                                )))
-                                    : Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CustomerOrderScreen(
-                                                  userId:
-                                                      state.users[index].uid,
-                                                  userName:
-                                                      state.users[index].name,
-                                                )));
+                                    ? context.go(AppRoute.staffProductScreen,
+                                        extra: state.users[index].uid)
+                                    :context.go(AppRoute.customerOrders,
+                                        extra: {
+                                          'userId': state.users[index].uid,
+                                          'userName': state.users[index].name,
+                                        });
                               },
                               child: Card(
                                 color: Colors.white,
@@ -114,16 +105,11 @@ class _UsersScreenState extends State<UsersScreen> {
                                     subtitle: Text(state.users[index].email),
                                     trailing: IconButton(
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                AddNotificationScreen(
-                                              userName: state.users[index].name,
-                                              fCM: state.users[index].fcmToken,
-                                            ),
-                                          ),
-                                        );
+                                        context.go(AppRoute.addNotification,
+                                            extra: {
+                                              'userId': state.users[index].uid,
+                                              'userName': state.users[index].name,
+                                            });
                                       },
                                       icon: const Icon(Icons.message_rounded),
                                     ),

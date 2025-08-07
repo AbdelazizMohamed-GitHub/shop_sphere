@@ -43,35 +43,37 @@ class DashboardDrawerModel {
   DashboardDrawerModel(
       {required this.title, required this.icon, required this.screen});
 }
+
 List<DashboardDrawerModel> dashboardDrawerItems = [
   DashboardDrawerModel(
       title: 'Products',
       icon: Icons.shopping_bag,
       screen: CustomProductScreenBody(
         products: const [], // Placeholder, will be updated with actual products
-      
+
         onCategoryChanged: (String value) {},
       )),
   DashboardDrawerModel(
-      title: 'Orders',
-      icon: Icons.shopping_cart,
-      screen: const OrdersScreen()),
+      title: 'Orders', icon: Icons.shopping_cart, screen: const OrdersScreen()),
   DashboardDrawerModel(
       title: 'Users', icon: Icons.people, screen: const UsersScreen()),
   DashboardDrawerModel(
-      title: 'Analytics', icon: Icons.analytics, screen: const AnalyticsScreen()),
+      title: 'Analytics',
+      icon: Icons.analytics,
+      screen: const AnalyticsScreen()),
   DashboardDrawerModel(
       title: 'Out of Stock',
       icon: Icons.warning,
-      screen: const OutOfStockScreen(products: [])), // Placeholder, will be updated with actual products
+      screen: const OutOfStockScreen(
+          products: [])), // Placeholder, will be updated with actual products
 ];
-   final List<String> tabs = [
-    '/dashboard',
-    '/dashboard/orders',
-    '/dashboard/users',
-    '/dashboard/analytics',
-    '/dashboard/out-of-stock',
-  ];
+final List<String> tabs = [
+  '/',
+  '/orders',
+  '/users',
+  '/analytics',
+  '/out-of-stock',
+];
 List appCategory = [
   "All",
   "Electronics ",
@@ -189,4 +191,3 @@ String formatLabel({required date, required int period}) {
       return '';
   }
 }
-

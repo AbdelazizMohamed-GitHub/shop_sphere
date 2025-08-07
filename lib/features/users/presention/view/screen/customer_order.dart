@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
@@ -60,13 +62,9 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                               horizontal: horizontalPadding, vertical: 8),
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => OrdersDetailsScreen(
-                                    order: order,
-                                  ),
-                                ),
+                             context.go(
+                                '${AppRoute.orderDetails}/${order.items[0].productName}',
+                                extra: order,
                               );
                             },
                             child: ListTile(

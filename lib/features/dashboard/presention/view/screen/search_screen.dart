@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_search_result.dart';
@@ -45,13 +47,9 @@ class SearchScreen extends StatelessWidget {
                 onTap: () {
                   FocusScope.of(context).unfocus();
                   controller.closeView(product.name);
-                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DashboardSearchResult(
-                        products: results,
-                      ),
-                    ),
+               context.go(
+                    AppRoute.dashboardSearchResult,
+                    extra: DashboardSearchResult(products: results),
                   );
                 },
               );
