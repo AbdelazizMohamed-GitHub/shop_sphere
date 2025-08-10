@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,11 +28,11 @@ class FirestoreService {
   });
 
   Future<void> addProduct(
-      {required ProductModel data, required File image}) async {
+      {required ProductModel data, required Uint8List image}) async {
     await checkInternet();
     String? imageUrl;
 
-    imageUrl = await SupabaseService().uploadImage(file: image);
+    imageUrl = await SupabaseService().uploadImage( fileBytes: image, fileExtension: 'jpg');
     data.imageUrl = imageUrl!;
 
     await firestore.collection('products').doc(data.pId).set(data.toMap());

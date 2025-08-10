@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,7 +43,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   int discount = 0;
-  File? imageFile;
+  Uint8List? imageFile;
   @override
   void initState() {
     if (widget.isUpdate) {
@@ -158,7 +159,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 CustomAddImage(
                   imageUrl:
                       widget.isUpdate ? widget.productEntity!.imageUrl : "",
-                  onTap: (File file) {
+                  onTap: (Uint8List file) {
                     imageFile = file;
                   },
                 ),

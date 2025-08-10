@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -40,21 +41,21 @@ class AppFuncations {
     return colors[index];
   }
 
+static Future<Uint8List?> pickImageFromGallery() async {
+  final ImagePicker picker = ImagePicker();
 
- static Future<File?> pickImageFromGallery() async {
-    final ImagePicker picker = ImagePicker();
+  final XFile? image = await picker.pickImage(
+    source: ImageSource.gallery,
+    imageQuality: 20,
+  );
 
-    final XFile? image = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 20,
-    );
-
-    if (image != null) {
-      return File(image.path);
-    } else {
-      return null;
-    }
+  if (image != null) {
+    return await image.readAsBytes(); // هنا بنرجع Uint8List
+  } else {
+    return null;
   }
+}
+
  static double getShippingPrice(String governorate) {
   return shippingPrices[governorate] ?? shippingPrices['Other']!;
 }

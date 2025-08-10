@@ -15,7 +15,6 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_sto
 import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/add_notification_screen.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/customer_order.dart';
@@ -78,11 +77,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoute.addProduct,
       builder: (context, state) {
-       final extra = state.extra as Map<String, dynamic>;
+        final extra = state.extra as Map<String, dynamic>;
         final isUpdate = extra['isUpdate'] as bool;
-        final product = extra['product'] as ProductEntity;
+        final ProductEntity? product = extra['product'] ;
         return AddProductScreen(
-          isUpdate: isUpdate,productEntity: product,
+          isUpdate: isUpdate,
+          productEntity: product??null,
         );
       },
     ),
@@ -101,7 +101,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '${AppRoute.orderDetails}/:orderId',
       builder: (context, state) {
-        final order = state.extra as OrderEntity;
+        final order = state.extra ;
+        if (order == null || order is! OrderEntity) {
+          return const Scaffold(
+            body: Center(child: Text('No products found!')),
+          );
+        }
         return OrdersDetailsScreen(
           order: order,
         );
@@ -154,7 +159,7 @@ final GoRouter router = GoRouter(
 );
 
 class AppRoute {
-  static String dashboard = '/';
+  static String dashboard = '/dashboard';
   static String login = '/login';
   static String register = '/register';
   static String forgotPassword = '/forgot-password';

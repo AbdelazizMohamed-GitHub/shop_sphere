@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/features/dashboard/domain/repo/dashboard_repo.dart';
@@ -15,7 +16,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   final DashboardRepo dashboardRepo;
   Future<void> addProduct({
     required ProductModel product,
-    required File imageFile,
+    required Uint8List imageFile,
   }) async {
     emit(DashboardLoading());
     var result = await dashboardRepo.addProduct(

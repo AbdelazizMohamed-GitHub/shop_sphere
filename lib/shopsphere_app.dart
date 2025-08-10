@@ -52,6 +52,7 @@ class ShopSphere extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'ShopSphere',
             themeMode: ThemeMode.system,
+
             theme: isLightTheme
                 ? AppTheme.lightTheme
                 : AppTheme.darkTheme,routerConfig: router,

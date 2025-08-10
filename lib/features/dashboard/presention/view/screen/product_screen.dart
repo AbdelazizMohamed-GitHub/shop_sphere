@@ -130,7 +130,10 @@ class _ProductScreenState extends State<ProductScreen> {
                     : FloatingActionButton(
                         backgroundColor: AppColors.primaryColor,
                         onPressed: () {
-                         context.go(AppRoute.addProduct,extra: false);
+                         context.go(AppRoute.addProduct,extra: {
+                            'isUpdate': false,
+                            'product': null
+                          });
                         },
                         child: const Icon(Icons.add, color: Colors.white),
                       );

@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +10,14 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 
 class CustomAddImage extends StatefulWidget {
   const CustomAddImage({super.key, this.onTap, required this.imageUrl});
-  final void Function(File file)? onTap;
+  final void Function(Uint8List image)? onTap;
   final String? imageUrl;
   @override
   State<CustomAddImage> createState() => _CustomAddImageState();
 }
 
 class _CustomAddImageState extends State<CustomAddImage> {
-  File? imageFile;
+  Uint8List? imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class _CustomAddImageState extends State<CustomAddImage> {
           : imageFile == null
               ? GestureDetector(
                   onTap: () async {
-                    File? image = await AppFuncations.pickImageFromGallery();
+                    Uint8List? image = await AppFuncations.pickImageFromGallery();
                     if (image != null) {
                       setState(() {
                         imageFile = image;
@@ -63,7 +63,7 @@ class _CustomAddImageState extends State<CustomAddImage> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.file(imageFile!, fit: BoxFit.cover),
+                      child: Image.memory(imageFile!, fit: BoxFit.cover),
                     ),
                     Positioned(
                       top: 0,

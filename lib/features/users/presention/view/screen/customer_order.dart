@@ -38,7 +38,7 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
   @override
   Widget build(BuildContext context) {
     double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(
-        context); // 5% of screen width
+        context);
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -62,7 +62,7 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                               horizontal: horizontalPadding, vertical: 8),
                           child: InkWell(
                             onTap: () {
-                             context.go(
+                              context.go(
                                 '${AppRoute.orderDetails}/${order.items[0].productName}',
                                 extra: order,
                               );
@@ -104,7 +104,9 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                                 .getCustomerOrder(uId: widget.userId);
                           },
                         )
-                      : const Center(child: Text('No orders found'));
+                      : const Center(
+                          child: Text('No orders found'),
+                        );
         },
       ),
     );
