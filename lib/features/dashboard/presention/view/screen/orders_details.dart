@@ -14,7 +14,7 @@ import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
 
-class OrdersDetailsScreen extends StatelessWidget {
+class OrdersDetailsScreen extends StatefulWidget {
   const OrdersDetailsScreen({
     super.key,
     required this.order,
@@ -22,10 +22,24 @@ class OrdersDetailsScreen extends StatelessWidget {
   final OrderEntity order;
 
   @override
+  State<OrdersDetailsScreen> createState() => _OrdersDetailsScreenState();
+}
+
+class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
+  @override
+  void initState() {
+    order = widget.order;
+    super.initState();
+  }
+
+  late OrderEntity order;
+  @override
   Widget build(BuildContext context) {
-    double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(context);
+     final isDesktop = ResponsiveLayout.isDesktop(context);
+    double horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
-      appBar: AppBar(
+      appBar:isDesktop? null : AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new, size: 30),
@@ -34,7 +48,8 @@ class OrdersDetailsScreen extends StatelessWidget {
         leadingWidth: 100,
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 10),
+        padding:
+            EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 10),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(12),
@@ -53,7 +68,7 @@ class OrdersDetailsScreen extends StatelessWidget {
                     subTitle: order.trackingNumber.toString()),
                 const Divider(height: 20),
                 CustomProcessScreenItem(
-                    title: "Order Status", subTitle: order.status),
+                    title: "Order Status", subTitle: widget.order.status),
                 const Divider(height: 20),
                 CustomProcessScreenItem(
                   title: "Customer Name",
@@ -63,7 +78,8 @@ class OrdersDetailsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Shipping Address", style: AppStyles.text18Regular),
+                    const Text("Shipping Address",
+                        style: AppStyles.text18Regular),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -122,7 +138,7 @@ class OrdersDetailsScreen extends StatelessWidget {
                                       textColor: Colors.black,
                                     ),
                               const SizedBox(height: 20),
-                              order.status == orderStauts[1]
+                              widget.order.status == orderStauts[1]
                                   ? state is UpdateOrderLoading
                                       ? const Center(
                                           child: CircularProgressIndicator(),
@@ -160,7 +176,7 @@ class OrdersDetailsScreen extends StatelessWidget {
                             ],
                           );
                         },
-                      )
+                      ),
               ],
             ),
           ),

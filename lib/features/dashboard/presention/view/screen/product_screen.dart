@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
@@ -12,7 +13,6 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/produc
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_body.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_drawer.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
@@ -66,7 +66,6 @@ class _ProductScreenState extends State<ProductScreen> {
               products.where((product) => product.stock == 0).toList();
 
           final isDesktop = ResponsiveLayout.isDesktop(context);
-         
 
           final List<Widget> dashboardScreens = [
             CustomProductScreenBody(
@@ -85,22 +84,39 @@ class _ProductScreenState extends State<ProductScreen> {
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar:
-                isDesktop || context.watch<DashboardCubit>().currentIndex != 0
-                    ? null
-                    : AppBar(
-                        title: Text("Products ${products.length}",
-                            style: AppStyles.text18Regular),
-                        actions: [
-                          IconButton(
-                            onPressed: () {
-                              context.go(AppRoute.search);
+           
+            appBar: isDesktop
+                ? null
+                : AppBar(
+                    title: const Text("Products"),
+                    actions: [
+                     const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    context.goNamed(AppRoute.search);
+                  },
+                  icon: const Icon(Icons.search, size: 30),
+                ),
+                PopupMenuButton(
+                    child: const Icon(Icons.filter_list),
+                    itemBuilder: (context) => appCategory.map((category) {
+                          return PopupMenuItem(
+                            onTap: () {
+                              setState(() {
+                                selectedCategory = category;
+                              });
+                           
+                            
                             },
-                            icon: const Icon(Icons.search, size: 30),
-                          ),
-                          const SizedBox(width: 10),
-                        ],
-                      ),
+                            value: category,
+                            child: Text(category),
+                          );
+                        }).toList()),
+                const SizedBox(
+                  width: 16,
+                )
+                    ],
+                  ),
             drawer: isDesktop
                 ? null
                 : CustomProductScreenDrawer(outOfStock: outOfStock),
@@ -130,10 +146,8 @@ class _ProductScreenState extends State<ProductScreen> {
                     : FloatingActionButton(
                         backgroundColor: AppColors.primaryColor,
                         onPressed: () {
-                         context.go(AppRoute.addProduct,extra: {
-                            'isUpdate': false,
-                            'product': null
-                          });
+                          context.goNamed(AppRoute.addProduct,
+                              extra: {'isUpdate': false, 'product': null});
                         },
                         child: const Icon(Icons.add, color: Colors.white),
                       );

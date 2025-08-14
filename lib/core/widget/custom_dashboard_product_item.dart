@@ -14,7 +14,11 @@ class CustomDashboardProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go('${AppRoute.productDetails}/:${product.name}', extra: product);
+        context.goNamed(
+          AppRoute.productDetails,
+          pathParameters: {'productId': product.pId},
+          extra: product, // دي بس لو المستخدم جاي من نفس الجلسة
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(8),

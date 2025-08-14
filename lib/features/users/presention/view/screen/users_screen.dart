@@ -88,13 +88,14 @@ class _UsersScreenState extends State<UsersScreen> {
                             return InkWell(
                               onTap: () {
                                 currentIndex == 0
-                                    ? context.go(AppRoute.staffProductScreen,
+                                    ? context.goNamed(
+                                        AppRoute.staffProductScreen,
                                         extra: state.users[index].uid)
-                                    :context.go(AppRoute.customerOrders,
+                                    : context.goNamed(AppRoute.customerOrders,
                                         extra: {
-                                          'userId': state.users[index].uid,
-                                          'userName': state.users[index].name,
-                                        });
+                                            'userId': state.users[index].uid,
+                                            'userName': state.users[index].name,
+                                          });
                               },
                               child: Card(
                                 color: Colors.white,
@@ -105,10 +106,13 @@ class _UsersScreenState extends State<UsersScreen> {
                                     subtitle: Text(state.users[index].email),
                                     trailing: IconButton(
                                       onPressed: () {
-                                        context.go(AppRoute.addNotification,
+                                        context.goNamed(
+                                            AppRoute.addNotification,
                                             extra: {
-                                              'userId': state.users[index].uid,
-                                              'userName': state.users[index].name,
+                                              'fcm':
+                                                  state.users[index].fcmToken,
+                                              'userName':
+                                                  state.users[index].name,
                                             });
                                       },
                                       icon: const Icon(Icons.message_rounded),

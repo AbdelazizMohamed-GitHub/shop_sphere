@@ -17,6 +17,7 @@ import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart'
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
+
 class ShopSphere extends StatelessWidget {
   const ShopSphere({super.key});
 
@@ -38,8 +39,8 @@ class ShopSphere extends StatelessWidget {
         BlocProvider(
             create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())),
         BlocProvider(
-          create: (context) => DashboardCubit(
-              dashboardRepo: getIt<DashboardRepoImpl>()),
+          create: (context) =>
+              DashboardCubit(dashboardRepo: getIt<DashboardRepoImpl>()),
         ),
         BlocProvider(
           create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
@@ -48,14 +49,12 @@ class ShopSphere extends StatelessWidget {
       child: BlocBuilder<AppCubit, bool>(
         builder: (context, isLightTheme) {
           return MaterialApp.router(
-
             debugShowCheckedModeBanner: false,
             title: 'ShopSphere',
             themeMode: ThemeMode.system,
 
-            theme: isLightTheme
-                ? AppTheme.lightTheme
-                : AppTheme.darkTheme,routerConfig: router,
+            theme: isLightTheme ? AppTheme.lightTheme : AppTheme.darkTheme,
+            routerConfig: router,
             // home: StreamBuilder<User?>(
             //   stream: FirebaseAuth.instance.authStateChanges(),
             //   builder: (context, snapshot) {
@@ -96,4 +95,3 @@ class ShopSphere extends StatelessWidget {
     );
   }
 }
-

@@ -62,8 +62,10 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
                               horizontal: horizontalPadding, vertical: 8),
                           child: InkWell(
                             onTap: () {
-                              context.go(
-                                '${AppRoute.orderDetails}/${order.items[0].productName}',
+                              context.goNamed(
+                                AppRoute.orderDetails,pathParameters: {
+                                  'orderId': order.orderId,
+                                },
                                 extra: order,
                               );
                             },

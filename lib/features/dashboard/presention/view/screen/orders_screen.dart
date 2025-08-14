@@ -11,7 +11,6 @@ import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
@@ -302,8 +301,11 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                 DataCell(
                                   TextButton(
                                     onPressed: () {
-                                      context.go(
-                                        '${AppRoute.orderDetails}/${order.items[0].productName}',
+                                      context.goNamed(
+                                        AppRoute.orderDetails,
+                                        pathParameters: {
+                                          'orderId': order.orderId
+                                        },
                                         extra: order,
                                       );
                                     },

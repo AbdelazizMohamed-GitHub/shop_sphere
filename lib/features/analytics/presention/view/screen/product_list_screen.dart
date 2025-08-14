@@ -42,7 +42,7 @@ class ProductListScreen extends StatelessWidget {
             ),
             child: ListTile(
               onTap: () async {
-                ProductEntity product0 = await FirestoreService.getProduct(
+                ProductEntity product0 = await FirestoreService.getProductById(
                     productId: product.productId);
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return DashboardProductDetailsScreen(product: product0);

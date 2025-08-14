@@ -12,6 +12,7 @@ Future<Either<FirebaseFailure, List<OrderEntity>>> getAllOrders();
 Future<Either<FirebaseFailure, int>> getTrackinNumber();
 Future<Either<FirebaseFailure, int>> getOrderLength();
 Future<Either<FirebaseFailure, List<OrderEntity>>> getCustomerOrder({required String uId});
+// Future<Either<FirebaseFailure, OrderEntity>> getOrderById({required String uId});
 
 
 

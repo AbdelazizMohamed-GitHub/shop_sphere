@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -35,6 +36,8 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context); // Adjust as needed
     return BlocProvider(
       create: (context) =>
           AddNotificationCubit(notificationRepo: getIt<NotificationRepoImpl>()),
@@ -44,7 +47,8 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 16),
           child: Column(
             children: [
               const SizedBox(height: 50),

@@ -71,9 +71,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+     final isDesktop = ResponsiveLayout.isDesktop(context);
     double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
-      appBar: AppBar(
+      appBar: isDesktop ? null : AppBar(
         leading: const CustomBackButton(),
         title: Text(widget.isUpdate ? "Update Product" : "Add Product"),
       ),

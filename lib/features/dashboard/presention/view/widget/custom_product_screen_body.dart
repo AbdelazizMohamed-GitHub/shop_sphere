@@ -29,17 +29,20 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
   @override
   @override
   Widget build(BuildContext context) {
+    final isDesktop = ResponsiveLayout.isDesktop(context);
     return Material(
       child: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 10, bottom: 10),
-              child: Row(children: [
+              child: isDesktop ? Row(children: [
+                const SizedBox(width: 10),
+         
                 const Spacer(),
                 IconButton(
                   onPressed: () {
-                    context.go(AppRoute.search);
+                    context.goNamed(AppRoute.search);
                   },
                   icon: const Icon(Icons.search, size: 30),
                 ),
@@ -58,7 +61,7 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
                 const SizedBox(
                   width: 16,
                 )
-              ]),
+              ]):null
             ),
             CustomProductGrid(products: widget.products)
           ],

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -813,7 +812,7 @@ class FirestoreService {
 
   
 
-  static Future<ProductEntity> getProduct({required String productId}) async {
+  static Future<ProductEntity> getProductById({required String productId}) async {
   ProductEntity data=await  FirebaseFirestore.instance
         .collection('products')
         .doc(productId)
@@ -829,4 +828,21 @@ class FirestoreService {
     });
   return data;
   }
+  static Future<OrderEntity> getOrderById({required String orderId}) async {
+  OrderEntity data=await  FirebaseFirestore.instance
+        .collection('orders')
+        .doc(orderId)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        return OrderModel.fromMap(value.data()!);
+      } else {
+        throw Exception("order not found");
+      }
+    }).catchError((error) {
+      throw Exception("Error fetching Order: $error");
+    });
+  return data;
+  }
+
 }

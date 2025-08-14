@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/forget_password_screen.dart';
@@ -22,48 +23,74 @@ import 'package:shop_sphere/features/users/presention/view/screen/staff_product_
 import 'package:shop_sphere/features/users/presention/view/screen/users_screen.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: AppRoute.dashboard,
+  initialLocation: '/dashboard',
+  routerNeglect: false,
+  debugLogDiagnostics: true,
+  errorBuilder: (context, state) {
+    return const Center(
+      child: Text('Error'),
+    );
+  },
   routes: [
     GoRoute(
-      path: AppRoute.dashboard,
+      name: AppRoute.dashboard,
+      path: '/dashboard',
       builder: (context, state) => const ProductScreen(),
     ),
     GoRoute(
-      path: AppRoute.login,
+      name: AppRoute.login,
+      path: '/login',
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: AppRoute.register,
+      name: AppRoute.register,
+      path: '/register',
       builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
-      path: AppRoute.forgotPassword,
+      name: AppRoute.forgotPassword,
+      path: '/forgot-password/:email',
       builder: (context, state) {
-        final String email = state.extra as String;
+        final String email = state.pathParameters['email'] ?? '';
+        if (email.isEmpty) {
+          return const Scaffold(
+            body: Center(child: Text('Email is required')),
+          );
+        }
         return ForgetPasswordScreen(email: email);
       },
     ),
     GoRoute(
-      path: AppRoute.verify,
+      name: AppRoute.verify,
+      path: '/verify/:email',
       builder: (context, state) {
-        final String email = state.extra as String;
+        final String email = state.pathParameters['email'] ?? '';
+        if (email.isEmpty) {
+          return const Scaffold(
+            body: Center(child: Text('Email is required')),
+          );
+        }
         return VerifyScreen(email: email);
       },
     ),
     GoRoute(
-      path: AppRoute.orders,
+      name: AppRoute.orders,
+      path: '/orders',
       builder: (context, state) => const OrdersScreen(),
     ),
     GoRoute(
-      path: AppRoute.users,
+      name: AppRoute.users,
+      path: '/users',
       builder: (context, state) => const UsersScreen(),
     ),
     GoRoute(
-      path: AppRoute.analytics,
+      name: AppRoute.analytics,
+      path: '/analytics',
       builder: (context, state) => const AnalyticsScreen(),
     ),
     GoRoute(
-      path: AppRoute.outOfStock,
+      name: AppRoute.outOfStock,
+      path: '/out-of-stock',
       builder: (context, state) {
         final product = state.extra;
         if (product == null || product is! List<ProductEntity>) {
@@ -75,58 +102,93 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: AppRoute.addProduct,
+      name: AppRoute.addProduct,
+      path: '/add-product',
       builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
-        final isUpdate = extra['isUpdate'] as bool;
-        final ProductEntity? product = extra['product'] ;
-        return AddProductScreen(
-          isUpdate: isUpdate,
-          productEntity: product??null,
+        final args = state.extra as Map<String, dynamic>;
+        final isUpdate = args['isUpdate'] as bool;
+        final product = args['product'] as ProductEntity?;
+        return AddProductScreen(isUpdate: isUpdate, productEntity: product);
+      },
+    ),
+    GoRoute(
+      path: '/product-details/:productId',
+      name: AppRoute.productDetails,
+      builder: (context, state) {
+        final productId = state.pathParameters['productId'];
+        final product =
+            state.extra is ProductEntity ? state.extra as ProductEntity : null;
+
+        if (product != null) {
+          return DashboardProductDetailsScreen(product: product);
+        }
+
+        return FutureBuilder<ProductEntity?>(
+          future: FirestoreService.getProductById(productId: productId!),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+            if (!snapshot.hasData) {
+              return const Scaffold(
+                body: Center(child: Text('Product not found')),
+              );
+            }
+            return DashboardProductDetailsScreen(product: snapshot.data!);
+          },
         );
       },
     ),
     GoRoute(
-      path: '${AppRoute.productDetails}/:name',
+      name: AppRoute.orderDetails,
+      path: '/order-details/:orderId',
       builder: (context, state) {
-        final product = state.extra;
-        if (product == null || product is! ProductEntity) {
-          return const Scaffold(
-            body: Center(child: Text('No products found!')),
-          );
+        final orderId = state.pathParameters['orderId'];
+        final order =
+            state.extra is OrderEntity ? state.extra as OrderEntity : null;
+
+        if (order != null) {
+          return OrdersDetailsScreen(order: order);
         }
-        return DashboardProductDetailsScreen(product: product);
-      },
-    ),
-    GoRoute(
-      path: '${AppRoute.orderDetails}/:orderId',
-      builder: (context, state) {
-        final order = state.extra ;
-        if (order == null || order is! OrderEntity) {
-          return const Scaffold(
-            body: Center(child: Text('No products found!')),
-          );
-        }
-        return OrdersDetailsScreen(
-          order: order,
+
+        return FutureBuilder<OrderEntity?>(
+          future: FirestoreService.getOrderById(orderId: orderId!),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+            if (!snapshot.hasData) {
+              return const Scaffold(
+                body: Center(child: Text('Order not found')),
+              );
+            }
+            return OrdersDetailsScreen(order: snapshot.data!);
+          },
         );
       },
     ),
     GoRoute(
-      path: AppRoute.search,
+      name: AppRoute.search,
+      path: '/search',
       builder: (context, state) {
         return const SearchScreen();
       },
     ),
     GoRoute(
-      path: AppRoute.dashboardSearchResult,
+      name: AppRoute.dashboardSearchResult,
+      path: '/dashboard-search-result',
       builder: (context, state) {
         final products = state.extra as List<ProductEntity>;
         return DashboardSearchResult(products: products);
       },
     ),
     GoRoute(
-      path: AppRoute.customerOrders,
+      name: AppRoute.customerOrders,
+      path: '/customer-orders',
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
         final userId = extra['userId'] as String;
@@ -135,7 +197,8 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: AppRoute.staffProductScreen,
+      name: AppRoute.staffProductScreen,
+      path: '/staff-product-screen',
       builder: (context, state) {
         final staffId = state.extra as String;
         return StaffProductScreen(
@@ -144,7 +207,8 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: AppRoute.addNotification,
+      path: '/add-notification',
+      name: AppRoute.addNotification,
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
         final userName = extra['userName'] as String;
@@ -159,22 +223,22 @@ final GoRouter router = GoRouter(
 );
 
 class AppRoute {
-  static String dashboard = '/dashboard';
-  static String login = '/login';
-  static String register = '/register';
-  static String forgotPassword = '/forgot-password';
-  static String verify = '/verify';
-  static String orders = '/orders';
-  static String users = '/users';
-  static String analytics = '/analytics';
-  static String outOfStock = '/out-of-stock';
-  static String addProduct = '/add-product';
-  static String productDetails = '/product-details';
-  static String orderDetails = '/order-details';
-  static String search = '/search';
-  static String dashboardSearchResult = '/dashboard-search-result';
+  static String dashboard = 'dashboard';
+  static String login = 'login';
+  static String register = 'register';
+  static String forgotPassword = 'forgot-password';
+  static String verify = 'verify';
+  static String orders = 'orders';
+  static String users = 'users';
+  static String analytics = 'analytics';
+  static String outOfStock = 'out-of-stock';
+  static String addProduct = 'add-product';
+  static String productDetails = 'product-details';
+  static String orderDetails = 'order-details';
+  static String search = 'search';
+  static String dashboardSearchResult = 'dashboard-search-result';
 
-  static String customerOrders = '/customer-orders';
-  static String staffProductScreen = '/staff-product-screen';
-  static String addNotification = '/add-notification';
+  static String customerOrders = 'customer-orders';
+  static String staffProductScreen = 'staff-product-screen';
+  static String addNotification = 'add-notification';
 }

@@ -13,8 +13,10 @@ import 'package:shop_sphere/features/main/data/notification_model.dart';
 import 'package:shop_sphere/firebase_options.dart';
 import 'package:shop_sphere/shopsphere_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() async {
+   setUrlStrategy( PathUrlStrategy());
   WidgetsFlutterBinding.ensureInitialized();
    HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb

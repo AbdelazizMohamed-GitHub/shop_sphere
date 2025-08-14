@@ -10,7 +10,6 @@ import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class DashboardProductDetailsScreen extends StatelessWidget {
@@ -24,14 +23,13 @@ class DashboardProductDetailsScreen extends StatelessWidget {
         product.price - (product.price * product.discount / 100);
     double horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context);
-
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
         actions: [
           CustomCircleButton(
             icon: const Icon(Icons.edit, size: 25),
             funcation: () {
-              context.go(AppRoute.addProduct, extra: 
+              context.goNamed(AppRoute.addProduct, extra: 
                 {
                   'isUpdate': true,
                   'product': product,
