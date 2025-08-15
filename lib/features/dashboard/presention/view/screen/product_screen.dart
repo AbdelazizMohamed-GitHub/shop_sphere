@@ -93,7 +93,7 @@ class _ProductScreenState extends State<ProductScreen> {
                      const Spacer(),
                 IconButton(
                   onPressed: () {
-                    context.pushNamed(AppRoute.search);
+                    context.goNamed(AppRoute.search);
                   },
                   icon: const Icon(Icons.search, size: 30),
                 ),

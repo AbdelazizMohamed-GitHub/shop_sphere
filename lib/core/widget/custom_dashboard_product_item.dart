@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard_details_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomDashboardProductItem extends StatelessWidget {
@@ -14,10 +13,10 @@ class CustomDashboardProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.pushNamed(
+        context.goNamed(
           AppRoute.productDetails,
           pathParameters: {'productId': product.pId},
-          extra: product, // دي بس لو المستخدم جاي من نفس الجلسة
+          extra: product,
         );
       },
       child: Container(

@@ -301,7 +301,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                 DataCell(
                                   TextButton(
                                     onPressed: () {
-                                      context.pushNamed(
+                                      context.goNamed(
                                         AppRoute.orderDetails,
                                         pathParameters: {
                                           'orderId': order.orderId

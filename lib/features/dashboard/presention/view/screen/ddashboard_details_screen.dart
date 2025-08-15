@@ -29,7 +29,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
           CustomCircleButton(
             icon: const Icon(Icons.edit, size: 25),
             funcation: () {
-              context.pushNamed(AppRoute.addProduct, extra: 
+              context.goNamed(AppRoute.addProduct, extra: 
                 {
                   'isUpdate': true,
                   'product': product,

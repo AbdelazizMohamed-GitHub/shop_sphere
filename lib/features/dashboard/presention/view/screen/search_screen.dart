@@ -55,7 +55,7 @@ class SearchScreen extends StatelessWidget {
                   onTap: () {
                     FocusScope.of(context).unfocus();
                     controller.closeView(product.name);
-                    context.go(AppRoute.dashboardSearchResult, extra: results);
+                    context.goNamed(AppRoute.dashboardSearchResult, extra: results);
                   },
                 );
               },

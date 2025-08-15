@@ -74,22 +74,22 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       name: AppRoute.orders,
-      path: '/orders',
+      path: '/dashboard/orders',
       builder: (context, state) => const OrdersScreen(),
     ),
     GoRoute(
       name: AppRoute.users,
-      path: '/users',
+      path: '/dashboard/users',
       builder: (context, state) => const UsersScreen(),
     ),
     GoRoute(
       name: AppRoute.analytics,
-      path: '/analytics',
+      path: '/dashboard/analytics',
       builder: (context, state) => const AnalyticsScreen(),
     ),
     GoRoute(
       name: AppRoute.outOfStock,
-      path: '/out-of-stock',
+      path: '/dashboard/out-of-stock',
       builder: (context, state) {
         final product = state.extra;
         if (product == null || product is! List<ProductEntity>) {

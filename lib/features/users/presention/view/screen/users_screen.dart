@@ -26,6 +26,7 @@ class _UsersScreenState extends State<UsersScreen> {
   Widget build(BuildContext context) {
     double horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context) + 40;
+        final isMobile=ResponsiveLayout.isMobile(context);
     return BlocProvider(
       create: (context) =>
           MangeUsersCubit(mangeUsersRepo: getIt<UsersRepoImpl>())
@@ -80,10 +81,56 @@ class _UsersScreenState extends State<UsersScreen> {
                 } else if (state is MangeUsersSuccess) {
                   return state.users.isEmpty
                       ? const Center(child: Text("No Users Found"))
-                      : ListView.builder(
+                      :isMobile?
+                       ListView.builder(
                           padding: EdgeInsets.symmetric(
                               horizontal: horizontalPadding),
                           itemCount: state.users.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                currentIndex == 0
+                                    ? context.goNamed(
+                                        AppRoute.staffProductScreen,
+                                        extra: state.users[index].uid)
+                                    : context.goNamed(AppRoute.customerOrders,
+                                        extra: {
+                                            'userId': state.users[index].uid,
+                                            'userName': state.users[index].name,
+                                          });
+                              },
+                              child: Card(
+                                color: Colors.white,
+                                child: ListTile(
+                                    contentPadding: const EdgeInsets.all(16),
+                                    title: Text(state.users[index].name,
+                                        style: AppStyles.text16Bold),
+                                    subtitle: Text(state.users[index].email),
+                                    trailing: IconButton(
+                                      onPressed: () {
+                                        context.goNamed(
+                                            AppRoute.addNotification,
+                                            extra: {
+                                              'fcm':
+                                                  state.users[index].fcmToken,
+                                              'userName':
+                                                  state.users[index].name,
+                                            });
+                                      },
+                                      icon: const Icon(Icons.message_rounded),
+                                    ),
+                                    leading: Image.asset(AppImages.profile)),
+                              ),
+                            );
+                          },
+                        ):
+                      GridView.builder(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding),
+                          itemCount: state.users.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {

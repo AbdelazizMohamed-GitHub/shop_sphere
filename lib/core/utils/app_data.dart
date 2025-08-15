@@ -68,11 +68,11 @@ List<DashboardDrawerModel> dashboardDrawerItems = [
           products: [])), // Placeholder, will be updated with actual products
 ];
 final List<String> tabs = [
-  '/',
-  '/orders',
-  '/users',
-  '/analytics',
-  '/out-of-stock',
+  '/dashboard',
+  '/dashboard/orders',
+  '/dashboard/users',
+  '/dashboard/analytics',
+  '/dashboard/out-of-stock',
 ];
 List appCategory = [
   "All",
