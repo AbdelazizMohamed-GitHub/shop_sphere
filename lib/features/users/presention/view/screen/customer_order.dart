@@ -9,7 +9,6 @@ import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';

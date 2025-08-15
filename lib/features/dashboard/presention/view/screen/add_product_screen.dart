@@ -1,6 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';

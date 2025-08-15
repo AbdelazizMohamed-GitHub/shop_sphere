@@ -13,7 +13,6 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomProductScreenDrawer extends StatelessWidget {

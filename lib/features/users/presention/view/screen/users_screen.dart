@@ -9,9 +9,6 @@ import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/users/data/repo_impl/users_impl.dart';
 import 'package:shop_sphere/features/users/presention/controller/user_cubit/users_cubit.dart';
-import 'package:shop_sphere/features/users/presention/view/screen/add_notification_screen.dart';
-import 'package:shop_sphere/features/users/presention/view/screen/customer_order.dart';
-import 'package:shop_sphere/features/users/presention/view/screen/staff_product_screen.dart';
 
 class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
