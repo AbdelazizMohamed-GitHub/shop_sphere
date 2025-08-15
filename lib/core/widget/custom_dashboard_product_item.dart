@@ -14,7 +14,7 @@ class CustomDashboardProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.goNamed(
+        context.pushNamed(
           AppRoute.productDetails,
           pathParameters: {'productId': product.pId},
           extra: product, // دي بس لو المستخدم جاي من نفس الجلسة

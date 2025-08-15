@@ -24,8 +24,7 @@ import 'package:shop_sphere/features/users/presention/view/screen/users_screen.d
 
 final GoRouter router = GoRouter(
   initialLocation: '/dashboard',
-  routerNeglect: false,
-  debugLogDiagnostics: true,
+ debugLogDiagnostics: true,
   errorBuilder: (context, state) {
     return const Center(
       child: Text('Error'),
