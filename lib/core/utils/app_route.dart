@@ -12,7 +12,7 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
@@ -33,7 +33,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: AppRoute.dashboard,
       path: '/dashboard',
-      builder: (context, state) => const ProductScreen(),
+      builder: (context, state) => const DashBoardLayout(),
     ),
     GoRoute(
       name: AppRoute.login,
@@ -74,17 +74,20 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: AppRoute.orders,
       path: '/dashboard/orders',
-      builder: (context, state) => const OrdersScreen(),
+      builder: (context, state) => const DashBoardLayout(screen: OrdersScreen(),),
     ),
     GoRoute(
       name: AppRoute.users,
       path: '/dashboard/users',
-      builder: (context, state) => const UsersScreen(),
+      builder: (context, state) => const DashBoardLayout(screen: UsersScreen(),),
     ),
     GoRoute(
       name: AppRoute.analytics,
       path: '/dashboard/analytics',
-      builder: (context, state) => const AnalyticsScreen(),
+      builder: (context, state) => const DashBoardLayout(
+
+        screen: AnalyticsScreen(),
+      ),
     ),
     GoRoute(
       name: AppRoute.outOfStock,
@@ -96,7 +99,9 @@ final GoRouter router = GoRouter(
             body: Center(child: Text('No products found!')),
           );
         }
-        return OutOfStockScreen(products: product);
+        return DashBoardLayout(
+          screen: OutOfStockScreen(products: product),
+        );
       },
     ),
     GoRoute(
@@ -226,10 +231,10 @@ class AppRoute {
   static String register = 'register';
   static String forgotPassword = 'forgot-password';
   static String verify = 'verify';
-  static String orders = 'orders';
-  static String users = 'users';
-  static String analytics = 'analytics';
-  static String outOfStock = 'out-of-stock';
+  static String orders = 'Orders';
+  static String users = 'Users';
+  static String analytics = 'Analytics';
+  static String outOfStock = 'Out of Stock';
   static String addProduct = 'add-product';
   static String productDetails = 'product-details';
   static String orderDetails = 'order-details';

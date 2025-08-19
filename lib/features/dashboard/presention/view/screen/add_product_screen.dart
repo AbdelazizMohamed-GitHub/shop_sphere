@@ -10,7 +10,7 @@ import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:uuid/uuid.dart';
@@ -177,7 +177,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductScreen(),
+                          builder: (context) => const DashBoardLayout(),
                         ),
                         (route) => false,
                       );

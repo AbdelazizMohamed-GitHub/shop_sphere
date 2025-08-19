@@ -6,7 +6,7 @@ import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/product_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_add_data_birth.dart';
 
@@ -139,7 +139,7 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
               context,
               MaterialPageRoute(
                 builder: (context) => state.uid == 'Staff'
-                    ? const ProductScreen()
+                    ? const DashBoardLayout()
                     : const MainScreen(),
               ),
               (route) => false);

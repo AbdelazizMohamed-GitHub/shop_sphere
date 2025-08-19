@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
@@ -18,14 +20,18 @@ import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/users_screen.dart';
 
-class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key});
+class DashBoardLayout extends StatefulWidget {
+  const DashBoardLayout({
+    super.key,
+     this.screen,
+  });
+  final Widget? screen;
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState();
+  State<DashBoardLayout> createState() => _ProductScreenState();
 }
 
-class _ProductScreenState extends State<ProductScreen> {
+class _ProductScreenState extends State<DashBoardLayout> {
   String selectedCategory = "All";
 
   @override
@@ -83,37 +89,34 @@ class _ProductScreenState extends State<ProductScreen> {
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-           
             appBar: isDesktop
                 ? null
                 : AppBar(
                     title: const Text("Products"),
                     actions: [
-                     const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    context.goNamed(AppRoute.search);
-                  },
-                  icon: const Icon(Icons.search, size: 30),
-                ),
-                PopupMenuButton(
-                    child: const Icon(Icons.filter_list),
-                    itemBuilder: (context) => appCategory.map((category) {
-                          return PopupMenuItem(
-                            onTap: () {
-                              setState(() {
-                                selectedCategory = category;
-                              });
-                           
-                            
-                            },
-                            value: category,
-                            child: Text(category),
-                          );
-                        }).toList()),
-                const SizedBox(
-                  width: 16,
-                )
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          context.goNamed(AppRoute.search);
+                        },
+                        icon: const Icon(Icons.search, size: 30),
+                      ),
+                      PopupMenuButton(
+                          child: const Icon(Icons.filter_list),
+                          itemBuilder: (context) => appCategory.map((category) {
+                                return PopupMenuItem(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedCategory = category;
+                                    });
+                                  },
+                                  value: category,
+                                  child: Text(category),
+                                );
+                              }).toList()),
+                      const SizedBox(
+                        width: 16,
+                      )
                     ],
                   ),
             drawer: isDesktop
@@ -129,10 +132,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 Expanded(
                   child: BlocBuilder<DashboardCubit, DashboardState>(
                     builder: (context, state) {
-                      return IndexedStack(
-                        index: state.screenIndex,
-                        children: dashboardScreens,
-                      );
+                      return dashboardScreens[state.screenIndex];
                     },
                   ),
                 ),
