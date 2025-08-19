@@ -33,6 +33,7 @@ class DashBoardLayout extends StatefulWidget {
 
 class _ProductScreenState extends State<DashBoardLayout> {
   String selectedCategory = "All";
+  int currentScreen=0;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,8 @@ class _ProductScreenState extends State<DashBoardLayout> {
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar: isDesktop
+            appBar: isDesktop ||currentScreen != 0
+                 
                 ? null
                 : AppBar(
                     title: const Text("Products"),
@@ -130,7 +132,14 @@ class _ProductScreenState extends State<DashBoardLayout> {
                     child: CustomProductScreenDrawer(outOfStock: outOfStock),
                   ),
                 Expanded(
-                  child: BlocBuilder<DashboardCubit, DashboardState>(
+                  child: BlocConsumer<DashboardCubit, DashboardState>(
+                    listener: (context, state) {
+                      if (state.screenIndex != currentScreen) {
+                        setState(() {
+                          currentScreen = state.screenIndex;
+                        });
+                      }
+                    },
                     builder: (context, state) {
                       return dashboardScreens[state.screenIndex];
                     },
