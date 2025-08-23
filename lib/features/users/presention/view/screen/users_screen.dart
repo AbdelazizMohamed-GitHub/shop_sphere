@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
-import 'package:shop_sphere/core/utils/app_images.dart';
-import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/users/data/repo_impl/users_impl.dart';
 import 'package:shop_sphere/features/users/presention/controller/user_cubit/users_cubit.dart';
+import 'package:shop_sphere/features/users/presention/view/widget/custom_user_item.dart';
 
 class UsersScreen extends StatefulWidget {
   const UsersScreen({super.key});
@@ -20,8 +17,13 @@ class UsersScreen extends StatefulWidget {
 class _UsersScreenState extends State<UsersScreen> {
   int currentIndex = 0;
   @override
+  void initState() {
+    context.read<UsersRepoImpl>().getUsers(isStaff: true);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    
     final isMobile = ResponsiveLayout.isMobile(context);
     return BlocProvider(
       create: (context) =>
@@ -79,50 +81,14 @@ class _UsersScreenState extends State<UsersScreen> {
                       ? const Center(child: Text("No Users Found"))
                       : isMobile
                           ? ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: 40),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
                               itemCount: state.users.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    currentIndex == 0
-                                        ? context.goNamed(
-                                            AppRoute.staffProductScreen,
-                                            extra: state.users[index].uid)
-                                        : context.goNamed(
-                                            AppRoute.customerOrders,
-                                            extra: {
-                                                'userId':
-                                                    state.users[index].uid,
-                                                'userName':
-                                                    state.users[index].name,
-                                              });
-                                  },
-                                  child: Card(
-                                    color: Colors.white,
-                                    child: ListTile(
-                                        contentPadding:
-                                            const EdgeInsets.all(16),
-                                        title: Text(state.users[index].name,
-                                            style: AppStyles.text16Bold),
-                                        subtitle:
-                                            Text(state.users[index].email),
-                                        trailing: IconButton(
-                                          onPressed: () {
-                                            context.goNamed(
-                                                AppRoute.addNotification,
-                                                extra: {
-                                                  'fcm': state
-                                                      .users[index].fcmToken,
-                                                  'userName':
-                                                      state.users[index].name,
-                                                });
-                                          },
-                                          icon:
-                                              const Icon(Icons.message_rounded),
-                                        ),
-                                        leading:
-                                            Image.asset(AppImages.profile)),
-                                  ),
+                                return CustomUserItem(
+                                  currentIndex: currentIndex,
+                                  index: index,
+                                  users: state.users,
                                 );
                               },
                             )
@@ -139,51 +105,10 @@ class _UsersScreenState extends State<UsersScreen> {
                                 childAspectRatio: 3,
                               ),
                               itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    currentIndex == 0
-                                        ? context.goNamed(
-                                            AppRoute.staffProductScreen,
-                                            extra: state.users[index].uid)
-                                        : context.goNamed(
-                                            AppRoute.customerOrders,
-                                            extra: {
-                                              'userId': state.users[index].uid,
-                                              'userName':
-                                                  state.users[index].name,
-                                            },
-                                          );
-                                  },
-                                  child: SizedBox(
-                                    height: 200,
-                                    child: Card(
-                                      color: Colors.white,
-                                      child: ListTile(
-                                          contentPadding:
-                                              const EdgeInsets.all(12),
-                                          title: Text(state.users[index].name,
-                                              maxLines: 1,
-                                              style: AppStyles.text16Bold),
-                                          subtitle:
-                                              Text(state.users[index].email),
-                                          trailing: IconButton(
-                                            onPressed: () {
-                                              context.goNamed(
-                                                  AppRoute.addNotification,
-                                                  extra: {
-                                                    'fcm': state
-                                                        .users[index].fcmToken,
-                                                    'userName':
-                                                        state.users[index].name,
-                                                  });
-                                            },
-                                            icon: const Icon(
-                                                Icons.message_rounded),
-                                          ),
-                                          leading:
-                                              Image.asset(AppImages.profile)),
-                                    ),
-                                  ),
+                                return CustomUserItem(
+                                  currentIndex: currentIndex,
+                                  index: index,
+                                  users: state.users,
                                 );
                               },
                             );

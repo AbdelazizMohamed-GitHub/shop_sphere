@@ -23,9 +23,9 @@ import 'package:shop_sphere/features/users/presention/view/screen/users_screen.d
 class DashBoardLayout extends StatefulWidget {
   const DashBoardLayout({
     super.key,
-     this.screen,
+    
   });
-  final Widget? screen;
+
 
   @override
   State<DashBoardLayout> createState() => _ProductScreenState();

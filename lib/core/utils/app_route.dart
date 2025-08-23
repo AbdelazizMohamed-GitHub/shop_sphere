@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
-import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/forget_password_screen.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/register_screen.dart';
@@ -10,8 +9,6 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/add_produc
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_search_result.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard_details_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -19,7 +16,6 @@ import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/add_notification_screen.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/customer_order.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/staff_product_screen.dart';
-import 'package:shop_sphere/features/users/presention/view/screen/users_screen.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/dashboard',
@@ -74,19 +70,19 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: AppRoute.orders,
       path: '/dashboard/orders',
-      builder: (context, state) => const DashBoardLayout(screen: OrdersScreen(),),
+      builder: (context, state) => const DashBoardLayout(),
     ),
     GoRoute(
       name: AppRoute.users,
       path: '/dashboard/users',
-      builder: (context, state) => const DashBoardLayout(screen: UsersScreen(),),
+      builder: (context, state) => const DashBoardLayout(),
     ),
     GoRoute(
       name: AppRoute.analytics,
       path: '/dashboard/analytics',
       builder: (context, state) => const DashBoardLayout(
 
-        screen: AnalyticsScreen(),
+      
       ),
     ),
     GoRoute(
@@ -99,8 +95,8 @@ final GoRouter router = GoRouter(
             body: Center(child: Text('No products found!')),
           );
         }
-        return DashBoardLayout(
-          screen: OutOfStockScreen(products: product),
+        return const DashBoardLayout(
+         
         );
       },
     ),
