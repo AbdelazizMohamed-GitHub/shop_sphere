@@ -24,11 +24,11 @@ import 'package:shop_sphere/features/users/presention/view/screen/users_screen.d
 
 class DashBoardLayout extends StatefulWidget {
   const DashBoardLayout({
-    Key? key,
-     this.dashboardScreen,
-  }) : super(key: key);
+    super.key,
+  
+  });
 
-  final Widget? dashboardScreen;
+
   @override
   State<DashBoardLayout> createState() => _ProductScreenState();
 }
@@ -140,12 +140,12 @@ class _ProductScreenState extends State<DashBoardLayout> {
                   ),
                 Expanded(
                   child: BlocConsumer<DashboardCubit, DashboardState>(
-                    listener: (context, state) {
-                      Hive.box(AppConst.dashboardScreen).put('index', state.screenIndex);
+                    listener: (context, state) async{
+                    await  Hive.box(AppConst.dashboardScreen).put('index', state.screenIndex);
                     },
                     builder: (context, state) {
                      
-                      return widget.dashboardScreen ??
+                      return 
                           dashboardScreens[state.screenIndex];
                     },
                   ),

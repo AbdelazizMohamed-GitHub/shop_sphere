@@ -31,7 +31,10 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/images/logo.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/web/logo-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/web/logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/web/logo-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/web/logo-192.png">
 
   <title>web_test</title>
   <link rel="manifest" href="manifest.json">
@@ -43,28 +46,28 @@
 
   <script src="flutter_bootstrap.js" async></script>
   <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCfKwvZrjO47da3ggzHKTuy3MzSU9fE5rw",
-    authDomain: "shopsphere-b422e.firebaseapp.com",
-    projectId: "shopsphere-b422e",
-    storageBucket: "shopsphere-b422e.firebasestorage.app",
-    messagingSenderId: "909426718408",
-    appId: "1:909426718408:web:ddf3b53857e1d1cd8657fd",
-    measurementId: "G-S3LFCM69NC"
-  };
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyCfKwvZrjO47da3ggzHKTuy3MzSU9fE5rw",
+      authDomain: "shopsphere-b422e.firebaseapp.com",
+      projectId: "shopsphere-b422e",
+      storageBucket: "shopsphere-b422e.firebasestorage.app",
+      messagingSenderId: "909426718408",
+      appId: "1:909426718408:web:ddf3b53857e1d1cd8657fd",
+      measurementId: "G-S3LFCM69NC"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
 </body>
 
 </html>
