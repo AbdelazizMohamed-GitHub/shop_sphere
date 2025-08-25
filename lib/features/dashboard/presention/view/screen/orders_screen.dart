@@ -179,8 +179,11 @@ class _DashboardScreenState extends State<OrdersScreen> {
                   .snapshots(),
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return const SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 } else if (snap.hasError) {
                   return Center(

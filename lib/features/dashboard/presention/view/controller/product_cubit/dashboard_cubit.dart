@@ -7,7 +7,7 @@ import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit({required this.dashboardRepo}) : super(DashboardInitial());
-  int currentIndex = 0;
+
   void changeScreenIndex(int index) {
     emit(DashboardState(screenIndex: index));
   }

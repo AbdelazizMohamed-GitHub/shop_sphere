@@ -16,19 +16,24 @@ class UsersScreen extends StatefulWidget {
 
 class _UsersScreenState extends State<UsersScreen> {
   int currentIndex = 0;
+    late MangeUsersCubit usersCubit;
   @override
   void initState() {
-    context.read<UsersRepoImpl>().getUsers(isStaff: true);
+   usersCubit = MangeUsersCubit(mangeUsersRepo: getIt<UsersRepoImpl>())
+      ..getUsers(isStaff: true);
     super.initState();
+  }
+  @override
+  void dispose() {
+    usersCubit.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveLayout.isMobile(context);
-    return BlocProvider(
-      create: (context) =>
-          MangeUsersCubit(mangeUsersRepo: getIt<UsersRepoImpl>())
-            ..getUsers(isStaff: true),
+    return BlocProvider.value(
+      value: usersCubit,
       child: Builder(
         builder: (context) {
           return DefaultTabController(

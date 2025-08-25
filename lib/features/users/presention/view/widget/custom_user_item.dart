@@ -26,7 +26,7 @@ class CustomUserItem extends StatelessWidget {
               );
       },
       child: SizedBox(
-        height: 200,
+        height: 100,
         child: Card(
           color: Colors.white,
           child: ListTile(

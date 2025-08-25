@@ -33,6 +33,7 @@ void main() async {
   Hive.registerAdapter(NotificationModelAdapter());
 
   await Hive.openBox<NotificationModel>(AppConst.appNotificationBox);
+   await Hive.openBox(AppConst.dashboardScreen);
   await NotificationService.initialize();
   await NotificationService.initializeLocalNotifications();
 

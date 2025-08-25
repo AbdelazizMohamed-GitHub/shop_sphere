@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_const.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
@@ -22,18 +24,24 @@ import 'package:shop_sphere/features/users/presention/view/screen/users_screen.d
 
 class DashBoardLayout extends StatefulWidget {
   const DashBoardLayout({
-    super.key,
-    
-  });
+    Key? key,
+     this.dashboardScreen,
+  }) : super(key: key);
 
-
+  final Widget? dashboardScreen;
   @override
   State<DashBoardLayout> createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<DashBoardLayout> {
   String selectedCategory = "All";
-  int currentScreen=0;
+  @override
+  void initState() {
+     final savedIndex =
+        Hive.box(AppConst.dashboardScreen).get('index', defaultValue: 0);
+    context.read<DashboardCubit>().changeScreenIndex(savedIndex);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +98,7 @@ class _ProductScreenState extends State<DashBoardLayout> {
 
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            appBar: isDesktop ||currentScreen != 0
-                 
+            appBar: isDesktop
                 ? null
                 : AppBar(
                     title: const Text("Products"),
@@ -134,14 +141,12 @@ class _ProductScreenState extends State<DashBoardLayout> {
                 Expanded(
                   child: BlocConsumer<DashboardCubit, DashboardState>(
                     listener: (context, state) {
-                      if (state.screenIndex != currentScreen) {
-                        setState(() {
-                          currentScreen = state.screenIndex;
-                        });
-                      }
+                      Hive.box(AppConst.dashboardScreen).put('index', state.screenIndex);
                     },
                     builder: (context, state) {
-                      return dashboardScreens[state.screenIndex];
+                     
+                      return widget.dashboardScreen ??
+                          dashboardScreens[state.screenIndex];
                     },
                   ),
                 ),
