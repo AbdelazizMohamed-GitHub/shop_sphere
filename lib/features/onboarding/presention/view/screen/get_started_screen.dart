@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/onboarding_screen.dart';
 
@@ -9,9 +10,10 @@ class GetStartedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+ final horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);    return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding:  EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

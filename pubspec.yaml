@@ -50,7 +50,6 @@ dependencies:
   flutter_paypal_payment: ^1.0.8
   flutter_rating_bar: ^4.0.1
   flutter_svg: ^2.0.17
-  flutter_webview_plugin: ^0.4.0
   geocoding: ^3.0.0
   geolocator: ^13.0.2
   get_it: ^8.0.3
@@ -74,6 +73,7 @@ dependencies:
   syncfusion_flutter_charts: ^30.1.38
   url_strategy: ^0.3.0
   uuid: ^4.5.1
+  webview_flutter: ^4.13.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0
@@ -85,6 +85,7 @@ flutter_launcher_icons:
   color: "#000000"
   image: "assets/images/logo.png"
   android: true
+  
 
   ios: true
   image_path: "assets/images/logo.png"

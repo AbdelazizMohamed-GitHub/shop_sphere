@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/widget/custom_inboarding_item.dart';
@@ -67,8 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     width: 50,
                   ),
                   SmoothPageIndicator(
-                    controller: PageController(
-                        initialPage: currentPage), 
+                    controller: PageController(initialPage: currentPage),
                     count: 3,
                     axisDirection: Axis.horizontal,
                     effect: const ScrollingDotsEffect(
@@ -83,11 +84,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           curve: Curves.easeIn,
                         );
                       } else {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
-                            (route) => false);
+                        context.goNamed(AppRoute.login);
                       }
                     },
                     child: Container(
@@ -96,9 +93,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           color: AppColors.primaryColor,
                           borderRadius: BorderRadius.circular(12)),
                       child: currentPage == 2
-                          ?  Text(' Start Shopping',
-                              style:
-                                  AppStyles.text16Regular.copyWith(color: Colors.white))
+                          ? Text(' Start Shopping',
+                              style: AppStyles.text16Regular
+                                  .copyWith(color: Colors.white))
                           : const Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.white,

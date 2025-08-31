@@ -1,15 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
+import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
+import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
+import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
@@ -54,40 +60,7 @@ class ShopSphere extends StatelessWidget {
 
             theme: isLightTheme ? AppTheme.lightTheme : AppTheme.darkTheme,
             routerConfig: router,
-            // home: StreamBuilder<User?>(
-            //   stream: FirebaseAuth.instance.authStateChanges(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Scaffold(
-            //         body: Center(child: CircularProgressIndicator()),
-            //       );
-            //     }
-
-            //     if (!snapshot.hasData) {
-            //       return const GetStartedScreen();
-            //     }
-
-            //     return FutureBuilder<UserEntity>(
-            //       future: getIt<FirestoreService>().getUserData(),
-            //       builder: (context, userSnapshot) {
-            //         if (userSnapshot.connectionState == ConnectionState.waiting) {
-            //           return const Scaffold(
-            //             body: Center(child: CircularProgressIndicator()),
-            //           );
-            //         }
-
-            //         if (userSnapshot.hasError || !userSnapshot.hasData) {
-            //           return const GetStartedScreen(); // أو اعرض رسالة خطأ
-            //         }
-
-            //         final user = userSnapshot.data!;
-            //         return user.isStaff
-            //             ? const ProductScreen()
-            //             : const MainScreen();
-            //       },
-            //     );
-            //   },
-            // ),
+          
           );
         },
       ),

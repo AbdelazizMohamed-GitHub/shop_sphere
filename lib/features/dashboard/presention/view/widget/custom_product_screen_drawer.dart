@@ -1,7 +1,7 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
@@ -80,8 +80,8 @@ class CustomProductScreenDrawer extends StatelessWidget {
                           context
                               .read<DashboardCubit>()
                               .changeScreenIndex(index);
-                          window.history
-                              .replaceState(null, 'title', tabs[index]);
+                          context
+                              .goNamed(tabs[index]);
 
                          
                         } else {

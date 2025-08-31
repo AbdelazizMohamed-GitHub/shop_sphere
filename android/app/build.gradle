@@ -10,6 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.shop_sphere"
+
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "28.0.13004108"
 

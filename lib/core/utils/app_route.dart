@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/forget_password_screen.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/register_screen.dart';
@@ -12,6 +15,8 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_det
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
+import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/add_notification_screen.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/customer_order.dart';
@@ -19,13 +24,57 @@ import 'package:shop_sphere/features/users/presention/view/screen/staff_product_
 
 final GoRouter router = GoRouter(
   initialLocation: '/dashboard',
- debugLogDiagnostics: true,
+  debugLogDiagnostics: true,
   errorBuilder: (context, state) {
     return const Center(
       child: Text('Error'),
     );
   },
   routes: [
+    GoRoute(
+  path: "/role-check",
+  builder: (context, state) {
+    return FutureBuilder<UserEntity>(
+      future: getIt<FirestoreService>().getUserData(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final userEntity = snapshot.data!;
+        if (userEntity.isStaff) {
+          // روح للـ Dashboard
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.go("/dashboard");
+          });
+        } else {
+          // روح للـ Main
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.go("/main");
+          });
+        }
+
+        return const SizedBox.shrink(); // شاشة فاضية مؤقتة
+      },
+    );
+  },
+),
+
+    GoRoute(
+      path: "/loading",
+      builder: (context, state) =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+    ),
+    GoRoute(
+      path: "/get-started",
+      builder: (context, state) => const GetStartedScreen(),
+    ),
+    GoRoute(
+      path: "/main",
+      builder: (context, state) => const MainScreen(),
+    ),
     GoRoute(
       name: AppRoute.dashboard,
       path: '/dashboard',
@@ -80,10 +129,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       name: AppRoute.analytics,
       path: '/dashboard/analytics',
-      builder: (context, state) => const DashBoardLayout(
-
-      
-      ),
+      builder: (context, state) => const DashBoardLayout(),
     ),
     GoRoute(
       name: AppRoute.outOfStock,
@@ -95,9 +141,7 @@ final GoRouter router = GoRouter(
             body: Center(child: Text('No products found!')),
           );
         }
-        return const DashBoardLayout(
-         
-        );
+        return const DashBoardLayout();
       },
     ),
     GoRoute(
@@ -219,6 +263,29 @@ final GoRouter router = GoRouter(
       },
     ),
   ],
+  redirect: (context, state) {
+    final user = FirebaseAuth.instance.currentUser;
+    final goingTo = state.uri.toString();
+
+    // لو مفيش يوزر
+    if (user == null) {
+      // استثني مسارات الـ auth
+      final allowedPaths = ["/get-started", "/login", "/signup"];
+      if (allowedPaths.contains(goingTo)) return null;
+
+      return "/get-started";
+    }
+
+
+    // لو في يوزر مسجّل دخول
+    if (goingTo == "/get-started" ||
+        goingTo == "/login" ||
+        goingTo == "/signup") {
+      return "/role-check"; // أو "/dashboard" حسب ما هتشيك isStaff
+    }
+
+    return null; // سيبه يكمل عادي
+  },
 );
 
 class AppRoute {
