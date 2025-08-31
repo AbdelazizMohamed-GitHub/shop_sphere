@@ -4,7 +4,6 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/widget/custom_inboarding_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
