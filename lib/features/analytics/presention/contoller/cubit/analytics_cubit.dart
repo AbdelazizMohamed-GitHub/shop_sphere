@@ -11,7 +11,7 @@ part 'analytics_state.dart';
 class AnalyticsCubit extends Cubit<AnalyticsState> {
   AnalyticsCubit({required this.analyticsRepo}) : super(AnalyticsInitial());
   final AnalyticsRepo analyticsRepo;
-int timeRangeIndex = 1;
+int timeRangeIndex = 0;
 Future<void> setTimeRangeIndex(int index)async {
     timeRangeIndex = index;
    await getAnalyticsData(limit: 10);

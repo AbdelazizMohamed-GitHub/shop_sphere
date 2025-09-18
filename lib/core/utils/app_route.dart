@@ -32,36 +32,35 @@ final GoRouter router = GoRouter(
   },
   routes: [
     GoRoute(
-  path: "/role-check",
-  builder: (context, state) {
-    return FutureBuilder<UserEntity>(
-      future: getIt<FirestoreService>().getUserData(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+      path: "/role-check",
+      builder: (context, state) {
+        return FutureBuilder<UserEntity>(
+          future: getIt<FirestoreService>().getUserData(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
 
-        final userEntity = snapshot.data!;
-        if (userEntity.isStaff) {
-          // روح للـ Dashboard
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.go("/dashboard");
-          });
-        } else {
-          // روح للـ Main
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.go("/main");
-          });
-        }
+            final userEntity = snapshot.data!;
+            if (userEntity.isStaff) {
+              // روح للـ Dashboard
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.go("/dashboard");
+              });
+            } else {
+              // روح للـ Main
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.go("/main");
+              });
+            }
 
-        return const SizedBox.shrink(); // شاشة فاضية مؤقتة
+            return const SizedBox.shrink(); // شاشة فاضية مؤقتة
+          },
+        );
       },
-    );
-  },
-),
-
+    ),
     GoRoute(
       name: AppRoute.loading,
       path: "/loading",
@@ -266,37 +265,46 @@ final GoRouter router = GoRouter(
       },
     ),
   ],
-  redirect: (context, state) {
-    final user = FirebaseAuth.instance.currentUser;
-    final goingTo = state.uri.toString();
+ redirect: (context, state) {
+  final user = FirebaseAuth.instance.currentUser;
+  final goingTo = state.uri.toString();
 
-    // لو مفيش يوزر
-    if (user == null) {
-      // استثني مسارات الـ auth
-      final allowedPaths = ["/get-started", "/login", "/signup"];
-      if (allowedPaths.contains(goingTo)) return null;
+  // لو مفيش يوزر
+  if (user == null) {
+    // استثني مسارات الـ auth
+    final allowedPaths = [
+      "/get-started",
+      "/login",
+      "/register",
+      "/forgot-password",
+    ];
 
-      return "/get-started";
+    // ✅ استخدم startsWith عشان يشمل أي param بعد /forgot-password
+    if (allowedPaths.any((path) => goingTo.startsWith(path))) {
+      return null;
     }
 
+    return "/get-started";
+  }
 
-    // لو في يوزر مسجّل دخول
-    if (goingTo == "/get-started" ||
-        goingTo == "/login" ||
-        goingTo == "/signup") {
-      return "/role-check"; // أو "/dashboard" حسب ما هتشيك isStaff
-    }
+  // لو في يوزر مسجّل دخول
+  if (goingTo == "/get-started" ||
+      goingTo.startsWith("/forgot-password") ||
+      goingTo == "/login" ||
+      goingTo == "/signup") {
+    return "/role-check"; // أو "/dashboard"
+  }
 
-    return null; // سيبه يكمل عادي
-  },
+  return null;
+},
+
 );
 
 class AppRoute {
-
   static String getStarted = 'get-started';
   static String login = 'login';
   static String register = 'register';
-  static String forgotPassword = 'forgot-password';
+  static String forgotPassword = 'forget-password';
 
   static String loading = 'loading';
   static String main = 'main';

@@ -82,7 +82,7 @@ class CustomProductScreenDrawer extends StatelessWidget {
                       onTap: () {
                         context.read<DashboardCubit>().changeScreenIndex(index);
                         if (ResponsiveLayout.isDesktop(context)) {
-                          context.goNamed(tabs[index]);
+                          context.goNamed(dashboardDrawerItems[index].title);
                         } else {
                           // قفل الـ Drawer أولاً
                           Navigator.pop(context);

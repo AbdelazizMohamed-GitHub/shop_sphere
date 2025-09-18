@@ -66,7 +66,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
             onPressed: () {
               if (emailTextC.text.isNotEmpty) {
                 context.goNamed(AppRoute.forgotPassword,
-                    queryParameters: {'email': emailTextC.text});
+                    pathParameters: {'email': emailTextC.text});
               } else {
                 Warning.showWarning(context,
                     message: 'Please enter your email first');
