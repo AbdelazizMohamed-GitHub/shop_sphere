@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -55,17 +57,14 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
           ),
           const SizedBox(height: 15),
           CustomTextForm(
-          
-              validator:
-              (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Phone number cannot be empty';
-                }
-                if (!RegExp(r'^\+?[0-9]{11}$').hasMatch(value)) {
-                  return 'Enter a valid phone number';
-                }
-                return null;
-              
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Phone number cannot be empty';
+              }
+              if (!RegExp(r'^\+?[0-9]{11}$').hasMatch(value)) {
+                return 'Enter a valid phone number';
+              }
+              return null;
             },
             textController: phoneTextC,
             pIcon: Icons.phone,
@@ -135,14 +134,8 @@ class _CustomRegisterBodyState extends State<CustomRegisterBody> {
           BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => state.uid == 'Staff'
-                    ? const DashBoardLayout()
-                    : const MainScreen(),
-              ),
-              (route) => false);
+                context.goNamed(
+                    state.uid == 'Staff' ? AppRoute.dashboard : AppRoute.main);
               }
               if (state is AuthError) {
                 Warning.showWarning(context,

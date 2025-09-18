@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
@@ -21,13 +23,8 @@ class CustomLogInWithGoogle extends StatelessWidget {
               message: state.errMessage, isError: true);
         }
         if (state is AuthSuccess) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    state.uid == 'Staff' ? const DashBoardLayout() : const MainScreen(),
-              ),
-              (route) => false);
+         context.goNamed(state.uid=='Staff' ? AppRoute.dashboard : AppRoute.main);
+        
         }
       },
       builder: (context, state) {

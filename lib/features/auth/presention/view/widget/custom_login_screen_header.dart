@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/register_screen.dart';
 
@@ -13,9 +15,7 @@ class CustomLoginScreenHeader extends StatelessWidget {
         const Text('Don\'t have an account?', style: AppStyles.text18Regular),
         TextButton(
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const RegisterScreen(),
-            ));
+           context.pushNamed(AppRoute.register);
           },
           child: Text(
             'Register',

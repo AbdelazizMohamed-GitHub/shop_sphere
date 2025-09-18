@@ -63,15 +63,18 @@ final GoRouter router = GoRouter(
 ),
 
     GoRoute(
+      name: AppRoute.loading,
       path: "/loading",
       builder: (context, state) =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
     ),
     GoRoute(
+      name: AppRoute.getStarted,
       path: "/get-started",
       builder: (context, state) => const GetStartedScreen(),
     ),
     GoRoute(
+      name: AppRoute.main,
       path: "/main",
       builder: (context, state) => const MainScreen(),
     ),
@@ -289,10 +292,15 @@ final GoRouter router = GoRouter(
 );
 
 class AppRoute {
-  static String dashboard = 'dashboard';
+
+  static String getStarted = 'get-started';
   static String login = 'login';
   static String register = 'register';
   static String forgotPassword = 'forgot-password';
+
+  static String loading = 'loading';
+  static String main = 'main';
+  static String dashboard = 'dashboard';
   static String verify = 'verify';
   static String orders = 'Orders';
   static String users = 'Users';

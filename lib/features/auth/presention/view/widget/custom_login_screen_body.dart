@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -62,11 +64,13 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ForgetPasswordScreen(
-                  email: emailTextC.text.trim(),
-                ),
-              ));
+              if (emailTextC.text.isNotEmpty) {
+                context.pushNamed(AppRoute.forgotPassword,
+                    queryParameters: {'email': emailTextC.text});
+              } else {
+                Warning.showWarning(context,
+                    message: 'Please enter your email first');
+              }
             },
             child: Text(
               'Forgot Password?',
@@ -78,14 +82,9 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => state.uid == 'Staff'
-                        ? const DashBoardLayout()
-                        : const MainScreen(),
-                  ),
-                  (route) => false);
+            context.goNamed(state.uid=='Staff' ? AppRoute.dashboard : AppRoute.main);
+              Warning.showWarning(context,
+                  message: 'Login Successfully', isError: false);
             }
             if (state is AuthError) {
          
