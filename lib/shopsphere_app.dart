@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
+import 'package:shop_sphere/core/cubits/sign_out_cubit/sign_out_cubit.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
@@ -43,7 +44,12 @@ class ShopSphere extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
+
         ),
+        BlocProvider(
+          create: (context) => SignOutCubit(),
+        
+        )
       ],
       child: BlocBuilder<AppCubit, bool>(
         builder: (context, isLightTheme) {

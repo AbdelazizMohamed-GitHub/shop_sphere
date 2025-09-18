@@ -65,7 +65,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
           child: TextButton(
             onPressed: () {
               if (emailTextC.text.isNotEmpty) {
-                context.pushNamed(AppRoute.forgotPassword,
+                context.goNamed(AppRoute.forgotPassword,
                     queryParameters: {'email': emailTextC.text});
               } else {
                 Warning.showWarning(context,

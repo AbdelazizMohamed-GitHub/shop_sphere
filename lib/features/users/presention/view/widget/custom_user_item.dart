@@ -41,18 +41,18 @@ class CustomUserItem extends StatelessWidget {
                   maxLines: 1, style: AppStyles.text16Bold),
               subtitle: Text(users[index].email, maxLines: 1),
               trailing: SizedBox(
-                  width: 80,
+                  width: 100,
                   height: 50,
                   child: Row(
                     children: [
-                      currentIndex == 0
+                      currentIndex == 1
                           ? IconButton(
                               onPressed: () {
-                                context
-                                    .goNamed(AppRoute.addNotification, extra: {
-                                  'fcm': users[index].fcmToken,
-                                  'userName': users[index].name,
-                                });
+                                context.goNamed(AppRoute.addNotification,
+                                    extra: {
+                                      'fcm': users[index].fcmToken,
+                                      'userName': users[index].name,
+                                    });
                               },
                               icon: const Icon(Icons.notifications),
                             )
@@ -63,8 +63,7 @@ class CustomUserItem extends StatelessWidget {
                             await context
                                 .read<MangeUsersCubit>()
                                 .changeUserRule(
-                                    userId: users[index].uid,
-                                    isStaff: currentIndex == 0);
+                                    userId: users[index].uid, isStaff: value);
                           })
                     ],
                   )),
