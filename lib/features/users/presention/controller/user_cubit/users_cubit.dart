@@ -22,4 +22,10 @@ class MangeUsersCubit extends Cubit<MangeUsersState> {
     result.fold((l) => emit(MangeUsersFailure( errMessage: l.message)),
         (products) => emit(MangeStaffProductsSuccess(products: products)));
   }
+  Future<void> changeUserRule({required String userId, required bool isStaff}) async {
+    emit(MangeUsersLoading());
+    final result = await mangeUsersRepo.changeUserRule(userId: userId, isStaff: isStaff);
+    result.fold((l) => emit(MangeUsersFailure( errMessage: l.message)),
+        (_)=> getUsers(isStaff: !isStaff));
+  }
 }

@@ -844,5 +844,13 @@ class FirestoreService {
     });
   return data;
   }
+  Future<void> changeUserRule(
+      {required String userId, required bool isStaff}) async {
+    await checkInternet();
+    await firestore
+        .collection('users')
+        .doc(userId)
+        .update({"isStaff": isStaff});
+  }
 
 }

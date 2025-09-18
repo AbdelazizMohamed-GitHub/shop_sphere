@@ -34,7 +34,9 @@ class CustomUserItem extends StatelessWidget {
               title: Text(users[index].name,
                   maxLines: 1, style: AppStyles.text16Bold),
               subtitle: Text(users[index].email, maxLines: 1),
-              trailing: IconButton(
+              trailing: SizedBox(width: 80,height:  50, child: 
+              Row(children: [
+                IconButton(
                 onPressed: () {
                   context.goNamed(AppRoute.addNotification, extra: {
                     'fcm': users[index].fcmToken,
@@ -43,6 +45,10 @@ class CustomUserItem extends StatelessWidget {
                 },
                 icon: const Icon(Icons.message_rounded),
               ),
+                Text(users[index].isStaff ? "Staff" : "Customer", style: AppStyles.text14Regular,),
+                const Spacer(),
+                Icon(users[index].isStaff ? Icons.admin_panel_settings : Icons.person, color: users[index].isStaff ? Colors.blue : Colors.green,)
+              ],)),
               leading: Image.asset(AppImages.profile)),
         ),
       ),

@@ -44,3 +44,4 @@ app.*.map.json
 lib/core/utils/app_keys.dart
 assets/firebase_service_account.json
 
+

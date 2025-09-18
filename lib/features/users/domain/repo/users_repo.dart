@@ -8,5 +8,6 @@ abstract class UsersRepo {
   Future<Either<FirebaseFailure,List<ProductEntity>>> getStaffProducts({required String staffId});
 
   Future<void> deleteUser({required String userId});
+  Future<Either<FirebaseFailure,void>> changeUserRule({required String userId, required bool isStaff});
   
 }

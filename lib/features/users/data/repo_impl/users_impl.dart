@@ -40,4 +40,17 @@ class UsersRepoImpl extends UsersRepo {
   Future<void> deleteUser({required String userId}) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<FirebaseFailure, void>> changeUserRule(
+      {required String userId, required bool isStaff}) async {
+    try {
+      await firestoreService.changeUserRule(userId: userId, isStaff: isStaff);
+      return right(null);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
 }
