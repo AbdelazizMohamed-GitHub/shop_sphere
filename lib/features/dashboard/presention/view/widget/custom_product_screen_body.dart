@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_gride.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -31,34 +32,39 @@ class _CustomProductScreenBodyState extends State<CustomProductScreenBody> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 10, bottom: 10),
-              child: isDesktop ? Row(children: [
-                const SizedBox(width: 10),
-         
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    context.goNamed(AppRoute.search);
-                  },
-                  icon: const Icon(Icons.search, size: 30),
-                ),
-                PopupMenuButton(
-                    child: const Icon(Icons.filter_list),
-                    itemBuilder: (context) => appCategory.map((category) {
-                          return PopupMenuItem(
-                            onTap: () {
-                              widget.onCategoryChanged(category);
-                              setState(() {});
-                            },
-                            value: category,
-                            child: Text(category),
-                          );
-                        }).toList()),
-                const SizedBox(
-                  width: 16,
-                )
-              ]):null
-            ),
+                padding: const EdgeInsets.only(left: 10, bottom: 10),
+                child: isDesktop
+                    ? Row(children: [Spacer(flex: 5,),
+                        Text(
+                          " ${widget.products.length} Products",
+                          style: AppStyles.text18Regular,
+                        ),
+                      
+                        const Spacer(flex: 4,),
+                        IconButton(
+                          onPressed: () {
+                            context.goNamed(AppRoute.search);
+                          },
+                          icon: const Icon(Icons.search, size: 30),
+                        ),
+                        PopupMenuButton(
+                            child: const Icon(Icons.filter_list),
+                            itemBuilder: (context) =>
+                                appCategory.map((category) {
+                                  return PopupMenuItem(
+                                    onTap: () {
+                                      widget.onCategoryChanged(category);
+                                      setState(() {});
+                                    },
+                                    value: category,
+                                    child: Text(category),
+                                  );
+                                }).toList()),
+                        const SizedBox(
+                          width: 16,
+                        )
+                      ])
+                    : null),
             CustomProductGrid(products: widget.products)
           ],
         ),

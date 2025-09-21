@@ -9,6 +9,7 @@ import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
@@ -98,12 +99,12 @@ class _ProductScreenState extends State<DashBoardLayout> {
             builder: (context, state) {
               return Scaffold(
                 backgroundColor: AppColors.backgroundColor,
-                appBar: isDesktop && state.screenIndex!=0
+                appBar: isDesktop || state.screenIndex!=0
                     ? null
                     : AppBar(
-                        title: const Text("Products"),
+                        title:  Text(" ${products.length} Products",style: AppStyles.text18Regular,),
                         actions: [
-                          const Spacer(),
+                         
                           IconButton(
                             onPressed: () {
                               context.goNamed(AppRoute.search);
@@ -131,14 +132,18 @@ class _ProductScreenState extends State<DashBoardLayout> {
                       ),
                 drawer: isDesktop
                     ? null
-                    : CustomProductScreenDrawer(outOfStock: outOfStock),
+                    : CustomProductScreenDrawer(outOfStock: outOfStock, products: products, onCategoryChanged: (String value) { 
+                        setState(() {
+                          selectedCategory = value;
+                        });
+                     },),
                 body: Row(
                   children: [
                     if (isDesktop)
                       SizedBox(
                         width: 250,
                         child:
-                            CustomProductScreenDrawer(outOfStock: outOfStock),
+                            CustomProductScreenDrawer(outOfStock: outOfStock, products: products, onCategoryChanged: (String value) { setState(() { selectedCategory = value; }); },),
                       ),
                     Expanded(
                       child: BlocConsumer<DashboardCubit, DashboardState>(

@@ -121,7 +121,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
         child: BlocConsumer<DashboardCubit, DashboardState>(
           listener: (context, state) {
             if (state is DashboardSuccess) {
-              Navigator.pop(context);
+              context.goNamed( AppRoute.dashboard);
             } else if (state is DashboardFailer) {
               Warning.showWarning(context,
                   message: state.errMessage, isError: true);

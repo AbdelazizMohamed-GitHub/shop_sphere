@@ -46,7 +46,7 @@ class DashboardDrawerModel {
 
 List<DashboardDrawerModel> dashboardDrawerItems = [
   DashboardDrawerModel(
-      title: 'Products',
+      title: 'Dashboard',
       icon: Icons.shopping_bag,
       screen: CustomProductScreenBody(
         products: const [], // Placeholder, will be updated with actual products

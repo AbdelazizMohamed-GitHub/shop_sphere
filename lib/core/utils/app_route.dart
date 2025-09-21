@@ -137,12 +137,7 @@ final GoRouter router = GoRouter(
       name: AppRoute.outOfStock,
       path: '/dashboard/out-of-stock',
       builder: (context, state) {
-        final product = state.extra;
-        if (product == null || product is! List<ProductEntity>) {
-          return const Scaffold(
-            body: Center(child: Text('No products found!')),
-          );
-        }
+       
         return const DashBoardLayout();
       },
     ),
@@ -308,7 +303,7 @@ class AppRoute {
 
   static String loading = 'loading';
   static String main = 'main';
-  static String dashboard = 'dashboard';
+  static String dashboard = 'Dashboard';
   static String verify = 'verify';
   static String orders = 'Orders';
   static String users = 'Users';

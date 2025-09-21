@@ -1,1 +1,43 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"shopsphere-b422e","appId":"1:909426718408:android:f3d7eedbb8ecc3c08657fd","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"shopsphere-b422e","configurations":{"android":"1:909426718408:android:f3d7eedbb8ecc3c08657fd","ios":"1:909426718408:ios:ccbacf06eec415e68657fd","macos":"1:909426718408:ios:ccbacf06eec415e68657fd","web":"1:909426718408:web:ddf3b53857e1d1cd8657fd","windows":"1:909426718408:web:bc115e1dcb51840d8657fd"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "shopsphere-b422e",
+          "appId": "1:909426718408:android:f3d7eedbb8ecc3c08657fd",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "shopsphere-b422e",
+          "configurations": {
+            "android": "1:909426718408:android:f3d7eedbb8ecc3c08657fd",
+            "ios": "1:909426718408:ios:ccbacf06eec415e68657fd",
+            "macos": "1:909426718408:ios:ccbacf06eec415e68657fd",
+            "web": "1:909426718408:web:ddf3b53857e1d1cd8657fd",
+            "windows": "1:909426718408:web:bc115e1dcb51840d8657fd"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  ,
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
+  }
+}

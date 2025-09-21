@@ -14,14 +14,25 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_body.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class CustomProductScreenDrawer extends StatelessWidget {
+class CustomProductScreenDrawer extends StatefulWidget {
   const CustomProductScreenDrawer({
     super.key,
     required this.outOfStock,
+    required this.products, required this.onCategoryChanged,
   });
   final List<ProductEntity> outOfStock;
+  final List<ProductEntity> products;
+  final ValueChanged<String> onCategoryChanged;
+
+  @override
+  State<CustomProductScreenDrawer> createState() =>
+      _CustomProductScreenDrawerState();
+}
+
+class _CustomProductScreenDrawerState extends State<CustomProductScreenDrawer> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardCubit, DashboardState>(
@@ -80,18 +91,37 @@ class CustomProductScreenDrawer extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        context.read<DashboardCubit>().changeScreenIndex(index);
                         if (ResponsiveLayout.isDesktop(context)) {
+                          context
+                              .read<DashboardCubit>()
+                              .changeScreenIndex(index);
                           context.goNamed(dashboardDrawerItems[index].title);
                         } else {
                           // قفل الـ Drawer أولاً
                           Navigator.pop(context);
-
-                          // ثم التنقل للشاشة المطلوبة
-                          if (index >= 3) {
+                          if (index == 0) {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return OutOfStockScreen(products: outOfStock);
+                              return CustomProductScreenBody(
+                                products: widget.outOfStock,
+                                onCategoryChanged: (String value) {
+                                  widget.onCategoryChanged(value);
+                                  setState(() {});
+                                },
+                              );
+                            }));
+                          }
+                          // ثم التنقل للشاشة المطلوبة
+                          else if (index >= 3) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return OutOfStockScreen(
+                                  products: widget.outOfStock);
+                            }));
+                          } else {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return dashboardDrawerItems[index].screen;
                             }));
                           }
                         }
@@ -110,7 +140,7 @@ class CustomProductScreenDrawer extends StatelessWidget {
                 onTap: () async {
                   try {
                     await context.read<SignOutCubit>().signOut();
-              
+
                     context.goNamed(AppRoute.getStarted);
                   } catch (e) {
                     print(e.toString());

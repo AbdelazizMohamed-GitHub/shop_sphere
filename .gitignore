@@ -43,5 +43,9 @@ app.*.map.json
 /android/app/release
 lib/core/utils/app_keys.dart
 assets/firebase_service_account.json
+.firebase/shopsphere-b422e/hosting/assets/assets/firebase_service_account.json
+firebase.json
+.firebase/
+
 
 
