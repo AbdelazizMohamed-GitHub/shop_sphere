@@ -25,9 +25,7 @@ import 'package:shop_sphere/features/users/presention/view/screen/users_screen.d
 class DashBoardLayout extends StatefulWidget {
   const DashBoardLayout({
     super.key,
-  
   });
-
 
   @override
   State<DashBoardLayout> createState() => _ProductScreenState();
@@ -37,7 +35,7 @@ class _ProductScreenState extends State<DashBoardLayout> {
   String selectedCategory = "All";
   @override
   void initState() {
-     final savedIndex =
+    final savedIndex =
         Hive.box(AppConst.dashboardScreen).get('index', defaultValue: 0);
     context.read<DashboardCubit>().changeScreenIndex(savedIndex);
     super.initState();
@@ -96,76 +94,82 @@ class _ProductScreenState extends State<DashBoardLayout> {
             OutOfStockScreen(products: outOfStock),
           ];
 
-          return Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            appBar: isDesktop
-                ? null
-                : AppBar(
-                    title: const Text("Products"),
-                    actions: [
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          context.goNamed(AppRoute.search);
-                        },
-                        icon: const Icon(Icons.search, size: 30),
+          return BlocBuilder<DashboardCubit, DashboardState>(
+            builder: (context, state) {
+              return Scaffold(
+                backgroundColor: AppColors.backgroundColor,
+                appBar: isDesktop && state.screenIndex!=0
+                    ? null
+                    : AppBar(
+                        title: const Text("Products"),
+                        actions: [
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              context.goNamed(AppRoute.search);
+                            },
+                            icon: const Icon(Icons.search, size: 30),
+                          ),
+                          PopupMenuButton(
+                              child: const Icon(Icons.filter_list),
+                              itemBuilder: (context) =>
+                                  appCategory.map((category) {
+                                    return PopupMenuItem(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedCategory = category;
+                                        });
+                                      },
+                                      value: category,
+                                      child: Text(category),
+                                    );
+                                  }).toList()),
+                          const SizedBox(
+                            width: 16,
+                          )
+                        ],
                       ),
-                      PopupMenuButton(
-                          child: const Icon(Icons.filter_list),
-                          itemBuilder: (context) => appCategory.map((category) {
-                                return PopupMenuItem(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedCategory = category;
-                                    });
-                                  },
-                                  value: category,
-                                  child: Text(category),
-                                );
-                              }).toList()),
-                      const SizedBox(
-                        width: 16,
-                      )
-                    ],
-                  ),
-            drawer: isDesktop
-                ? null
-                : CustomProductScreenDrawer(outOfStock: outOfStock),
-            body: Row(
-              children: [
-                if (isDesktop)
-                  SizedBox(
-                    width: 250,
-                    child: CustomProductScreenDrawer(outOfStock: outOfStock),
-                  ),
-                Expanded(
-                  child: BlocConsumer<DashboardCubit, DashboardState>(
-                    listener: (context, state) async{
-                    await  Hive.box(AppConst.dashboardScreen).put('index', state.screenIndex);
-                    },
-                    builder: (context, state) {
-                     
-                      return 
-                          dashboardScreens[state.screenIndex];
-                    },
-                  ),
-                ),
-              ],
-            ),
-            floatingActionButton: BlocBuilder<DashboardCubit, DashboardState>(
-              builder: (context, state) {
-                return state.screenIndex != 0
-                    ? const SizedBox()
-                    : FloatingActionButton(
-                        backgroundColor: AppColors.primaryColor,
-                        onPressed: () {
-                          context.goNamed(AppRoute.addProduct,
-                              extra: {'isUpdate': false, 'product': null});
+                drawer: isDesktop
+                    ? null
+                    : CustomProductScreenDrawer(outOfStock: outOfStock),
+                body: Row(
+                  children: [
+                    if (isDesktop)
+                      SizedBox(
+                        width: 250,
+                        child:
+                            CustomProductScreenDrawer(outOfStock: outOfStock),
+                      ),
+                    Expanded(
+                      child: BlocConsumer<DashboardCubit, DashboardState>(
+                        listener: (context, state) async {
+                          await Hive.box(AppConst.dashboardScreen)
+                              .put('index', state.screenIndex);
                         },
-                        child: const Icon(Icons.add, color: Colors.white),
-                      );
-              },
-            ),
+                        builder: (context, state) {
+                          return dashboardScreens[state.screenIndex];
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                floatingActionButton:
+                    BlocBuilder<DashboardCubit, DashboardState>(
+                  builder: (context, state) {
+                    return state.screenIndex != 0
+                        ? const SizedBox()
+                        : FloatingActionButton(
+                            backgroundColor: AppColors.primaryColor,
+                            onPressed: () {
+                              context.goNamed(AppRoute.addProduct,
+                                  extra: {'isUpdate': false, 'product': null});
+                            },
+                            child: const Icon(Icons.add, color: Colors.white),
+                          );
+                  },
+                ),
+              );
+            },
           );
         }
       },
