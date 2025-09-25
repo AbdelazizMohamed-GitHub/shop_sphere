@@ -248,16 +248,6 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                   order.status == 'Pending'
                                       ? TextButton(
                                           onPressed: () async {
-                                            if (!await AppFuncations
-                                                .isOnline()) {
-                                              Warning.showWarning(
-                                                context,
-                                                message:
-                                                    "No Internet Connection",
-                                                isError: true,
-                                              );
-                                              return;
-                                            }
                                             await BlocProvider.of<OrderCubit>(
                                                     context)
                                                 .getTrackinNumber();
@@ -276,16 +266,6 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                       : order.status == 'Processing'
                                           ? TextButton(
                                               onPressed: () async {
-                                                if (!await AppFuncations
-                                                    .isOnline()) {
-                                                  Warning.showWarning(
-                                                    context,
-                                                    message:
-                                                        "No Internet Connection",
-                                                    isError: true,
-                                                  );
-                                                  return;
-                                                }
                                                 await context
                                                     .read<OrderCubit>()
                                                     .changeOrdeStatus(

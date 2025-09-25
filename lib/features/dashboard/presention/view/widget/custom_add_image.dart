@@ -32,7 +32,7 @@ class _CustomAddImageState extends State<CustomAddImage> {
       child: widget.imageUrl != ""
           ? ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child:CachedNetworkImage(imageUrl: widget.imageUrl!, fit: BoxFit.cover,
+              child:CachedNetworkImage(imageUrl: widget.imageUrl!, fit: BoxFit.contain,
               placeholder: (context, url) => const CustomImageLoading(),),
             )
           : imageFile == null
