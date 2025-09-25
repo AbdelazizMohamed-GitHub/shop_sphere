@@ -23,8 +23,9 @@ class CustomLogInWithGoogle extends StatelessWidget {
               message: state.errMessage, isError: true);
         }
         if (state is AuthSuccess) {
-         context.goNamed(state.uid=='Staff' ? AppRoute.dashboard : AppRoute.main);
-        
+  context.goNamed(state.uid=='Staff' ? AppRoute.dashboard : AppRoute.main);
+              Warning.showWarning(context,
+                  message: 'Login Successfully', isError: false);        
         }
       },
       builder: (context, state) {

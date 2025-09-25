@@ -1,12 +1,13 @@
-
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
@@ -69,18 +70,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-     final isDesktop = ResponsiveLayout.isDesktop(context);
-    double horizontalPadding = ResponsiveLayout.getHorizontalLargePadding(context);
+    final isDesktop = ResponsiveLayout.isDesktop(context);
+    double horizontalPadding =
+        ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
-      appBar: isDesktop ? null : AppBar(
-        leading: const CustomBackButton(),
-        title: Text(widget.isUpdate ? "Update Product" : "Add Product"),
-      ),
+      appBar: isDesktop
+          ? null
+          : AppBar(
+              leading: const CustomBackButton(),
+              title: Text(widget.isUpdate ? "Update Product" : "Add Product"),
+            ),
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 20),
+            padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding, vertical: 20),
             child: Column(
               children: [
                 CustomTextForm(
@@ -174,13 +179,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           message: widget.isUpdate
                               ? "Product Updated Successfully"
                               : "Product Added Successfully");
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DashBoardLayout(),
-                        ),
-                        (route) => false,
-                      );
+                      context.goNamed(AppRoute.dashboard);
                     }
                   },
                   builder: (context, state) {

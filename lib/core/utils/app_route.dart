@@ -23,7 +23,8 @@ import 'package:shop_sphere/features/users/presention/view/screen/customer_order
 import 'package:shop_sphere/features/users/presention/view/screen/staff_product_screen.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: '/dashboard',
+
+  initialLocation: "/role-check",
   debugLogDiagnostics: true,
   errorBuilder: (context, state) {
     return const Center(

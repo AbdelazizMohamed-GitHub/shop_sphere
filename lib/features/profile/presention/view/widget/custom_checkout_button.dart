@@ -43,7 +43,7 @@ class CustomCheckoutButton extends StatelessWidget {
         listener: (context, state) {
           if (state is OrderError) {
             Warning.showWarning(context, message: state.error);
-          } else if (state is OrderSuccess) {
+          } else if (state is CreateOrderSuccess) {
             Navigator.push(
               context,
               MaterialPageRoute(

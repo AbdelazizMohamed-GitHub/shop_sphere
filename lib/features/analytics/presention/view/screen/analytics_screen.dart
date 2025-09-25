@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 
 import 'package:shop_sphere/features/analytics/data/repo_impl/analytics_repo_impl.dart';
@@ -16,6 +17,7 @@ class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    bool isDesktop = ResponsiveLayout.isDesktop(context);
     return BlocProvider(
       create: (context) =>
           AnalyticsCubit(analyticsRepo: getIt<AnalyticsRepoImpl>())
@@ -23,7 +25,7 @@ class AnalyticsScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: AppBar(
+            appBar: isDesktop ? null : AppBar(
               title: const Text('Analytics Dashboard'),
               actions: [
                 IconButton(

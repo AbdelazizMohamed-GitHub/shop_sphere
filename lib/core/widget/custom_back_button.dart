@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 
 class CustomBackButton extends StatelessWidget {
@@ -9,7 +10,7 @@ class CustomBackButton extends StatelessWidget {
     return CustomCircleButton(
           icon: const Icon(Icons.arrow_back_ios),
           funcation: () {
-            Navigator.pop(context);
+            context.pop();
           },
         );
   }

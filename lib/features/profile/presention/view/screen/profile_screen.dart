@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/cubits/sign_out_cubit/sign_out_cubit.dart';
+import 'package:shop_sphere/core/loading/custom_icon_loading.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -152,11 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: BlocConsumer<SignOutCubit, SignOutState>(
                         listener: (context, state) {
                           if (state is SignOutSuccess) {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (_) => const ShopSphere()),
-                              (route) => false,
-                            );
+                            context.goNamed(AppRoute.getStarted);
                           }
                           if (state is SignOutError) {
                           Warning.showWarning(
@@ -167,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           }
                         },
                         builder: (context, state) {
-                          return state is SignOutLoading? const SizedBox(): CustomProfileListTile(
+                          return  CustomProfileListTile(trailing:state is SignOutLoading? const CustomIconLoading():const Icon(Icons.arrow_forward_ios),
                             icon: Icons.logout,
                             title: 'Log Out',
                             funcation: () async {

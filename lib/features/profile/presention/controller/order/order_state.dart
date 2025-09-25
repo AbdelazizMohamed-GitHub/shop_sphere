@@ -47,4 +47,6 @@ final class GetCustomerOrder extends OrderState {
   final List<OrderEntity> orders;
 
   GetCustomerOrder({required this.orders});
+
 }
+final class CreateOrderSuccess extends OrderState {}

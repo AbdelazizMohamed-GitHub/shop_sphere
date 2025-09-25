@@ -28,6 +28,7 @@ class OrderCubit extends Cubit<OrderState> {
         await getUserOrders(status: orderStauts[currentStatus]);
       },
       (r) async {
+        emit(CreateOrderSuccess());
         await getUserOrders(status: orderStauts[currentStatus]);
       },
     );
