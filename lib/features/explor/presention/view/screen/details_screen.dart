@@ -28,14 +28,17 @@ class ProductDetailsScreen extends StatelessWidget {
             // Image
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: CachedNetworkImage(
-                imageUrl: product.imageUrl,
-                placeholder: (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                height: 300,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: product.pId,
+                child: CachedNetworkImage(
+                  imageUrl: product.imageUrl,
+                  placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  height: 300,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 16),

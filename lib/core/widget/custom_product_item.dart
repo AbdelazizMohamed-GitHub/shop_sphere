@@ -52,13 +52,16 @@ class _CustomProductItemState extends State<CustomProductItem> {
                               ),
                             ));
                       },
-                      child: CachedNetworkImage(
-                        imageUrl: widget.product.imageUrl,
-                        placeholder: (context, url) => const Center(
-                          child: CustomImageLoading(),
+                      child: Hero(
+                        tag: widget.product.pId,
+                        child: CachedNetworkImage(
+                          imageUrl: widget.product.imageUrl,
+                          placeholder: (context, url) => const Center(
+                            child: CustomImageLoading(),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
                       )),
                 ),
               ),

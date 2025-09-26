@@ -33,11 +33,13 @@ class CustomDashboardProductItem extends StatelessWidget {
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: product.imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const CustomImageLoading(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                child: Hero(tag: product.pId,
+                  child: CachedNetworkImage(
+                    imageUrl: product.imageUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const CustomImageLoading(),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                  ),
                 ),
               ),
             ),
