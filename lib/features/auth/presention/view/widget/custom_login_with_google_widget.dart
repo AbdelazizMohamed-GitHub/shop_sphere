@@ -8,8 +8,6 @@ import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
-import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
 
 class CustomLogInWithGoogle extends StatelessWidget {
   const CustomLogInWithGoogle({super.key});

@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/features/auth/presention/view/screen/register_screen.dart';
 
 class CustomLoginScreenHeader extends StatelessWidget {
   const CustomLoginScreenHeader({super.key});
