@@ -14,8 +14,9 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) { final horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context);
+    final isDesktop = ResponsiveLayout.isDesktop(context);
     return Scaffold(
-      appBar: AppBar(
+      appBar:isDesktop?null: AppBar(
         backgroundColor: AppColors.primaryColor,
         leading: IconButton(
           padding: const EdgeInsets.only(left: 20),

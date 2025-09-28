@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_sphere/core/widget/animation_text.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -30,6 +31,26 @@ class ProductDetailsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               child: Hero(
                 tag: product.pId,
+                flightShuttleBuilder: (flightContext, animation,
+                    flightDirection, fromHeroContext, toHeroContext) {
+                  return AnimatedBuilder(
+                    animation: animation,
+                    builder: (context, child) {
+                      final scale =
+                          Tween(begin: 0.8, end: 1.0).animate(animation);
+                      final opacity =
+                          Tween(begin: 0.0, end: 1.0).animate(animation);
+
+                      return Transform.scale(
+                        scale: scale.value,
+                        child: Opacity(
+                          opacity: opacity.value,
+                          child: toHeroContext.widget,
+                        ),
+                      );
+                    },
+                  );
+                },
                 child: CachedNetworkImage(
                   imageUrl: product.imageUrl,
                   placeholder: (context, url) =>
@@ -43,9 +64,11 @@ class ProductDetailsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             // Name + Category
-            Text(product.name,
+            SlideInText(
+                text: product.name,
                 style: Theme.of(context).textTheme.headlineSmall),
-            Text("Category: ${product.category}",
+            SlideInText(
+                text: "Category: ${product.category}",
                 style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
 
@@ -53,16 +76,16 @@ class ProductDetailsScreen extends StatelessWidget {
             Row(
               children: [
                 if (product.discount > 0)
-                  Text(
-                    "${product.price.toStringAsFixed(2)} EGP",
+                  SlideInText(
+                    text: "${product.price.toStringAsFixed(2)} EGP",
                     style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.grey,
                     ),
                   ),
                 const SizedBox(width: 8),
-                Text(
-                  "${discountedPrice.toStringAsFixed(2)} EGP",
+                SlideInText(
+                  text: "${discountedPrice.toStringAsFixed(2)} EGP",
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -71,11 +94,13 @@ class ProductDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Description
-            Text(product.description, style: const TextStyle(fontSize: 16)),
+            SlideInText(
+                text: product.description,
+                style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 16),
 
             // Stock & Staff
-            Text(" Stock: ${product.stock}"),
+            SlideInText(text: " Stock: ${product.stock}"),
             const SizedBox(height: 24),
 
             // Button

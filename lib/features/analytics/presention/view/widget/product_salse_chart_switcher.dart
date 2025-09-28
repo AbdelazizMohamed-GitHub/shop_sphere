@@ -74,7 +74,7 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
                     ? Expanded(
                         flex: 1,
                         child: SizedBox(
-                            height: 250,
+                            height: 230,
                             child: CustomMostSellProductList(
                                 products: displayedProducts)),
                       )
