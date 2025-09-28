@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_color.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
+import 'package:shop_sphere/features/explor/presention/view/screen/chat_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/search_screen.dart';
 
 class CustomExploreScreenSearch extends StatelessWidget {
@@ -50,8 +52,9 @@ class CustomExploreScreenSearch extends StatelessWidget {
               ),
               child: IconButton(
                   onPressed: () {
-                    Warning.showWarning(context,
-                        message: "This Feature Will be available soon");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return  ChatScreen(userId: FirebaseAuth.instance.currentUser!.uid,);
+                    }));
                   },
                   icon:  const Icon(
               Icons.support_agent,

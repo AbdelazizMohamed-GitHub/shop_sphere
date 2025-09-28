@@ -23,7 +23,6 @@ import 'package:shop_sphere/features/users/presention/view/screen/customer_order
 import 'package:shop_sphere/features/users/presention/view/screen/staff_product_screen.dart';
 
 final GoRouter router = GoRouter(
-
   initialLocation: "/role-check",
   debugLogDiagnostics: true,
   errorBuilder: (context, state) {
@@ -138,7 +137,6 @@ final GoRouter router = GoRouter(
       name: AppRoute.outOfStock,
       path: '/dashboard/out-of-stock',
       builder: (context, state) {
-       
         return const DashBoardLayout();
       },
     ),
@@ -223,7 +221,13 @@ final GoRouter router = GoRouter(
       name: AppRoute.dashboardSearchResult,
       path: '/dashboard-search-result',
       builder: (context, state) {
-        final products = state.extra as List<ProductEntity>;
+        final products = (state.extra as List<ProductEntity>?) ?? [];
+        if (products.isEmpty) {
+          return const Scaffold(
+            body: Center(child: Text('No products found')),
+          );
+        }
+
         return DashboardSearchResult(products: products);
       },
     ),
@@ -261,39 +265,38 @@ final GoRouter router = GoRouter(
       },
     ),
   ],
- redirect: (context, state) {
-  final user = FirebaseAuth.instance.currentUser;
-  final goingTo = state.uri.toString();
+  redirect: (context, state) {
+    final user = FirebaseAuth.instance.currentUser;
+    final goingTo = state.uri.toString();
 
-  // لو مفيش يوزر
-  if (user == null) {
-    // استثني مسارات الـ auth
-    final allowedPaths = [
-      "/get-started",
-      "/login",
-      "/register",
-      "/forgot-password",
-    ];
+    // لو مفيش يوزر
+    if (user == null) {
+      // استثني مسارات الـ auth
+      final allowedPaths = [
+        "/get-started",
+        "/login",
+        "/register",
+        "/forgot-password",
+      ];
 
-    // ✅ استخدم startsWith عشان يشمل أي param بعد /forgot-password
-    if (allowedPaths.any((path) => goingTo.startsWith(path))) {
-      return null;
+      // ✅ استخدم startsWith عشان يشمل أي param بعد /forgot-password
+      if (allowedPaths.any((path) => goingTo.startsWith(path))) {
+        return null;
+      }
+
+      return "/get-started";
     }
 
-    return "/get-started";
-  }
+    // لو في يوزر مسجّل دخول
+    if (goingTo == "/get-started" ||
+        goingTo.startsWith("/forgot-password") ||
+        goingTo == "/login" ||
+        goingTo == "/signup") {
+      return "/role-check"; // أو "/dashboard"
+    }
 
-  // لو في يوزر مسجّل دخول
-  if (goingTo == "/get-started" ||
-      goingTo.startsWith("/forgot-password") ||
-      goingTo == "/login" ||
-      goingTo == "/signup") {
-    return "/role-check"; // أو "/dashboard"
-  }
-
-  return null;
-},
-
+    return null;
+  },
 );
 
 class AppRoute {

@@ -80,8 +80,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
           listener: (context, state) {
             if (state is AuthSuccess) {
             context.goNamed(state.uid=='Staff' ? AppRoute.dashboard : AppRoute.main);
-              Warning.showWarning(context,
-                  message: 'Login Successfully', isError: false);
+              
             }
             if (state is AuthError) {
          

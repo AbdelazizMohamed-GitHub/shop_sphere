@@ -59,7 +59,7 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
             Row(
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 5,
                   child: Card(
                     color: AppColors.backgroundColor,
                     margin: const EdgeInsets.all(12),
@@ -72,7 +72,7 @@ class _ProductSalesChartSwitcherState extends State<ProductSalesChartSwitcher> {
                 const SizedBox(height: 16),
                 !isMobile
                     ? Expanded(
-                        flex: 1,
+                        flex: 3,
                         child: SizedBox(
                             height: 230,
                             child: CustomMostSellProductList(

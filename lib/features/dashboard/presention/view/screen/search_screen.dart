@@ -16,7 +16,6 @@ class SearchScreen extends StatelessWidget {
         ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       appBar: AppBar(
-        leading: const CustomBackButton(),
         title: const Text("Search"),
       ),
       body: Padding(

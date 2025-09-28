@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -68,7 +70,10 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
               BlocConsumer<AddNotificationCubit, AddNotificationState>(
                 listener: (context, state) {
                   if (state is AddNotificationSuccess) {
-                    Navigator.pop(context);
+                    context.goNamed(AppRoute.users);
+                    Warning.showWarning(context,
+                        message: 'Notification Sent Successfully',
+                        isError: false);
                   } else if (state is AddNotificationFailure) {
                     Warning.showWarning(context,
                         message: state.errMessage, isError: true);
