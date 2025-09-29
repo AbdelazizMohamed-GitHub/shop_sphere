@@ -80,103 +80,108 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (snapshot.hasData || snapshot.data != null) {
               UserModel user = UserModel.fromMap(snapshot.data!.data()!);
 
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomProfileScreenHeader(user: user),
-                    CustomProfileListTile(
-                      icon: Icons.person_outlined,
-                      title: 'Edit Profile',
-                      funcation: () async {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return EditProfileScreen(user: user);
-                        }));
-                      },
-                    ),
-                    CustomProfileListTile(
-                      icon: Icons.shopping_cart_outlined,
-                      title: ' My Cart',
-                      funcation: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const CartScreen();
-                        }));
-                      },
-                    ),
-                    CustomProfileListTile(
-                      icon: Icons.data_thresholding,
-                      title: 'Orders',
-                      funcation: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const OrderScreen();
-                        }));
-                      },
-                    ),
-                    CustomProfileListTile(
-                      icon: Icons.location_on_outlined,
-                      title: 'Address',
-                      funcation: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return AddressScreen(
-                            selectAddressIndex: user.addressIndex,
-                          );
-                        }));
-                      },
-                    ),
-                    BlocBuilder<AppCubit, bool>(
-                      builder: (context, isLightTheme) {
-                        return CustomProfileListTile(
-                          icon: Icons.dark_mode_outlined,
-                          title: 'Dark Mode',
-                          trailing: Switch(
-                              activeColor: Colors.white,
-                              value: !isLightTheme,
-                              onChanged: (val) {
-                                setState(() {});
-
-                                context.read<AppCubit>().toggleTheme();
-                              },
-                              inactiveTrackColor: Colors.white),
-                          funcation: () {},
-                        );
-                      },
-                    ),
-                    const Divider(
-                      color: Colors.white,
-                    ),
-                    BlocProvider(
-                      create: (context) => SignOutCubit(),
-                      child: BlocConsumer<SignOutCubit, SignOutState>(
-                        listener: (context, state) {
-                          if (state is SignOutSuccess) {
-                            context.goNamed(AppRoute.getStarted);
-                          }
-                          if (state is SignOutError) {
-                          Warning.showWarning(
-                              context,
-                              message: state.message,
-                              isError: true,
-                            );
-                          }
+              return SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomProfileScreenHeader(user: user),
+                      CustomProfileListTile(
+                        icon: Icons.person_outlined,
+                        title: 'Edit Profile',
+                        funcation: () async {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return EditProfileScreen(user: user);
+                          }));
                         },
-                        builder: (context, state) {
-                          return  CustomProfileListTile(trailing:state is SignOutLoading? const CustomIconLoading():const Icon(Icons.arrow_forward_ios),
-                            icon: Icons.logout,
-                            title: 'Log Out',
-                            funcation: () async {
-                              await context.read<SignOutCubit>().signOut();
-                            },
+                      ),
+                      CustomProfileListTile(
+                        icon: Icons.shopping_cart_outlined,
+                        title: ' My Cart',
+                        funcation: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const CartScreen();
+                          }));
+                        },
+                      ),
+                      CustomProfileListTile(
+                        icon: Icons.data_thresholding,
+                        title: 'Orders',
+                        funcation: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const OrderScreen();
+                          }));
+                        },
+                      ),
+                      CustomProfileListTile(
+                        icon: Icons.location_on_outlined,
+                        title: 'Address',
+                        funcation: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return AddressScreen(
+                              selectAddressIndex: user.addressIndex,
+                            );
+                          }));
+                        },
+                      ),
+                      BlocBuilder<AppCubit, bool>(
+                        builder: (context, isLightTheme) {
+                          return CustomProfileListTile(
+                            icon: Icons.dark_mode_outlined,
+                            title: 'Dark Mode',
+                            trailing: Switch(
+                                activeColor: Colors.white,
+                                value: !isLightTheme,
+                                onChanged: (val) {
+                                  setState(() {});
+
+                                  context.read<AppCubit>().toggleTheme();
+                                },
+                                inactiveTrackColor: Colors.white),
+                            funcation: () {},
                           );
                         },
                       ),
-                    ),
-                  ],
+                      const Divider(
+                        color: Colors.white,
+                      ),
+                      BlocProvider(
+                        create: (context) => SignOutCubit(),
+                        child: BlocConsumer<SignOutCubit, SignOutState>(
+                          listener: (context, state) {
+                            if (state is SignOutSuccess) {
+                              context.goNamed(AppRoute.getStarted);
+                            }
+                            if (state is SignOutError) {
+                              Warning.showWarning(
+                                context,
+                                message: state.message,
+                                isError: true,
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            return CustomProfileListTile(
+                              trailing: state is SignOutLoading
+                                  ? const CustomIconLoading()
+                                  : const Icon(Icons.arrow_forward_ios),
+                              icon: Icons.logout,
+                              title: 'Log Out',
+                              funcation: () async {
+                                await context.read<SignOutCubit>().signOut();
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }
