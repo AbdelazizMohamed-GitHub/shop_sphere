@@ -48,7 +48,7 @@ class CustomProductItemButton extends StatelessWidget {
                           );
                         }
                       : () async {
-                          await context.read<CartCubit>().addToCart(
+                          await BlocProvider.of<CartCubit>(context).addToCart(
                                 cartItemModel: CartItemModel(
                                   id: productEntity.pId,
                                   name: productEntity.name,

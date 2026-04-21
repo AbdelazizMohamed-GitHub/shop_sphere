@@ -28,8 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  awesome_notifications: ^0.10.1
-  build_runner: ^2.4.15
+  awesome_notifications: ^0.11.0
+  build_runner: ^2.4.13
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cloud_firestore: ^5.6.5
@@ -46,7 +46,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.0.0
   flutter_launcher_icons: ^0.14.4
-  flutter_local_notifications: ^19.1.0
+  flutter_local_notifications: ^19.5.0
   flutter_paypal_payment: ^1.0.8
   flutter_rating_bar: ^4.0.1
   flutter_svg: ^2.0.17
@@ -67,7 +67,7 @@ dependencies:
   intl: ^0.20.2
   path_provider: ^2.1.5
   readmore: ^3.0.0
-  skeletonizer: ^1.4.3
+  skeletonizer: ^2.1.2
   smooth_page_indicator: ^1.2.0+3
   supabase_flutter: ^2.8.4
   syncfusion_flutter_charts: ^30.1.38

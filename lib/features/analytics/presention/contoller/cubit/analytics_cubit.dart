@@ -11,10 +11,18 @@ part 'analytics_state.dart';
 class AnalyticsCubit extends Cubit<AnalyticsState> {
   AnalyticsCubit({required this.analyticsRepo}) : super(AnalyticsInitial());
   final AnalyticsRepo analyticsRepo;
-int timeRangeIndex = 0;
-Future<void> setTimeRangeIndex(int index)async {
+
+  // Keeps the last selected range during the app session.
+  // This prevents the selection from resetting to `0` if the Cubit is recreated
+  // (for example after a refresh/build).
+  static int _savedTimeRangeIndex = 0;
+
+  int timeRangeIndex = _savedTimeRangeIndex;
+
+  Future<void> setTimeRangeIndex(int index) async {
     timeRangeIndex = index;
-   await getAnalyticsData(limit: 10);
+    _savedTimeRangeIndex = index;
+    await getAnalyticsData(limit: 10);
   }
  
   Future<void> getAnalyticsData({ required int limit}) async {

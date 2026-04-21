@@ -9,7 +9,7 @@ import 'package:awesome_notifications/awesome_notifications.dart'
         NotificationChannel,
         NotificationContent,
         NotificationImportance,
-        NotificationLayout;
+        NotificationLayout, AwesomeNotifications;
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:googleapis_auth/auth_io.dart';

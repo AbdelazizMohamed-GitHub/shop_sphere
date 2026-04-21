@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_styles.dart';
@@ -34,7 +35,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       appBar: AppBar(
         leadingWidth: 70,
         leading: IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              // Avoid `pop()` on web to prevent go_router's "popped the last page"
+              // assertion when this screen is opened directly (deep-link/refresh).
+              context.go('/login');
+            },
             icon: const Icon(
               Icons.arrow_back_ios_new,
               color: Colors.black,

@@ -21,9 +21,9 @@ class CustomUserItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         currentIndex == 0
-            ? context.goNamed(AppRoute.staffProductScreen,
+            ? context.pushNamed(AppRoute.staffProductScreen,
                 extra: users[index].uid)
-            : context.goNamed(
+            : context.pushNamed(
                 AppRoute.customerOrders,
                 extra: {
                   'userId': users[index].uid,
@@ -48,7 +48,7 @@ class CustomUserItem extends StatelessWidget {
                       currentIndex == 1
                           ? IconButton(
                               onPressed: () {
-                                context.goNamed(AppRoute.addNotification,
+                                context.pushNamed(AppRoute.addNotification,
                                     extra: {
                                       'fcm': users[index].fcmToken,
                                       'userName': users[index].name,

@@ -13,6 +13,8 @@ class CustomDashboardProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        // Use pushNamed so browser back returns to the previous dashboard
+        // instance instead of reloading/rebuilding the whole dashboard route.
         context.goNamed(
           AppRoute.productDetails,
           pathParameters: {'productId': product.pId},
@@ -33,12 +35,14 @@ class CustomDashboardProductItem extends StatelessWidget {
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
-                child: Hero(tag: product.pId,
+                child: Hero(
+                  tag: product.pId,
                   child: CachedNetworkImage(
                     imageUrl: product.imageUrl,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => const CustomImageLoading(),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
               ),

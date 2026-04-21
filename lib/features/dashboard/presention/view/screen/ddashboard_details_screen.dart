@@ -12,27 +12,57 @@ import 'package:shop_sphere/features/dashboard/presention/view/controller/produc
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class DashboardProductDetailsScreen extends StatelessWidget {
+class DashboardProductDetailsScreen extends StatefulWidget {
   final ProductEntity product;
 
   const DashboardProductDetailsScreen({super.key, required this.product});
 
   @override
+  State<DashboardProductDetailsScreen> createState() =>
+      _DashboardProductDetailsScreenState();
+}
+
+class _DashboardProductDetailsScreenState
+    extends State<DashboardProductDetailsScreen> {
+  bool _didSyncUrl = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_didSyncUrl) return;
+
+    final currentId = GoRouterState.of(context).pathParameters['productId'];
+
+    // If the user refreshed and the URL doesn't contain productId, go_router
+    // can't re-fetch the product. Rewrite the URL to include the ID.
+    if (currentId == null ||
+        currentId.isEmpty ||
+        currentId != widget.product.pId) {
+      _didSyncUrl = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/product-details/${widget.product.pId}');
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final discountedPrice =
-        product.price - (product.price * product.discount / 100);
+    final discountedPrice = widget.product.price -
+        (widget.product.price * widget.product.discount / 100);
     double horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         actions: [
           CustomCircleButton(
             icon: const Icon(Icons.edit, size: 25),
             funcation: () {
-              context.goNamed(AppRoute.addProduct, extra: 
-                {
+              context.goNamed(
+                AppRoute.addProduct,
+                extra: {
                   'isUpdate': true,
-                  'product': product,
+                  'product': widget.product,
                 },
               );
             },
@@ -55,9 +85,9 @@ class DashboardProductDetailsScreen extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Hero(
-                tag: product.pId,
+                tag: widget.product.pId,
                 child: CachedNetworkImage(
-                  imageUrl: product.imageUrl,
+                  imageUrl: widget.product.imageUrl,
                   placeholder: (context, url) =>
                       const Center(child: CircularProgressIndicator()),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -69,18 +99,18 @@ class DashboardProductDetailsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             // Name + Category
-            Text(product.name,
+            Text(widget.product.name,
                 style: Theme.of(context).textTheme.headlineSmall),
-            Text("Category: ${product.category}",
+            Text("Category: ${widget.product.category}",
                 style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
 
             // Price
             Row(
               children: [
-                if (product.discount > 0)
+                if (widget.product.discount > 0)
                   Text(
-                    "${product.price.toStringAsFixed(2)} EGP",
+                    "${widget.product.price.toStringAsFixed(2)} EGP",
                     style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.grey,
@@ -92,9 +122,9 @@ class DashboardProductDetailsScreen extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                if (product.discount > 0)
+                if (widget.product.discount > 0)
                   Text(
-                    " (${product.discount}%)",
+                    " (${widget.product.discount}%)",
                     style: const TextStyle(color: Colors.red),
                   ),
               ],
@@ -102,15 +132,17 @@ class DashboardProductDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Description
-            Text(product.description, style: const TextStyle(fontSize: 16)),
+            Text(widget.product.description,
+                style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 16),
 
             // Stock & Staff
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("Stock: ${product.stock}", style: AppStyles.text18Regular),
-                Text("Staff: ${product.staffName}",
+                Text("Stock: ${widget.product.stock}",
+                    style: AppStyles.text18Regular),
+                Text("Staff: ${widget.product.staffName}",
                     style: AppStyles.text18Regular),
               ],
             ),
@@ -124,7 +156,7 @@ class DashboardProductDetailsScreen extends StatelessWidget {
         child: BlocConsumer<DashboardCubit, DashboardState>(
           listener: (context, state) {
             if (state is DashboardSuccess) {
-              context.goNamed( AppRoute.dashboard);
+              context.goNamed(AppRoute.dashboard);
             } else if (state is DashboardFailer) {
               Warning.showWarning(context,
                   message: state.errMessage, isError: true);
@@ -134,7 +166,8 @@ class DashboardProductDetailsScreen extends StatelessWidget {
             return CustomButton(
                 onPressed: () async {
                   await context.read<DashboardCubit>().deleteProduct(
-                      dId: product.pId, imageUrl: product.imageUrl);
+                      dId: widget.product.pId,
+                      imageUrl: widget.product.imageUrl);
                 },
                 text: state is DashboardLoading ? 'Deleting...' : 'Delete');
           },

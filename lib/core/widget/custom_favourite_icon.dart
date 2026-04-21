@@ -42,8 +42,7 @@ class CustomFavouriteIcon extends StatelessWidget {
                  bool isConnect=   await AppFuncations.isOnline();
                
                     if (isConnect) {
-                      await  context
-                          .read<FavouriteCubit>()
+                      await BlocProvider.of<FavouriteCubit>(context)
                           .toggleFavourite(productId: productId);
                     }
                      else {

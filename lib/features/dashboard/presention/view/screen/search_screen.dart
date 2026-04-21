@@ -5,7 +5,6 @@ import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
-import 'package:shop_sphere/core/widget/custom_back_button.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
