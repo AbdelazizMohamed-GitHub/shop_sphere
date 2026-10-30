@@ -13,7 +13,7 @@ ShopSphere is a modern **E-commerce mobile application** built with Flutter. It 
 * ❤️ **Wishlist & Favorites** – Save products for later.
 * 🛍️ **Cart Management** – Add, update, or remove items from the cart.
 * 💳 **Checkout Flow** – Place orders with a smooth checkout experience.
-* 🤖 **Chatbot Assistant** – AI-powered chatbot to help users find products.
+* 📍 **Address Management** – Add, edit, and manage delivery addresses.
 * 🔔 **Push Notifications** – Stay updated with offers and order status.
 
 ### 🛠️ Admin Side
