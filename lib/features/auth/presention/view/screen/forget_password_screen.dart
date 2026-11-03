@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -29,7 +29,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   }
 
   @override
-  Widget build(BuildContext context) { final horizontalPadding =
+  Widget build(BuildContext context) {
+    final horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +47,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             )),
       ),
       body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: horizontalPadding),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Column(
           children: [
             Image.asset(
@@ -76,15 +77,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               height: 20,
             ),
             BlocProvider(
-              create: (context) => AuthCubit(authRepo:getIt<AuthRepoImpl>()),
+              create: (context) => AuthCubit(authRepo: getIt<AuthRepoImpl>()),
               child: BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthError) {
-                    Warning.showWarning(context, message: state.errMessage,isError:  true);
-                  }
-                  else if (state is ResetPassword) {
-                    Warning.showWarning(context, message: 'Password reset link sent to your email',isError: false);
-                    
+                    Warning.showWarning(context,
+                        message: state.errMessage, isError: true);
+                  } else if (state is ResetPassword) {
+                    Warning.showWarning(context,
+                        message: 'Password reset link sent to your email',
+                        isError: false);
                   }
                 },
                 builder: (context, state) {
@@ -93,7 +95,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       : CustomButton(
                           onPressed: () {
                             if (emailController.text.isNotEmpty) {
-                              
                               FocusScope.of(context).unfocus();
                               BlocProvider.of<AuthCubit>(context)
                                   .resetPassword(email: emailController.text);

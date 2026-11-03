@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -9,11 +9,11 @@ class AddressScreenLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       backgroundColor: AppColors.backgroundColor,
       body: Skeletonizer(
         enabled: true,
-        child: ListView.separated(padding: const EdgeInsets.only(top: 20),
+        child: ListView.separated(
+          padding: const EdgeInsets.only(top: 20),
           itemCount: 10,
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(

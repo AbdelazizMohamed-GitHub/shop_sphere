@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_products_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_body.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/explore_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/favorite_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/notifications_screen.dart';
@@ -38,34 +37,34 @@ class PaymentMethodModel {
 class DashboardDrawerModel {
   final String title;
   final IconData icon;
-  final Widget screen;
+  final Widget Function(VoidCallback onMenuPressed) screenBuilder;
 
   DashboardDrawerModel(
-      {required this.title, required this.icon, required this.screen});
+      {required this.title, required this.icon, required this.screenBuilder});
 }
 
 List<DashboardDrawerModel> dashboardDrawerItems = [
   DashboardDrawerModel(
-      title: 'Dashboard',
+      title: 'Products',
       icon: Icons.shopping_bag,
-      screen: CustomProductScreenBody(
-        products: const [], // Placeholder, will be updated with actual products
-
-        onCategoryChanged: (String value) {},
-      )),
+      screenBuilder: (onMenuPressed) =>
+          DashboardProductsScreen(onMenuPressed: onMenuPressed)),
   DashboardDrawerModel(
-      title: 'Orders', icon: Icons.shopping_cart, screen: const OrdersScreen()),
+      title: 'Orders',
+      icon: Icons.shopping_cart,
+      screenBuilder: (onMenuPressed) =>
+          OrdersScreen(onMenuPressed: onMenuPressed)),
   DashboardDrawerModel(
-      title: 'Users', icon: Icons.people, screen: const UsersScreen()),
+      title: 'Users',
+      icon: Icons.people,
+      screenBuilder: (onMenuPressed) =>
+          UsersScreen(onMenuPressed: onMenuPressed)),
   DashboardDrawerModel(
       title: 'Analytics',
       icon: Icons.analytics,
-      screen: const AnalyticsScreen()),
-  DashboardDrawerModel(
-      title: 'Out of Stock',
-      icon: Icons.warning,
-      screen: const OutOfStockScreen(
-          products: [])), // Placeholder, will be updated with actual products
+      screenBuilder: (onMenuPressed) =>
+          AnalyticsScreen(onMenuPressed: onMenuPressed)),
+  // Placeholder, will be updated with actual products
 ];
 final List<String> tabs = [
   '/dashboard',

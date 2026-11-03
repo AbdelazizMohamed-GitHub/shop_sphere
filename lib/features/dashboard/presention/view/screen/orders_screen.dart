@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -17,7 +17,9 @@ import 'package:shop_sphere/features/profile/presention/controller/order/order_s
 import 'package:skeletonizer/skeletonizer.dart';
 
 class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
+  const OrdersScreen({super.key, required this.onMenuPressed});
+
+  final VoidCallback onMenuPressed;
 
   @override
   State<OrdersScreen> createState() => _DashboardScreenState();
@@ -43,21 +45,24 @@ class _DashboardScreenState extends State<OrdersScreen> {
     return Scaffold(
       appBar: !isDesktop
           ? AppBar(
+              leading: IconButton(
+                onPressed: widget.onMenuPressed,
+                icon: const Icon(Icons.menu),
+              ),
               title: const Text('Orders'),
               actions: [
-                isMobile
-                    ? BlocBuilder<OrderCubit, OrderState>(
-                        builder: (context, state) {
-                          return state is GetOrderLoading
-                              ? const Skeletonizer(
-                                  enabled: true, child: Text("Loading"))
-                              : Text(
-                                  "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
-                                  style: AppStyles.text22SemiBold,
-                                );
-                        },
-                      )
-                    : const SizedBox(width: 10)
+                BlocBuilder<OrderCubit, OrderState>(
+                  builder: (context, state) {
+                    return state is GetOrderLoading
+                        ? const Skeletonizer(
+                            enabled: true, child: Text("Loading"))
+                        : Text(
+                            "${searchText.isEmpty ? context.read<OrderCubit>().currentOrderLength : filteredOrders.length} Orders",
+                            style: AppStyles.text16Bold,
+                          );
+                  },
+                ),
+                const SizedBox(width: 12),
               ],
             )
           : null,
@@ -135,7 +140,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                 ),
                 const SizedBox(width: 20),
                 Expanded(
-                    flex: 2,
+                    flex: 3,
                     child: CustomDropdown(
                         categories: const [
                           "All",
@@ -283,7 +288,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
                                 DataCell(
                                   TextButton(
                                     onPressed: () {
-                                      context.goNamed(
+                                      context.pushNamed(
                                         AppRoute.orderDetails,
                                         pathParameters: {
                                           'orderId': order.orderId

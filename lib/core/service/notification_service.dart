@@ -9,7 +9,9 @@ import 'package:awesome_notifications/awesome_notifications.dart'
         NotificationChannel,
         NotificationContent,
         NotificationImportance,
-        NotificationLayout, AwesomeNotifications;
+        NotificationLayout,
+        ReceivedAction;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:googleapis_auth/auth_io.dart';
@@ -18,8 +20,18 @@ import 'package:shop_sphere/core/utils/app_const.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/main/data/notification_model.dart';
 
+@pragma('vm:entry-point')
+Future<void> onNotificationActionReceived(ReceivedAction action) async {
+  final productId = action.payload?['productId'];
+  if (productId != null && productId.isNotEmpty) {
+    NotificationService.openProductFromNotification(productId);
+  }
+}
+
 class NotificationService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  static void Function(String productId)? _productTapHandler;
+  static String? _pendingProductId;
 
   static const _scope = 'https://www.googleapis.com/auth/firebase.messaging';
   static const projectId = 'shopsphere-b422e';
@@ -33,21 +45,44 @@ class NotificationService {
     _notificationMessage();
   }
 
+  static void setProductTapHandler(void Function(String productId) handler) {
+    _productTapHandler = handler;
+    final pendingProductId = _pendingProductId;
+    if (pendingProductId != null) {
+      _pendingProductId = null;
+      handler(pendingProductId);
+    }
+  }
+
+  static void openProductFromNotification(String productId) {
+    final normalizedId = productId.trim();
+    if (normalizedId.isEmpty) return;
+
+    final handler = _productTapHandler;
+    if (handler == null) {
+      _pendingProductId = normalizedId;
+      return;
+    }
+
+    handler(normalizedId);
+  }
+
   static void _notificationMessage() async {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("📩 onMessage (foreground): ${message.notification?.body}");
-      showNotification(message: message);
+      await showNotification(message: message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print("📩 onMessageOpenedApp: ${message.notification?.body}");
-      showNotification(message: message);
+      openProductFromNotification(message.data['productId']?.toString() ?? '');
     });
 
     RemoteMessage? initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
       print("📦 getInitialMessage: ${initialMessage.notification?.title}");
-      showNotification(message: initialMessage);
+      openProductFromNotification(
+          initialMessage.data['productId']?.toString() ?? '');
     }
   }
 
@@ -68,22 +103,32 @@ class NotificationService {
     required String title,
     required String body,
     required String token,
+    required String productId,
+    required String imageUrl,
   }) async {
     final credentials = await _loadServiceAccount();
     final client = await clientViaServiceAccount(credentials, [_scope]);
 
     final message = {
-      "message": {
-        "token": token,
-        "notification": {
-          "title": title,
-          "body": body,
+      'message': {
+        'token': token,
+        'notification': {
+          'title': title,
+          'body': body,
+          'image': imageUrl,
         },
-        "data": {
-          "click_action": "FLUTTER_NOTIFICATION_CLICK",
-          "status": "done",
+        'data': {
+          'type': 'product_offer',
+          'productId': productId,
+          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
         },
-      }
+        'android': {
+          'notification': {
+            'image': imageUrl,
+            'channel_id': 'high_importance_channel',
+          },
+        },
+      },
     };
 
     try {
@@ -106,12 +151,18 @@ class NotificationService {
     }
   }
 
-  static Future<void> saveNotification(
-      {required String title, required String body}) async {
+  static Future<void> saveNotification({
+    required String title,
+    required String body,
+    String? productId,
+    String? imageUrl,
+  }) async {
     final notification = NotificationModel(
       title: title,
       description: body,
       date: DateTime.now(),
+      productId: productId,
+      imageUrl: imageUrl,
     );
 
     final box = Hive.box<NotificationModel>(AppConst.appNotificationBox);
@@ -119,42 +170,63 @@ class NotificationService {
   }
 
   static Future<void> initializeLocalNotifications() async {
-    await AwesomeNotifications().initialize(
-        'resource://drawable/logo',
-        [
-          NotificationChannel(
-            channelKey: 'basic_channel',
-            channelName: 'basic_channel',
-            channelDescription: 'Notification tests as alerts',
-            playSound: true,
-            onlyAlertOnce: true,
-            importance: NotificationImportance.High,
-            channelShowBadge: true,
-            enableVibration: true,
-          ),
-        ],
-      );
+    if (kIsWeb) {
+      debugPrint('Local notifications are not supported on web. Skipping.');
+      return;
+    }
 
-    // Get initial notification action is optional
+    await AwesomeNotifications().initialize(
+      'resource://drawable/logo',
+      [
+        NotificationChannel(
+          channelKey: 'basic_channel',
+          channelName: 'basic_channel',
+          channelDescription: 'Notification tests as alerts',
+          playSound: true,
+          onlyAlertOnce: true,
+          importance: NotificationImportance.High,
+          channelShowBadge: true,
+          enableVibration: true,
+        ),
+      ],
+    );
+
+    final listenersSet = await AwesomeNotifications().setListeners(
+      onActionReceivedMethod: onNotificationActionReceived,
+    );
+    if (!listenersSet) {
+      debugPrint('Could not register notification tap handler.');
+    }
   }
 
-  static void showNotification({required RemoteMessage message}) async {
+  static Future<void> showNotification({required RemoteMessage message}) async {
+    final title = message.notification?.title ?? 'ShopSphere offer';
+    final body = message.notification?.body ?? '';
+    final productId = message.data['productId']?.toString();
+    final imageUrl = message.notification?.android?.imageUrl ??
+        message.notification?.apple?.imageUrl ??
+        message.data['imageUrl']?.toString();
     await saveNotification(
-        title: message.notification!.title!, body: message.notification!.body!);
-    AwesomeNotifications().createNotification(
+      title: title,
+      body: body,
+      productId: productId,
+      imageUrl: imageUrl,
+    );
+    await AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: 100,
         channelKey: 'basic_channel',
-        title: message.notification?.title ?? 'عنوان إشعار',
-        body: message.notification?.body ?? 'محتوى الإشعار',
+        title: title,
+        body: body,
         notificationLayout: NotificationLayout.Default,
         wakeUpScreen: true,
         category: NotificationCategory.Message,
         autoDismissible: true,
         payload: {
           'image': AppImages.logo,
-          'title': message.notification?.title ?? 'عنوان إشعار',
-          'body': message.notification?.body ?? 'محتوى الإشعار',
+          'title': title,
+          'body': body,
+          if (productId != null) 'productId': productId,
         },
         actionType: ActionType.Default,
         displayOnBackground: true,

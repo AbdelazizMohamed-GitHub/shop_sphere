@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:shop_sphere/core/utils/app_images.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 
 class CustomProfileScreenHeader extends StatelessWidget {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
-import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 
 class OrderDoneScreen extends StatelessWidget {
   const OrderDoneScreen({super.key});
@@ -11,6 +13,7 @@ class OrderDoneScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const CustomBackButton(),
         title: const Text("Order Done"),
       ),
       body: Padding(
@@ -25,8 +28,7 @@ class OrderDoneScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text("Your order has been placed successfully",
-                textAlign: TextAlign.center,
-                style: AppStyles.text22SemiBold),
+                textAlign: TextAlign.center, style: AppStyles.text22SemiBold),
             const SizedBox(height: 20),
             const Text(
               "Thank you for choosing us! Feel free to continue shopping and explore our wide range of products. Happy Shopping!",
@@ -38,12 +40,7 @@ class OrderDoneScreen extends StatelessWidget {
             ),
             CustomButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainScreen(),
-                      ),
-                      (route) => false);
+                  context.goNamed(AppRoute.main);
                 },
                 text: "Go to Home"),
           ],

@@ -3,66 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class DashboardProductDetailsScreen extends StatefulWidget {
+class DashboardProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;
 
   const DashboardProductDetailsScreen({super.key, required this.product});
 
   @override
-  State<DashboardProductDetailsScreen> createState() =>
-      _DashboardProductDetailsScreenState();
-}
-
-class _DashboardProductDetailsScreenState
-    extends State<DashboardProductDetailsScreen> {
-  bool _didSyncUrl = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (_didSyncUrl) return;
-
-    final currentId = GoRouterState.of(context).pathParameters['productId'];
-
-    // If the user refreshed and the URL doesn't contain productId, go_router
-    // can't re-fetch the product. Rewrite the URL to include the ID.
-    if (currentId == null ||
-        currentId.isEmpty ||
-        currentId != widget.product.pId) {
-      _didSyncUrl = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/product-details/${widget.product.pId}');
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final discountedPrice = widget.product.price -
-        (widget.product.price * widget.product.discount / 100);
+    final discountedPrice =
+        product.price - (product.price * product.discount / 100);
     double horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       appBar: AppBar(
+        leading: const CustomBackButton(),
         actions: [
           CustomCircleButton(
             icon: const Icon(Icons.edit, size: 25),
             funcation: () {
-              context.goNamed(
+              context.pushNamed(
                 AppRoute.addProduct,
                 extra: {
                   'isUpdate': true,
-                  'product': widget.product,
+                  'product': product,
                 },
               );
             },
@@ -85,9 +58,9 @@ class _DashboardProductDetailsScreenState
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Hero(
-                tag: widget.product.pId,
+                tag: product.pId,
                 child: CachedNetworkImage(
-                  imageUrl: widget.product.imageUrl,
+                  imageUrl: product.imageUrl,
                   placeholder: (context, url) =>
                       const Center(child: CircularProgressIndicator()),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -99,18 +72,18 @@ class _DashboardProductDetailsScreenState
             ),
             const SizedBox(height: 16),
             // Name + Category
-            Text(widget.product.name,
+            Text(product.name,
                 style: Theme.of(context).textTheme.headlineSmall),
-            Text("Category: ${widget.product.category}",
+            Text("Category: ${product.category}",
                 style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 8),
 
             // Price
             Row(
               children: [
-                if (widget.product.discount > 0)
+                if (product.discount > 0)
                   Text(
-                    "${widget.product.price.toStringAsFixed(2)} EGP",
+                    "${product.price.toStringAsFixed(2)} EGP",
                     style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.grey,
@@ -122,9 +95,9 @@ class _DashboardProductDetailsScreenState
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                if (widget.product.discount > 0)
+                if (product.discount > 0)
                   Text(
-                    " (${widget.product.discount}%)",
+                    " (${product.discount}%)",
                     style: const TextStyle(color: Colors.red),
                   ),
               ],
@@ -132,17 +105,15 @@ class _DashboardProductDetailsScreenState
             const SizedBox(height: 16),
 
             // Description
-            Text(widget.product.description,
-                style: const TextStyle(fontSize: 16)),
+            Text(product.description, style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 16),
 
             // Stock & Staff
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("Stock: ${widget.product.stock}",
-                    style: AppStyles.text18Regular),
-                Text("Staff: ${widget.product.staffName}",
+                Text("Stock: ${product.stock}", style: AppStyles.text18Regular),
+                Text("Staff: ${product.staffName}",
                     style: AppStyles.text18Regular),
               ],
             ),
@@ -156,8 +127,8 @@ class _DashboardProductDetailsScreenState
         child: BlocConsumer<DashboardCubit, DashboardState>(
           listener: (context, state) {
             if (state is DashboardSuccess) {
-              context.goNamed(AppRoute.dashboard);
-            } else if (state is DashboardFailer) {
+              context.pushNamed(AppRoute.dashboard);
+            } else if (state is DashboardFailure) {
               Warning.showWarning(context,
                   message: state.errMessage, isError: true);
             }
@@ -166,8 +137,7 @@ class _DashboardProductDetailsScreenState
             return CustomButton(
                 onPressed: () async {
                   await context.read<DashboardCubit>().deleteProduct(
-                      dId: widget.product.pId,
-                      imageUrl: widget.product.imageUrl);
+                      dId: product.pId, imageUrl: product.imageUrl);
                 },
                 text: state is DashboardLoading ? 'Deleting...' : 'Delete');
           },

@@ -64,6 +64,19 @@ return right(data);
       return Left(FirebaseFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<FirebaseFailure, List<AddressEntity>>> getCustomerAddresses(
+      {required String userId}) async {
+    try {
+      final data = await firestoreService.getCustomerAddresses(userId: userId);
+      return right(data);
+    } on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
   
   @override
   Future<Either<FirebaseFailure, void>> updateAddressIndex({required int sellectAddress})async {

@@ -8,11 +8,25 @@ import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit({required this.dashboardRepo}) : super(DashboardInitial());
 
-  void changeScreenIndex(int index) {
+  void changeScreenIndex({required int index}) {
     emit(DashboardState(screenIndex: index));
   }
 
   final DashboardRepo dashboardRepo;
+
+  Future<void> getProducts({required String category}) async {
+    emit(DashboardLoading());
+    var result = await dashboardRepo.getProducts(category: category);
+    result.fold(
+      (error) {
+        emit(DashboardFailure(errMessage: error.message));
+      },
+      (products) {
+        emit(DashboardSuccess(products: products));
+      },
+    );
+  }
+
   Future<void> addProduct({
     required ProductModel product,
     required Uint8List imageFile,
@@ -24,10 +38,10 @@ class DashboardCubit extends Cubit<DashboardState> {
     );
     result.fold(
       (error) {
-        emit(DashboardFailer(errMessage: error.message));
+        emit(DashboardFailure(errMessage: error.message));
       },
       (r) async {
-        emit(const DashboardSuccess());
+        await getProducts(category: 'All');
       },
     );
   }
@@ -38,10 +52,10 @@ class DashboardCubit extends Cubit<DashboardState> {
         await dashboardRepo.deleteProduct(dId: dId, imageUrl: imageUrl);
     result.fold(
       (error) {
-        emit(DashboardFailer(errMessage: error.message));
+        emit(DashboardFailure(errMessage: error.message));
       },
-      (r) {
-        emit(const DashboardSuccess());
+      (r) async {
+        await getProducts(category: 'All');
       },
     );
   }
@@ -54,10 +68,10 @@ class DashboardCubit extends Cubit<DashboardState> {
     var result = await dashboardRepo.updateProduct(data: data);
     result.fold(
       (error) {
-        emit(DashboardFailer(errMessage: error.message));
+        emit(DashboardFailure(errMessage: error.message));
       },
-      (r) {
-        emit(const DashboardSuccess());
+      (r) async {
+        await getProducts(category: 'All');
       },
     );
   }

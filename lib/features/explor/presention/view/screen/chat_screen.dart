@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/explor/data/model/massage_model.dart';
 import 'package:shop_sphere/features/explor/presention/controller/chat_cubit/chat_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/chat_cubit/chat_state.dart';
@@ -17,7 +18,10 @@ class ChatScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => ChatCubit(userId: userId),
       child: Scaffold(
-        appBar: AppBar(title: const Text("ShopSphere Chatbot 🤖")),
+        appBar: AppBar(
+          leading: const CustomBackButton(),
+          title: const Text("ShopSphere Chatbot 🤖"),
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(

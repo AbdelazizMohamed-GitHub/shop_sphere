@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_keys.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
@@ -13,7 +15,6 @@ import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/order_done_screen.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomCheckoutButton extends StatelessWidget {
@@ -44,12 +45,7 @@ class CustomCheckoutButton extends StatelessWidget {
           if (state is OrderError) {
             Warning.showWarning(context, message: state.error);
           } else if (state is CreateOrderSuccess) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const OrderDoneScreen(),
-              ),
-            );
+            context.goNamed(AppRoute.orderDone);
           }
         },
         builder: (context, state) {
@@ -96,7 +92,6 @@ class CustomCheckoutButton extends StatelessWidget {
                           0,
                           (sum, item) => sum + (item.price * item.quantity),
                         );
-
 
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -155,16 +150,9 @@ class CustomCheckoutButton extends StatelessWidget {
                                 await context
                                     .read<OrderCubit>()
                                     .createOrder(order: order);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const OrderDoneScreen(),
-                                  ),
-                                );
+                                context.goNamed(AppRoute.orderDone);
                               },
                               onError: (error) {
-                              
                                 Warning.showWarning(
                                   context,
                                   message: 'Not Available in your Loction',

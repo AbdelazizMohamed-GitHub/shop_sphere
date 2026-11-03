@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
@@ -64,11 +64,11 @@ class OrderDetailsScreen extends StatelessWidget {
             ),
             BlocConsumer<OrderCubit, OrderState>(
               listener: (context, state) {
-                 if (state is OrderError) {
-                  Warning.showWarning(context, message: state.error,isError: true);
+                if (state is OrderError) {
+                  Warning.showWarning(context,
+                      message: state.error, isError: true);
                 } else if (state is OrderSuccess) {
                   Navigator.pop(context);
-      
                 }
               },
               builder: (context, state) {
@@ -88,12 +88,11 @@ class OrderDetailsScreen extends StatelessWidget {
                                     orderStauts[1], // Set status to 'Pending'
                                 orderDate: DateTime.now(),
                                 trackingNumber: 0));
-                                Warning.showWarning(
+                        Warning.showWarning(
                           context,
                           message: "Order Reordered Successfully",
                           isError: false,
                         );
-                                
                       },
                       color: Colors.white,
                       shape: OutlineInputBorder(

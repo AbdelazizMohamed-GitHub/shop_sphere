@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/analytics/data/model/order_over_model.dart';
 

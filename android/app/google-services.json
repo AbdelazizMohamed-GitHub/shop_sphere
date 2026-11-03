@@ -12,7 +12,20 @@
           "package_name": "com.example.shop_sphere"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "909426718408-mcsr0mg4pnep7q8v5d58h2pvb2lrrnag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shop_sphere",
+            "certificate_hash": "c3bff2495c2c514d308245ce7c739f4658715078"
+          }
+        },
+        {
+          "client_id": "909426718408-6vo00enp2vqmg2qcrajcksa3igoqo1s9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDAUBFD_FqC6r5qlGdl5JYRiaVTHtPms48"
@@ -20,7 +33,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909426718408-6vo00enp2vqmg2qcrajcksa3igoqo1s9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "909426718408-rpir0njj93v5lerd5thm0eun3gumal84.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shopSphereDashboard"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909426718408:android:2df717ea99d44d3f8657fd",
+        "android_client_info": {
+          "package_name": "com.example.shop_sphere_dashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "909426718408-6vo00enp2vqmg2qcrajcksa3igoqo1s9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAUBFD_FqC6r5qlGdl5JYRiaVTHtPms48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909426718408-6vo00enp2vqmg2qcrajcksa3igoqo1s9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "909426718408-rpir0njj93v5lerd5thm0eun3gumal84.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shopSphereDashboard"
+              }
+            }
+          ]
         }
       }
     }

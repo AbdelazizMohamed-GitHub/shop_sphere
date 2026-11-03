@@ -10,7 +10,7 @@ Future<Placemark> getLocation() async {
       }
 
       if (permission == LocationPermission.deniedForever) {
-      return Future.error( "Location permissions are permanently denied.");
+      return await Future.error( "Location permissions are permanently denied.");
    
         
       }
@@ -31,10 +31,10 @@ Future<Placemark> getLocation() async {
         
    return place;
       } else {
-        return Future.error("No address found");
+         return await Future.error("No address found");
        
       }
     } catch (e) {
-      return Future.error(e.toString());
+      return await Future.error(e.toString());
     }
   }

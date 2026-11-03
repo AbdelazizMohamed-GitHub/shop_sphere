@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
@@ -21,8 +20,8 @@ class CustomLogInWithGoogle extends StatelessWidget {
               message: state.errMessage, isError: true);
         }
         if (state is AuthSuccess) {
-  context.goNamed(state.uid=='Staff' ? AppRoute.dashboard : AppRoute.main);
-            
+          context.goNamed(
+              state.uid == 'Staff' ? AppRoute.dashboard : AppRoute.main);
         }
       },
       builder: (context, state) {
@@ -30,12 +29,10 @@ class CustomLogInWithGoogle extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // ✅ لو Web: نعرض رسالة مع زر GSI الرسمي
-       
         // ✅ باقي المنصات: نعرض زرنا العادي
         return InkWell(
-          onTap: ()async {
-           await BlocProvider.of<AuthCubit>(context).loginWithGoogle();
+          onTap: () async {
+            await BlocProvider.of<AuthCubit>(context).loginWithGoogle();
           },
           child: Container(
             width: double.infinity,

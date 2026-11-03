@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 
 import 'package:skeletonizer/skeletonizer.dart';
 

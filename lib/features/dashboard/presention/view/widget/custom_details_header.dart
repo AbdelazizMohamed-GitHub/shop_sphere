@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/add_product_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomDetailsHeader extends StatelessWidget {
@@ -43,14 +44,12 @@ class CustomDetailsHeader extends StatelessWidget {
                       backgroundColor: Colors.grey.shade400,
                       child: IconButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddProductScreen(
-                                isUpdate: true,
-                                productEntity: product,
-                              ),
-                            ),
+                          context.pushNamed(
+                            AppRoute.addProduct,
+                            extra: {
+                              'isUpdate': true,
+                              'product': product,
+                            },
                           );
                         },
                         icon: const Icon(

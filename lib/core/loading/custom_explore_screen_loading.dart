@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/see_all_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_new_arrivels_list.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_product_title_section.dart';
@@ -18,14 +20,7 @@ class CustomExploreScreenLoading extends StatelessWidget {
             CustomProductTitleSection(
               title: 'New Arrivals',
               funcation: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SeeAllScreen(
-                      products: [],
-                    ),
-                  ),
-                );
+                context.pushNamed(AppRoute.seeAll, extra: <ProductEntity>[]);
               },
             ),
             const SizedBox(
@@ -36,14 +31,7 @@ class CustomExploreScreenLoading extends StatelessWidget {
             CustomProductTitleSection(
               title: 'Popular Products',
               funcation: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SeeAllScreen(
-                      products: [],
-                    ),
-                  ),
-                );
+                context.pushNamed(AppRoute.seeAll, extra: <ProductEntity>[]);
               },
             ),
             const CustomVerticalProductList(

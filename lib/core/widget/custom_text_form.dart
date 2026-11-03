@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 
 class CustomTextForm extends StatelessWidget {
   const CustomTextForm(
-
       {super.key,
-       this.pIcon,
+      this.pIcon,
       this.lines = 1,
       this.sIcon,
       required this.text,
       this.textController,
       this.obscureText = false,
       this.onChanged,
-      required this.kType
-      , this.validator});
+      required this.kType,
+      this.validator});
   final IconData? pIcon;
   final Widget? sIcon;
   final String text;
   final TextEditingController? textController;
   final bool obscureText;
   final TextInputType kType;
-  final int lines ;
+  final int lines;
   final void Function(String)? onChanged;
-   final String? Function(String?)? validator;
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(maxLines: lines,
-    onChanged:onChanged ,
+    return TextFormField(
+      maxLines: lines,
+      onChanged: onChanged,
       obscureText: obscureText,
       keyboardType: kType,
-      validator:validator ?? (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your $text';
-        }
-        return null;
-      },
+      validator: validator ??
+          (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your $text';
+            }
+            return null;
+          },
       controller: textController,
       decoration: InputDecoration(
           filled: true,
@@ -47,7 +48,7 @@ class CustomTextForm extends StatelessWidget {
               borderSide: const BorderSide(color: AppColors.primaryColor)),
           enabledBorder: border,
           prefixIcon: Icon(pIcon),
-          suffixIcon: sIcon?? const SizedBox(),
+          suffixIcon: sIcon ?? const SizedBox(),
           hintText: text),
     );
   }

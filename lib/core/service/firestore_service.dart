@@ -161,6 +161,20 @@ class FirestoreService {
         .toList();
   }
 
+  Future<List<AddressEntity>> getCustomerAddresses(
+      {required String userId}) async {
+    await checkInternet();
+    final querySnapshot = await firestore
+        .collection("users")
+        .doc(userId)
+        .collection("address")
+        .orderBy("createdAt", descending: true)
+        .get();
+    return querySnapshot.docs
+        .map((document) => AddressModel.fromMap(document.data()))
+        .toList();
+  }
+
   Future<void> addToFavorite({required String productId}) async {
     await checkInternet();
     String? userId = FirebaseAuth.instance.currentUser?.uid;

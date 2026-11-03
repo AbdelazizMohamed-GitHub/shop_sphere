@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
 
 class CustomCartPrice extends StatelessWidget {
   const CustomCartPrice({

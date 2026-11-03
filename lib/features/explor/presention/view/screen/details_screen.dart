@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/animation_text.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;
@@ -20,12 +22,16 @@ class ProductDetailsScreen extends StatelessWidget {
         product.price - (product.price * product.discount / 100);
 
     return Scaffold(
-      appBar: AppBar(title: Text(product.name)),
+      appBar: AppBar(
+        leading: const CustomBackButton(),
+        title: Text(product.name),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+          //  SizedBox(height: 16),
             // Image
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
@@ -58,7 +64,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   height: 300,
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -110,10 +116,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     onPressed: () async {
                       if (state is CartUpdated &&
                           state.cartProduct.contains(product.pId)) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const CartScreen();
-                        }));
+                        context.pushNamed(AppRoute.cart);
                       } else {
                         await context.read<CartCubit>().addToCart(
                               cartItemModel: CartItemModel(

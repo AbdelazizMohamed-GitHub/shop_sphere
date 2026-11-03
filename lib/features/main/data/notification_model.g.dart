@@ -20,19 +20,25 @@ class NotificationModelAdapter extends TypeAdapter<NotificationModel> {
       title: fields[0] as String,
       description: fields[1] as String,
       date: fields[2] as DateTime,
+      productId: fields[3] as String?,
+      imageUrl: fields[4] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, NotificationModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.description)
       ..writeByte(2)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(3)
+      ..write(obj.productId)
+      ..writeByte(4)
+      ..write(obj.imageUrl);
   }
 
   @override

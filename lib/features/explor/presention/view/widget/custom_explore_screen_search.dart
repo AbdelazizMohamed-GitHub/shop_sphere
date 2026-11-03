@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/chat_screen.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/search_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 
 class CustomExploreScreenSearch extends StatelessWidget {
   const CustomExploreScreenSearch({super.key});
@@ -18,9 +18,7 @@ class CustomExploreScreenSearch extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 FocusScope.of(context).unfocus();
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const SearchScreen();
-                }));
+                context.pushNamed(AppRoute.productSearch);
               },
               child: Container(
                   height: 55,
@@ -50,16 +48,18 @@ class CustomExploreScreenSearch extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: IconButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return  ChatScreen(userId: FirebaseAuth.instance.currentUser!.uid,);
-                    }));
-                  },
-                  icon:  const Icon(
-              Icons.support_agent,
-              size: 30,
-              color: Colors.white,
-            ),)),
+                onPressed: () {
+                  context.pushNamed(
+                    AppRoute.chatbot,
+                    extra: FirebaseAuth.instance.currentUser!.uid,
+                  );
+                },
+                icon: const Icon(
+                  Icons.support_agent,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              )),
         ],
       ),
     );

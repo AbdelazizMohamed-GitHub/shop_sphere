@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 
 class CustomOnboardingItem extends StatelessWidget {
   const CustomOnboardingItem(
-      {super.key,
-    
-      required this.bodyImage,
-      required this.bodyText});
+      {super.key, required this.bodyImage, required this.bodyText});
 
- 
   final String bodyImage;
   final String bodyText;
   @override
@@ -23,7 +19,8 @@ class CustomOnboardingItem extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        Text(bodyText, textAlign: TextAlign.center, style: AppStyles.text26BoldBlack)
+        Text(bodyText,
+            textAlign: TextAlign.center, style: AppStyles.text26BoldBlack)
       ],
     );
   }

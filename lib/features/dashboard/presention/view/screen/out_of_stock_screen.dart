@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_gride.dart';
 
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -14,6 +15,7 @@ class OutOfStockScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: const CustomBackButton(),
           actions: [
             Text('${products.length} Products'),
             const SizedBox(

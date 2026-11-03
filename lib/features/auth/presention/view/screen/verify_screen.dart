@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 
 import 'package:shop_sphere/core/utils/app_images.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
@@ -11,7 +13,6 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_state.dart';
-import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
 
 class VerifyScreen extends StatefulWidget {
   const VerifyScreen({
@@ -37,19 +38,20 @@ class _VerifyScreenState extends State<VerifyScreen> {
   Future<void> _checkEmailVerification() async {}
 
   @override
-  Widget build(BuildContext context) { final horizontalPadding =
+  Widget build(BuildContext context) {
+    final horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context);
     return BlocProvider(
-      create: (context) => AuthCubit(authRepo:  getIt<AuthRepoImpl>()),
+      create: (context) => AuthCubit(authRepo: getIt<AuthRepoImpl>()),
       child: Scaffold(
           appBar: AppBar(
             foregroundColor: Colors.white,
             title: const Text("Verify"),
-            leading:const CustomBackButton(),
+            leading: const CustomBackButton(),
             leadingWidth: 100,
           ),
           body: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: horizontalPadding),
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Center(
               child: Column(
                 children: [
@@ -93,13 +95,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                             ? CustomButton(
                                 text: "login",
                                 onPressed: () {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen(),
-                                      ),
-                                      (route) => false);
+                                  context.goNamed(AppRoute.login);
                                 },
                               )
                             : CustomButton(

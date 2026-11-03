@@ -17,7 +17,6 @@ class CustomProductGrid extends StatelessWidget {
     int crossCount = ResponsiveLayout.getCrossAxisCount(context);
     return GridView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(
         horizontal: padding,
       ),

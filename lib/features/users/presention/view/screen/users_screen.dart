@@ -8,7 +8,9 @@ import 'package:shop_sphere/features/users/presention/controller/user_cubit/user
 import 'package:shop_sphere/features/users/presention/view/widget/custom_user_item.dart';
 
 class UsersScreen extends StatefulWidget {
-  const UsersScreen({super.key});
+  const UsersScreen({super.key, required this.onMenuPressed});
+
+  final VoidCallback onMenuPressed;
 
   @override
   State<UsersScreen> createState() => _UsersScreenState();
@@ -16,13 +18,14 @@ class UsersScreen extends StatefulWidget {
 
 class _UsersScreenState extends State<UsersScreen> {
   int currentIndex = 0;
-    late MangeUsersCubit usersCubit;
+  late MangeUsersCubit usersCubit;
   @override
   void initState() {
-   usersCubit = MangeUsersCubit(mangeUsersRepo: getIt<UsersRepoImpl>())
+    usersCubit = MangeUsersCubit(mangeUsersRepo: getIt<UsersRepoImpl>())
       ..getUsers(isStaff: true);
     super.initState();
   }
+
   @override
   void dispose() {
     usersCubit.close();
@@ -31,7 +34,7 @@ class _UsersScreenState extends State<UsersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = ResponsiveLayout.isMobile(context);
+    ResponsiveLayout.isMobile(context);
     return BlocProvider.value(
       value: usersCubit,
       child: Builder(
@@ -40,7 +43,29 @@ class _UsersScreenState extends State<UsersScreen> {
             length: 2,
             child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                  onPressed: widget.onMenuPressed,
+                  icon: const Icon(Icons.menu),
+                ),
                 title: const Text("Users"),
+                actions: [
+                  BlocBuilder<MangeUsersCubit, MangeUsersState>(
+                    builder: (context, state) {
+                      if (state is! MangeUsersSuccess) {
+                        return const SizedBox.shrink();
+                      }
+
+                      final userType =
+                          currentIndex == 0 ? 'Staff' : 'Customers';
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text('${state.users.length} $userType'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
                 bottom: TabBar(
                   onTap: (value) async {
                     setState(() {
@@ -84,39 +109,18 @@ class _UsersScreenState extends State<UsersScreen> {
                 } else if (state is MangeUsersSuccess) {
                   return state.users.isEmpty
                       ? const Center(child: Text("No Users Found"))
-                      : isMobile
-                          ? ListView.builder(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 40),
-                              itemCount: state.users.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CustomUserItem(
-                                  currentIndex: currentIndex,
-                                  index: index,
-                                  users: state.users,
-                                );
-                              },
-                            )
-                          : GridView.builder(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 40),
-                              itemCount: state.users.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 450,
-                                mainAxisExtent: 100,
-                                mainAxisSpacing: 12,
-                                crossAxisSpacing: 12,
-                                childAspectRatio: 3,
-                              ),
-                              itemBuilder: (BuildContext context, int index) {
-                                return CustomUserItem(
-                                  currentIndex: currentIndex,
-                                  index: index,
-                                  users: state.users,
-                                );
-                              },
+                      : ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          itemCount: state.users.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return CustomUserItem(
+                              currentIndex: currentIndex,
+                              index: index,
+                              users: state.users,
                             );
+                          },
+                        );
                 }
                 return Container();
               }),

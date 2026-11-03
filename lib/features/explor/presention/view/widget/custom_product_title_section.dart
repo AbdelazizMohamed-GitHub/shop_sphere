@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 
 class CustomProductTitleSection extends StatelessWidget {
   const CustomProductTitleSection({
@@ -25,7 +25,7 @@ class CustomProductTitleSection extends StatelessWidget {
           const Spacer(),
           TextButton(
               onPressed: funcation,
-              child:const Text(
+              child: const Text(
                 'See All',
                 style: AppStyles.text18Regular,
               ))

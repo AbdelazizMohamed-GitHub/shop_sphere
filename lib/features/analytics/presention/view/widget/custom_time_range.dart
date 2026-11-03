@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/features/analytics/presention/contoller/cubit/analytics_cubit.dart';
 
@@ -16,11 +16,12 @@ class CustomTimeRange extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: timeRange.length,
       separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(width: 10);
+        return const SizedBox(width: 8);
       },
       itemBuilder: (BuildContext context, int index) {
         return BlocBuilder<AnalyticsCubit, AnalyticsState>(
           builder: (context, state) {
+            int selectTimeRange = context.read<AnalyticsCubit>().timeRangeIndex;
             return InkWell(
               onTap: () async {
                 // Update the time range index in the AnalyticsCubit
@@ -29,7 +30,7 @@ class CustomTimeRange extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: context.read<AnalyticsCubit>().timeRangeIndex == index
+                  color: selectTimeRange == index
                       ? AppColors.primaryColor
                       : Colors.white,
                 ),
@@ -37,7 +38,7 @@ class CustomTimeRange extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
                   "${timeRange[index]}",
-                  style: context.read<AnalyticsCubit>().timeRangeIndex == index
+                  style: selectTimeRange == index
                       ? AppStyles.text16Regular.copyWith(color: Colors.white)
                       : AppStyles.text16Regular,
                 ),

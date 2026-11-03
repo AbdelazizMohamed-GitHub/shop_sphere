@@ -11,6 +11,8 @@ abstract class AddressRepo {
       String addressId, AddressModel addressModel);
   Future<Either<FirebaseFailure, void>> deleteAddress(String addressId);
   Future<Either<FirebaseFailure, List<AddressEntity>>> getAddress();
+  Future<Either<FirebaseFailure, List<AddressEntity>>> getCustomerAddresses(
+      {required String userId});
   Future<Either<FirebaseFailure, void>> updateAddressIndex({
     required int sellectAddress,
     

@@ -66,29 +66,36 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
- Future<Either<FirebaseFailure, String>> logInWithEmailAndPassword(
-    String email, String password, context) async {
-  try {
+  Future<Either<FirebaseFailure, String>> logInWithEmailAndPassword(
+      String email, String password, context) async {
+    try {
+      UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+      final uid = user.user?.uid;
+      final token = await NotificationService.getToken();
+      if (uid != null && token != null && token.isNotEmpty) {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(uid)
+            .set({'fcmToken': token}, SetOptions(merge: true));
+      }
 
+      final data = await firestoreService.getUserData();
 
-    final data = await firestoreService.getUserData();
+      if (data.isStaff) {
+        return const Right('Staff');
+      }
 
-    if (data.isStaff) {
-      return const Right('Staff');
+      return Right(user.user?.uid ?? "");
+    } on FirebaseAuthException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    } catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
     }
-
-    return Right(user.user?.uid ?? "");
-  } on FirebaseAuthException catch (e) {
-    return Left(FirebaseFailure.fromCode(e.code));
-  } catch (e) {
-    return Left(FirebaseFailure(message: e.toString()));
   }
-}
 
   @override
   Future<Either<FirebaseFailure, String>> logInWithGoogle() async {

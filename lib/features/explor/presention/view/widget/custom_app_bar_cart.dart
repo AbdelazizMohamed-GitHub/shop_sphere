@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/loading/custom_icon_loading.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class CustomAppBarCart extends StatelessWidget {
   const CustomAppBarCart({super.key});
@@ -24,11 +25,7 @@ class CustomAppBarCart extends StatelessWidget {
                         size: 25,
                       ),
                       funcation: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CartScreen(),
-                            ));
+                        context.pushNamed(AppRoute.cart);
                       }),
                   Positioned(
                     top: 0,

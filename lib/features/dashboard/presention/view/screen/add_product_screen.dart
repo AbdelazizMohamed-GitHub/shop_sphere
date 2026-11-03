@@ -169,7 +169,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(height: 20),
                 BlocConsumer<DashboardCubit, DashboardState>(
                   listener: (context, state) {
-                    if (state is DashboardFailer) {
+                    if (state is DashboardFailure) {
                       Warning.showWarning(context,
                           message: state.errMessage, isError: true);
                     }
@@ -178,7 +178,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           message: widget.isUpdate
                               ? "Product Updated Successfully"
                               : "Product Added Successfully");
-                      context.goNamed(AppRoute.dashboard);
+                      context.pushNamed(AppRoute.dashboard);
                     }
                   },
                   builder: (context, state) {

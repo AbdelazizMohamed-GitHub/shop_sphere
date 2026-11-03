@@ -4,35 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/cubits/sign_out_cubit/sign_out_cubit.dart';
 
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/responsive_layout.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_body.dart';
-import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
-class CustomProductScreenDrawer extends StatefulWidget {
+class CustomProductScreenDrawer extends StatelessWidget {
   const CustomProductScreenDrawer({
     super.key,
-    required this.outOfStock,
-    required this.products, required this.onCategoryChanged,
   });
-  final List<ProductEntity> outOfStock;
-  final List<ProductEntity> products;
-  final ValueChanged<String> onCategoryChanged;
 
-  @override
-  State<CustomProductScreenDrawer> createState() =>
-      _CustomProductScreenDrawerState();
-}
-
-class _CustomProductScreenDrawerState extends State<CustomProductScreenDrawer> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardCubit, DashboardState>(
@@ -70,61 +55,31 @@ class _CustomProductScreenDrawerState extends State<CustomProductScreenDrawer> {
                   return const SizedBox(height: 8);
                 },
                 itemBuilder: (BuildContext context, int index) {
+                  final isSelected = state.screenIndex == index;
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                        color: state.screenIndex == index
-                            ? AppColors.primaryColor
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(12)),
                     child: ListTile(
-                      leading: Icon(dashboardDrawerItems[index].icon,
-                          color: state.screenIndex == index
-                              ? Colors.white
-                              : Colors.black),
+                      tileColor: isSelected
+                          ? AppColors.primaryColor
+                          : Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      leading: Icon(
+                        dashboardDrawerItems[index].icon,
+                        color: isSelected ? Colors.white : Colors.black,
+                      ),
                       title: Text(
                         dashboardDrawerItems[index].title,
                         style: AppStyles.text18Regular.copyWith(
-                          color: state.screenIndex == index
-                              ? Colors.white
-                              : Colors.black,
+                          color: isSelected ? Colors.white : Colors.black,
                         ),
                       ),
                       onTap: () {
-                        if (ResponsiveLayout.isDesktop(context)) {
-                          context
-                              .read<DashboardCubit>()
-                              .changeScreenIndex(index);
-                          context.goNamed(dashboardDrawerItems[index].title);
-                        } else {
-                          // قفل الـ Drawer أولاً
-                          Navigator.pop(context);
-                          if (index == 0) {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return CustomProductScreenBody(
-                                products: widget.outOfStock,
-                                onCategoryChanged: (String value) {
-                                  widget.onCategoryChanged(value);
-                                  setState(() {});
-                                },
-                              );
-                            }));
-                          }
-                          // ثم التنقل للشاشة المطلوبة
-                          else if (index >= 3) {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return OutOfStockScreen(
-                                  products: widget.outOfStock);
-                            }));
-                          } else {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return dashboardDrawerItems[index].screen;
-                            }));
-                          }
-                        }
+                        context
+                            .read<DashboardCubit>()
+                            .changeScreenIndex(index: index);
+                        Navigator.pop(context);
                       },
                     ),
                   );
@@ -141,9 +96,8 @@ class _CustomProductScreenDrawerState extends State<CustomProductScreenDrawer> {
                   try {
                     await context.read<SignOutCubit>().signOut();
 
-                    context.goNamed(AppRoute.getStarted);
+                    context.pushNamed(AppRoute.getStarted);
                   } catch (e) {
-                    print(e.toString());
                     Warning.showWarning(context,
                         message: 'Error signing out. Please try again.',
                         isError: true);

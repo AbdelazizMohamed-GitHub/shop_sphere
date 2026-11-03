@@ -5,6 +5,7 @@ import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -15,6 +16,7 @@ class SearchScreen extends StatelessWidget {
         ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       appBar: AppBar(
+        leading: const CustomBackButton(),
         title: const Text("Search"),
       ),
       body: Padding(
@@ -53,7 +55,7 @@ class SearchScreen extends StatelessWidget {
                   onTap: () {
                     FocusScope.of(context).unfocus();
                     controller.closeView(product.name);
-                    context.goNamed(AppRoute.dashboardSearchResult, extra: results);
+                    context.pushNamed(AppRoute.dashboardSearchResult, extra: results);
                   },
                 );
               },

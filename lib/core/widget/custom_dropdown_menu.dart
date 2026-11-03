@@ -30,7 +30,7 @@ class _CategoryDropdownState extends State<CustomDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: widget.isUpdate ? widget.productCategory : selectedCategory,
+      initialValue: widget.isUpdate ? widget.productCategory : selectedCategory,
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,

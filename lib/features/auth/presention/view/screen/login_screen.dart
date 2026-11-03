@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/auth/presention/cotroller/auth_cubit/auth_cubit.dart';
@@ -39,8 +39,8 @@ class LoginScreen extends StatelessWidget {
                 const Text('Shop Sphere', style: AppStyles.text22SemBoldWhite),
               ]),
               Container(
-                margin:
-                     EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 30),
+                margin: EdgeInsets.symmetric(
+                    horizontal: horizontalPadding, vertical: 30),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                 decoration: BoxDecoration(

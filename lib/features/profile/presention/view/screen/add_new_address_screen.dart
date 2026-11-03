@@ -10,7 +10,7 @@ import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
@@ -158,7 +158,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    CustomDropdown(productCategory:stateController.text ,
+                    CustomDropdown(
+                        productCategory: stateController.text,
                         categories: egyptGovernorates,
                         text: "Select Governorate",
                         isUpdate: widget.isupdate,
@@ -201,15 +202,14 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                         ? const Center(child: CircularProgressIndicator())
                         : CustomButton(
                             onPressed: () async {
-                          
- if (!await AppFuncations.isOnline()) {
-      Warning.showWarning(
-        context,
-        message: "No Internet Connection",
-        isError: true,
-      );
-      return;
-    }
+                              if (!await AppFuncations.isOnline()) {
+                                Warning.showWarning(
+                                  context,
+                                  message: "No Internet Connection",
+                                  isError: true,
+                                );
+                                return;
+                              }
 
                               if (formKey.currentState!.validate()) {
                                 FocusScope.of(context).unfocus();

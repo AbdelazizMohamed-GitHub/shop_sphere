@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -10,7 +9,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     this.color = AppColors.primaryColor,
-     this.textColor=Colors.white,
+    this.textColor = Colors.white,
   });
   final void Function()? onPressed;
   final String text;

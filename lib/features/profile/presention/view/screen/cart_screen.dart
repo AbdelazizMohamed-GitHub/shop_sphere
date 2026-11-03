@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/checkout_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_item_list.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';
 
@@ -44,12 +45,10 @@ class _CartScreenState extends State<CartScreen> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return  CustomErrorWidget(
+              return CustomErrorWidget(
                 errorMessage: snapshot.error.toString(),
                 onpressed: () {
-                  setState(() {
-                    
-                  });
+                  setState(() {});
                 },
               );
             } else if (snapshot.hasData) {
@@ -98,13 +97,13 @@ class _CartScreenState extends State<CartScreen> {
                         const SizedBox(height: 20.0),
                         CustomButton(
                             onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return CheckoutScreen(
-                                  total: total,
-                                  cartItems: cartItems,
-                                );
-                              }));
+                              context.pushNamed(
+                                AppRoute.checkout,
+                                extra: {
+                                  'total': total,
+                                  'cartItems': cartItems,
+                                },
+                              );
                             },
                             text: "Checkout")
                       ]),

@@ -50,7 +50,7 @@ class CartItemModel extends CartEntity {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
-      price: map['price'] ?? 0.0,
+      price: (map['price'] as num?)?.toDouble() ?? 0.0,
       quantity: map['quantity'] ?? 1,
       createdAt: map['createdAt']?? Timestamp.now(), // Default quantity to 1 if not provided
     );

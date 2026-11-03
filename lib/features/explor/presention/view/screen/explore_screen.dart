@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
@@ -14,10 +16,9 @@ import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/car
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_state.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/see_all_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_advertise.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_app_bar_cart.dart';
-import 'package:shop_sphere/features/explor/presention/view/widget/custom_category_list.dart';
+import 'package:shop_sphere/core/widget/custom_category_list.dart';
 import 'package:shop_sphere/core/loading/custom_explore_screen_loading.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_explore_screen_search.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_new_arrivels_list.dart';
@@ -105,7 +106,15 @@ class ExploreScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 40, child: CustomCategoryList()),
+                      SizedBox(
+                          height: 40,
+                          child: CustomCategoryList(
+                            onTap: () {
+                              context
+                                  .read<ProductCubit>()
+                                  .getProducts(category: 'All');
+                            },
+                          )),
                       const SizedBox(height: 10),
                       BlocBuilder<ProductCubit, ProductState>(
                         builder: (context, state) {
@@ -147,13 +156,9 @@ class ExploreScreen extends StatelessWidget {
                                 CustomProductTitleSection(
                                   title: 'New Arrivals',
                                   funcation: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SeeAllScreen(
-                                          products: state.products,
-                                        ),
-                                      ),
+                                    context.pushNamed(
+                                      AppRoute.seeAll,
+                                      extra: state.products,
                                     );
                                   },
                                 ),
@@ -165,13 +170,9 @@ class ExploreScreen extends StatelessWidget {
                                 CustomProductTitleSection(
                                   title: 'Popular Products',
                                   funcation: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SeeAllScreen(
-                                          products: popularProducts,
-                                        ),
-                                      ),
+                                    context.pushNamed(
+                                      AppRoute.seeAll,
+                                      extra: popularProducts,
                                     );
                                   },
                                 ),

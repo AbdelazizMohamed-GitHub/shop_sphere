@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
@@ -79,11 +79,10 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-            context.goNamed(state.uid=='Staff' ? AppRoute.dashboard : AppRoute.main);
-              
+              context.goNamed(
+                  state.uid == 'Staff' ? AppRoute.dashboard : AppRoute.main);
             }
             if (state is AuthError) {
-         
               Warning.showWarning(context,
                   isError: true, message: state.errMessage);
             }
@@ -96,7 +95,7 @@ class _CustomLoginScreenBodyState extends State<CustomLoginScreenBody> {
                       if (emailTextC.text.isNotEmpty &&
                           passwordTextC.text.isNotEmpty) {
                         FocusScope.of(context).unfocus();
-                       
+
                         await context
                             .read<AuthCubit>()
                             .logInWithEmailAndPassword(

@@ -32,8 +32,8 @@ class _InternetBannerWrapperState extends State<InternetBannerWrapper> {
     _checkConnectionFrom(connectivityResult as ConnectivityResult);
   }
 
-  Future<void> _checkConnectionFrom(ConnectivityResult connectivityResult) async {
-
+  Future<void> _checkConnectionFrom(
+      ConnectivityResult connectivityResult) async {
     if (connectivityResult == ConnectivityResult.none) {
       _setOffline(true);
     } else {
@@ -54,7 +54,6 @@ class _InternetBannerWrapperState extends State<InternetBannerWrapper> {
       setState(() {
         _isOffline = offline;
       });
-   
     }
   }
 
@@ -77,11 +76,11 @@ class _InternetBannerWrapperState extends State<InternetBannerWrapper> {
             offset: _isOffline ? const Offset(0, 0) : const Offset(0, 1),
             duration: const Duration(milliseconds: 300),
             child: Container(
-              color: Colors.red,
+              color: Colors.transparent,
               padding: const EdgeInsets.all(10),
               child: const Text(
                 'No Internet Connection',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(color: Colors.red, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -31,7 +31,7 @@ class FavoriteScreen extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return CustomErrorWidget(
                   errorMessage: snapshot.error.toString(),
-                  onpressed: () async{
+                  onpressed: () async {
                     getIt<FirestoreService>().getAllFavoriteProducts();
                   },
                 );

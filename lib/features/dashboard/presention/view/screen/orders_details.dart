@@ -5,9 +5,10 @@ import 'package:intl/intl.dart';
 
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_order_items.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_process_screen_item.dart';
@@ -44,10 +45,7 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
       appBar: isDesktop
           ? null
           : AppBar(
-              leading: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back_ios_new, size: 30),
-              ),
+              leading: const CustomBackButton(),
               title: const Text('Order Details'),
               leadingWidth: 100,
             ),
@@ -117,7 +115,7 @@ class _OrdersDetailsScreenState extends State<OrdersDetailsScreen> {
                               );
                             }
                             if (state is OrderSuccess) {
-                             context.goNamed(AppRoute.orders);
+                              context.pushNamed(AppRoute.orders);
                               context
                                   .read<OrderCubit>()
                                   .getCustomerOrder(uId: order.uId);

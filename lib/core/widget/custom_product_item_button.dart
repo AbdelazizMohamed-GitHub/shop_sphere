@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/loading/custom_cart_button_loading.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -38,7 +38,10 @@ class CustomProductItemButton extends StatelessWidget {
           : GestureDetector(
               onTap: productEntity.stock == 0
                   ? () {
-                      Warning.showWarning(context, message: 'Out Of Stock',);
+                      Warning.showWarning(
+                        context,
+                        message: 'Out Of Stock',
+                      );
                     }
                   : isProductInCart
                       ? () {
@@ -49,14 +52,14 @@ class CustomProductItemButton extends StatelessWidget {
                         }
                       : () async {
                           await BlocProvider.of<CartCubit>(context).addToCart(
-                                cartItemModel: CartItemModel(
-                                  id: productEntity.pId,
-                                  name: productEntity.name,
-                                  imageUrl: productEntity.imageUrl,
-                                  price: price,
-                                  quantity: 1,
-                                ),
-                              );
+                            cartItemModel: CartItemModel(
+                              id: productEntity.pId,
+                              name: productEntity.name,
+                              imageUrl: productEntity.imageUrl,
+                              price: price,
+                              quantity: 1,
+                            ),
+                          );
                         },
               child: Container(
                 padding: const EdgeInsets.all(5),

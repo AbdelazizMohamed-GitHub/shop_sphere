@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class CustomOrderDetailsHeader extends StatelessWidget {
@@ -31,7 +31,10 @@ class CustomOrderDetailsHeader extends StatelessWidget {
         const SizedBox(height: 10),
         Row(
           children: [
-             Text('Tracking Number: ${order.status=='Delivered'?order.trackingNumber.toString():"******"}',style: AppStyles.text16Regular,),
+            Text(
+              'Tracking Number: ${order.status == 'Delivered' ? order.trackingNumber.toString() : "******"}',
+              style: AppStyles.text16Regular,
+            ),
             const Spacer(),
             Text(
               ' ${order.status}',

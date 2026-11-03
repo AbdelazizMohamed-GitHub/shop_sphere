@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/cubits/sign_out_cubit/sign_out_cubit.dart';
+import 'package:shop_sphere/core/service/notification_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
+import 'package:shop_sphere/core/utils/app_router.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
@@ -18,8 +20,24 @@ import 'package:shop_sphere/features/profile/presention/controller/address/adres
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 
-class ShopSphere extends StatelessWidget {
+class ShopSphere extends StatefulWidget {
   const ShopSphere({super.key});
+
+  @override
+  State<ShopSphere> createState() => _ShopSphereState();
+}
+
+class _ShopSphereState extends State<ShopSphere> {
+  @override
+  void initState() {
+    super.initState();
+    NotificationService.setProductTapHandler((productId) {
+      appRouter.pushNamed(
+        AppRoute.detailsScreen,
+        pathParameters: {'productId': productId},
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +62,9 @@ class ShopSphere extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => OrderCubit(orderRepo: getIt<OrderRepoImpl>()),
-
         ),
         BlocProvider(
           create: (context) => SignOutCubit(),
-        
         )
       ],
       child: BlocBuilder<AppCubit, bool>(
@@ -57,10 +73,8 @@ class ShopSphere extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'ShopSphere',
             themeMode: ThemeMode.system,
-
             theme: isLightTheme ? AppTheme.lightTheme : AppTheme.darkTheme,
-            routerConfig: router,
-          
+            routerConfig: appRouter,
           );
         },
       ),

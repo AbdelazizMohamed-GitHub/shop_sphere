@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/add_new_address_screen.dart';
 
 class CustomAddressItem extends StatelessWidget {
   const CustomAddressItem({
@@ -43,14 +44,13 @@ class CustomAddressItem extends StatelessWidget {
             const Spacer(),
             IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddNewAddressScreen(
-                          isupdate: true,
-                          addressEntity: addressEntity,
-                        ),
-                      ));
+                  context.pushNamed(
+                    AppRoute.addNewAddress,
+                    extra: {
+                      'isupdate': true,
+                      'addressEntity': addressEntity,
+                    },
+                  );
                 },
                 icon: Icon(
                   Icons.edit,
@@ -70,11 +70,14 @@ class CustomAddressItem extends StatelessWidget {
                         ? AppStyles.text16Regular.copyWith(color: Colors.white)
                         : AppStyles.text16Regular,
                   ),
-                  SizedBox(width: 250,
-                    child: Text(overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: 250,
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
                       " ${addressEntity.street},${addressEntity.city},${addressEntity.state}",
                       style: isSelect
-                          ? AppStyles.text16Regular.copyWith(color: Colors.white)
+                          ? AppStyles.text16Regular
+                              .copyWith(color: Colors.white)
                           : AppStyles.text16Regular,
                     ),
                   ),

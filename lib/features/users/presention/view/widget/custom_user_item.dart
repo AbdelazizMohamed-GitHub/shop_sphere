@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/users/presention/controller/user_cubit/users_cubit.dart';
 
@@ -25,10 +26,7 @@ class CustomUserItem extends StatelessWidget {
                 extra: users[index].uid)
             : context.pushNamed(
                 AppRoute.customerOrders,
-                extra: {
-                  'userId': users[index].uid,
-                  'userName': users[index].name,
-                },
+                extra: users[index],
               );
       },
       child: SizedBox(
@@ -41,7 +39,7 @@ class CustomUserItem extends StatelessWidget {
                   maxLines: 1, style: AppStyles.text16Bold),
               subtitle: Text(users[index].email, maxLines: 1),
               trailing: SizedBox(
-                  width: 100,
+                  width: 120,
                   height: 50,
                   child: Row(
                     children: [
@@ -54,7 +52,10 @@ class CustomUserItem extends StatelessWidget {
                                       'userName': users[index].name,
                                     });
                               },
-                              icon: const Icon(Icons.notifications),
+                              icon: const Icon(
+                                Icons.notifications_active_outlined,
+                                color: AppColors.primaryColor,
+                              ),
                             )
                           : const SizedBox(),
                       Switch(

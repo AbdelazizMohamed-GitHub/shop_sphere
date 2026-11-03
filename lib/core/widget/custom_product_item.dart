@@ -1,15 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/custom_favourite_icon.dart';
 import 'package:shop_sphere/core/widget/custom_product_item_button.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 
 class CustomProductItem extends StatefulWidget {
   const CustomProductItem({
@@ -44,13 +45,11 @@ class _CustomProductItemState extends State<CustomProductItem> {
                       topRight: Radius.circular(10)),
                   child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailsScreen(
-                                product: widget.product,
-                              ),
-                            ));
+                        context.pushNamed(
+                          AppRoute.detailsScreen,
+                          pathParameters: {'productId': widget.product.pId},
+                          extra: widget.product,
+                        );
                       },
                       child: Hero(
                         tag: widget.product.pId,
@@ -135,7 +134,6 @@ class _CustomProductItemState extends State<CustomProductItem> {
           ),
           CustomFavouriteIcon(
             productId: widget.product.pId,
-          
           )
         ],
       ),

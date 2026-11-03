@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -14,7 +15,10 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:const Text("Chat")),
+      appBar: AppBar(
+        leading: const CustomBackButton(),
+        title: const Text("Chat"),
+      ),
       body: Column(
         children: [
           Expanded(

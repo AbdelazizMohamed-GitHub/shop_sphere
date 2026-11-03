@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class CustomDashboardProductItem extends StatelessWidget {
@@ -15,7 +15,7 @@ class CustomDashboardProductItem extends StatelessWidget {
       onTap: () {
         // Use pushNamed so browser back returns to the previous dashboard
         // instance instead of reloading/rebuilding the whole dashboard route.
-        context.goNamed(
+        context.pushNamed(
           AppRoute.productDetails,
           pathParameters: {'productId': product.pId},
           extra: product,

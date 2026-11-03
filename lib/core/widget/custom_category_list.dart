@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
-import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
 
 class CustomCategoryList extends StatefulWidget {
   const CustomCategoryList({
     super.key,
+    required this.onTap,
   });
+  final void Function() onTap;
 
   @override
   State<CustomCategoryList> createState() => _CustomCategoryListState();
@@ -17,6 +19,7 @@ class CustomCategoryList extends StatefulWidget {
 
 class _CustomCategoryListState extends State<CustomCategoryList> {
   int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -31,10 +34,15 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            context.read<ProductCubit>().getProducts(category: appCategory[index]);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context
+                  .read<DashboardCubit>()
+                  .getProducts(category: appCategory[index]);
+            });
             setState(() {
               currentIndex = index;
             });
+            widget.onTap();
           },
           child: Container(
             height: 50,

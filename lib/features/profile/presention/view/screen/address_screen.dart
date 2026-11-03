@@ -1,17 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:shop_sphere/core/loading/address_screen_loadig.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/address/adress_state.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/add_new_address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_address_item.dart';
 
 class AddressScreen extends StatefulWidget {
@@ -41,13 +42,7 @@ class _AddressScreenState extends State<AddressScreen> {
         floatingActionButton: FloatingActionButton(
             backgroundColor: AppColors.primaryColor,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddNewAddressScreen(
-                      isupdate: false,
-                    ),
-                  ));
+              context.pushNamed(AppRoute.addNewAddress);
             },
             child: const Icon(
               Icons.add,

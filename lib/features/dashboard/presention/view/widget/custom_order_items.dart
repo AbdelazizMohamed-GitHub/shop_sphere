@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard_details_screen.dart';
-import 'package:shop_sphere/features/explor/data/model/product_model.dart';
-import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class CustomOrderItemDashboard extends StatelessWidget {
@@ -20,22 +18,17 @@ class CustomOrderItemDashboard extends StatelessWidget {
         itemCount: orderEntity.items.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: () async{
-              var product=await FirebaseFirestore.instance
-                  .collection('products')
-                  .doc(orderEntity.items[index].productId)
-                  .get().then((value) => ProductModel.fromMap(value.data()!)) as ProductEntity;
-              Navigator.push(
-                // ignore: use_build_context_synchronously
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DashboardProductDetailsScreen( product: product,),
-                ),
+            onTap: () {
+              context.pushNamed(
+                AppRoute.productDetails,
+                pathParameters: {
+                  'productId': orderEntity.items[index].productId,
+                },
               );
             },
             child: ListTile(
               trailing: Text(
-                '\$${orderEntity.items[index].productPrice*orderEntity.items[index].productQuantity}',
+                '\$${orderEntity.items[index].productPrice * orderEntity.items[index].productQuantity}',
                 style: AppStyles.text18Regular,
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 8),

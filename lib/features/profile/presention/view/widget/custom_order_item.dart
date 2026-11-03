@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/order_details_screen.dart';
 
 class CustomOrderItem extends StatelessWidget {
   const CustomOrderItem({
@@ -46,7 +47,7 @@ class CustomOrderItem extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Tracking Number:  ${order.status == 'Pending' ?   '*******':order.trackingNumber}',
+                      'Tracking Number:  ${order.status == 'Pending' ? '*******' : order.trackingNumber}',
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold),
                     ),
@@ -75,14 +76,12 @@ class CustomOrderItem extends StatelessWidget {
                     color: AppColors.primaryColor,
                     shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                    ), 
+                    ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                OrderDetailsScreen(order: order),
-                          ));
+                      context.pushNamed(
+                        AppRoute.profileOrderDetails,
+                        extra: order,
+                      );
                     },
                     child: const Text(
                       'Details',

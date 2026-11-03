@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
 
 class CustomDetailsAddToCartButton extends StatelessWidget {
   const CustomDetailsAddToCartButton(
@@ -31,9 +32,7 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
           return GestureDetector(
             onTap: () async {
               if (isProductInCart) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const CartScreen();
-                }));
+                context.pushNamed(AppRoute.cart);
               } else {
                 await context.read<CartCubit>().addToCart(
                       cartItemModel: CartItemModel(
@@ -44,7 +43,6 @@ class CustomDetailsAddToCartButton extends StatelessWidget {
                         quantity: 1,
                       ),
                     );
-                    
 
                 // ignore: use_build_context_synchronously
                 await context

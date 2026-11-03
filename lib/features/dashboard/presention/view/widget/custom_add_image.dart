@@ -5,8 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/loading/custom_image_loading.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 
 class CustomAddImage extends StatefulWidget {
   const CustomAddImage({super.key, this.onTap, required this.imageUrl});
@@ -32,13 +32,17 @@ class _CustomAddImageState extends State<CustomAddImage> {
       child: widget.imageUrl != ""
           ? ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child:CachedNetworkImage(imageUrl: widget.imageUrl!, fit: BoxFit.contain,
-              placeholder: (context, url) => const CustomImageLoading(),),
+              child: CachedNetworkImage(
+                imageUrl: widget.imageUrl!,
+                fit: BoxFit.contain,
+                placeholder: (context, url) => const CustomImageLoading(),
+              ),
             )
           : imageFile == null
               ? GestureDetector(
                   onTap: () async {
-                    Uint8List? image = await AppFuncations.pickImageFromGallery();
+                    Uint8List? image =
+                        await AppFuncations.pickImageFromGallery();
                     if (image != null) {
                       setState(() {
                         imageFile = image;

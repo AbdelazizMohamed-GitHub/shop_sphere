@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 
-import 'package:shop_sphere/core/utils/app_color.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
@@ -13,7 +15,6 @@ import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/controller/profile/user_state.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_cart_price.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_checkout_button.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_checkout_listile.dart';
@@ -125,14 +126,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               CustomCircleButton(
                                   icon: const Icon(Icons.add),
                                   funcation: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AddressScreen(
-                                            selectAddressIndex:
-                                                state.user.addressIndex,
-                                          ),
-                                        ));
+                                    context.pushNamed(
+                                      AppRoute.address,
+                                      extra: state.user.addressIndex,
+                                    );
                                   })
                             ],
                           ),

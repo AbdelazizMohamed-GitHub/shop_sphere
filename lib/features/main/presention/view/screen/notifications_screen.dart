@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shop_sphere/core/loading/custom_image_loading.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/main/data/notification_model.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
@@ -46,7 +50,7 @@ class NotificationScreen extends StatelessWidget {
               return Dismissible(
                 key: ValueKey(notification?.date.toIso8601String()),
                 onDismissed: (_) => notification?.delete(),
-                direction: DismissDirection.endToStart,
+                direction: DismissDirection.startToEnd,
                 background: Container(
                   color: Colors.red,
                   alignment: Alignment.centerRight,
@@ -57,11 +61,35 @@ class NotificationScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(10),
                   color: Colors.white,
                   child: ListTile(
-                    leading:
-                        const Icon(Icons.notifications, color: Colors.blue),
+                    leading: CachedNetworkImage(
+                      imageUrl: notification?.imageUrl ?? '',
+                      placeholder: (context, url) => const CustomImageLoading(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     title: Text(notification?.title ?? ''),
                     subtitle: Text(notification?.description ?? ''),
+                    onTap: notification == null
+                        ? null
+                        : () {
+                            final productId = notification.productId?.trim();
+                            if (productId == null || productId.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Product details are unavailable for this notification.',
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
+
+                            context.pushNamed(
+                              AppRoute.detailsScreen,
+                              pathParameters: {'productId': productId},
+                            );
+                          },
                     trailing: Text(
                       notification?.date.toString().substring(0, 16) ?? '',
                       style: const TextStyle(fontSize: 12),

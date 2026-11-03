@@ -74,7 +74,7 @@ class OrderModel extends OrderEntity {
       address: AddressModel.fromMap(map['address']),
       uId: map['uId'],
       orderId: map['orderId'],
-      totalAmount: map['totalAmount'],
+      totalAmount: (map['totalAmount'] as num?)?.toDouble() ?? 0.0,
       items: List<CartItemModel>.from(
           map['items']?.map((x) => CartItemModel.fromMap(x)) ?? []),
       status: map['status'],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sphere/core/utils/app_styles.dart';
+import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 
 class CustomOrderInformation extends StatelessWidget {
@@ -20,11 +20,11 @@ class CustomOrderInformation extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          const  Text(
+            const Text(
               "Shipping Address",
               style: AppStyles.text16Regular,
             ),
-           const SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Expanded(
@@ -55,7 +55,7 @@ class CustomOrderInformation extends StatelessWidget {
             )
           ],
         ),
-         Row(
+        Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(

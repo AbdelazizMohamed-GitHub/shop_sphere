@@ -6,20 +6,15 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/cubits/app_cubit/app_cubit.dart';
 import 'package:shop_sphere/core/cubits/sign_out_cubit/sign_out_cubit.dart';
 import 'package:shop_sphere/core/loading/custom_icon_loading.dart';
-import 'package:shop_sphere/core/utils/app_color.dart';
+import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/core/utils/app_theme.dart';
+import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/address_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/cart_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/edit_profile_screen.dart';
-import 'package:shop_sphere/features/profile/presention/view/screen/order_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_screen_header.dart';
-import 'package:shop_sphere/shopsphere_app.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -92,42 +87,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: Icons.person_outlined,
                         title: 'Edit Profile',
                         funcation: () async {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return EditProfileScreen(user: user);
-                          }));
+                          context.pushNamed(
+                            AppRoute.editProfile,
+                            extra: user,
+                          );
                         },
                       ),
                       CustomProfileListTile(
                         icon: Icons.shopping_cart_outlined,
                         title: ' My Cart',
                         funcation: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const CartScreen();
-                          }));
+                          context.pushNamed(AppRoute.cart);
                         },
                       ),
                       CustomProfileListTile(
                         icon: Icons.data_thresholding,
                         title: 'Orders',
                         funcation: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const OrderScreen();
-                          }));
+                          context.pushNamed(AppRoute.orderHistory);
                         },
                       ),
                       CustomProfileListTile(
                         icon: Icons.location_on_outlined,
                         title: 'Address',
                         funcation: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return AddressScreen(
-                              selectAddressIndex: user.addressIndex,
-                            );
-                          }));
+                          context.pushNamed(
+                            AppRoute.address,
+                            extra: user.addressIndex,
+                          );
                         },
                       ),
                       BlocBuilder<AppCubit, bool>(
