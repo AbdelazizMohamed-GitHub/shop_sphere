@@ -38,9 +38,28 @@ ShopSphere is a modern **E-commerce mobile application** built with Flutter. It 
 
 ## 📸 Screenshots
 
-| Home Screen                                                | Product Details                                                          | Cart                                                       | Analytics Dashboard                                                  |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------- | -------------------------------------------------------------------- |
-| ![Home](https://via.placeholder.com/200x400.png?text=Home) | ![Details](https://via.placeholder.com/200x400.png?text=Product+Details) | ![Cart](https://via.placeholder.com/200x400.png?text=Cart) | ![Dashboard](https://via.placeholder.com/200x400.png?text=Analytics) |
+### 👤 User Side
+
+| Explore | Product Details | Orders | Profile |
+| --- | --- | --- | --- |
+| ![Explore](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Explor.jpg) | ![Details](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Details.jpg) | ![Orders](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Order.jpg) | ![Profile](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Profile.jpg) |
+
+| Checkout | Address  |
+| --- | --- | --- |
+| ![Checkout](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CheckOut.png) | ![Address](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Address.jpg) | 
+
+### 🛠️ Admin Side
+
+| Dashboard | Analytics| Add / Edit Product | Customers | Customer Profile |
+| --- | --- | --- | --- |
+![Analytics](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Analytics.png) |
+| ![Dashboard](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Dashboard.jpg) | ![Edit Product](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Edit%20or%20Add%20Product.jpg) | ![Customers](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Customers.jpg) | ![Customer Profile](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CustomerProfile.jpg) |
+
+| Staff | Staff Products |
+| --- | --- |
+| ![Staff](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff.jpg) | ![Staff Products](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff%20Product.jpg) |
+
+---
 
 ---
 
