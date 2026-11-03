@@ -34,7 +34,7 @@ ShopSphere is a modern **E-commerce mobile application** built with Flutter. It 
 ![Clean Architecture](https://img.shields.io/badge/Clean_Architecture-4CAF50?style=for-the-badge\&logo=architecture\&logoColor=white)
 ![Hive](https://img.shields.io/badge/Hive-FF9900?style=for-the-badge\&logo=hive\&logoColor=white)
 
----
+
 
 ## 📸 Screenshots
 
@@ -42,26 +42,23 @@ ShopSphere is a modern **E-commerce mobile application** built with Flutter. It 
 
 | Explore | Product Details | Orders | Profile |
 | --- | --- | --- | --- |
-| ![Explore](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Explor.jpg) | ![Details](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Details.jpg) | ![Orders](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Order.jpg) | ![Profile](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Profile.jpg) |
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Explor.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Details.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Order.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Profile.jpg" width="200"> |
 
-| Checkout | Address  |
-| --- | --- | --- |
-| ![Checkout](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CheckOut.png) | ![Address](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Address.jpg) | 
+| Checkout | Address |
+| --- | --- |
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CheckOut.png" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Address.jpg" width="200"> |
 
 ### 🛠️ Admin Side
 
-| Dashboard | Analytics| Add / Edit Product | Customers | Customer Profile |
+| Dashboard | Analytics | Add / Edit Product | Customers |
 | --- | --- | --- | --- |
-![Analytics](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Analytics.png) |
-| ![Dashboard](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Dashboard.jpg) | ![Edit Product](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Edit%20or%20Add%20Product.jpg) | ![Customers](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Customers.jpg) | ![Customer Profile](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CustomerProfile.jpg) |
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Dashboard.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Analytics.png" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Edit%20or%20Add%20Product.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Customers.jpg" width="200"> |
 
-| Staff | Staff Products |
-| --- | --- |
-| ![Staff](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff.jpg) | ![Staff Products](https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff%20Product.jpg) |
-
----
+| Customer Profile | Staff | Staff Products |
+| --- | --- | --- |
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CustomerProfile.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff%20Product.jpg" width="200"> |
 
 ---
 
-
+---
 
