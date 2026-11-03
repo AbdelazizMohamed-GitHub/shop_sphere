@@ -26,11 +26,16 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<OrdersScreen> {
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> _ordersStream;
+
   @override
   void initState() {
-    BlocProvider.of<OrderCubit>(context).getOrderLength();
-
     super.initState();
+    _ordersStream = FirebaseFirestore.instance
+        .collection("orders")
+        .orderBy("orderDate", descending: true)
+        .snapshots();
+    BlocProvider.of<OrderCubit>(context).getOrderLength();
   }
 
   List<OrderEntity> orders = [];
@@ -177,10 +182,7 @@ class _DashboardScreenState extends State<OrdersScreen> {
             ),
             const SizedBox(height: 20),
             StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection("orders")
-                  .orderBy("orderDate", descending: true)
-                  .snapshots(),
+              stream: _ordersStream,
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return const SizedBox(

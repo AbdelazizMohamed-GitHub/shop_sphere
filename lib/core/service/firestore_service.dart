@@ -529,9 +529,9 @@ class FirestoreService {
 
   Future<int> getOrdersLength() async {
     await checkInternet();
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await firestore.collection("orders").get();
-    return querySnapshot.docs.length;
+    final aggregateSnapshot =
+        await firestore.collection("orders").count().get();
+    return aggregateSnapshot.count ?? 0;
   }
 
   Future<List<OrderEntity>> getCustomerOrder({required String uId}) async {
@@ -865,6 +865,5 @@ class FirestoreService {
         .collection('users')
         .doc(userId)
         .update({"isStaff": isStaff});
-  }
-
+  } 
 }

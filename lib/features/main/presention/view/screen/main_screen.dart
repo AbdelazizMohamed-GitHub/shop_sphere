@@ -13,6 +13,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final List<Widget?> _loadedTabs = List<Widget?>.filled(screens.length, null);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -20,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
       child: BlocBuilder<MainCubit, MainState>(
         builder: (context, state) {
           final mainCubit = context.read<MainCubit>();
+          _loadedTabs[mainCubit.intialIndex] ??= screens[mainCubit.intialIndex];
           return PopScope(
             canPop: false,
             onPopInvokedWithResult: (didPop, result) {
@@ -56,7 +59,9 @@ class _MainScreenState extends State<MainScreen> {
               body: InternetBannerWrapper(
                 child: IndexedStack(
                   index: mainCubit.intialIndex,
-                  children: screens,
+                  children: _loadedTabs
+                      .map((screen) => screen ?? const SizedBox.shrink())
+                      .toList(),
                 ),
               ),
             ),

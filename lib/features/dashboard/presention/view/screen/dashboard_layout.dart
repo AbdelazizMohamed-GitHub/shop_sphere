@@ -23,19 +23,25 @@ class DashBoardLayout extends StatefulWidget {
 
 class _ProductScreenState extends State<DashBoardLayout> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final List<Widget?> _loadedScreens =
+      List<Widget?>.filled(dashboardDrawerItems.length, null);
   String selectedCategory = "All";
   @override
   void initState() {
+    super.initState();
     final savedIndex =
         Hive.box(AppConst.dashboardScreen).get('index', defaultValue: 0);
     context.read<DashboardCubit>().changeScreenIndex(index: savedIndex);
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
+      _loadedScreens[state.screenIndex] ??=
+          dashboardDrawerItems[state.screenIndex].screenBuilder(
+        () => _scaffoldKey.currentState?.openDrawer(),
+      );
       return PopScope(
         canPop: state.screenIndex == 0,
         onPopInvokedWithResult: (didPop, result) {
@@ -48,11 +54,9 @@ class _ProductScreenState extends State<DashBoardLayout> {
             body: SafeArea(
               child: IndexedStack(
                 index: state.screenIndex,
-                children: dashboardDrawerItems.map((item) {
-                  return item.screenBuilder(
-                    () => _scaffoldKey.currentState?.openDrawer(),
-                  );
-                }).toList(),
+                children: _loadedScreens
+                    .map((screen) => screen ?? const SizedBox.shrink())
+                    .toList(),
               ),
             ),
             floatingActionButton: BlocBuilder<DashboardCubit, DashboardState>(

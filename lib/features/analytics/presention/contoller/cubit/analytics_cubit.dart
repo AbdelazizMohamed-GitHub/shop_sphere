@@ -24,35 +24,26 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
     _savedTimeRangeIndex = index;
     await getAnalyticsData(limit: 10);
   }
- 
-  Future<void> getAnalyticsData({ required int limit}) async {
+
+  Future<void> getAnalyticsData({required int limit}) async {
     emit(AnalyticsLoading());
 
-    final productsResult = await analyticsRepo.getMostSoldProducts(
+    final productsFuture = analyticsRepo.getMostSoldProducts(
       timeRangeIndex: timeRangeIndex,
       limit: limit,
     );
-
-    final ordersResult = await analyticsRepo.getOrdersOverTimeRange(
+    final ordersFuture = analyticsRepo.getOrdersOverTimeRange(
       timeRangeIndex: timeRangeIndex,
     );
 
+    final productsResult = await productsFuture;
+    final ordersResult = await ordersFuture;
 
-
-    // ✅ البيانات موجودة
-    final mostSoldProducts = productsResult.getOrElse(() => []);
-    final ordersOver = ordersResult.getOrElse(() => []);
-
-    emit(AnalyticsLoaded(
-      mostSoldProducts: mostSoldProducts,
-      ordersOver: ordersOver,
-    ));
-        // ✅ تحقق من الفشل
     if (productsResult.isLeft() || ordersResult.isLeft()) {
       final message = productsResult.fold(
-        (l) => l.message,
-        (r) => null,
-      ) ??
+            (l) => l.message,
+            (r) => null,
+          ) ??
           ordersResult.fold(
             (l) => l.message,
             (r) => null,
@@ -61,5 +52,10 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
       emit(AnalyticsError(message: message ?? 'Unexpected error'));
       return;
     }
+
+    emit(AnalyticsLoaded(
+      mostSoldProducts: productsResult.getOrElse(() => []),
+      ordersOver: ordersResult.getOrElse(() => []),
+    ));
   }
 }
