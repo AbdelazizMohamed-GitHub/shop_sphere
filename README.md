@@ -57,8 +57,9 @@ The app runs on **Android, iOS, Web, Windows, macOS, and Linux** from a single c
 
 | Customer Profile | Staff | Staff Products | Send Notification |
 | --- | --- | --- | --- |
-| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CustomerProfile.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff.jpg" width="200"> | <img
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CustomerProfile.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff%20Product.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Send%20Notification.jpg" width="200"> |
 
+---
 ## 🚀 Getting Started
 
 ### Prerequisites
