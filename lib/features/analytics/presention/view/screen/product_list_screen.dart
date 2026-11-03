@@ -54,11 +54,13 @@ class ProductListScreen extends StatelessWidget {
                   },
                 );
               },
-              leading: CachedNetworkImage(
-                imageUrl: product.productImageUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const CustomImageLoading(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+              leading: SizedBox(height: 60,width: 60,
+                child: CachedNetworkImage(
+                  imageUrl: product.productImageUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const CustomImageLoading(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
               title: Text(
                 product.productName,
