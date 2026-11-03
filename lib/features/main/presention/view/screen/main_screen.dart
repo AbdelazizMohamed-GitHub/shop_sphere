@@ -19,37 +19,45 @@ class _MainScreenState extends State<MainScreen> {
       create: (context) => MainCubit(),
       child: BlocBuilder<MainCubit, MainState>(
         builder: (context, state) {
-          return Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              currentIndex: context.read<MainCubit>().intialIndex,
-              onTap: (index) {
-                context.read<MainCubit>().changeScreenIndex(index);
-              },
-              selectedItemColor: AppColors.primaryColor,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+          final mainCubit = context.read<MainCubit>();
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) {
+              if (didPop) return;
+              mainCubit.changeScreenIndex(0);
+            },
+            child: Scaffold(
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: mainCubit.intialIndex,
+                onTap: (index) {
+                  mainCubit.changeScreenIndex(index);
+                },
+                selectedItemColor: AppColors.primaryColor,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.favorite),
+                    label: 'Favorite',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.notifications),
+                    label: 'Notifications',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: 'Profile',
+                  ),
+                ],
+              ),
+              body: InternetBannerWrapper(
+                child: IndexedStack(
+                  index: mainCubit.intialIndex,
+                  children: screens,
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite),
-                  label: 'Favorite',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.notifications),
-                  label: 'Notifications',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
-              ],
-            ),
-            body: InternetBannerWrapper(
-              child: IndexedStack(
-                index: context.read<MainCubit>().intialIndex,
-                children: screens,
               ),
             ),
           );

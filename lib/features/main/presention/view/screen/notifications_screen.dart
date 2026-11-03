@@ -61,11 +61,15 @@ class NotificationScreen extends StatelessWidget {
                   margin: const EdgeInsets.all(10),
                   color: Colors.white,
                   child: ListTile(
-                    leading: CachedNetworkImage(
-                      imageUrl: notification?.imageUrl ?? '',
-                      placeholder: (context, url) => const CustomImageLoading(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                    leading: SizedBox( 
+                      width: 50,
+                      height: 50,
+                      child: CachedNetworkImage(
+                        imageUrl: notification?.imageUrl ?? '',
+                        placeholder: (context, url) => const CustomImageLoading(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                     title: Text(notification?.title ?? ''),

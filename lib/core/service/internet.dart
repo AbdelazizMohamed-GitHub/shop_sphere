@@ -22,19 +22,19 @@ class _InternetBannerWrapperState extends State<InternetBannerWrapper> {
     _checkConnection(); // أول فحص عند التشغيل
 
     _subscription = Connectivity().onConnectivityChanged.listen((results) {
-      final result = results.first; // ناخد أول نتيجة
-      _checkConnectionFrom(result);
+      _checkConnectionFrom(results);
     });
   }
 
   Future<void> _checkConnection() async {
-    final connectivityResult = await Connectivity().checkConnectivity();
-    _checkConnectionFrom(connectivityResult as ConnectivityResult);
+    final connectivityResults = await Connectivity().checkConnectivity();
+    _checkConnectionFrom(connectivityResults);
   }
 
   Future<void> _checkConnectionFrom(
-      ConnectivityResult connectivityResult) async {
-    if (connectivityResult == ConnectivityResult.none) {
+      List<ConnectivityResult> connectivityResults) async {
+    if (!connectivityResults
+        .any((result) => result != ConnectivityResult.none)) {
       _setOffline(true);
     } else {
       try {
