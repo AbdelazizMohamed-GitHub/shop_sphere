@@ -41,13 +41,13 @@ The app runs on **Android, iOS, Web, Windows, macOS, and Linux** from a single c
 
 ### 👤 User Side
 
-| Explore | Product Details | Orders | Profile |
+| Explore | Orders | Profile | Notifications |
 | --- | --- | --- | --- |
-| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Explor.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Details.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Order.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Profile.jpg" width="200"> |
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Explor.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Order.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Profile.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Notification.jpg" width="200"> |
 
-| Checkout | Address |
-| --- | --- |
-| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CheckOut.png" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Address.jpg" width="200"> |
+| Product Details | Checkout | Address |
+| --- | --- | --- |
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Details.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CheckOut.png" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Address.jpg" width="200"> |
 
 ### 🛠️ Admin Side
 
@@ -55,11 +55,9 @@ The app runs on **Android, iOS, Web, Windows, macOS, and Linux** from a single c
 | --- | --- | --- | --- |
 | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Dashboard.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Analytics.png" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Edit%20or%20Add%20Product.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Customers.jpg" width="200"> |
 
-| Customer Profile | Staff | Staff Products |
-| --- | --- | --- |
-| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CustomerProfile.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff%20Product.jpg" width="200"> |
-
----
+| Customer Profile | Staff | Staff Products | Send Notification |
+| --- | --- | --- | --- |
+| <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/CustomerProfile.jpg" width="200"> | <img src="https://oydjpuirgaaxururbnxc.supabase.co/storage/v1/object/public/ShopSphere%20Screen/Staff.jpg" width="200"> | <img
 
 ## 🚀 Getting Started
 
