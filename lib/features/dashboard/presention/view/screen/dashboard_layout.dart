@@ -36,32 +36,39 @@ class _ProductScreenState extends State<DashBoardLayout> {
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
-      return Scaffold(
-          key: _scaffoldKey,
-          drawer: const CustomProductScreenDrawer(),
-          body: SafeArea(
-            child: IndexedStack(
-              index: state.screenIndex,
-              children: dashboardDrawerItems.map((item) {
-                return item.screenBuilder(
-                  () => _scaffoldKey.currentState?.openDrawer(),
-                );
-              }).toList(),
-            ),
-          ),
-          floatingActionButton: BlocBuilder<DashboardCubit, DashboardState>(
-              builder: (context, state) {
-            return state.screenIndex != 0
-                ? const SizedBox()
-                : FloatingActionButton(
-                    backgroundColor: AppColors.primaryColor,
-                    onPressed: () {
-                      context.goNamed(AppRoute.addProduct,
-                          extra: {'isUpdate': false, 'product': null});
-                    },
-                    child: const Icon(Icons.add, color: Colors.white),
+      return PopScope(
+        canPop: state.screenIndex == 0,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+          context.read<DashboardCubit>().changeScreenIndex(index: 0);
+        },
+        child: Scaffold(
+            key: _scaffoldKey,
+            drawer: const CustomProductScreenDrawer(),
+            body: SafeArea(
+              child: IndexedStack(
+                index: state.screenIndex,
+                children: dashboardDrawerItems.map((item) {
+                  return item.screenBuilder(
+                    () => _scaffoldKey.currentState?.openDrawer(),
                   );
-          }));
+                }).toList(),
+              ),
+            ),
+            floatingActionButton: BlocBuilder<DashboardCubit, DashboardState>(
+                builder: (context, state) {
+              return state.screenIndex != 0
+                  ? const SizedBox()
+                  : FloatingActionButton(
+                      backgroundColor: AppColors.primaryColor,
+                      onPressed: () {
+                        context.goNamed(AppRoute.addProduct,
+                            extra: {'isUpdate': false, 'product': null});
+                      },
+                      child: const Icon(Icons.add, color: Colors.white),
+                    );
+            })),
+      );
     });
   }
 }
