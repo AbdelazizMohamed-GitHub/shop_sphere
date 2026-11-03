@@ -1,40 +1,41 @@
 # 🛍️ ShopSphere
 
-ShopSphere is a modern **E-commerce mobile application** built with Flutter. It allows users to browse products, add items to their cart, place orders, and explore personalized shopping experiences. The app also includes an **admin dashboard** with analytics, user management, and product management features.
+ShopSphere is a modern **e-commerce application** built with **Flutter**. It lets users browse products, add items to their cart, place orders, and manage their profile and delivery addresses. It also includes an **admin dashboard** with analytics, product management, customer management, and staff management.
+
+The app runs on **Android, iOS, Web, Windows, macOS, and Linux** from a single codebase.
 
 ---
 
 ## ✨ Features
 
 ### 👤 User Side
-
-* 🛒 **Product Browsing** – Explore products with categories and filters.
-* 🔍 **Smart Search** – Search products by name, category, or keywords.
-* ❤️ **Wishlist & Favorites** – Save products for later.
-* 🛍️ **Cart Management** – Add, update, or remove items from the cart.
-* 💳 **Checkout Flow** – Place orders with a smooth checkout experience.
-* 📍 **Address Management** – Add, edit, and manage delivery addresses.
-* 🔔 **Push Notifications** – Stay updated with offers and order status.
+- 🛒 **Product Browsing:** Explore products by category and filters.
+- 🔍 **Smart Search:** Search products by name, category, or keywords.
+- ❤️ **Wishlist & Favorites:** Save products for later.
+- 🛍️ **Cart Management:** Add, update, or remove items.
+- 💳 **Checkout Flow:** Place orders with a smooth checkout experience.
+- 📍 **Address Management:** Add and edit delivery addresses.
+- 🔔 **Push Notifications:** Get updates on offers and order status.
 
 ### 🛠️ Admin Side
-
-* 📦 **Product Management** – Add, update, or remove products.
-* 👥 **User Management** – Manage customers and workers.
-* 📊 **Analytics Dashboard** – Sales, revenue, and order tracking.
-* 🧾 **Order Management** – Track and update order statuses.
+- 📊 **Analytics Dashboard:** Track sales, revenue, and orders by day, week, month, or year.
+- 📦 **Product Management:** Add, update, or remove products.
+- 👥 **Customer Management:** View and manage customers.
+- 👷 **Staff Management:** Manage staff accounts and their products.
+- 🧾 **Order Management:** Track and update order statuses.
 
 ---
 
 ## 🛠️ Tech Stack
 
-![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge\&logo=flutter\&logoColor=white)
-![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge\&logo=dart\&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge\&logo=firebase\&logoColor=black)
-![Bloc](https://img.shields.io/badge/Bloc_Cubit-0F80C0?style=for-the-badge\&logo=bloc\&logoColor=white)
-![Clean Architecture](https://img.shields.io/badge/Clean_Architecture-4CAF50?style=for-the-badge\&logo=architecture\&logoColor=white)
-![Hive](https://img.shields.io/badge/Hive-FF9900?style=for-the-badge\&logo=hive\&logoColor=white)
+- **Flutter** & **Dart**
+- **Firebase** (Authentication, Firestore, Push Notifications)
+- **BLoC** for state management
+- **Clean Architecture**
+- **Hive** for local storage
+- **Supabase Storage** for product images
 
-
+---
 
 ## 📸 Screenshots
 
@@ -60,5 +61,34 @@ ShopSphere is a modern **E-commerce mobile application** built with Flutter. It 
 
 ---
 
+## 🚀 Getting Started
+
+### Prerequisites
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (version X.X.X or later)
+- Dart SDK (included with Flutter)
+- A Firebase project
+- Android Studio or VS Code with the Flutter extension
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/AbdelazizMohamed-GitHub/shop_sphere.git
+cd shop_sphere
+
+# 2. Install dependencies
+flutter pub get
+
+# 3. Connect the project to Firebase
+dart pub global activate flutterfire_cli
+flutterfire configure
+
+# 4. Run the app
+flutter run
+```
+
+To run on a specific platform, use `flutter run -d chrome` for Web, or `flutter run -d windows` for Windows.
+
 ---
 
+## 📁 Project Structure   
