@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/internet.dart';
 import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
-import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
+import 'package:shop_sphere/features/main/presention/controller/main_cubit/main_cubit.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

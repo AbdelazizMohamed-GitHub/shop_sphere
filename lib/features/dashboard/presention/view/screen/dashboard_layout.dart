@@ -8,8 +8,8 @@ import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_drawer.dart';
 
 class DashBoardLayout extends StatefulWidget {

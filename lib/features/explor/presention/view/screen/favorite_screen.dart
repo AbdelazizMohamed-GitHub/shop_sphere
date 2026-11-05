@@ -7,7 +7,7 @@ import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
-import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
+import 'package:shop_sphere/features/main/presention/controller/main_cubit/main_cubit.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});

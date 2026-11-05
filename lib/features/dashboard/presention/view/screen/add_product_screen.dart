@@ -18,8 +18,8 @@ import 'package:uuid/uuid.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_text_form.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_add_image.dart';
 
 class AddProductScreen extends StatefulWidget {

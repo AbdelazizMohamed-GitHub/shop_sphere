@@ -4,7 +4,7 @@ import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
 
 class CustomCategoryList extends StatefulWidget {
   const CustomCategoryList({

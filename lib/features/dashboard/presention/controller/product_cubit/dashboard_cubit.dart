@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/features/dashboard/domain/repo/dashboard_repo.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 
 class DashboardCubit extends Cubit<DashboardState> {

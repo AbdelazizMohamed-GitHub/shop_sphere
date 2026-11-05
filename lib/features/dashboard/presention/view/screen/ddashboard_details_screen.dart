@@ -9,8 +9,8 @@ import 'package:shop_sphere/core/widget/custom_button.dart';
 import 'package:shop_sphere/core/widget/custom_back_button.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_cubit.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/controller/product_cubit/dashboard_state.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_state.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class DashboardProductDetailsScreen extends StatelessWidget {

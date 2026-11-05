@@ -12,7 +12,7 @@ import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
-import 'package:shop_sphere/features/main/presention/view/controller/main_cubit/main_cubit.dart';
+import 'package:shop_sphere/features/main/presention/controller/main_cubit/main_cubit.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_list_tile.dart';
 import 'package:shop_sphere/features/profile/presention/view/widget/custom_profile_screen_header.dart';
 
