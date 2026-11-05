@@ -4,8 +4,8 @@ import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 
-class CustomCustomerDetailsCard extends StatelessWidget {
-  const CustomCustomerDetailsCard({super.key, required this.customer});
+class CustomCustomerDetailsHeader extends StatelessWidget {
+  const CustomCustomerDetailsHeader({super.key, required this.customer});
 
   final UserEntity customer;
 

@@ -16,10 +16,8 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/add_produc
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_products_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_search_result.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/ddashboard_details_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_details.dart';
+import 'package:shop_sphere/features/orders/presention/view/screen/orders_details.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_layout.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/out_of_stock_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
@@ -36,6 +34,7 @@ import 'package:shop_sphere/features/main/presention/view/screen/main_screen.dar
 import 'package:shop_sphere/features/main/presention/view/screen/notifications_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/get_started_screen.dart';
 import 'package:shop_sphere/features/onboarding/presention/view/screen/onboarding_screen.dart';
+import 'package:shop_sphere/features/orders/presention/view/screen/orders_screen.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/add_new_address_screen.dart';
@@ -80,12 +79,12 @@ final GoRouter appRouter = GoRouter(
             if (userEntity.isStaff) {
               // روح للـ Dashboard
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.go("/dashboard");
+                context.goNamed(AppRoute.dashboard);
               });
             } else {
               // روح للـ Main
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.go("/main");
+                context.goNamed(AppRoute.main);
               });
             }
 
@@ -303,13 +302,7 @@ final GoRouter appRouter = GoRouter(
         onMenuPressed: () => context.goNamed(AppRoute.dashboard),
       ),
     ),
-    GoRoute(
-      name: AppRoute.outOfStock,
-      path: '/dashboard/out-of-stock',
-      builder: (context, state) => OutOfStockScreen(
-        products: state.extra as List<ProductEntity>? ?? const [],
-      ),
-    ),
+    
     GoRoute(
       name: AppRoute.addProduct,
       path: '/add-product',

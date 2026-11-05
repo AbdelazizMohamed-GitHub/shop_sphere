@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:shop_sphere/core/utils/app_images.dart';
 import 'package:shop_sphere/features/analytics/presention/view/screen/analytics_screen.dart';
 import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_products_screen.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/screen/orders_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/explore_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/favorite_screen.dart';
 import 'package:shop_sphere/features/main/presention/view/screen/notifications_screen.dart';
+import 'package:shop_sphere/features/orders/presention/view/screen/orders_screen.dart';
 import 'package:shop_sphere/features/profile/presention/view/screen/profile_screen.dart';
 import 'package:shop_sphere/features/users/presention/view/screen/users_screen.dart';
 

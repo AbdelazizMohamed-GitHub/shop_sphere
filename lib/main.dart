@@ -13,15 +13,12 @@ import 'package:shop_sphere/features/main/data/notification_model.dart';
 import 'package:shop_sphere/firebase_options.dart';
 import 'package:shop_sphere/shopsphere_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() async {
-  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorageDirectory.web
-        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    storageDirectory: 
+         HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
   setupLocator();
 

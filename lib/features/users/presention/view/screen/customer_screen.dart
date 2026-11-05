@@ -57,7 +57,7 @@ class _CustomerOrderScreenState extends State<CustomerOrderScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomCustomerDetailsCard(customer: widget.customer),
+              CustomCustomerDetailsHeader(customer: widget.customer),
               const SizedBox(height: 20),
               const Text('Saved addresses', style: AppStyles.text22SemiBold),
               const SizedBox(height: 8),
