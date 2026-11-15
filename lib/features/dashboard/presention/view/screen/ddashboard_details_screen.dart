@@ -128,7 +128,12 @@ class DashboardProductDetailsScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is DashboardSuccess) {
               context.pushNamed(AppRoute.dashboard);
+
+Warning.showWarning(context,
+                  message:'Product deleted Success', isError: false);
+        
             } else if (state is DashboardFailure) {
+              
               Warning.showWarning(context,
                   message: state.errMessage, isError: true);
             }

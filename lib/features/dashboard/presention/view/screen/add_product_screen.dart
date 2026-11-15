@@ -104,7 +104,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 Row(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: CustomTextForm(
                         textController: priceController,
                         pIcon: Icons.money_off_rounded,
@@ -114,7 +114,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: CustomDropdown(
                         isUpdate: widget.isUpdate,
                         categories: const [

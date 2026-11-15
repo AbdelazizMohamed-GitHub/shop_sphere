@@ -47,9 +47,7 @@ class DashboardProductsScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: CustomCategoryList(
                   onTap: () async {
-                    await context
-                        .read<DashboardCubit>()
-                        .getProducts(category: 'All');
+                   
                   },
                 ),
               ),

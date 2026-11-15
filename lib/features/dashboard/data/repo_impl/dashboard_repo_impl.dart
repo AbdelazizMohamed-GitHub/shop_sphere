@@ -34,7 +34,8 @@ class DashboardRepoImpl extends DashboardRepo {
   }
 
   @override
-  Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts({required String category}) async {
+  Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts(
+      {required String category}) async {
     try {
       var result = await firestoreService.gettProducts(category: category);
       return Right(result);
@@ -51,7 +52,8 @@ class DashboardRepoImpl extends DashboardRepo {
 
       return const Right('Product deleted successfully');
     } on FirebaseException catch (e) {
-     
+      
+
       return Left((FirebaseFailure.fromCode(e.code)));
     } catch (e) {
       return Left((FirebaseFailure.fromCode(e.toString())));
