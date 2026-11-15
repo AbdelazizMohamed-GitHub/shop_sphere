@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/core/widget/warning.dart';
 
 class CustomExploreScreenSearch extends StatelessWidget {
   const CustomExploreScreenSearch({super.key});
@@ -49,10 +50,8 @@ class CustomExploreScreenSearch extends StatelessWidget {
               ),
               child: IconButton(
                 onPressed: () {
-                  context.pushNamed(
-                    AppRoute.chatbot,
-                    extra: FirebaseAuth.instance.currentUser!.uid,
-                  );
+                  Warning.showWarning(context,
+                      message: 'This Feature Not Avilable now');
                 },
                 icon: const Icon(
                   Icons.support_agent,

@@ -75,12 +75,12 @@ class _InternetBannerWrapperState extends State<InternetBannerWrapper> {
           child: AnimatedSlide(
             offset: _isOffline ? const Offset(0, 0) : const Offset(0, 1),
             duration: const Duration(milliseconds: 300),
-            child: Container(
-              color: Colors.transparent,
-              padding: const EdgeInsets.all(10),
+            child: Container(height: 22,alignment: AlignmentGeometry.center,
+              color: Colors.red,
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: const Text(
                 'No Internet Connection',
-                style: TextStyle(color: Colors.red, fontSize: 16),
+                style: TextStyle(color: Colors.white, fontSize: 12),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -13,8 +13,8 @@ import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/car
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductEntity product;
-
-  const ProductDetailsScreen({super.key, required this.product});
+  final String tagId;
+  const ProductDetailsScreen({super.key, required this.product, required this.tagId});
 
   @override
   Widget build(BuildContext context) {
@@ -24,39 +24,21 @@ class ProductDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CustomBackButton(),
-        title: Text(product.name),
+        title: Text(
+          product.name,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          //  SizedBox(height: 16),
+            //  SizedBox(height: 16),
             // Image
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Hero(
-                tag: product.pId,
-                flightShuttleBuilder: (flightContext, animation,
-                    flightDirection, fromHeroContext, toHeroContext) {
-                  return AnimatedBuilder(
-                    animation: animation,
-                    builder: (context, child) {
-                      final scale =
-                          Tween(begin: 0.8, end: 1.0).animate(animation);
-                      final opacity =
-                          Tween(begin: 0.0, end: 1.0).animate(animation);
-
-                      return Transform.scale(
-                        scale: scale.value,
-                        child: Opacity(
-                          opacity: opacity.value,
-                          child: toHeroContext.widget,
-                        ),
-                      );
-                    },
-                  );
-                },
+                tag: tagId,
                 child: CachedNetworkImage(
                   imageUrl: product.imageUrl,
                   placeholder: (context, url) =>

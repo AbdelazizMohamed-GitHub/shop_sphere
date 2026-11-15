@@ -21,8 +21,7 @@ import 'package:shop_sphere/features/dashboard/presention/view/screen/dashboard_
 import 'package:shop_sphere/features/dashboard/presention/view/screen/search_screen.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
-import 'package:shop_sphere/features/explor/presention/view/screen/chat_screen.dart'
-    as chatbot;
+
 import 'package:shop_sphere/features/explor/presention/view/screen/details_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/explore_screen.dart';
 import 'package:shop_sphere/features/explor/presention/view/screen/favorite_screen.dart';
@@ -209,12 +208,7 @@ final GoRouter appRouter = GoRouter(
         products: state.extra as List<ProductEntity>,
       ),
     ),
-    GoRoute(
-      name: AppRoute.chatbot,
-      path: "/chatbot",
-      builder: (context, state) =>
-          chatbot.ChatScreen(userId: state.extra as String),
-    ),
+    
     GoRoute(
       name: AppRoute.staffChat,
       path: "/staff-chat",
@@ -351,7 +345,7 @@ final GoRouter appRouter = GoRouter(
         final product =
             state.extra is ProductEntity ? state.extra as ProductEntity : null;
         if (product != null) {
-          return ProductDetailsScreen(product: product);
+          return ProductDetailsScreen(product: product, tagId: state.pathParameters['tagId'] ?? 'product-${product.pId}');
         }
         return FutureBuilder<ProductEntity>(
           future: FirestoreService.getProductById(productId: productId),
@@ -368,7 +362,7 @@ final GoRouter appRouter = GoRouter(
                 ),
               );
             }
-            return ProductDetailsScreen(product: snapshot.data!);
+            return ProductDetailsScreen(product: snapshot.data!, tagId: state.pathParameters['tagId'] ?? 'product-${snapshot.data!.pId}',);
           },
         );
       },

@@ -15,9 +15,10 @@ import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 class CustomProductItem extends StatefulWidget {
   const CustomProductItem({
     super.key,
-    required this.product,
+    required this.product, required this.index,
   });
   final ProductEntity product;
+  final int index;
 
   @override
   State<CustomProductItem> createState() => _CustomProductItemState();
@@ -47,12 +48,13 @@ class _CustomProductItemState extends State<CustomProductItem> {
                       onTap: () {
                         context.pushNamed(
                           AppRoute.detailsScreen,
-                          pathParameters: {'productId': widget.product.pId},
+                          pathParameters: {'productId':'product-${widget.product.pId}-${widget.index}'},
                           extra: widget.product,
+
                         );
                       },
                       child: Hero(
-                        tag: widget.product.pId,
+                        tag: 'product-${widget.product.pId}-${widget.index}',
                         child: CachedNetworkImage(
                           imageUrl: widget.product.imageUrl,
                           placeholder: (context, url) => const Center(

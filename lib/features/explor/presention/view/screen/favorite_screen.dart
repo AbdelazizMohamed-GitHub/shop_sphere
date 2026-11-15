@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
-import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
@@ -17,11 +16,14 @@ class FavoriteScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             leadingWidth: 100,
-            leading: CustomCircleButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                funcation: () {
-                  context.read<MainCubit>().changeScreenIndex(0);
-                }),
+            leading: IconButton(
+            onPressed: () {
+              context.read<MainCubit>().changeScreenIndex(0);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              size: 30,
+            )),
             title: const Text('Favorite')),
         body: StreamBuilder(
             stream: getIt<FirestoreService>().getAllFavoriteProducts(),

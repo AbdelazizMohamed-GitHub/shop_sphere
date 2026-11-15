@@ -37,7 +37,7 @@ class CustomAdvertise extends StatelessWidget {
                               placeholder: (context, url) =>
                                   const CustomImageLoading(),
                               errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error))),
+                                const  Center(child:  Icon(Icons.error)))),
                     ),
                     Positioned(
                       width: 120,

@@ -18,7 +18,7 @@ class CustomHorzintalProductList extends StatelessWidget {
           child: SizedBox(
               width: 150,
               child: CustomProductItem(
-                product: products[index],
+                product: products[index], index: index,
               )),
         );
       },
