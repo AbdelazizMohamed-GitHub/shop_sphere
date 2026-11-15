@@ -13,8 +13,8 @@ import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_state.dart';
 
-class CustomProductScreenDrawer extends StatelessWidget {
-  const CustomProductScreenDrawer({
+class CustomDashboardDrawer extends StatelessWidget {
+  const CustomDashboardDrawer({
     super.key,
   });
 

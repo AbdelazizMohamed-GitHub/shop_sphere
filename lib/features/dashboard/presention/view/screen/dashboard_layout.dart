@@ -10,7 +10,7 @@ import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_state.dart';
-import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_product_screen_drawer.dart';
+import 'package:shop_sphere/features/dashboard/presention/view/widget/custom_dashboard_drawer.dart';
 
 class DashBoardLayout extends StatefulWidget {
   const DashBoardLayout({
@@ -50,7 +50,7 @@ class _ProductScreenState extends State<DashBoardLayout> {
         },
         child: Scaffold(
             key: _scaffoldKey,
-            drawer: const CustomProductScreenDrawer(),
+            drawer: const CustomDashboardDrawer(),
             body: SafeArea(
               child: IndexedStack(
                 index: state.screenIndex,

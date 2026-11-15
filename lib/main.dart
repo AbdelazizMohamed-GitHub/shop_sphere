@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -12,12 +13,12 @@ import 'package:shop_sphere/features/main/data/notification_model.dart';
 import 'package:shop_sphere/firebase_options.dart';
 import 'package:shop_sphere/shopsphere_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: 
-         HydratedStorageDirectory((await getTemporaryDirectory()).path),
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
   setupLocator();
 
@@ -32,7 +33,6 @@ void main() async {
    await Hive.openBox(AppConst.dashboardScreen);
   await NotificationService.initialize();
   await NotificationService.initializeLocalNotifications();
-
   await Supabase.initialize(
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
