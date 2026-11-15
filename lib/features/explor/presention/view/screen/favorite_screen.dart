@@ -8,8 +8,31 @@ import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/view/widget/custom_popular_product_list.dart';
 import 'package:shop_sphere/features/main/presention/controller/main_cubit/main_cubit.dart';
 
-class FavoriteScreen extends StatelessWidget {
+class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
+
+  @override
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
+}
+
+class _FavoriteScreenState extends State<FavoriteScreen> {
+  late Stream<List<ProductEntity>> _favoriteProductsStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _favoriteProductsStream = _createFavoriteProductsStream();
+  }
+
+  Stream<List<ProductEntity>> _createFavoriteProductsStream() {
+    return getIt<FirestoreService>().getAllFavoriteProducts();
+  }
+
+  void _retryFavoriteProducts() {
+    setState(() {
+      _favoriteProductsStream = _createFavoriteProductsStream();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +40,23 @@ class FavoriteScreen extends StatelessWidget {
         appBar: AppBar(
             leadingWidth: 100,
             leading: IconButton(
-            onPressed: () {
-              context.read<MainCubit>().changeScreenIndex(0);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              size: 30,
-            )),
+                onPressed: () {
+                  context.read<MainCubit>().changeScreenIndex(0);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 30,
+                )),
             title: const Text('Favorite')),
         body: StreamBuilder(
-            stream: getIt<FirestoreService>().getAllFavoriteProducts(),
+            stream: _favoriteProductsStream,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return CustomErrorWidget(
                   errorMessage: snapshot.error.toString(),
-                  onpressed: () async {
-                    getIt<FirestoreService>().getAllFavoriteProducts();
-                  },
+                  onpressed: _retryFavoriteProducts,
                 );
               } else if (snapshot.hasData) {
                 if ((snapshot.data as List<ProductEntity>).isEmpty) {

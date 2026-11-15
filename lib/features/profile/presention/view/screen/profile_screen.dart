@@ -24,6 +24,27 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late Stream<DocumentSnapshot<Map<String, dynamic>>> _userStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _userStream = _createUserStream();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> _createUserStream() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+  }
+
+  void _retryUserStream() {
+    setState(() {
+      _userStream = _createUserStream();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isLightTheme = AppTheme.isLightTheme(context);
@@ -52,10 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             : AppColors.secondaryDarkColor,
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc(FirebaseAuth.instance.currentUser!.uid)
-              .snapshots(),
+          stream: _userStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -67,9 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (snapshot.hasError) {
               return CustomErrorWidget(
                 errorMessage: snapshot.error.toString(),
-                onpressed: () {
-                  setState(() {});
-                },
+                onpressed: _retryUserStream,
               );
             }
             if (snapshot.hasData || snapshot.data != null) {
@@ -125,9 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             trailing: Switch(
                                 activeColor: Colors.white,
                                 value: !isLightTheme,
-                                onChanged: (val) {
-                                  setState(() {});
-
+                                onChanged: (_) {
                                   context.read<AppCubit>().toggleTheme();
                                 },
                                 inactiveTrackColor: Colors.white),

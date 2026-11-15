@@ -9,7 +9,6 @@ import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/utils/app_const.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
-import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/features/main/data/notification_model.dart';
 import 'package:shop_sphere/features/main/presention/controller/main_cubit/main_cubit.dart';
 
@@ -29,14 +28,13 @@ class NotificationScreen extends StatelessWidget {
             leadingWidth: 100,
             title: const Text('Notifications'),
             leading: IconButton(
-            onPressed: () {
-              context.read<MainCubit>().changeScreenIndex(0);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_new,
-              size: 30,
-             
-            )),
+                onPressed: () {
+                  context.read<MainCubit>().changeScreenIndex(0);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 30,
+                )),
           ),
           body: ValueListenableBuilder(
             valueListenable: box.listenable(),
