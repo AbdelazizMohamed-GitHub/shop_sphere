@@ -34,7 +34,10 @@ class _ShopSphereState extends State<ShopSphere> {
     NotificationService.setProductTapHandler((productId) {
       appRouter.pushNamed(
         AppRoute.detailsScreen,
-        pathParameters: {'productId': productId},
+        pathParameters: {
+          'tagId': 'notification-$productId',
+          'productId': productId,
+        },
       );
     });
   }

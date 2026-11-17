@@ -48,13 +48,16 @@ class _CustomProductItemState extends State<CustomProductItem> {
                       onTap: () {
                         context.pushNamed(
                           AppRoute.detailsScreen,
-                          pathParameters: {'productId':'product-${widget.product.pId}-${widget.index}'},
+                          pathParameters: {
+                            'productId': widget.product.pId,
+                            'tagId': 'tag-${widget.product.pId}-${widget.index}'
+                          },
                           extra: widget.product,
 
                         );
                       },
                       child: Hero(
-                        tag: 'product-${widget.product.pId}-${widget.index}',
+                        tag: 'tag-${widget.product.pId}-${widget.index}',
                         child: CachedNetworkImage(
                           imageUrl: widget.product.imageUrl,
                           placeholder: (context, url) => const Center(

@@ -14,7 +14,7 @@ class CustomLoginScreenHeader extends StatelessWidget {
         const Text('Don\'t have an account?', style: AppStyles.text18Regular),
         TextButton(
           onPressed: () {
-            context.goNamed(AppRoute.register);
+            context.pushNamed(AppRoute.register);
           },
           child: Text(
             'Register',

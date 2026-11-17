@@ -208,7 +208,6 @@ final GoRouter appRouter = GoRouter(
         products: state.extra as List<ProductEntity>,
       ),
     ),
-    
     GoRoute(
       name: AppRoute.staffChat,
       path: "/staff-chat",
@@ -296,7 +295,6 @@ final GoRouter appRouter = GoRouter(
         onMenuPressed: () => context.goNamed(AppRoute.dashboard),
       ),
     ),
-    
     GoRoute(
       name: AppRoute.addProduct,
       path: '/add-product',
@@ -338,14 +336,25 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/details/:productId',
+      path: '/details/:tagId/:productId',
       name: AppRoute.detailsScreen,
       builder: (context, state) {
-        final productId = state.pathParameters['productId']!;
+        final productId = state.pathParameters['productId'];
+        final tagId = state.pathParameters['tagId'];
+
+        if (productId == null || productId.isEmpty) {
+          return const Scaffold(
+            body: Center(child: Text('Product ID is unavailable')),
+          );
+        }
+
         final product =
             state.extra is ProductEntity ? state.extra as ProductEntity : null;
         if (product != null) {
-          return ProductDetailsScreen(product: product, tagId: state.pathParameters['tagId'] ?? 'product-${product.pId}');
+          return ProductDetailsScreen(
+            product: product,
+            tagId: tagId ?? 'product-${product.pId}',
+          );
         }
         return FutureBuilder<ProductEntity>(
           future: FirestoreService.getProductById(productId: productId),
@@ -362,7 +371,18 @@ final GoRouter appRouter = GoRouter(
                 ),
               );
             }
-            return ProductDetailsScreen(product: snapshot.data!, tagId: state.pathParameters['tagId'] ?? 'product-${snapshot.data!.pId}',);
+
+            final loadedProduct = snapshot.data;
+            if (loadedProduct == null) {
+              return const Scaffold(
+                body: Center(child: Text('Product not found')),
+              );
+            }
+
+            return ProductDetailsScreen(
+              product: loadedProduct,
+              tagId: tagId ?? 'product-${loadedProduct.pId}',
+            );
           },
         );
       },

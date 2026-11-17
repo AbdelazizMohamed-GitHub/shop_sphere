@@ -47,7 +47,10 @@ class CustomAdvertise extends StatelessWidget {
                         onTap: () {
                           context.pushNamed(
                             AppRoute.detailsScreen,
-                            pathParameters: {'productId': item.pId},
+                            pathParameters: {
+                              'tagId': 'advertise-${item.pId}',
+                              'productId': item.pId,
+                            },
                             extra: item,
                           );
                         },

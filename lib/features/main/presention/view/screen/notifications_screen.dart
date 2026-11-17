@@ -107,7 +107,10 @@ class NotificationScreen extends StatelessWidget {
 
                                 context.pushNamed(
                                   AppRoute.detailsScreen,
-                                  pathParameters: {'productId': productId},
+                                  pathParameters: {
+                                    'tagId': 'notification-$productId',
+                                    'productId': productId,
+                                  },
                                 );
                               },
                         trailing: Text(

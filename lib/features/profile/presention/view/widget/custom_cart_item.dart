@@ -40,7 +40,10 @@ class CustomCartItem extends StatelessWidget {
               if (!context.mounted) return;
               context.pushNamed(
                 AppRoute.detailsScreen,
-                pathParameters: {'productId': product.pId},
+                pathParameters: {
+                  'tagId': 'cart-${product.pId}',
+                  'productId': product.pId,
+                },
                 extra: product as ProductEntity,
               );
             },
