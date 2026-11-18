@@ -69,7 +69,7 @@ class ProductService {
     });
   return data;
   }
-  Future<void> addToFavorite({required String productId}) async {
+  Future<void> toggelProductToFavorite({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
 

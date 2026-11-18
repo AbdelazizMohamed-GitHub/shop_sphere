@@ -9,10 +9,10 @@ class FavouriteRepoImpl extends FavouriteRepo {
 
   FavouriteRepoImpl({required this.productService});
   @override
-  Future<Either<FirebaseFailure, void>> addToFavorite(
+  Future<Either<FirebaseFailure, void>> toggelProductToFavorite(
       {required String productId}) async {
     try {
-      await productService.addToFavorite(productId: productId);
+      await productService.toggelProductToFavorite(productId: productId);
       return right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));

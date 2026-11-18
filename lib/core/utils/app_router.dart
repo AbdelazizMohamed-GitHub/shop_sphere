@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/service/order_service.dart';
 import 'package:shop_sphere/core/service/product_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
-import 'package:shop_sphere/core/service/user_service.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
+import 'package:shop_sphere/features/auth/presention/view/screen/role_check_screen.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/forget_password_screen.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/login_screen.dart';
@@ -66,33 +66,7 @@ final GoRouter appRouter = GoRouter(
   routes: [
     GoRoute(
       path: "/role-check",
-      builder: (context, state) {
-        return FutureBuilder<UserEntity>(
-          future: getIt<UserService>().getUserData(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              );
-            }
-
-            final userEntity = snapshot.data!;
-            if (userEntity.isStaff) {
-              // روح للـ Dashboard
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.goNamed(AppRoute.dashboard);
-              });
-            } else {
-              // روح للـ Main
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.goNamed(AppRoute.main);
-              });
-            }
-
-            return const SizedBox.shrink(); // شاشة فاضية مؤقتة
-          },
-        );
-      },
+      builder: (context, state) => const RoleCheckScreen(),
     ),
     GoRoute(
       name: AppRoute.loading,

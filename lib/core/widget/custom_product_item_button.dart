@@ -26,60 +26,70 @@ class CustomProductItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartCubit, CartState>(builder: (context, state) {
-      bool isProductInCart = false;
-      bool isLoading = false;
-      if (state is CartUpdated) {
-        isProductInCart = state.cartProduct.contains(productEntity.pId);
-        isLoading = state.loadingItems.contains(productEntity.pId);
-      }
-      return isLoading
-          ? const CustomCartButtonLoading()
-          : GestureDetector(
-              onTap: productEntity.stock == 0
-                  ? () {
-                      Warning.showWarning(
-                        context,
-                        message: 'Out Of Stock',
-                      );
-                    }
-                  : isProductInCart
-                      ? () {
-                          Warning.showWarning(
-                            context,
-                            message: 'Product Already In Cart',
-                          );
-                        }
-                      : () async {
-                          await BlocProvider.of<CartCubit>(context).addToCart(
-                            cartItemModel: CartItemModel(
-                              id: productEntity.pId,
-                              name: productEntity.name,
-                              imageUrl: productEntity.imageUrl,
-                              price: price,
-                              quantity: 1,
-                            ),
-                          );
-                        },
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
+    return BlocSelector<CartCubit, CartState,
+        ({bool isInCart, bool isLoading})>(
+      selector: (state) {
+        if (state is CartUpdated) {
+          return (
+            isInCart: state.cartProduct.contains(productEntity.pId),
+            isLoading: state.loadingItems.contains(productEntity.pId),
+          );
+        }
+        return (isInCart: false, isLoading: false);
+      },
+      builder: (context, data) {
+        final isProductInCart = data.isInCart;
+        final isLoading = data.isLoading;
+
+        return isLoading
+            ? const CustomCartButtonLoading()
+            : GestureDetector(
+                onTap: productEntity.stock == 0
+                    ? () {
+                        Warning.showWarning(
+                          context,
+                          message: 'Out Of Stock',
+                        );
+                      }
+                    : isProductInCart
+                        ? () {
+                            Warning.showWarning(
+                              context,
+                              message: 'Product Already In Cart',
+                            );
+                          }
+                        : () async {
+                            await context.read<CartCubit>().addToCart(
+                                  cartItemModel: CartItemModel(
+                                    id: productEntity.pId,
+                                    name: productEntity.name,
+                                    imageUrl: productEntity.imageUrl,
+                                    price: price,
+                                    quantity: 1,
+                                  ),
+                                );
+                          },
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Icon(
+                    productEntity.stock == 0
+                        ? Icons.close
+                        : isProductInCart
+                            ? Icons.check
+                            : Icons.add,
+                    color: Colors.white,
+                    size: 30,
                   ),
                 ),
-                child: Icon(
-                  productEntity.stock == 0
-                      ? Icons.close
-                      : isProductInCart
-                          ? Icons.check
-                          : Icons.add,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ));
-    });
+              );
+      },
+    );
   }
 }

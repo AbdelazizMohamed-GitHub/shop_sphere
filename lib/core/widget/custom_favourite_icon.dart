@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
@@ -20,40 +19,40 @@ class CustomFavouriteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FavouriteCubit, FavouriteState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        bool isLoading = false;
-        bool isFavourite = false;
-
+    return BlocSelector<FavouriteCubit, FavouriteState,
+        ({bool isLoading, bool isFavourite})>(
+      selector: (state) {
         if (state is FavouriteUpdated) {
-          isFavourite = state.favProducts.contains(productId);
-          isLoading = state.loadingItems.contains(productId);
+          return (
+            isFavourite: state.favProducts.contains(productId),
+            isLoading: state.loadingItems.contains(productId),
+          );
         }
-
+        return (isFavourite: false, isLoading: false);
+      },
+      builder: (context, data) {
         return Positioned(
           top: 10,
           left: 10,
-          child: isLoading
+          child: data.isLoading
               ? const CustomIconLoading()
               : CustomCircleButton(
-                  icon: isFavourite
+                  icon: data.isFavourite
                       ? const Icon(Icons.favorite, color: Colors.red)
                       : const Icon(Icons.favorite_outline),
                   funcation: () async {
-                 bool isConnect=   await AppFuncations.isOnline();
-               
+                    bool isConnect = await AppFuncations.isOnline();
+
                     if (isConnect) {
                       await BlocProvider.of<FavouriteCubit>(context)
                           .toggleFavourite(productId: productId);
+                    } else {
+                      Warning.showWarning(
+                        context,
+                        message: 'No Internet Connection',
+                        isError: true,
+                      );
                     }
-                     else {
-                        Warning.showWarning(context,
-                          message: 'No Internet Connection', isError: true);
-                      return;
-                     }
-
-                  
                   },
                 ),
         );

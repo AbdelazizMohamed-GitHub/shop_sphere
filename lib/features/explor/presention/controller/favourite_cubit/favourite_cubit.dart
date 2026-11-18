@@ -51,7 +51,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     _loadingItems.add(productId);
     _emitUpdated();
 
-    final result = await favouriteRepo.addToFavorite(productId: productId);
+    final result = await favouriteRepo.toggelProductToFavorite(productId: productId);
 
     result.fold(
       (failure) {
