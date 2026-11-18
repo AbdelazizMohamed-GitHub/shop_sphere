@@ -78,7 +78,7 @@ class NotificationScreen extends StatelessWidget {
                           child: CachedNetworkImage(
                             imageUrl: notification?.imageUrl ?? '',
                             placeholder: (context, url) =>
-                                const CustomImageLoading(),
+                            const  CustomImageLoading(),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                           ),

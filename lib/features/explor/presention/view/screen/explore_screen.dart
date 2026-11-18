@@ -68,8 +68,7 @@ class ExploreScreen extends StatelessWidget {
         body: Builder(builder: (context) {
           return RefreshIndicator(
             onRefresh: () async {
-              await BlocProvider.of<ProductCubit>(context)
-                  .getProducts(category: 'All');
+              await context.read<ProductCubit>().getProducts(category: 'All');
             },
             child: ListView(children: <Widget>[
               Padding(
@@ -106,15 +105,7 @@ class ExploreScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
-                          height: 40,
-                          child: CustomCategoryList(
-                            onTap: () {
-                              context
-                                  .read<ProductCubit>()
-                                  .getProducts(category: 'All');
-                            },
-                          )),
+                      const SizedBox(height: 40, child: CustomCategoryList()),
                       const SizedBox(height: 10),
                       BlocBuilder<ProductCubit, ProductState>(
                         builder: (context, state) {

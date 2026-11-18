@@ -73,6 +73,8 @@ class _ShopSphereState extends State<ShopSphere> {
       child: BlocBuilder<AppCubit, bool>(
         builder: (context, isLightTheme) {
           return MaterialApp.router(
+              showPerformanceOverlay: true,
+
             debugShowCheckedModeBanner: false,
             title: 'ShopSphere',
             themeMode: ThemeMode.system,

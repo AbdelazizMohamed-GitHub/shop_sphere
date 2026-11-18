@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
+import 'package:shop_sphere/core/loading/custom_item_loading.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
@@ -26,133 +27,128 @@ class CustomCartItem extends StatelessWidget {
   final CartEntity item;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>()),
-      child: BlocBuilder<CartCubit, CartState>(
-        builder: (context, state) {
-          return InkWell(
-            onTap: () async {
-              final product = await FirebaseFirestore.instance
-                  .collection("products")
-                  .doc(item.productId)
-                  .get()
-                  .then((value) => ProductModel.fromMap(value.data()!));
-              if (!context.mounted) return;
-              context.pushNamed(
-                AppRoute.detailsScreen,
-                pathParameters: {
-                  'tagId': 'cart-${product.pId}',
-                  'productId': product.pId,
-                },
-                extra: product as ProductEntity,
-              );
-            },
-            child: Card(
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              color: AppTheme.isLightTheme(context)
-                  ? Colors.white
-                  : AppColors.secondaryDarkColor,
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                leading: Container(
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppTheme.isLightTheme(context)
-                        ? Colors.white
-                        : AppColors.backgroundDarkColor,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: item.productImage,
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                  ),
+    return BlocBuilder<CartCubit, CartState>(
+      builder: (context, state) {
+        return InkWell(
+          onTap: () async {
+            final product = await FirebaseFirestore.instance
+                .collection("products")
+                .doc(item.productId)
+                .get()
+                .then((value) => ProductModel.fromMap(value.data()!));
+            if (!context.mounted) return;
+            context.pushNamed(
+              AppRoute.detailsScreen,
+              pathParameters: {
+                'tagId': 'cart-${product.pId}',
+                'productId': product.pId,
+              },
+              extra: product as ProductEntity,
+            );
+          },
+          child: Card(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            color: AppTheme.isLightTheme(context)
+                ? Colors.white
+                : AppColors.secondaryDarkColor,
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+              leading: Container(
+                width: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppTheme.isLightTheme(context)
+                      ? Colors.white
+                      : AppColors.backgroundDarkColor,
                 ),
-                title: Text(
-                  item.productName,
-                  style: AppStyles.text16Regular.copyWith(
-                      color: AppTheme.isLightTheme(context)
-                          ? Colors.black
-                          : Colors.white),
-                ),
-                subtitle: Text(item.productPrice.toStringAsFixed(1),
-                    style: AppStyles.text14Regular),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomCircleButton(
-                        icon: const Icon(Icons.remove),
-                        funcation: () async {
-                          if (!await AppFuncations.isOnline()) {
-                            Warning.showWarning(
-                              context,
-                              message: 'No Internet Connection',
-                              isError: true,
-                            );
-                            return;
-                          }
-                          await context.read<CartCubit>().updateCartQuantity(
-                              productId: item.productId, isIncrement: false);
-                        }),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      item.productQuantity.toString(),
-                      style: AppStyles.text18Regular,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    CustomCircleButton(
-                        icon: const Icon(Icons.add),
-                        funcation: () async {
-                          if (!await AppFuncations.isOnline()) {
-                            Warning.showWarning(
-                              context,
-                              message: 'No Internet Connection',
-                              isError: true,
-                            );
-                            return;
-                          }
-                          await context.read<CartCubit>().updateCartQuantity(
-                              productId: item.productId, isIncrement: true);
-                        }),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          if (!await AppFuncations.isOnline()) {
-                            Warning.showWarning(
-                              context,
-                              message: 'No Internet Connection',
-                              isError: true,
-                            );
-                            return;
-                          }
-                          await context
-                              .read<CartCubit>()
-                              .removeFromCart(productId: item.productId);
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: AppColors.primaryColor,
-                        ))
-                  ],
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: item.productImage,
+                    placeholder: (context, url) =>const CustomItemLoading(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
                 ),
               ),
+              title: Text(
+                item.productName,
+                style: AppStyles.text16Regular.copyWith(
+                    color: AppTheme.isLightTheme(context)
+                        ? Colors.black
+                        : Colors.white),
+              ),
+              subtitle: Text(item.productPrice.toStringAsFixed(1),
+                  style: AppStyles.text14Regular),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomCircleButton(
+                      icon: const Icon(Icons.remove),
+                      funcation: () async {
+                        if (!await AppFuncations.isOnline()) {
+                          Warning.showWarning(
+                            context,
+                            message: 'No Internet Connection',
+                            isError: true,
+                          );
+                          return;
+                        }
+                        await context.read<CartCubit>().updateCartQuantity(
+                            productId: item.productId, isIncrement: false);
+                      }),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    item.productQuantity.toString(),
+                    style: AppStyles.text18Regular,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  CustomCircleButton(
+                      icon: const Icon(Icons.add),
+                      funcation: () async {
+                        if (!await AppFuncations.isOnline()) {
+                          Warning.showWarning(
+                            context,
+                            message: 'No Internet Connection',
+                            isError: true,
+                          );
+                          return;
+                        }
+                        await context.read<CartCubit>().updateCartQuantity(
+                            productId: item.productId, isIncrement: true);
+                      }),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                      onPressed: () async {
+                        if (!await AppFuncations.isOnline()) {
+                          Warning.showWarning(
+                            context,
+                            message: 'No Internet Connection',
+                            isError: true,
+                          );
+                          return;
+                        }
+                        await context
+                            .read<CartCubit>()
+                            .removeFromCart(productId: item.productId);
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                        color: AppColors.primaryColor,
+                      ))
+                ],
+              ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

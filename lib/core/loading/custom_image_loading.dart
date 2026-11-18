@@ -10,8 +10,8 @@ class CustomImageLoading extends StatelessWidget {
       enabled: true,
       child: Container(height: double.infinity, width: double.infinity,
         alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        padding: const EdgeInsets.all(20),
+      
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),

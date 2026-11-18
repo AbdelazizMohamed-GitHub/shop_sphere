@@ -21,12 +21,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-      final horizontalPadding =
+    final horizontalPadding =
         ResponsiveLayout.getHorizontalLargePadding(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: horizontalPadding),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Column(
             children: [
               SizedBox(
@@ -92,13 +92,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         }
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             color: AppColors.primaryColor,
                             borderRadius: BorderRadius.circular(12)),
                         child: currentPage == 2
                             ? Text(' Start Shopping',
-                                style: AppStyles.text16Regular
+                                style: AppStyles.text14Regular
                                     .copyWith(color: Colors.white))
                             : const Icon(
                                 Icons.arrow_forward_ios,

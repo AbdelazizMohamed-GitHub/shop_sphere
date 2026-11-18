@@ -92,36 +92,42 @@ class ProductDetailsScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Button
-            BlocBuilder<CartCubit, CartState>(
-              builder: (context, state) {
-                return CustomButton(
-                    onPressed: () async {
-                      if (state is CartUpdated &&
-                          state.cartProduct.contains(product.pId)) {
-                        context.pushNamed(AppRoute.cart);
-                      } else {
-                        await context.read<CartCubit>().addToCart(
-                              cartItemModel: CartItemModel(
-                                id: product.pId,
-                                name: product.name,
-                                imageUrl: product.imageUrl,
-                                price: discountedPrice,
-                                quantity: 1,
-                              ),
-                            );
-                      }
-                    },
-                    text: state is CartLoading
-                        ? "Loading..."
-                        : state is CartUpdated &&
-                                state.cartProduct.contains(product.pId)
-                            ? "Go to Cart"
-                            : "Add to Cart");
-              },
-            ),
+            
           ],
         ),
       ),
+
+
+      bottomNavigationBar: BlocBuilder<CartCubit, CartState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: CustomButton(
+                      onPressed: () async {
+                        if (state is CartUpdated &&
+                            state.cartProduct.contains(product.pId)) {
+                          context.pushNamed(AppRoute.cart);
+                        } else {
+                          await context.read<CartCubit>().addToCart(
+                                cartItemModel: CartItemModel(
+                                  id: product.pId,
+                                  name: product.name,
+                                  imageUrl: product.imageUrl,
+                                  price: discountedPrice,
+                                  quantity: 1,
+                                ),
+                              );
+                        }
+                      },
+                      text: state is CartLoading
+                          ? "Loading..."
+                          : state is CartUpdated &&
+                                  state.cartProduct.contains(product.pId)
+                              ? "Go to Cart"
+                              : "Add to Cart"),
+                );
+              },
+            ),
     );
   }
 }

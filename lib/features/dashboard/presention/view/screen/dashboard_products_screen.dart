@@ -41,14 +41,12 @@ class DashboardProductsScreen extends StatelessWidget {
         ),
         body: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: CustomCategoryList(
-                  onTap: () async {
-                   
-                  },
+                padding: EdgeInsets.only(left: 8.0),
+                child:  CustomCategoryList(
+                 
                 ),
               ),
             ),
