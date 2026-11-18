@@ -1,5 +1,6 @@
 
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -102,5 +103,12 @@ static List<OrderOverModel> fillMissing(
 static bool isSameDay(DateTime a, DateTime b) {
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
+static Future<int> getTrackinNumber() async {
+    Random random = Random();
+    int randomNumber = random
+        .nextInt(10000000); // Generate a random number between 0 and 999999
+
+    return randomNumber;
+  }
 
 }

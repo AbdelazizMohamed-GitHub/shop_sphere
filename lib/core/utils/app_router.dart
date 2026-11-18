@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/order_service.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
+import 'package:shop_sphere/core/service/user_service.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/auth/presention/view/screen/forget_password_screen.dart';
@@ -66,7 +68,7 @@ final GoRouter appRouter = GoRouter(
       path: "/role-check",
       builder: (context, state) {
         return FutureBuilder<UserEntity>(
-          future: getIt<FirestoreService>().getUserData(),
+          future: getIt<UserService>().getUserData(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Scaffold(
@@ -318,7 +320,7 @@ final GoRouter appRouter = GoRouter(
         }
 
         return FutureBuilder<ProductEntity?>(
-          future: FirestoreService.getProductById(productId: productId!),
+          future: getIt<ProductService>().getProductById(productId: productId!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Scaffold(
@@ -357,7 +359,7 @@ final GoRouter appRouter = GoRouter(
           );
         }
         return FutureBuilder<ProductEntity>(
-          future: FirestoreService.getProductById(productId: productId),
+          future: getIt<ProductService>().getProductById(productId: productId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Scaffold(
@@ -400,7 +402,7 @@ final GoRouter appRouter = GoRouter(
         }
 
         return FutureBuilder<OrderEntity?>(
-          future: FirestoreService.getOrderById(orderId: orderId!),
+          future: getIt<OrderService>().getOrderById(orderId: orderId!),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Scaffold(

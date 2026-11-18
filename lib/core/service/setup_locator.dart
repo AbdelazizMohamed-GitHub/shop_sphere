@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/analytics_service.dart';
+import 'package:shop_sphere/core/service/order_service.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
+import 'package:shop_sphere/core/service/user_service.dart';
 import 'package:shop_sphere/features/analytics/data/repo_impl/analytics_repo_impl.dart';
 import 'package:shop_sphere/features/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_impl.dart';
@@ -18,23 +21,26 @@ final GetIt getIt = GetIt.instance;
 
 void setupLocator() {
   // Register Firestore instance
-  getIt.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+  getIt.registerLazySingleton<UserService>(() => UserService(firestore: getIt<FirebaseFirestore>()));
+  getIt.registerLazySingleton<ProductService>(() => ProductService(firestore: getIt<FirebaseFirestore>()));
+    getIt.registerLazySingleton<OrderService>(() => OrderService(firestore: getIt<FirebaseFirestore>()));
+  getIt.registerLazySingleton<AnalyticsService>(() => AnalyticsService(firestore: getIt<FirebaseFirestore>()));
+
 
   // Register FirestoreService
-  getIt.registerLazySingleton(() => FirestoreService(firestore: getIt<FirebaseFirestore>()));
 
   // Register AuthRepo
-  getIt.registerLazySingleton<AuthRepoImpl>(() => AuthRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<ProductRepoImpl>(() => ProductRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<FavouriteRepoImpl>(() => FavouriteRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<CartRepoImpl>(() => CartRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<UserRepoImpl>(() => UserRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<AddressRepoImpl>(() => AddressRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<OrderRepoImpl>(() => OrderRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<DashboardRepoImpl>(() => DashboardRepoImpl(firestoreService: getIt<FirestoreService>()));
-  getIt.registerLazySingleton<UsersRepoImpl>(() => UsersRepoImpl(firestoreService: getIt<FirestoreService>()));
+  getIt.registerLazySingleton<AuthRepoImpl>(() => AuthRepoImpl(firestoreService: getIt<UserService>()));
+  getIt.registerLazySingleton<ProductRepoImpl>(() => ProductRepoImpl(firestoreService: getIt<ProductService>()));
+  getIt.registerLazySingleton<FavouriteRepoImpl>(() => FavouriteRepoImpl(firestoreService: getIt<ProductService>()));
+  getIt.registerLazySingleton<CartRepoImpl>(() => CartRepoImpl(firestoreService: getIt<OrderService>()));
+  getIt.registerLazySingleton<UserRepoImpl>(() => UserRepoImpl(firestoreService: getIt<UserService>()));
+  getIt.registerLazySingleton<AddressRepoImpl>(() => AddressRepoImpl(firestoreService: getIt<UserService>()));
+  getIt.registerLazySingleton<OrderRepoImpl>(() => OrderRepoImpl(firestoreService: getIt<OrderService>()));
+  getIt.registerLazySingleton<DashboardRepoImpl>(() => DashboardRepoImpl(firestoreService: getIt<UserService>()));
+  getIt.registerLazySingleton<UsersRepoImpl>(() => UsersRepoImpl(firestoreService: getIt<UserService>()));
   getIt.registerLazySingleton<NotificationRepoImpl>(() => NotificationRepoImpl());
-  getIt.registerLazySingleton<AnalyticsRepoImpl>(() => AnalyticsRepoImpl(firestoreService: getIt<FirestoreService>()));
+  getIt.registerLazySingleton<AnalyticsRepoImpl>(() => AnalyticsRepoImpl(firestoreService: getIt<AnalyticsService>()));
 
   // Register Cubit
 } 
