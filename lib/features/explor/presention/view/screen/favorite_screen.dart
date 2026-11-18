@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
@@ -25,7 +25,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Stream<List<ProductEntity>> _createFavoriteProductsStream() {
-    return getIt<FirestoreService>().getAllFavoriteProducts();
+    return getIt<ProductService>().getAllFavoriteProducts();
   }
 
   void _retryFavoriteProducts() {

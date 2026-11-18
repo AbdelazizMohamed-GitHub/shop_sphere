@@ -3,20 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/user_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
 import 'package:shop_sphere/features/profile/domain/repo/user_repo.dart';
 
 class UserRepoImpl extends UserRepo {
-  final FirestoreService firestoreService;
+  final UserService userService;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  UserRepoImpl({required this.firestoreService});
+  UserRepoImpl({required this.userService});
   @override
   Future<Either<FirebaseFailure, UserEntity>> getUserData() async {
     try {
      
-      UserEntity data = await firestoreService.getUserData(
+      UserEntity data = await userService.getUserData(
       );
       return right(data);
     } on FirebaseException catch (e) {
@@ -33,11 +33,11 @@ class UserRepoImpl extends UserRepo {
       return Left(FirebaseFailure(message: "No Internet Connection"));
     }
     try {
-      await firestoreService.updateData(
+      await userService.updateData(
           collection: "users",
           did: _firebaseAuth.currentUser!.uid,
           data: userModel);
-      await firestoreService.getUserData(
+      await userService.getUserData(
          );
       return right(null);
     } on FirebaseException catch (e) {

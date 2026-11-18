@@ -5,7 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
+import 'package:shop_sphere/core/service/user_service.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
@@ -189,7 +190,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               if (formKey.currentState!.validate() &&
                                   selectedCategory != null) {
                                 if (imageFile != null || widget.isUpdate) {
-                                  final user = await FirestoreService(
+                                  final user = await UserService(
                                     firestore: FirebaseFirestore.instance,
                                   ).getUserData();
 

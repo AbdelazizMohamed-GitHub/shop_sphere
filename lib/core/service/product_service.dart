@@ -23,7 +23,7 @@ class ProductService {
     await firestore.collection('products').doc(data.pId).set(data.toMap());
   }
 
-  Future<List<ProductEntity>> gettProducts({required String category}) async {
+  Future<List<ProductEntity>> getProducts({required String category}) async {
     QuerySnapshot<Map<String, dynamic>> snapshot;
     if (category == "All") {
       snapshot = await firestore
@@ -143,19 +143,7 @@ class ProductService {
       return products;
     });
   }
-   Future<List<ProductEntity>> getStaffProducts(
-      {required String staffId}) async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection("products")
-        .where(
-          "sId",
-          isEqualTo: staffId,
-        )
-        .get();
-    return querySnapshot.docs
-        .map((e) => ProductModel.fromMap(e.data()))
-        .toList();
-  }
+   
 
 
 }

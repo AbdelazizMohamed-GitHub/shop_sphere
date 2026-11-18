@@ -167,6 +167,12 @@ class OrderService {
     await firestore.collection("orders").doc(order.orderId).set(order.toMap());
     await clearCart();
   }
+  Future<List<OrderEntity>> getCustomerOrder({required String uId}) async {
+   
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await firestore.collection('orders').where("uId", isEqualTo: uId).get();
+    return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
+  }
 
   Future<void> updateStockAfterOrder(
       {required bool isCreateOrder, required List<CartItemModel> items}) async {

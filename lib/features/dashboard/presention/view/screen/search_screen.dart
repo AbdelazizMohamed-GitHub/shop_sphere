@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
@@ -39,8 +39,8 @@ class SearchScreen extends StatelessWidget {
           ) async {
             final query = controller.text.toLowerCase();
             final products =
-                await FirestoreService(firestore: getIt<FirebaseFirestore>())
-                    .gettProducts(category: "All");
+                await ProductService(firestore: getIt<FirebaseFirestore>())
+                    .getProducts(category: "All");
             final results = products
                 .where((product) =>
                     product.name.toLowerCase().contains(query) ||

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
 import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/utils/responsive_layout.dart';
 import 'package:shop_sphere/core/widget/custom_button.dart';
@@ -43,7 +43,7 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
   @override
   void initState() {
     super.initState();
-    _productsFuture = getIt<FirestoreService>().gettProducts(category: 'All');
+    _productsFuture = getIt<ProductService>().getProducts(category: 'All');
   }
 
   @override
@@ -138,8 +138,8 @@ class _NotificationScreenState extends State<AddNotificationScreen> {
                                       onPressed: () {
                                         setState(() {
                                           _productsFuture =
-                                              getIt<FirestoreService>()
-                                                  .gettProducts(
+                                              getIt<ProductService>()
+                                                  .getProducts(
                                                       category: 'All');
                                         });
                                       },

@@ -3,17 +3,17 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
 
-import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/features/dashboard/domain/repo/dashboard_repo.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart'
     show ProductEntity;
 
 class DashboardRepoImpl extends DashboardRepo {
-  FirestoreService firestoreService;
+  ProductService productService;
   DashboardRepoImpl({
-    required this.firestoreService,
+    required this.productService,
   });
 
   @override
@@ -22,7 +22,7 @@ class DashboardRepoImpl extends DashboardRepo {
     required ProductModel product,
   }) async {
     try {
-      await firestoreService.addProduct(data: product, image: imageFile);
+      await productService.addProduct(data: product, image: imageFile);
       return const Right('Product added successfully');
     } on FirebaseException catch (e) {
       return Left((FirebaseFailure.fromCode(e.code)));
@@ -37,7 +37,7 @@ class DashboardRepoImpl extends DashboardRepo {
   Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts(
       {required String category}) async {
     try {
-      var result = await firestoreService.gettProducts(category: category);
+      var result = await productService.getProducts(category: category);
       return Right(result);
     } on FirebaseException catch (e) {
       return Left((FirebaseFailure.fromCode(e.code)));
@@ -48,7 +48,7 @@ class DashboardRepoImpl extends DashboardRepo {
   Future<Either<FirebaseFailure, String>> deleteProduct(
       {required String dId, required String imageUrl}) async {
     try {
-      await firestoreService.deleteProduct(dId: dId, imageUrl: imageUrl);
+      await productService.deleteProduct(dId: dId, imageUrl: imageUrl);
 
       return const Right('Product deleted successfully');
     } on FirebaseException catch (e) {
@@ -64,7 +64,7 @@ class DashboardRepoImpl extends DashboardRepo {
   Future<Either<FirebaseFailure, String>> updateProduct(
       {required ProductModel data}) async {
     try {
-      await firestoreService.updateProduct(dId: data.pId, data: data);
+      await productService.updateProduct(dId: data.pId, data: data);
       return const Right('Product updated successfully');
     } on FirebaseException catch (e) {
       return Left((FirebaseFailure.fromCode(e.code)));

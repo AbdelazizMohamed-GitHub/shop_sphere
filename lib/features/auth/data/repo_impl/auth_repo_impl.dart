@@ -5,17 +5,17 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
 import 'package:shop_sphere/core/service/notification_service.dart';
+import 'package:shop_sphere/core/service/user_service.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/repo/auth_repo.dart';
 
 class AuthRepoImpl extends AuthRepo {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  FirestoreService firestoreService;
+  UserService userService;
   AuthRepoImpl({
-    required this.firestoreService,
+    required this.userService,
   });
 
   @override
@@ -32,7 +32,7 @@ class AuthRepoImpl extends AuthRepo {
           .createUserWithEmailAndPassword(email: email, password: password);
       String? token = await NotificationService.getToken();
       FirebaseAuth.instance.currentUser?.updateDisplayName(name);
-      await firestoreService.addData(
+      await userService.addData(
           collection: "users",
           did: userCredential.user!.uid,
           data: UserModel(
@@ -83,7 +83,7 @@ class AuthRepoImpl extends AuthRepo {
             .set({'fcmToken': token}, SetOptions(merge: true));
       }
 
-      final data = await firestoreService.getUserData();
+      final data = await userService.getUserData();
 
       if (data.isStaff) {
         return const Right('Staff');
@@ -138,7 +138,7 @@ class AuthRepoImpl extends AuthRepo {
           await FirebaseFirestore.instance.collection("users").doc(uid).get();
 
       if (!userDoc.exists) {
-        await firestoreService.addData(
+        await userService.addData(
           collection: "users",
           did: uid,
           data: UserModel(
@@ -163,7 +163,7 @@ class AuthRepoImpl extends AuthRepo {
             .set({'fcmToken': token}, SetOptions(merge: true));
       }
 
-      final userData = await firestoreService.getUserData();
+      final userData = await userService.getUserData();
       if (userData.isStaff) {
         return const Right('Staff');
       }
@@ -196,7 +196,7 @@ class AuthRepoImpl extends AuthRepo {
       final token = await NotificationService.getToken() ?? '';
 
       if (!userDoc.exists) {
-        await firestoreService.addData(
+        await userService.addData(
           collection: "users",
           did: uid,
           data: UserModel(
@@ -221,7 +221,7 @@ class AuthRepoImpl extends AuthRepo {
             .set({'fcmToken': token}, SetOptions(merge: true));
       }
 
-      final userData = await firestoreService.getUserData();
+      final userData = await userService.getUserData();
       if (userData.isStaff) {
         return const Right('Staff');
       }

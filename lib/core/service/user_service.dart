@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_sphere/features/auth/data/model/user_model.dart';
 import 'package:shop_sphere/features/auth/domain/entity/user_entity.dart';
+import 'package:shop_sphere/features/explor/data/model/product_model.dart';
+import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/profile/data/model/addres_model.dart';
 import 'package:shop_sphere/features/profile/data/model/orer_model.dart';
 import 'package:shop_sphere/features/profile/domain/entity/address_entity.dart';
@@ -54,12 +56,7 @@ class UserService {
 
     return querySnapshot.docs.map((e) => UserModel.fromMap(e.data())).toList();
   }
-   Future<List<OrderEntity>> getCustomerOrder({required String uId}) async {
    
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await firestore.collection('orders').where("uId", isEqualTo: uId).get();
-    return querySnapshot.docs.map((e) => OrderModel.fromMap(e.data())).toList();
-  }
    Future<void> addAddress(
       {required String addressId, required AddressModel adress}) async {
     await firestore
@@ -124,6 +121,19 @@ class UserService {
         .get();
     return querySnapshot.docs
         .map((document) => AddressModel.fromMap(document.data()))
+        .toList();
+  }
+  Future<List<ProductEntity>> getStaffProducts(
+      {required String staffId}) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+        .collection("products")
+        .where(
+          "sId",
+          isEqualTo: staffId,
+        )
+        .get();
+    return querySnapshot.docs
+        .map((e) => ProductModel.fromMap(e.data()))
         .toList();
   }
 

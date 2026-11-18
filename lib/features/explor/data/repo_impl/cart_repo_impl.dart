@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/order_service.dart';
 import 'package:shop_sphere/features/explor/data/model/cart_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/explor/domain/repo/cart_repo.dart';
 
 class CartRepoImpl extends CartRepo {
-  final FirestoreService firestoreService;
+  final OrderService orderService;
 
-  CartRepoImpl({required this.firestoreService});
+  CartRepoImpl({required this.orderService});
   @override
   Future<Either<FirebaseFailure, void>> addToCart(
       {required CartItemModel cartItemModel}) async {
     try {
-      var data = await firestoreService.addToCart(cartItemModel: cartItemModel);
+      var data = await orderService.addToCart(cartItemModel: cartItemModel);
       return Right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
@@ -26,7 +26,7 @@ class CartRepoImpl extends CartRepo {
   @override
   Future<Either<FirebaseFailure, void>> clearCart() async {
     try {
-      await firestoreService.clearCart();
+      await orderService.clearCart();
       return const Right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
@@ -39,7 +39,7 @@ class CartRepoImpl extends CartRepo {
   Future<Either<FirebaseFailure, List<CartEntity>>>
       getAllProductsInCart() async {
     try {
-      var data = await firestoreService.getAllProductsInCart();
+      var data = await orderService.getAllProductsInCart();
       return Right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
@@ -52,7 +52,7 @@ class CartRepoImpl extends CartRepo {
   Future<Either<FirebaseFailure, void>> removeFromCart(
       {required String productId}) async {
     try {
-      await firestoreService.removeFromCart(productId: productId);
+      await orderService.removeFromCart(productId: productId);
       return const Right(null);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
@@ -65,7 +65,7 @@ class CartRepoImpl extends CartRepo {
   Future<Either<FirebaseFailure, void>> updateCartQuantity(
       {required String productId, required bool isIncrement}) async {
     try {
-      firestoreService.updateCartQuantity(
+      orderService.updateCartQuantity(
           productId: productId, isIncrement: isIncrement);
       return const Right(null);
     } on FirebaseException catch (e) {
@@ -79,7 +79,7 @@ class CartRepoImpl extends CartRepo {
   Future<Either<FirebaseFailure, void>> updateCartQuantityWithCount(
       {required String productId, required int count}) async {
     try {
-      firestoreService.updateCartQuantityWithCount(
+      orderService.updateCartQuantityWithCount(
           productId: productId, count: count);
       return const Right(null);
     } on FirebaseException catch (e) {
@@ -93,7 +93,7 @@ class CartRepoImpl extends CartRepo {
   Future<Either<FirebaseFailure, CartEntity?>> getProductInCart(
       {required String productId}) async {
     try {
-      var data = await firestoreService.getProductInCart(productId: productId);
+      var data = await orderService.getProductInCart(productId: productId);
       return Right(data);
     } on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));

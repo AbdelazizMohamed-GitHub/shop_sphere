@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shop_sphere/core/errors/fairebase_failure.dart';
-import 'package:shop_sphere/core/service/firestore_service.dart';
+import 'package:shop_sphere/core/service/product_service.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/domain/repo/product_repo.dart';
 
 class ProductRepoImpl extends ProductRepo {
-  final FirestoreService firestoreService;
-  ProductRepoImpl({required this.firestoreService});
+  final ProductService productService;
+  ProductRepoImpl({required this.productService});
   @override
   Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts({required String category}) async {
     try {
-    var data=  await firestoreService.gettProducts(category: category);
+    var data=  await productService.getProducts(category: category);
     return right(data);
     }on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
