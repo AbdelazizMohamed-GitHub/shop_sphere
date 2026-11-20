@@ -4,12 +4,15 @@ import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/theme/app_theme.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
+import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 
 class CustomCategoryList extends StatefulWidget {
   const CustomCategoryList({
     super.key,
+    this.isDasboardScreen = false,
   });
+  final bool isDasboardScreen;
 
   @override
   State<CustomCategoryList> createState() => _CustomCategoryListState();
@@ -32,11 +35,16 @@ class _CustomCategoryListState extends State<CustomCategoryList> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              context
-                  .read<ProductCubit>()
-                  .getProducts(category: appCategory[index]);
-            });
+          if (widget.isDasboardScreen) {
+              context.read<DashboardCubit>().getProducts(
+                    category: appCategory[index],
+                  );
+            }else {
+              context.read<ProductCubit>().getProducts(
+                    category: appCategory[index],
+                  );
+            }
+
             setState(() {
               currentIndex = index;
             });

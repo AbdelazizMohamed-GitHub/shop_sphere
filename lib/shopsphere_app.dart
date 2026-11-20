@@ -11,8 +11,10 @@ import 'package:shop_sphere/features/dashboard/data/repo_impl/dashboard_repo_imp
 import 'package:shop_sphere/features/dashboard/presention/controller/product_cubit/dashboard_cubit.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
+import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/favourite_cubit/favourite_cubit.dart';
+import 'package:shop_sphere/features/explor/presention/controller/product_cubit/product_cubit.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
@@ -29,7 +31,9 @@ class ShopSphere extends StatefulWidget {
 
 class _ShopSphereState extends State<ShopSphere> {
   @override
+  
   void initState() {
+
     super.initState();
     NotificationService.setProductTapHandler((productId) {
       appRouter.pushNamed(
@@ -57,6 +61,11 @@ class _ShopSphereState extends State<ShopSphere> {
         ),
         BlocProvider(
             create: (context) => CartCubit(cartRepo: getIt<CartRepoImpl>())),
+        BlocProvider(
+          create: (context) =>
+              ProductCubit(productRepo: getIt<ProductRepoImpl>())
+                ..getProducts(category: 'All'),
+        ),
         BlocProvider(
             create: (context) => UserCubit(userRepo: getIt<UserRepoImpl>())),
         BlocProvider(

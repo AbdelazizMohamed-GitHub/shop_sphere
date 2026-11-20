@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:shop_sphere/core/utils/app_data.dart';
 import 'package:shop_sphere/core/widget/custom_dropdown_menu.dart';
-
 
 class CustomOrdersFilters extends StatelessWidget {
   final String selectedStatus;
@@ -27,19 +25,19 @@ class CustomOrdersFilters extends StatelessWidget {
           flex: 3,
           child: CustomDropdown(
             text: 'Select Status',
-            isUpdate: false,
-            categories: orderStauts
-                .map((e) => e.toString())
-                .toList(),
+            isUpdate: true,
+            productCategory: selectedStatus,
+            categories: orderStauts.map((e) => e.toString()).toList(),
             onCategorySelected: onStatusChanged,
           ),
         ),
         const SizedBox(width: 20),
         Expanded(
-          flex: 2,
+          flex: 3,
           child: CustomDropdown(
             text: 'Select Price',
-            isUpdate: false,
+            isUpdate: true,
+            productCategory: selectedPrice,
             categories: const [
               'All',
               '0-100',

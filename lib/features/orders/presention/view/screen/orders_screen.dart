@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +12,6 @@ import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart
 import 'package:shop_sphere/features/profile/domain/entity/order_entity.dart';
 import 'package:shop_sphere/features/profile/presention/controller/order/order_cubit.dart';
 
-
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key, required this.onMenuPressed});
   final VoidCallback onMenuPressed;
@@ -26,26 +24,30 @@ class _OrdersScreenState extends State<OrdersScreen> {
   String _searchQuery = '';
   String _selectedStatus = 'All';
   String _selectedPrice = 'All';
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> _ordersStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _ordersStream = FirebaseFirestore.instance
+        .collection('orders')
+        .orderBy('orderDate', descending: true)
+        .snapshots();
+  }
 
   List<OrderEntity> _filterOrders(List<OrderEntity> orders) {
+    final searchQuery = _searchQuery.toLowerCase();
+
     return orders.where((order) {
-      // Search filter
-      final matchesSearch =
-          _searchQuery.isEmpty ||
-          order.userName.toLowerCase().contains(
-            _searchQuery.toLowerCase(),
-          ) ||
-          order.address.state.toLowerCase().contains(
-            _searchQuery.toLowerCase(),
-          ) ||
-          order.trackingNumber.toString().contains(_searchQuery);
+      final matchesSearch = searchQuery.isEmpty ||
+          order.userName.toLowerCase().contains(searchQuery) ||
+          order.address.state.toLowerCase().contains(searchQuery) ||
+          order.orderId.toLowerCase().contains(searchQuery) ||
+          order.trackingNumber.toString().contains(searchQuery);
 
-      // Status filter
-      final matchesStatus =
-          _selectedStatus == 'All' ||
-          order.status == _selectedStatus;
+      final matchesStatus = _selectedStatus == 'All' ||
+          order.status.toLowerCase() == _selectedStatus.toLowerCase();
 
-      // Price filter
       final amount = order.totalAmount;
 
       final matchesPrice = switch (_selectedPrice) {
@@ -79,31 +81,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = ResponsiveLayout.isDesktop(context);
-
-    final horizontalPadding =
-        ResponsiveLayout.getHorizontalPadding(context);
+    final horizontalPadding = ResponsiveLayout.getHorizontalPadding(context);
 
     return BlocProvider(
       create: (context) =>
-          OrderCubit(orderRepo: getIt<OrderRepoImpl>())
-            ..getOrderLength(),
+          OrderCubit(orderRepo: getIt<OrderRepoImpl>())..getOrderLength(),
       child: Scaffold(
-        appBar: !isDesktop
-            ? AppBar(leading: IconButton(
+        appBar: AppBar(
+          leading: IconButton(
             onPressed: widget.onMenuPressed,
             icon: const Icon(Icons.menu),
           ),
-                title: const Text('Orders'),
-              )
-            : null,
-
+          title: const Text('Orders'),
+        ),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: FirebaseFirestore.instance
-              .collection('orders')
-              .orderBy('orderDate', descending: true)
-              .snapshots(),
-
+          stream: _ordersStream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -138,7 +130,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 horizontal: horizontalPadding,
                 vertical: 16,
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

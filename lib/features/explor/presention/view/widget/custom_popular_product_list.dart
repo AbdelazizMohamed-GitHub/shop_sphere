@@ -7,8 +7,10 @@ class CustomVerticalProductList extends StatelessWidget {
   const CustomVerticalProductList({
     super.key,
     required this.products,
+    this.heroTagPrefix = 'product',
   });
   final List<ProductEntity> products;
+  final String heroTagPrefix;
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -23,7 +25,9 @@ class CustomVerticalProductList extends StatelessWidget {
       itemCount: products.length,
       itemBuilder: (context, index) {
         return CustomProductItem(
-          product: products[index], index: index,
+          product: products[index],
+          index: index,
+          heroTagPrefix: heroTagPrefix,
         );
       },
     );

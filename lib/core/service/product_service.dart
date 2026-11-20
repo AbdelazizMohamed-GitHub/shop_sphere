@@ -7,8 +7,7 @@ import 'package:shop_sphere/features/explor/data/model/product_model.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 
 class ProductService {
-
-   FirebaseFirestore firestore;
+  FirebaseFirestore firestore;
   ProductService({
     required this.firestore,
   });
@@ -17,7 +16,8 @@ class ProductService {
       {required ProductModel data, required Uint8List image}) async {
     String? imageUrl;
 
-    imageUrl = await SupabaseService().uploadImage( fileBytes: image, fileExtension: 'jpg');
+    imageUrl = await SupabaseService()
+        .uploadImage(fileBytes: image, fileExtension: 'jpg');
     data.imageUrl = imageUrl!;
 
     await firestore.collection('products').doc(data.pId).set(data.toMap());
@@ -42,6 +42,22 @@ class ProductService {
         .toList();
   }
 
+  Future<List<ProductEntity>> getPopularProducts(
+      {required String category}) async {
+    final productsQuery = firestore.collection('products');
+    final snapshot = await (category == "All"
+            ? productsQuery
+            : productsQuery.where('category', isEqualTo: category))
+        .get();
+
+    final products =
+        snapshot.docs.map((doc) => ProductModel.fromMap(doc.data())).toList();
+    products.sort(
+      (a, b) => (b.soldCount ?? 0).compareTo(a.soldCount ?? 0),
+    );
+    return products;
+  }
+
   Future<void> deleteProduct(
       {required String dId, required String imageUrl}) async {
     await SupabaseService().deleteImageFromUrl(imageUrl: imageUrl);
@@ -50,11 +66,11 @@ class ProductService {
 
   Future<void> updateProduct(
       {required String dId, required ProductModel data}) async {
-   
     await firestore.collection('products').doc(dId).update(data.toMap());
   }
-    Future<ProductEntity> getProductById({required String productId}) async {
-  ProductEntity data=await  FirebaseFirestore.instance
+
+  Future<ProductEntity> getProductById({required String productId}) async {
+    ProductEntity data = await FirebaseFirestore.instance
         .collection('products')
         .doc(productId)
         .get()
@@ -67,8 +83,9 @@ class ProductService {
     }).catchError((error) {
       throw Exception("Error fetching product: $error");
     });
-  return data;
+    return data;
   }
+
   Future<void> toggelProductToFavorite({required String productId}) async {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return; // Ensure user is logged in
@@ -143,7 +160,4 @@ class ProductService {
       return products;
     });
   }
-   
-
-
 }

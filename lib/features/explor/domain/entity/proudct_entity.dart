@@ -14,6 +14,8 @@ class ProductEntity {
    final DateTime createdAt;
   final String staffName;
    final int discount;
+   final int? soldCount; // Default value, can be modified later
+
   ProductEntity({
     required this.discount,
     required this.staffName,
@@ -27,5 +29,7 @@ class ProductEntity {
     required this.stock,
     required this.isFeatured,
     required this.sId,
+    this.soldCount = 0, // Default value, can be modified later
+
   });
 }

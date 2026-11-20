@@ -37,7 +37,7 @@ void main() async {
     url: AppKeys.supbaseUrl,
     anonKey: AppKeys.supbaseApiKey,
   );
-
+ 
   Bloc.observer = MyBlocObserver();
   runApp(const ShopSphere());
 }

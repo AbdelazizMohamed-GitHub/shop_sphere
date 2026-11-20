@@ -14,6 +14,7 @@ import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dar
 import 'package:shop_sphere/features/profile/data/repo_impl/address_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/order_repo_impl.dart';
 import 'package:shop_sphere/features/profile/data/repo_impl/user_repo_impl.dart';
+import 'package:shop_sphere/features/users/data/repo_impl/users_impl.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -43,6 +44,8 @@ void setupLocator() {
       () => CartRepoImpl(orderService: getIt<OrderService>()));
   getIt.registerLazySingleton<UserRepoImpl>(
       () => UserRepoImpl(userService: getIt<UserService>()));
+  getIt.registerLazySingleton<UsersRepoImpl>(
+      () => UsersRepoImpl(userService: getIt<UserService>()));
   getIt.registerLazySingleton<AddressRepoImpl>(
       () => AddressRepoImpl(userService: getIt<UserService>()));
   getIt.registerLazySingleton<OrderRepoImpl>(

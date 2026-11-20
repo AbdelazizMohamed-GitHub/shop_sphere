@@ -15,10 +15,13 @@ import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 class CustomProductItem extends StatefulWidget {
   const CustomProductItem({
     super.key,
-    required this.product, required this.index,
+    required this.product,
+    required this.index,
+    this.heroTagPrefix = 'tag',
   });
   final ProductEntity product;
   final int index;
+  final String heroTagPrefix;
 
   @override
   State<CustomProductItem> createState() => _CustomProductItemState();
@@ -28,6 +31,8 @@ class _CustomProductItemState extends State<CustomProductItem> {
   bool isFav = false;
   @override
   Widget build(BuildContext context) {
+    final heroTag =
+        '${widget.heroTagPrefix}-${widget.product.pId}-${widget.index}';
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.isLightTheme(context)
@@ -50,14 +55,13 @@ class _CustomProductItemState extends State<CustomProductItem> {
                           AppRoute.detailsScreen,
                           pathParameters: {
                             'productId': widget.product.pId,
-                            'tagId': 'tag-${widget.product.pId}-${widget.index}'
+                            'tagId': heroTag,
                           },
                           extra: widget.product,
-
                         );
                       },
                       child: Hero(
-                        tag: 'tag-${widget.product.pId}-${widget.index}',
+                        tag: heroTag,
                         child: CachedNetworkImage(
                           imageUrl: widget.product.imageUrl,
                           placeholder: (context, url) => const Center(

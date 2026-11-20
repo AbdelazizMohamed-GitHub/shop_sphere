@@ -71,7 +71,7 @@ class CartCubit extends Cubit<CartState> {
         emit(CartFailure(errMessage: failure.message));
       },
       (_) {
-        emit(CartSuccess()); // Firestore listener will update cart
+        _emitUpdatedCartState();
       },
     );
   }

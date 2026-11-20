@@ -12,7 +12,22 @@ class ProductRepoImpl extends ProductRepo {
   Future<Either<FirebaseFailure, List<ProductEntity>>> getProducts({required String category}) async {
     try {
     var data=  await productService.getProducts(category: category);
+
     return right(data);
+    }on FirebaseException catch (e) {
+      return Left(FirebaseFailure.fromCode(e.code));
+    }
+    catch (e) {
+      return Left(FirebaseFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FirebaseFailure, List<ProductEntity>>>  getPopularProducts({required String category})async{
+    try {
+      var data=  await productService.getPopularProducts(category: category);
+
+      return right(data);
     }on FirebaseException catch (e) {
       return Left(FirebaseFailure.fromCode(e.code));
     }

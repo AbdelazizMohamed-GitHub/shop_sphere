@@ -16,10 +16,13 @@ class CustomHorzintalProductList extends StatelessWidget {
             right: 10,
           ),
           child: SizedBox(
-              width: 150,
-              child: CustomProductItem(
-                product: products[index], index: index,
-              )),
+            width: 150,
+            child: CustomProductItem(
+              product: products[index],
+              index: index,
+              heroTagPrefix: 'new-arrival',
+            ),
+          ),
         );
       },
     );

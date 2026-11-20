@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_sphere/core/funcation/funcations.dart';
 import 'package:shop_sphere/core/loading/custom_item_loading.dart';
-import 'package:shop_sphere/core/service/setup_locator.dart';
 import 'package:shop_sphere/core/theme/app_color.dart';
 import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/theme/app_theme.dart';
@@ -13,7 +14,6 @@ import 'package:shop_sphere/core/utils/app_route.dart';
 import 'package:shop_sphere/core/widget/custom_circle_button.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/model/product_model.dart';
-import 'package:shop_sphere/features/explor/data/repo_impl/cart_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/cart_entity.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';

@@ -28,6 +28,8 @@ class ProductModel extends ProductEntity {
   final String staffName;
   @override
   final int discount;
+  @override
+final int? soldCount; // Default value, can be modified later
 
   ProductModel({
     required this.discount,
@@ -42,6 +44,9 @@ class ProductModel extends ProductEntity {
     required this.category,
     required this.stock,
     required this.isFeatured,
+     this.soldCount,
+      // Default value, can be modified later
+
   }) : super(
             discount: discount,
             staffName: staffName,
@@ -54,7 +59,8 @@ class ProductModel extends ProductEntity {
             imageUrl: imageUrl,
             category: category,
             stock: stock,
-            isFeatured: isFeatured);
+            isFeatured: isFeatured,
+            soldCount: soldCount);
 
   // Convert to Map (for Firebase, Hive, etc.)
   Map<String, dynamic> toMap() {
@@ -71,6 +77,7 @@ class ProductModel extends ProductEntity {
       'sId': sId,
       'staffName': staffName,
       'discount': discount,
+      'soldCount': soldCount, // Default value, can be modified later
     };
   }
 
@@ -89,6 +96,7 @@ class ProductModel extends ProductEntity {
       stock: map['stock'] ?? 0,
       isFeatured: map['isFeatured'] ?? false,
       staffName: map['staffName'] ?? '',
+      soldCount: map['soldCount'] ?? 0,
     );
   }
   ProductModel copyWith({
@@ -104,6 +112,7 @@ class ProductModel extends ProductEntity {
     DateTime? createdAt,
     String? staffName,
     int? discount,
+    int? soldCount, // Default value, can be modified later
   }) {
     return ProductModel(
       pId: pId ?? this.pId,
@@ -118,6 +127,7 @@ class ProductModel extends ProductEntity {
       createdAt: createdAt ?? this.createdAt,
       staffName: staffName ?? this.staffName,
       discount: discount?? this.discount ,
+      soldCount: soldCount ?? this.soldCount,
     );
   }
 }

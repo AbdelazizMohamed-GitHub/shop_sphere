@@ -11,14 +11,26 @@ class ProductCubit extends Cubit<ProductState> {
 
   Future<void> getProducts({required String category}) async {
     emit(ProductLoading());
-    
 
     final result = await productRepo.getProducts(category: category);
+    final resultPopular =
+        await productRepo.getPopularProducts(category: category);
     result.fold((firebaseFailure) {
       emit(ProductFailure(errMessage: firebaseFailure.message));
     }, (products) {
-      emit(ProductSuccess(products: products));
+      resultPopular.fold(
+        (firebaseFailure) {
+          emit(ProductFailure(errMessage: firebaseFailure.message));
+        },
+        (popularProducts) {
+          emit(
+            ProductSuccess(
+              products: products,
+              popularProducts: popularProducts,
+            ),
+          );
+        },
+      );
     });
   }
-
 }

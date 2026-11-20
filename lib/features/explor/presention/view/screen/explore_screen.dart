@@ -9,7 +9,6 @@ import 'package:shop_sphere/core/theme/app_styles.dart';
 import 'package:shop_sphere/core/widget/custom_error_widget.dart';
 import 'package:shop_sphere/core/widget/warning.dart';
 import 'package:shop_sphere/features/explor/data/repo_impl/favourite_repo_impl.dart';
-import 'package:shop_sphere/features/explor/data/repo_impl/product_repo_impl.dart';
 import 'package:shop_sphere/features/explor/domain/entity/proudct_entity.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_cubit.dart';
 import 'package:shop_sphere/features/explor/presention/controller/cart_cubit/cart_state.dart';
@@ -32,11 +31,6 @@ class ExploreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) =>
-              ProductCubit(productRepo: getIt<ProductRepoImpl>())
-                ..getProducts(category: 'All'),
-        ),
         BlocProvider(
           create: (context) =>
               FavouriteCubit(favouriteRepo: getIt<FavouriteRepoImpl>()),
@@ -133,12 +127,11 @@ class ExploreScreen extends StatelessWidget {
                               );
                             }
 
-                            final popularProducts = [...state.products]
-                              ..shuffle();
                             final sortedProducts = List<ProductEntity>.from(
                                 state.products)
                               ..sort(
                                   (a, b) => b.discount.compareTo(a.discount));
+                      
                             return Column(
                               children: [
                                 CustomAdvertise(
@@ -163,14 +156,15 @@ class ExploreScreen extends StatelessWidget {
                                   funcation: () {
                                     context.pushNamed(
                                       AppRoute.seeAll,
-                                      extra: popularProducts,
+                                      extra: state.popularProducts,
                                     );
                                   },
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 12),
                                   child: CustomVerticalProductList(
-                                    products: popularProducts,
+                                    products: state.popularProducts,
+                                    heroTagPrefix: 'popular',
                                   ),
                                 )
                               ],

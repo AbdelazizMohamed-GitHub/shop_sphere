@@ -46,7 +46,7 @@ class DashboardProductsScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child:  CustomCategoryList(
-                 
+                  isDasboardScreen: true,
                 ),
               ),
             ),

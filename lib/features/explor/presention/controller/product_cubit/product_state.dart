@@ -8,8 +8,9 @@ final class ProductLoading extends ProductState {}
 
 final class ProductSuccess extends ProductState {
    List<ProductEntity> products;
+   List<ProductEntity> popularProducts; 
 
-  ProductSuccess({required this.products});
+  ProductSuccess({required this.products, required this.popularProducts});
 }
 
 
